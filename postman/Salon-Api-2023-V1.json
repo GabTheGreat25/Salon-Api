@@ -1,0 +1,22 @@
+{
+	"info": {
+		"_postman_id": "769240b9-b5ac-44eb-9e86-3fe8dedd96df",
+		"name": "Salon-Api",
+		"schema": "https://schema.getpostman.com/json/collection/v2.0.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "Sample",
+			"_postman_id": "01c89eb5-7d64-4a11-91a8-10fefd3ee134",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": null
+			},
+			"response": []
+		}
+	]
+}
