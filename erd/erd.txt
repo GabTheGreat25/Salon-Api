@@ -1,1 +1,1 @@
-TODO: Add erd using draw.io and erd image as well.
+TODO: Finalize ERD for the project
