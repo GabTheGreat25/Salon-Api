@@ -19,10 +19,12 @@ exports.getAllTests = asyncHandler(async (req, res, next) => {
 });
 
 exports.getSingleTest = asyncHandler(async (req, res, next) => {
+  
   const test = await testServices.getSingleTestData(req.params?.id);
 
   return !test
     ? next(new ErrorHandler("No test found"))
+
     : SuccessHandler(
         res,
         `Test ${test?.test} with ID ${test?._id} retrieved`,
@@ -31,6 +33,7 @@ exports.getSingleTest = asyncHandler(async (req, res, next) => {
 });
 
 exports.createNewTest = [
+
   checkRequiredFields(["test"]),
   asyncHandler(async (req, res, next) => {
     const test = await testServices.CreateTestData(req);
@@ -57,6 +60,7 @@ exports.updateTest = [
 ];
 
 exports.deleteTest = asyncHandler(async (req, res, next) => {
+
   const test = await testServices.deleteTestData(req.params.id);
 
   return !test
@@ -66,4 +70,5 @@ exports.deleteTest = asyncHandler(async (req, res, next) => {
         `Test ${test?.test} with ID ${test?._id} is deleted`,
         test
       );
+      
 });
