@@ -10,7 +10,7 @@ const { logger, logEvents } = require("./middleware/logger");
 const { errorJson, errorHandler } = require("./middleware/errorJson");
 const test = require("./routes/test");
 const { STATUSCODE } = require("./constants/index");
-const connectDB = require("./config/ConnectDB");
+const connectDB = require('./config/connectDB')
 const PORT = process.env.PORT || 4000;
 
 connectDB();
