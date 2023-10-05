@@ -143,7 +143,7 @@
 								}
 							]
 						},
-						"url": "{{URI}}{{V1}}tests"
+						"url": "{{URI}}{{V1}}users"
 					},
 					"response": []
 				},
@@ -157,15 +157,34 @@
 						"method": "PATCH",
 						"header": [],
 						"body": {
-							"mode": "raw",
-							"raw": "{\r\n    \"test\": \"test\"\r\n}",
-							"options": {
-								"raw": {
-									"language": "json"
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "name",
+									"value": "gabriel",
+									"type": "text"
+								},
+								{
+									"key": "email",
+									"value": "admingab@gmail.com",
+									"type": "text"
+								},
+								{
+									"key": "roles",
+									"value": "Admin, Employee",
+									"type": "text"
+								},
+								{
+									"key": "images",
+									"type": "file",
+									"src": [
+										"/C:/Users/gabriel/Downloads/376575274_691832482332797_431744617605823693_n.jpg",
+										"/C:/Users/gabriel/Downloads/376431224_639512981584562_362828871399608077_n.jpg"
+									]
 								}
-							}
+							]
 						},
-						"url": "{{URI}}{{V1}}test/edit/65141bfdbf1b49cdad16e7c3"
+						"url": "{{URI}}{{V1}}user/edit/65141bfdbf1b49cdad16e7c3"
 					},
 					"response": []
 				},
@@ -182,7 +201,7 @@
 							"mode": "formdata",
 							"formdata": []
 						},
-						"url": "{{URI}}{{V1}}test/65141bfdbf1b49cdad16e7c3"
+						"url": "{{URI}}{{V1}}user/65141bfdbf1b49cdad16e7c3"
 					},
 					"response": []
 				}
