@@ -111,8 +111,37 @@
 							}
 						],
 						"body": {
-							"mode": "raw",
-							"raw": ""
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "name",
+									"value": "gabriel",
+									"type": "text"
+								},
+								{
+									"key": "email",
+									"value": "admingab@gmail.com",
+									"type": "text"
+								},
+								{
+									"key": "password",
+									"value": "12345678",
+									"type": "text"
+								},
+								{
+									"key": "roles",
+									"value": "Admin, Employee",
+									"type": "text"
+								},
+								{
+									"key": "images",
+									"type": "file",
+									"src": [
+										"/C:/Users/gabriel/Downloads/369567914_24090671657197978_7567476637219736957_n.jpg",
+										"/C:/Users/gabriel/Downloads/375804592_7085713084772281_8388599802453045067_n.jpg"
+									]
+								}
+							]
 						},
 						"url": "{{URI}}{{V1}}tests"
 					},
