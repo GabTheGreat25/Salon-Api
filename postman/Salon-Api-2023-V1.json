@@ -134,8 +134,9 @@
 									"type": "text"
 								},
 								{
-									"key": "images",
+									"key": "image",
 									"type": "file",
+									"fileNotInWorkingDirectoryWarning": "This file isn't in your working directory. Teammates you share this request with won't be able to use this file. To make collaboration easier you can setup your working directory in Settings.",
 									"src": [
 										"/C:/Users/gabriel/Downloads/369567914_24090671657197978_7567476637219736957_n.jpg",
 										"/C:/Users/gabriel/Downloads/375804592_7085713084772281_8388599802453045067_n.jpg"
@@ -175,8 +176,9 @@
 									"type": "text"
 								},
 								{
-									"key": "images",
+									"key": "image",
 									"type": "file",
+									"fileNotInWorkingDirectoryWarning": "This file isn't in your working directory. Teammates you share this request with won't be able to use this file. To make collaboration easier you can setup your working directory in Settings.",
 									"src": [
 										"/C:/Users/gabriel/Downloads/376575274_691832482332797_431744617605823693_n.jpg",
 										"/C:/Users/gabriel/Downloads/376431224_639512981584562_362828871399608077_n.jpg"
