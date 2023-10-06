@@ -2,14 +2,61 @@
 	"info": {
 		"_postman_id": "769240b9-b5ac-44eb-9e86-3fe8dedd96df",
 		"name": "Salon-Api",
+		"description": "When you have multiple postman update in github don't push it either force push your works through it and make one change and push it else contact me for support if you have any problems!\n\n<img src=\"https://content.pstmn.io/1fe922d3-b64d-4801-b18c-a5a1e1e1b97b/aW1hZ2UucG5n\">",
 		"schema": "https://schema.getpostman.com/json/collection/v2.0.0/collection.json"
 	},
 	"item": [
 		{
 			"name": "TEST",
+			"item": [],
+			"id": "ee46f11c-dfe6-43cb-8cb9-addb75303bf8"
+		},
+		{
+			"name": "USERS",
 			"item": [
 				{
-					"name": "GET_TEST",
+					"name": "AUTH",
+					"item": [
+						{
+							"name": "LOGIN",
+							"id": "f5d46b55-64f6-49b9-b170-1fcfcc2a1306",
+							"protocolProfileBehavior": {
+								"disableBodyPruning": true
+							},
+							"request": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"email\": \"admingab@gmail.com\",\r\n    \"password\": \"12345678\"\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": "{{URI}}{{V1}}login"
+							},
+							"response": []
+						},
+						{
+							"name": "LOGOUT",
+							"id": "322d90d0-5f18-4ecb-9a8d-18a920cd5bf8",
+							"protocolProfileBehavior": {
+								"disableBodyPruning": true
+							},
+							"request": {
+								"method": "POST",
+								"header": [],
+								"url": "{{URI}}{{V1}}/logout"
+							},
+							"response": []
+						}
+					],
+					"id": "11fab152-1692-4af9-ba33-ba474fded21e"
+				},
+				{
+					"name": "GET SINGLE USER",
 					"id": "01c89eb5-7d64-4a11-91a8-10fefd3ee134",
 					"protocolProfileBehavior": {
 						"disableBodyPruning": true
@@ -21,17 +68,18 @@
 							"mode": "formdata",
 							"formdata": [
 								{
-									"key": "test",
-									"value": "test",
+									"key": "",
+									"value": "",
 									"type": "text"
 								}
 							]
-						}
+						},
+						"url": "{{URI}}{{V1}}user/65141bfdbf1b49cdad16e7c3"
 					},
 					"response": []
 				},
 				{
-					"name": "GET_ALL_TEST",
+					"name": "GET ALL USERS",
 					"id": "d4d9d94f-0daa-46b3-a0a1-7f5a785d57df",
 					"protocolProfileBehavior": {
 						"disableBodyPruning": true
@@ -42,28 +90,66 @@
 						"body": {
 							"mode": "formdata",
 							"formdata": []
-						}
+						},
+						"url": "{{URI}}{{V1}}users"
 					},
 					"response": []
 				},
 				{
-					"name": "POST_TEST",
+					"name": "CREATE USER",
 					"id": "57b3674d-89fd-43eb-b81c-e938c3429332",
 					"protocolProfileBehavior": {
 						"disableBodyPruning": true
 					},
 					"request": {
 						"method": "POST",
-						"header": [],
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
 						"body": {
 							"mode": "formdata",
-							"formdata": []
-						}
+							"formdata": [
+								{
+									"key": "name",
+									"value": "gabriel",
+									"type": "text"
+								},
+								{
+									"key": "email",
+									"value": "admingab@gmail.com",
+									"type": "text"
+								},
+								{
+									"key": "password",
+									"value": "12345678",
+									"type": "text"
+								},
+								{
+									"key": "roles",
+									"value": "Admin, Employee",
+									"type": "text"
+								},
+								{
+									"key": "image",
+									"type": "file",
+									"fileNotInWorkingDirectoryWarning": "This file isn't in your working directory. Teammates you share this request with won't be able to use this file. To make collaboration easier you can setup your working directory in Settings.",
+									"src": [
+										"/C:/Users/gabriel/Downloads/369567914_24090671657197978_7567476637219736957_n.jpg",
+										"/C:/Users/gabriel/Downloads/375804592_7085713084772281_8388599802453045067_n.jpg"
+									]
+								}
+							]
+						},
+						"url": "{{URI}}{{V1}}users"
 					},
 					"response": []
 				},
 				{
-					"name": "PATCH_TEST",
+					"name": "UPDATE USER",
 					"id": "c888f474-f627-47e8-955b-d2c8a1677299",
 					"protocolProfileBehavior": {
 						"disableBodyPruning": true
@@ -73,13 +159,39 @@
 						"header": [],
 						"body": {
 							"mode": "formdata",
-							"formdata": []
-						}
+							"formdata": [
+								{
+									"key": "name",
+									"value": "gabriel",
+									"type": "text"
+								},
+								{
+									"key": "email",
+									"value": "admingab@gmail.com",
+									"type": "text"
+								},
+								{
+									"key": "roles",
+									"value": "Admin, Employee",
+									"type": "text"
+								},
+								{
+									"key": "image",
+									"type": "file",
+									"fileNotInWorkingDirectoryWarning": "This file isn't in your working directory. Teammates you share this request with won't be able to use this file. To make collaboration easier you can setup your working directory in Settings.",
+									"src": [
+										"/C:/Users/gabriel/Downloads/376575274_691832482332797_431744617605823693_n.jpg",
+										"/C:/Users/gabriel/Downloads/376431224_639512981584562_362828871399608077_n.jpg"
+									]
+								}
+							]
+						},
+						"url": "{{URI}}{{V1}}user/edit/65141bfdbf1b49cdad16e7c3"
 					},
 					"response": []
 				},
 				{
-					"name": "DELETE_TEST",
+					"name": "DELETE USER",
 					"id": "4bf5c0a3-801b-470d-946b-bf2b457c2bce",
 					"protocolProfileBehavior": {
 						"disableBodyPruning": true
@@ -90,12 +202,13 @@
 						"body": {
 							"mode": "formdata",
 							"formdata": []
-						}
+						},
+						"url": "{{URI}}{{V1}}user/65141bfdbf1b49cdad16e7c3"
 					},
 					"response": []
 				}
 			],
-			"id": "ee46f11c-dfe6-43cb-8cb9-addb75303bf8"
+			"id": "67bb02df-74c0-4ed0-b173-07875d973ea1"
 		}
 	]
 }

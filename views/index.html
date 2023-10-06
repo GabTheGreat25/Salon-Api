@@ -3,82 +3,116 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
     <title>Lhanlee Salon Home Page</title>
     <link rel="stylesheet" type="text/css" href="../styles/index.css">
   </head>
   <body>
     
+
+    <title>Lhanlee Salon</title>
+    <link rel="stylesheet" type="text/css" href="../styles/index.css" />
+
     <style>
+      @import url("https://fonts.googleapis.com/css2?family=Poppins:wght@200;300;400;500;600;700&display=swap");
 
-      @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@200;300;400;500;600;700&display=swap');
+      * {
+        box-sizing: border-box;
+        margin: 0;
+        padding: 0;
+      }
 
-*{
-  box-sizing: border-box;
-}
+      body {
+        font-family: "Poppins", sans-serif;
+        background-color: #fda7df;
+        color: #212b36;
+      }
 
-body{
-  margin: 0;
-  padding: 0;
-  font-family: 'Poppins',sans-serif;
-  background-color:  #ff99ff;
-  color: white;
-}
+      .container {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        text-align: center;
+        padding: 2rem;
+      }
 
-.container{
-  justify-content: center;
-  align-items: center;
-  text-align: center;
-}
+      .navbar {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        background-color: #e5e5e5;
+        padding: 1rem;
+        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+      }
 
-.navbar{
-  display: flex;
-  height: 70px;
-  width: 100%;
-  align-items: center;
-  background-color: white;
-  color: black;
-}
+      .nav-img {
+        border-radius: 50%;
+        max-width: 65px;
+        margin-right: 1rem;
+      }
 
-.nav-header{
-  margin: 5px;
-  padding: 5px;
-  font-size: 21px;
-  font-weight: 800;
+      .nav-header {
+        font-size: 24px;
+        font-weight: 800;
+      }
 
-}
+      .home-img {
+        border-radius: 50%;
+        height: 320px;
+        width: 320px;
+        margin: 2rem 0;
+      }
 
-.nav-img{
-  border-radius: 50%;
-  max-width: 65px;
-  margin: 5px;
-}
+      .page-header {
+        font-size: 36px;
+        font-weight: 800;
+        margin-bottom: 1rem;
+      }
 
-.home-img{
-  border-radius: 50%;
-  height: 320px;
-  width: 320px;
-}
+      .about-section {
+        background-color: #fff;
+        padding: 2rem;
+        border-radius: 15px;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+        text-align: left;
+      }
 
-.page-header{
-  text-align: left;
-  font-weight: 800;
-}
+      .about-title {
+        text-align: center;
+        font-size: 24px;
+        font-weight: 600;
+        margin-bottom: 1rem;
+      }
 
+      .about-description {
+        font-size: 18px;
+        line-height: 1.6;
+      }
+
+      .success-message {
+        font-size: 24px;
+        font-weight: 800;
+        margin: 2rem 0;
+      }
     </style>
-
+  </head>
+  <body>
     <nav class="navbar">
-      <img class="nav-img" src="logo.jpg" alt="image.jpeg">
+      <img class="nav-img" src="logo.jpg" alt="image.jpeg" />
       <h3 class="nav-header">Lhanlee Salon</h3>
     </nav>
 
     <div class="container">
-      <h1 class="page-header">Welcome to Lhanlee Salon Home Page</h1>
-      <img class="home-img" src="logo.jpg" alt="image.jpeg">
-      <h4>About the Lhanlee Salon</h4>
-      <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</p>
-
-      <h1>Lhanlee Salon Web Application Server Running Successfully!</h1>
+      <h1 class="page-header">Welcome to Lhanlee Salon</h1>
+      <img class="home-img" src="logo.jpg" alt="image.jpeg" />
+      <div class="about-section">
+        <h4 class="about-title">About Lhanlee Salon</h4>
+        <p class="about-description">
+          Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do
+          eiusmod tempor incididunt ut labore et dolore magna aliqua.
+        </p>
+      </div>
+      <h1 class="success-message">Lhanlee Salon Web Application is Live!</h1>
     </div>
-
   </body>
 </html>
