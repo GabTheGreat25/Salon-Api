@@ -1,8 +1,10 @@
 module.exports = {
   TEST: "test",
+  USER: "user",
+  IMAGES: "Images",
   IMAGE: "image",
-
-  //product resource
-
-  PRODUCT:"product"
+  PRODUCT: "product",
+  PRODUCTION: "production",
+  NONE: "none",
+  JWT: "jwt",
 };
