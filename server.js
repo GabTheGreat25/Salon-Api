@@ -9,9 +9,11 @@ const mongoose = require("mongoose");
 const { logger, logEvents } = require("./middleware/logger");
 const { errorJson, errorHandler } = require("./middleware/errorJson");
 const test = require("./routes/test");
-const products = require("./routes/product")
+const products = require("./routes/product");
+const auth = require("./routes/auth");
+const users = require("./routes/user");
 const { STATUSCODE } = require("./constants/index");
-const connectDB = require('./config/connectDB');
+const connectDB = require("./config/connectDB");
 const PORT = process.env.PORT || 4000;
 
 connectDB();
@@ -23,8 +25,7 @@ app.use(cookieParser());
 app.use("/", express.static(path.join(__dirname, "/public")));
 app.use("/", require("./routes/root"));
 
-app.use("/api/v1", test);
-app.use("/api/v1", products)
+app.use("/api/v1", test, auth, users, products);
 
 app.all("*", (req, res) => {
   const filePath = req.accepts("html")
