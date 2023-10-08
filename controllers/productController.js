@@ -1,13 +1,13 @@
 const SuccessHandler = require("../utils/successHandler");
 const ErrorHandler = require("../utils/errorHandler");
-const productServices = require("../services/productServices");
+const productService = require("../services/productService");
 const asyncHandler = require("express-async-handler");
 const checkRequiredFields = require("../helpers/checkRequiredFields");
 const { upload } = require("../utils/cloudinary");
 const { STATUSCODE } = require("../constants/index");
 
 exports.getAllProducts = asyncHandler(async (req, res, next) => {
-  const products = await productServices.getAllProductData();
+  const products = await productService.getAllProductData();
 
   return products?.length === STATUSCODE.ZERO
     ? next(new ErrorHandler("No products found"))
@@ -22,7 +22,7 @@ exports.getAllProducts = asyncHandler(async (req, res, next) => {
 });
 
 exports.getSingleProduct = asyncHandler(async (req, res, next) => {
-  const product = await productServices.getSingleProductData(req.params?.id);
+  const product = await productService.getSingleProductData(req.params?.id);
 
   return !product
     ? next(new ErrorHandler("No product found"))
@@ -37,7 +37,7 @@ exports.createNewProduct = [
   upload.array("image"),
   checkRequiredFields(["product_name", "brand", "type", "quantity", "image"]),
   asyncHandler(async (req, res, next) => {
-    const product = await productServices.createProductData(req);
+    const product = await productService.createProductData(req);
 
     return SuccessHandler(
       res,
@@ -51,7 +51,7 @@ exports.updateProduct = [
   upload.array("image"),
   checkRequiredFields(["product_name", "brand", "type", "quantity", "image"]),
   asyncHandler(async (req, res, next) => {
-    const product = await productServices.updateProductData(
+    const product = await productService.updateProductData(
       req,
       res,
       req.params.id
@@ -66,7 +66,7 @@ exports.updateProduct = [
 ];
 
 exports.deleteProduct = asyncHandler(async (req, res, next) => {
-  const product = await productServices.deleteProductData(req.params.id);
+  const product = await productService.deleteProductData(req.params.id);
 
   return !product
     ? next(new ErrorHandler("No product found"))
