@@ -1,48 +1,49 @@
-const express = require("express")
-const router = express.Router()
-
-const productController = require("../controllers/productController")
-const {METHOD, PATH } = require("../constants/index")
+const express = require("express");
+const router = express.Router();
+const productController = require("../controllers/productController");
+const { METHOD, PATH } = require("../constants/index");
+const { verifyJWT, authorizeRoles } = require("../middleware/verifyJWT");
+const { METHOD, PATH, ROLE } = require("../constants/index");
 
 const productRoutes = [
+  {
+    method: METHOD.GET,
+    path: PATH.PRODUCTS,
+    roles: [ROLE.ADMIN, ROLE.EMPLOYEE],
+    middleware: [verifyJWT],
+    handler: productController.getAllProducts,
+  },
+  {
+    method: METHOD.POST,
+    path: PATH.PRODUCTS,
+    roles: [ROLE.ADMIN],
+    handler: productController.createNewProduct,
+  },
+  {
+    method: METHOD.GET,
+    path: PATH.PRODUCT_ID,
+    roles: [ROLE.ADMIN, ROLE.EMPLOYEE],
+    middleware: [verifyJWT],
+    handler: productController.getSingleProduct,
+  },
+  {
+    method: METHOD.PATCH,
+    path: PATH.EDIT_PRODUCT_ID,
+    handler: productController.updateProduct,
+  },
 
-    {
-        method: METHOD.GET,
-        path: PATH.PRODUCTS,
-        handler:productController.getAllProducts
-    },
+  {
+    method: METHOD.DELETE,
+    path: PATH.PRODUCT_ID,
+    roles: [ROLE.ADMIN],
+    middleware: [verifyJWT],
+    handler: productController.deleteProduct,
+  },
+];
 
-    {
-        method: METHOD.GET,
-        path: PATH.PRODUCT_ID,
-        handler: productController.getSingleProduct
-    },
+productRoutes.forEach((route) => {
+  const { method, path, roles = [], middleware = [], handler } = route;
+  router[method](path, middleware.concat(authorizeRoles(...roles)), handler);
+});
 
-    {
-        method: METHOD.POST,
-        path: PATH.PRODUCT_STORE,
-        handler: productController.createProduct
-    },
-
-    {
-        method: METHOD.PUT,
-        path: PATH.EDIT_PRODUCT_ID,
-        handler: productController.updateProduct
-    },
-
-    {
-        method: METHOD.DELETE,
-        path: PATH.DELETE_PRODUCT_ID,
-        handler: productController.deleteProduct
-    
-    }
-]
-
-productRoutes.forEach((route)=>{
-
-    const { method, path, handler } = route
-    router[method](path, handler)
-
-})
-
-module.exports = router
+module.exports = router;
