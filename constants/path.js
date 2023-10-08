@@ -1,9 +1,9 @@
 module.exports = {
   TESTS: "/tests",
   TEST_ID: "/test/:id",
+  EDIT_TEST_ID: "/test/edit/:id",
   LOGIN: "/login",
   LOGOUT: "/logout",
-  EDIT_TEST_ID: "/test/edit/:id",
   PRODUCTS: "/products",
   PRODUCT_ID: "/product/:id",
   EDIT_PRODUCT_ID: "/product/edit/:id",
