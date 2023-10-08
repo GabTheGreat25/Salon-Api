@@ -43,15 +43,16 @@ app.use(errorHandler);
 mongoose.connection.once("open", () => {
   app.listen(PORT);
   console.log(`Connected to MongoDB on ${mongoose.connection.host}:${PORT}`);
+  logEvents(
+    `Connected to MongoDB on ${mongoose.connection.host}:${PORT}`,
+    "mongoLog.log"
+  );
 });
 
 mongoose.connection.on("error", (err) => {
-  console.log(
-    `${err.no}: ${err.code}\t${err.syscall}\t${err.hostname}`,
-    "mongoErrLog.log"
-  );
+  console.log(`${err.no}: ${err.code}\t${err.syscall}\t${err.hostname}`);
   logEvents(
     `${err.no}: ${err.code}\t${err.syscall}\t${err.hostname}`,
-    "mongoErrLog.log"
+    "mongoLog.log"
   );
 });
