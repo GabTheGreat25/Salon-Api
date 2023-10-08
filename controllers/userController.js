@@ -36,7 +36,7 @@ exports.getAllUsers = asyncHandler(async (req, res, next) => {
     ? next(new ErrorHandler("No users found"))
     : SuccessHandler(
         res,
-        `Users with user ${users.map((u) => u?.user).join(", ")} and IDs ${users
+        `Users with user ${users.map((u) => u?.name).join(", ")} and IDs ${users
           .map((u) => u?._id)
           .join(", ")} retrieved`,
         users
@@ -44,7 +44,7 @@ exports.getAllUsers = asyncHandler(async (req, res, next) => {
 });
 
 exports.getSingleUser = asyncHandler(async (req, res, next) => {
-  const user = await usersService.getSingleUserData(req.params.id);
+  const user = await usersService.getSingleUserData(req.params?.id);
 
   return !user
     ? next(new ErrorHandler("No user found"))
