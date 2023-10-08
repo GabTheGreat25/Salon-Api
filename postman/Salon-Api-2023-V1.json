@@ -34,7 +34,7 @@
 								}
 							]
 						},
-						"url": "{{URI}}{{V1}}user/651ed92121aee9a8dc1b43ed"
+						"url": "{{URI}}{{V1}}test/651ed92121aee9a8dc1b43ed"
 					},
 					"response": []
 				},
@@ -57,7 +57,7 @@
 							"mode": "formdata",
 							"formdata": []
 						},
-						"url": "{{URI}}{{V1}}users"
+						"url": "{{URI}}{{V1}}tests"
 					},
 					"response": []
 				},
@@ -106,7 +106,7 @@
 								}
 							]
 						},
-						"url": "{{URI}}{{V1}}users"
+						"url": "{{URI}}{{V1}}tests"
 					},
 					"response": []
 				},
@@ -160,12 +160,12 @@
 								}
 							]
 						},
-						"url": "{{URI}}{{V1}}/user/edit/651ed92121aee9a8dc1b43ed"
+						"url": "{{URI}}{{V1}}/test/edit/651ed92121aee9a8dc1b43ed"
 					},
 					"response": []
 				},
 				{
-					"name": "DELETE USER Copy",
+					"name": "DELETE TEST",
 					"id": "d2886d47-961a-4d87-a4b0-b99b38627191",
 					"protocolProfileBehavior": {
 						"disableBodyPruning": true
@@ -183,7 +183,7 @@
 							"mode": "formdata",
 							"formdata": []
 						},
-						"url": "{{URI}}{{V1}}user/651ed92121aee9a8dc1b43ed"
+						"url": "{{URI}}{{V1}}test/651ed92121aee9a8dc1b43ed"
 					},
 					"response": []
 				}
@@ -420,7 +420,7 @@
 		{
 			"listen": "prerequest",
 			"script": {
-				"id": "b48266af-24cf-4026-9aed-47dcef82e77d",
+				"id": "c1dcfba8-1dd3-4d91-a12c-2583d567bcd4",
 				"type": "text/javascript",
 				"exec": [
 					""
@@ -430,7 +430,7 @@
 		{
 			"listen": "test",
 			"script": {
-				"id": "0cbdc646-bc4e-4c39-9c8b-21f9b599c917",
+				"id": "9d4c41ab-c4a4-4d6e-b3c4-7d84bc374663",
 				"type": "text/javascript",
 				"exec": [
 					""
@@ -441,7 +441,7 @@
 	"variable": [
 		{
 			"key": "Bearer",
-			"value": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJVc2VySW5mbyI6eyJlbWFpbCI6ImFkbWluZ2FiQGdtYWlsLmNvbSIsInJvbGVzIjpbIkFkbWluIiwiRW1wbG95ZWUiXX0sImlhdCI6MTY5NjY4NjQ5NywiZXhwIjoxNjk3MjkxMjk3fQ.ao587qmh9mIu9jG2zYF8gdIi9djL5yi8RzbEwZPWVsY",
+			"value": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJVc2VySW5mbyI6eyJlbWFpbCI6ImFkbWluZ2FiQGdtYWlsLmNvbSIsInJvbGVzIjpbIkFkbWluIiwiRW1wbG95ZWUiXX0sImlhdCI6MTY5NjgwODcyMCwiZXhwIjoxNjk3NDEzNTIwfQ.jpaR9J1UwhyyIx3Lkc9KM5bGcvgPy-WKn6JS5dQLadw",
 			"type": "string"
 		}
 	]
