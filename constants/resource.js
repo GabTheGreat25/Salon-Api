@@ -1,7 +1,7 @@
 module.exports = {
   TEST: "test",
   USER: "user",
-  IMAGES: "Images",
+  IMAGES: "images",
   IMAGE: "image",
   PRODUCT: "product",
   PRODUCTION: "production",
