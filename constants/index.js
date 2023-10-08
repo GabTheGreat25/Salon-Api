@@ -6,6 +6,7 @@ const PATH = require("./path");
 const ROLE = require("./role");
 
 module.exports = {
+  //this is an index
   RESOURCE,
   STATUSCODE,
   METHOD,
