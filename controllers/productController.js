@@ -1,62 +1,78 @@
-const productServices = require("../services/productServices")
-const ErrorHandler = require("../utils/errorHandler")
-const SuccessHandler = require("../utils/successHandler")
-const checkRequiredFields = require("../helpers/checkRequiredFields")
-const asyncHandler = require("express-async-handler")
+const SuccessHandler = require("../utils/successHandler");
+const ErrorHandler = require("../utils/errorHandler");
+const productServices = require("../services/productServices");
+const asyncHandler = require("express-async-handler");
+const checkRequiredFields = require("../helpers/checkRequiredFields");
+const { upload } = require("../utils/cloudinary");
+const { STATUSCODE } = require("../constants/index");
 
-exports.getAllProducts = asyncHandler(async(req, res, next)=>{
+exports.getAllProducts = asyncHandler(async (req, res, next) => {
+  const products = await productServices.getAllProductData();
 
-    const products = await productServices.getAllProductData()
+  return products?.length === STATUSCODE.ZERO
+    ? next(new ErrorHandler("No products found"))
+    : SuccessHandler(
+        res,
+        `Products with product ${products
+          .map((p) => p?.product_name)
+          .join(", ")} and IDs
+     ${products.map((p) => p?._id).join(", ")} retrieved`,
+        products
+      );
+});
 
-    return !products?.length
-    ? next(new ErrorHandler("No products Found..."))
+exports.getSingleProduct = asyncHandler(async (req, res, next) => {
+  const product = await productServices.getSingleProductData(req.params?.id);
 
-    :SuccessHandler(res, `Products with product ${products.map((u)=> u.product).join(", ")} and IDs
-     ${products.map((u)=> u._id).join(", ")} retrieved`, products)
+  return !product
+    ? next(new ErrorHandler("No product found"))
+    : SuccessHandler(
+        res,
+        `Product ${product?.product_name} with ID ${product?._id} retrieved`,
+        product
+      );
+});
 
-})
+exports.createNewProduct = [
+  upload.array("image"),
+  checkRequiredFields(["product_name", "brand", "type", "quantity", "image"]),
+  asyncHandler(async (req, res, next) => {
+    const product = await productServices.createProductData(req);
 
-exports.getSingleProduct = asyncHandler(async(req, res, next)=>{
-
-    const product = await productServices.getSingleProductData(req.params?.id)
-
-    return !product ?
-    next(new ErrorHandler("Error No Product Found"))
-    : SuccessHandler(res, `Product ${product?.product} with product id ${product?._id} retrieved`, product)
-    
-})
-
-exports.createProduct = [
-
-    // checkRequiredFields(["product"]),
-    
-    asyncHandler(async(req, res)=>{
-
-        const product = await productServices.createProductData(req)
-
-        return SuccessHandler(res, `Created new Product ${product?.product_name} with product id ${product?._id}`, product)
-
-    })
-]
+    return SuccessHandler(
+      res,
+      `Created new Product ${product?.product_name} with an ID ${product?._id}`,
+      product
+    );
+  }),
+];
 
 exports.updateProduct = [
+  upload.array("image"),
+  checkRequiredFields(["product_name", "brand", "type", "quantity", "image"]),
+  asyncHandler(async (req, res, next) => {
+    const product = await productServices.updateProductData(
+      req,
+      res,
+      req.params.id
+    );
 
-    // checkRequiredFields(["product"]),
-    
-    asyncHandler(async(req, res, next)=>{
+    return SuccessHandler(
+      res,
+      `Product ${product?.product_name} with ID ${product?._id} is updated`,
+      product
+    );
+  }),
+];
 
+exports.deleteProduct = asyncHandler(async (req, res, next) => {
+  const product = await productServices.deleteProductData(req.params.id);
 
-        const product = await productServices.updateProductData(req, res, req.params.id)
-
-        return SuccessHandler(res, `Product ${product?.product_name} with product id ${product?._id} successfully updated`, product)
-    })
-]
-
-exports.deleteProduct = asyncHandler(async(req, res, next)=>{
-
-    const product = await productServices.deleteProductData(req.params.id)
-
-    return !product ?
-    next(new ErrorHandler("Error Product Not Found"))
-    : SuccessHandler(res, `Product ${product?.product_name} with product id ${product?._id} deleted successfully`, product)
-})
+  return !product
+    ? next(new ErrorHandler("No product found"))
+    : SuccessHandler(
+        res,
+        `Product ${product?.product_name} with ID ${product?._id} is deleted`,
+        product
+      );
+});
