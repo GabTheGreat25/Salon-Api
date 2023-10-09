@@ -489,29 +489,29 @@
 							"mode": "formdata",
 							"formdata": [
 								{
-									"key": "name",
-									"value": "gabriel",
+									"key": "product_name",
+									"value": "Palmolive Naturals",
 									"type": "text"
 								},
 								{
-									"key": "email",
-									"value": "admingab@gmail.com",
+									"key": "brand",
+									"value": "Palmolive",
 									"type": "text"
 								},
 								{
-									"key": "password",
-									"value": "12345678",
+									"key": "type",
+									"value": "Shampoo",
 									"type": "text"
 								},
 								{
-									"key": "roles",
-									"value": "Admin, Employee",
+									"key": "quantity",
+									"value": "69",
 									"type": "text"
 								},
 								{
 									"key": "image",
 									"type": "file",
-									"src": "/C:/Users/gabriel/Downloads/R.jpeg"
+									"src": "/C:/Users/gabriel/Downloads/Palmolive.png"
 								}
 							]
 						},
