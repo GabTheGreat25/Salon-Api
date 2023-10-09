@@ -15,8 +15,9 @@ exports.getAllProducts = asyncHandler(async (req, res, next) => {
         res,
         `Products with product ${products
           .map((p) => p?.product_name)
-          .join(", ")} and IDs
-     ${products.map((p) => p?._id).join(", ")} retrieved`,
+          .join(", ")} and IDs ${products
+          .map((p) => p?._id)
+          .join(", ")} retrieved`,
         products
       );
 });

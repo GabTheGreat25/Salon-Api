@@ -126,7 +126,7 @@ exports.deleteProductData = async (id) => {
     throw new ErrorHandler(`Invalid product ID ${id}`);
   }
 
-  const product = await product.findOne({ _id: id });
+  const product = await Product.findOne({ _id: id });
   if (!product) throw new ErrorHandler(`Product not found with ID: ${id}`);
 
   const publicIds = product.image.map((image) => image.public_id);
