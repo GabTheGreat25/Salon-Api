@@ -443,7 +443,7 @@
 								}
 							]
 						},
-						"url": "{{URI}}{{V1}}product/651ed92121aee9a8dc1b43ed"
+						"url": "{{URI}}{{V1}}product/652341cc16060f5702d413a4"
 					},
 					"response": []
 				},
@@ -544,18 +544,23 @@
 							"mode": "formdata",
 							"formdata": [
 								{
-									"key": "name",
-									"value": "gabriels",
+									"key": "product_name",
+									"value": "Palmolive Natural",
 									"type": "text"
 								},
 								{
-									"key": "email",
-									"value": "admingab@gmail.com",
+									"key": "brand",
+									"value": "Palmolive",
 									"type": "text"
 								},
 								{
-									"key": "roles",
-									"value": "Admin, Employee",
+									"key": "type",
+									"value": "Shampoo",
+									"type": "text"
+								},
+								{
+									"key": "quantity",
+									"value": "69",
 									"type": "text"
 								},
 								{
@@ -569,7 +574,7 @@
 								}
 							]
 						},
-						"url": "{{URI}}{{V1}}/product/edit/651ed92121aee9a8dc1b43ed"
+						"url": "{{URI}}{{V1}}/product/edit/652341cc16060f5702d413a4"
 					},
 					"response": []
 				},
@@ -592,7 +597,7 @@
 							"mode": "formdata",
 							"formdata": []
 						},
-						"url": "{{URI}}{{V1}}product/651ed92121aee9a8dc1b43ed"
+						"url": "{{URI}}{{V1}}product/652341cc16060f5702d413a4"
 					},
 					"response": []
 				}
