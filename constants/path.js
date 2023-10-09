@@ -10,4 +10,7 @@ module.exports = {
   USERS: "/users",
   USER_ID: "/user/:id",
   EDIT_USER_ID: "/user/edit/:id",
+  SCHEDULES: "/schedules",
+  SCHEDULE_ID: "/schedule/:id",
+  EDIT_SCHEDULE_ID: "/schedule/edit/:id",
 };
