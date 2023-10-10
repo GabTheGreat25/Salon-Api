@@ -1,4 +1,5 @@
 module.exports = {
+
   TEST: "test",
   USER: "user",
   IMAGES: "images",
@@ -7,4 +8,6 @@ module.exports = {
   PRODUCTION: "production",
   NONE: "none",
   JWT: "jwt",
+  SERVICE:"service"
+  
 };
