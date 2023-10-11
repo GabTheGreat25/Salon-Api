@@ -1,43 +1,42 @@
-const Service = require('../models/service');
-const mongoose = require('mongoose');
-const ErrorHandler = require('../utils/errorHandler');
-const { cloudinary } = require('../utils/cloudinary');
-const { STATUSCODE } = require('../constants/index');
+const Service = require("../models/service");
+const mongoose = require("mongoose");
+const ErrorHandler = require("../utils/errorHandler");
+const { cloudinary } = require("../utils/cloudinary");
+const { STATUSCODE } = require("../constants/index");
 
+exports.getAllServiceData = async () => {
+  const services = await Service.find().sort({ createdAt: -1 }).lean().exec();
 
-exports.getAllServiceData = async()=>{
-    const services = await Service.find().sort({ createdAt: -1}).lean().exec()
-
-    return services;
+  return services;
 };
 
-exports.getSingleServiceData = async(id)=>{
-    if(!mongoose.Types.ObjectId){
-        throw new ErrorHandler(`Invalid Service ID ${id}`)
-    }
+exports.getSingleServiceData = async (id) => {
+  if (!mongoose.Types.ObjectId) {
+    throw new ErrorHandler(`Invalid Service ID ${id}`);
+  }
 
-    const service = await Service.findById().lean().exec()
+  const service = await Service.findById().lean().exec();
 
-    if(!service){
-        throw new ErrorHandler(`Service not found with ID: ${id}`)
-    }
+  if (!service) {
+    throw new ErrorHandler(`Service not found with ID: ${id}`);
+  }
 
-    return service;
-}; 
+  return service;
+};
 
-exports.createServiceData = async(req, res)=>{
-    const duplicateService = await Service.findOne({
-        service: req.body.service_name,
-    })
-    .collation({ locale: "en"})
+exports.createServiceData = async (req, res) => {
+  const duplicateService = await Service.findOne({
+    service: req.body.service_name,
+  })
+    .collation({ locale: "en" })
     .lean()
     .exec();
 
-    if(duplicateService){
-        throw  new ErrorHandler("Duplicate Service Name");
-    }
+  if (duplicateService) {
+    throw new ErrorHandler("Duplicate Service Name");
+  }
 
-    let image = [];
+  let image = [];
   if (req.files && Array.isArray(req.files)) {
     image = await Promise.all(
       req.files.map(async (file) => {
@@ -64,7 +63,7 @@ exports.createServiceData = async(req, res)=>{
   return service;
 };
 
-exports.updateServiceData = async(req, res, id)=>{
+exports.updateServiceData = async (req, res, id) => {
   if (!mongoose.Types.ObjectId.isValid(id))
     throw new ErrorHandler(`Invalid service ID: ${id}`);
 
