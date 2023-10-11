@@ -1,4 +1,5 @@
 module.exports = {
+
   TEST: "test",
   USER: "user",
   SCHEDULE: "schedule",
@@ -8,4 +9,6 @@ module.exports = {
   PRODUCTION: "production",
   NONE: "none",
   JWT: "jwt",
+  SERVICE:"service"
+  
 };
