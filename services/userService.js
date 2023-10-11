@@ -1,4 +1,5 @@
 const User = require("../models/user");
+const Schedule = require("../models/schedule");
 const mongoose = require("mongoose");
 const ErrorHandler = require("../utils/errorHandler");
 const bcrypt = require("bcrypt");
@@ -184,6 +185,7 @@ exports.deleteUserData = async (id) => {
 
   await Promise.all([
     User.deleteOne({ _id: id }).lean().exec(),
+    Schedule.deleteMany({ user: id }).lean().exec(),
     cloudinary.api.delete_resources(publicIds),
   ]);
 

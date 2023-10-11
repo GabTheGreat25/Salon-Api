@@ -13,4 +13,7 @@ module.exports = {
   SERVICE:"/service",
   SERVICE_ID: "/service/:id",
   EDIT_SERVICE_ID: "/service/edit/:id"
+  SCHEDULES: "/schedules",
+  SCHEDULE_ID: "/schedule/:id",
+  EDIT_SCHEDULE_ID: "/schedule/edit/:id",
 };

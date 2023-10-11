@@ -2,6 +2,7 @@ module.exports = {
 
   TEST: "test",
   USER: "user",
+  SCHEDULE: "schedule",
   IMAGES: "images",
   IMAGE: "image",
   PRODUCT: "product",
