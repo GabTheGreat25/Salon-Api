@@ -20,7 +20,7 @@ const serviceRoutes = [
     handler: serviceController.createNewService,
   },
   {
-    method: METHOD.PUT,
+    method: METHOD.PATCH,
     path: PATH.EDIT_SERVICE_ID,
     handler: serviceController.updateService,
   },

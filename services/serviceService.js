@@ -15,7 +15,7 @@ exports.getSingleServiceData = async (id) => {
     throw new ErrorHandler(`Invalid Service ID ${id}`);
   }
 
-  const service = await Service.findById().lean().exec();
+  const service = await Service.findById(id).lean().exec();
 
   if (!service) {
     throw new ErrorHandler(`Service not found with ID: ${id}`);
@@ -82,7 +82,7 @@ exports.updateServiceData = async (req, res, id) => {
 
   if (duplicateService) throw new ErrorHandler("Duplicate service name");
 
-  let image = existingProduct.image || [];
+  let image = existingService.image || [];
   if (req.files && Array.isArray(req.files) && req.files.length > 0) {
     image = await Promise.all(
       req.files.map(async (file) => {
