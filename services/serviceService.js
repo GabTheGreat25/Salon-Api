@@ -82,7 +82,7 @@ exports.updateServiceData = async (req, res, id) => {
 
   if (duplicateService) throw new ErrorHandler("Duplicate service name");
 
-  let image = existingProduct.image || [];
+  let image = existingService.image || [];
   if (req.files && Array.isArray(req.files) && req.files.length > 0) {
     image = await Promise.all(
       req.files.map(async (file) => {
