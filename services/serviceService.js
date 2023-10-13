@@ -15,7 +15,7 @@ exports.getSingleServiceData = async (id) => {
     throw new ErrorHandler(`Invalid Service ID ${id}`);
   }
 
-  const service = await Service.findById().lean().exec();
+  const service = await Service.findById(id).lean().exec();
 
   if (!service) {
     throw new ErrorHandler(`Service not found with ID: ${id}`);
