@@ -747,7 +747,7 @@
 			"name": "SERVICE",
 			"item": [
 				{
-					"name": "GET SINGLE SCHEDULE",
+					"name": "GET SINGLE SERVICE",
 					"id": "180b2457-bbf4-4477-b540-0016c3e1197d",
 					"protocolProfileBehavior": {
 						"disableBodyPruning": true
@@ -776,7 +776,7 @@
 					"response": []
 				},
 				{
-					"name": "GET ALL SCHEDULES",
+					"name": "GET ALL SERVICE",
 					"id": "a7a66270-9b7b-4d6c-90bc-40af335e6fc0",
 					"protocolProfileBehavior": {
 						"disableBodyPruning": true
@@ -799,7 +799,7 @@
 					"response": []
 				},
 				{
-					"name": "CREATE SCHEDULE",
+					"name": "CREATE SERVICE",
 					"id": "b26f3c70-c8ee-47e5-a8a8-313aa7e420c2",
 					"protocolProfileBehavior": {
 						"disableBodyPruning": true
@@ -827,7 +827,7 @@
 					"response": []
 				},
 				{
-					"name": "UPDATE SCHEDULE",
+					"name": "UPDATE SERVICE",
 					"id": "5ab33681-2729-4ff5-a532-8a54b84531c6",
 					"protocolProfileBehavior": {
 						"disableBodyPruning": true
@@ -856,7 +856,7 @@
 					"response": []
 				},
 				{
-					"name": "DELETE SCHEDULE",
+					"name": "DELETE SERVICE",
 					"id": "ec31aca1-2352-425f-8329-b36e5c536980",
 					"protocolProfileBehavior": {
 						"disableBodyPruning": true
