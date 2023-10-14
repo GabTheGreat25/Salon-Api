@@ -337,6 +337,70 @@
 					"response": []
 				},
 				{
+					"name": "ACCEPT TEST",
+					"id": "c4d5fa71-94b3-4820-9d74-b40e2f48791e",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "name",
+									"value": "gab",
+									"type": "text"
+								},
+								{
+									"key": "email",
+									"value": "customergab@gmail.com",
+									"type": "text"
+								},
+								{
+									"key": "password",
+									"value": "12345678",
+									"type": "text"
+								},
+								{
+									"key": "roles",
+									"value": "Online Customer",
+									"type": "text"
+								},
+								{
+									"key": "image",
+									"type": "file",
+									"fileNotInWorkingDirectoryWarning": "This file isn't in your working directory. Teammates you share this request with won't be able to use this file. To make collaboration easier you can setup your working directory in Settings.",
+									"src": "/C:/Users/gabriel/Downloads/asdasdadasdasdas.png"
+								}
+							]
+						},
+						"url": {
+							"raw": "{{URI}}{{V1}}confirm-role/:token",
+							"host": [
+								"{{URI}}{{V1}}confirm-role"
+							],
+							"path": [
+								":token"
+							],
+							"variable": [
+								{
+									"key": "token",
+									"value": ""
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
 					"name": "UPDATE USER",
 					"id": "38711308-51dc-4654-9fee-cbde08b9af42",
 					"protocolProfileBehavior": {
