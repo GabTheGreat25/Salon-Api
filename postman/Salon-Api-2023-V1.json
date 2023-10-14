@@ -382,21 +382,7 @@
 								}
 							]
 						},
-						"url": {
-							"raw": "{{URI}}{{V1}}confirm-role/:token",
-							"host": [
-								"{{URI}}{{V1}}confirm-role"
-							],
-							"path": [
-								":token"
-							],
-							"variable": [
-								{
-									"key": "token",
-									"value": ""
-								}
-							]
-						}
+						"url": "{{URI}}{{V1}}confirm-role/1697255394917-bez1c75tio8"
 					},
 					"response": []
 				},
