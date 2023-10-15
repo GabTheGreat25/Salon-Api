@@ -21,3 +21,15 @@ exports.getAllDelivery = asyncHandler(async(req, res, next)=>{
         deliveries
     );
 });
+
+exports.getSingleDelivery = asyncHandler(async(req, res, next)=>{
+    const delivery = await deliveryService.getSingleDeliveryData(req.params?.id);
+
+    return !delivery
+    ? next(new ErrorHandler("No delivery found"))
+    : SuccessHandler(
+        res,
+        `Delivery with ${delivery.company_name} and ID ${delivery?._id} retrieved`,
+        delivery
+        );
+});
