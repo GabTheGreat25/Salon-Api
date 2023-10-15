@@ -16,4 +16,7 @@ module.exports = {
   SCHEDULES: "/schedules",
   SCHEDULE_ID: "/schedule/:id",
   EDIT_SCHEDULE_ID: "/schedule/edit/:id",
+  DELIVERY:"/delivery",
+  DELIVERY_ID:"/delivery/:id",
+  EDIT_DELIVERY_ID:"/delivery/edit/:id"
 };
