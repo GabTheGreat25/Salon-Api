@@ -207,7 +207,7 @@
 								"header": [],
 								"body": {
 									"mode": "raw",
-									"raw": "{\r\n    \"email\": \"admingab@gmail.com\",\r\n    \"password\": \"12345678\"\r\n}",
+									"raw": "{\r\n    \"email\": \"renyel@gmail.com\",\r\n    \"password\": \"12345678\"\r\n}",
 									"options": {
 										"raw": {
 											"language": "json"
@@ -259,7 +259,7 @@
 								}
 							]
 						},
-						"url": "{{URI}}{{V1}}user/651ed92121aee9a8dc1b43ed"
+						"url": "{{URI}}{{V1}}user/65215efcccb2e4b84b32226f"
 					},
 					"response": []
 				},
@@ -306,12 +306,12 @@
 							"formdata": [
 								{
 									"key": "name",
-									"value": "gab",
+									"value": "renyel",
 									"type": "text"
 								},
 								{
 									"key": "email",
-									"value": "customergab@gmail.com",
+									"value": "renyel@gmail.com",
 									"type": "text"
 								},
 								{
@@ -321,14 +321,13 @@
 								},
 								{
 									"key": "roles",
-									"value": "Online Customer",
+									"value": "Admin",
 									"type": "text"
 								},
 								{
 									"key": "image",
 									"type": "file",
-									"fileNotInWorkingDirectoryWarning": "This file isn't in your working directory. Teammates you share this request with won't be able to use this file. To make collaboration easier you can setup your working directory in Settings.",
-									"src": "/C:/Users/gabriel/Downloads/asdasdadasdasdas.png"
+									"src": "/C:/Users/Jay/Downloads/384491622_1451503919039597_2945565614802010217_n (1).jpg"
 								}
 							]
 						},
@@ -811,17 +810,7 @@
 								"type": "text"
 							}
 						],
-						"body": {
-							"mode": "formdata",
-							"formdata": [
-								{
-									"key": "",
-									"value": "",
-									"type": "text"
-								}
-							]
-						},
-						"url": "{{URI}}{{V1}}schedule/65238242b42a623176fac788"
+						"url": "{{URI}}{{V1}}service/65294eed1b9e20a2afe5c0de"
 					},
 					"response": []
 				},
@@ -844,7 +833,7 @@
 							"mode": "formdata",
 							"formdata": []
 						},
-						"url": "{{URI}}{{V1}}schedules"
+						"url": "{{URI}}{{V1}}service"
 					},
 					"response": []
 				},
@@ -869,10 +858,40 @@
 							}
 						],
 						"body": {
-							"mode": "raw",
-							"raw": "{\r\n    \"user\": \"65215efcccb2e4b84b32226f\",\r\n    \"available\": true,\r\n    \"date\": \"2023-12-11\",\r\n    \"note\": \"Hell Yeah\"\r\n}"
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "service_name",
+									"value": "test_service 2",
+									"type": "text"
+								},
+								{
+									"key": "description",
+									"value": "testing service description 2",
+									"type": "text"
+								},
+								{
+									"key": "price",
+									"value": "100.00",
+									"type": "text"
+								},
+								{
+									"key": "image",
+									"type": "file",
+									"src": [
+										"/C:/Users/Jay/Downloads/images (25).jpg",
+										"/C:/Users/Jay/Downloads/download (51).jpg",
+										"/C:/Users/Jay/Downloads/vices.jpg"
+									]
+								},
+								{
+									"key": "product",
+									"value": "6523443796ea7bbe254b9f6f",
+									"type": "text"
+								}
+							]
 						},
-						"url": "{{URI}}{{V1}}schedules"
+						"url": "{{URI}}{{V1}}service"
 					},
 					"response": []
 				},
@@ -898,10 +917,37 @@
 							}
 						],
 						"body": {
-							"mode": "raw",
-							"raw": "{\r\n    \"user\": \"65215efcccb2e4b84b32226f\",\r\n    \"available\": true,\r\n    \"date\": \"2023-11-12\",\r\n    \"note\": \"Hell Yeah\"\r\n}"
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "service_name",
+									"value": "service name updated",
+									"type": "text"
+								},
+								{
+									"key": "description",
+									"value": "service description updated",
+									"type": "text"
+								},
+								{
+									"key": "price",
+									"value": "150.00",
+									"type": "text"
+								},
+								{
+									"key": "image",
+									"type": "file",
+									"fileNotInWorkingDirectoryWarning": "This file isn't in your working directory. Teammates you share this request with won't be able to use this file. To make collaboration easier you can setup your working directory in Settings.",
+									"src": "/C:/Users/Jay/Downloads/362229467_1305970440049673_8258113928647959174_n.jpg"
+								},
+								{
+									"key": "product",
+									"value": "6523443796ea7bbe254b9f6f",
+									"type": "text"
+								}
+							]
 						},
-						"url": "{{URI}}{{V1}}/schedule/edit/65238242b42a623176fac788"
+						"url": "{{URI}}{{V1}}/service/edit/6529504ea6a7fc19fc879561"
 					},
 					"response": []
 				},
@@ -924,7 +970,7 @@
 							"mode": "formdata",
 							"formdata": []
 						},
-						"url": "{{URI}}{{V1}}schedule/65238242b42a623176fac788"
+						"url": "{{URI}}{{V1}}service/6529504ea6a7fc19fc879561"
 					},
 					"response": []
 				}
@@ -935,14 +981,19 @@
 			"name": "DELIVERY",
 			"item": [
 				{
-					"name": "New Request",
+					"name": "CREATE DELIVERY",
 					"id": "bffc2cb6-7331-48d2-9a74-28e7bece2da7",
 					"protocolProfileBehavior": {
 						"disableBodyPruning": true
 					},
 					"request": {
-						"method": "GET",
-						"header": []
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "formdata",
+							"formdata": []
+						},
+						"url": "{{URI}}{{V1}}delivery"
 					},
 					"response": []
 				}
