@@ -930,6 +930,24 @@
 				}
 			],
 			"id": "66ea4366-b1e8-4f1d-9d87-6f367210e86b"
+		},
+		{
+			"name": "DELIVERY",
+			"item": [
+				{
+					"name": "New Request",
+					"id": "bffc2cb6-7331-48d2-9a74-28e7bece2da7",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": []
+					},
+					"response": []
+				}
+			],
+			"id": "aeca05a6-dbd4-4a21-a68c-4daacfaf2de9"
 		}
 	],
 	"event": [
