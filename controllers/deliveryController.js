@@ -29,7 +29,49 @@ exports.getSingleDelivery = asyncHandler(async(req, res, next)=>{
     ? next(new ErrorHandler("No delivery found"))
     : SuccessHandler(
         res,
-        `Delivery with ${delivery.company_name} and ID ${delivery?._id} retrieved`,
+        `delivery with ${delivery.company_name} and ID ${delivery?._id} retrieved`,
         delivery
         );
+});
+
+exports.createDelivery = [
+    checkRequiredFields(["product","company_name","date","price","status","quantity"]),
+    asyncHandler(async(req, res, next)=>{
+        const delivery = await deliveryService.createDeliveryData(req);
+
+        return SuccessHandler(
+            res,
+            `Created delivery with company name ${delivery.company_name} and ID ${delivery?._id}`,
+            delivery
+        );
+    }),
+];
+
+exports.updateDelivery = [
+    checkRequiredFields(["product","company_name","date","price","status","quantity"]),
+    asyncHandler(async(req, res, next)=>{
+        const delivery = await deliveryService.updateDeliveryData(
+            req,
+            res,
+            req.params.id
+        );
+
+        return SuccessHandler(
+            res,
+            `Delivery with company name${delivery.company_name} and ID ${delivery?._id} is updated`,
+            delivery
+        )
+    }),
+];
+
+exports.deleteDelivery = asyncHandler(async(req, res, next)=>{
+    const delivery = await deliveryService.deleteDeliveryData(req.params.id);
+
+    return !delivery
+    ? next(new ErrorHandler("No Deliveries Found"))
+    : SuccessHandler(
+        res,
+        `Delivery with company name ${delivery.company_name} and ID ${delivery?._id} is deleted`,
+        delivery
+    );
 });
