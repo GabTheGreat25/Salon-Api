@@ -3,7 +3,6 @@ const SuccessHandler = require("../utils/successHandler");
 const ErrorHandler = require("../utils/errorHandler");
 const asyncHandler = require("express-async-handler");
 const checkRequiredFields = require("../helpers/checkRequiredFields");
-const { upload } = require("../utils/cloudinary");
 const { STATUSCODE } = require("../constants/index");
 
 exports.getAllDelivery = asyncHandler(async(req, res, next)=>{
@@ -12,7 +11,7 @@ exports.getAllDelivery = asyncHandler(async(req, res, next)=>{
     return deliveries?.length === STATUSCODE.ZERO
     ? next(new ErrorHandler("No Deliveries Found"))
     : SuccessHandler(
-        res
+        res,
         `Deliveries with company name ${deliveries
         .map((d)=> d?.compamy_name)
         .join(", ")} and ID's ${deliveries
@@ -34,8 +33,8 @@ exports.getSingleDelivery = asyncHandler(async(req, res, next)=>{
         );
 });
 
-exports.createDelivery = [
-    checkRequiredFields(["product","company_name","date","price","status","quantity"]),
+exports.createNewDelivery = [
+    checkRequiredFields(["product","company_name","date","price","quantity"]),
     asyncHandler(async(req, res, next)=>{
         const delivery = await deliveryService.createDeliveryData(req);
 
