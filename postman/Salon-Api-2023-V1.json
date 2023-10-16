@@ -878,7 +878,11 @@
 								{
 									"key": "image",
 									"type": "file",
-									"src": "/C:/Users/Jay/Downloads/vices.jpg"
+									"src": [
+										"/C:/Users/Jay/Downloads/images (25).jpg",
+										"/C:/Users/Jay/Downloads/download (51).jpg",
+										"/C:/Users/Jay/Downloads/vices.jpg"
+									]
 								},
 								{
 									"key": "product",
