@@ -17,7 +17,7 @@ const deliveryRoutes = [
     {
         method:METHOD.POST,
         path: PATH.DELIVERY,
-        handler: deliveryController.createDelivery
+        handler: deliveryController.createNewDelivery
     },
     {
         method:METHOD.PATCH,

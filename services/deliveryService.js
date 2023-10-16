@@ -1,8 +1,6 @@
-const Delivery = require("../models/delivery");
 const mongoose = require("mongoose");
 const ErrorHandler = require("../utils/errorHandler");
-const { cloudinary } = require("../utils/cloudinary");
-const { STATUSCODE } = require("../constants/index");
+const Delivery = require("../models/delivery");
 
 exports.getAllDeliveryData = async()=>{
     const deliveries = await Delivery.find().sort({ createdAt: -1}).lean().exec();
@@ -32,14 +30,10 @@ exports.createDeliveryData = async (req, res) => {
       .lean()
       .exec();
   
-    if (duplicateDelivery) {
-      throw new ErrorHandler("Duplicate company name");
-    }
-  
-    const delivery = await Delivery.create({
-      ...req.body,
-    });
-  
+    if (duplicateDelivery) throw new ErrorHandler("Duplicate company name");
+
+    const delivery = await Delivery.create(req.body);
+
     return delivery;
   };
 
@@ -75,7 +69,7 @@ const updatedDelivery = await Delivery.findByIdAndUpdate(
   .lean()
   .exec();
 
-if (!updatedProduct)
+if (!updatedDelivery)
   throw new ErrorHandler(`Delivery not found with ID: ${id}`);
 
 return updatedDelivery;
