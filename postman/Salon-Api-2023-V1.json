@@ -981,7 +981,7 @@
 			"name": "DELIVERY",
 			"item": [
 				{
-					"name": "GET SINGLE SERVICE",
+					"name": "GET SINGLE DELIVERY",
 					"id": "88613004-79a4-481c-a9bd-1cfe9f004277",
 					"protocolProfileBehavior": {
 						"disableBodyPruning": true
@@ -1000,7 +1000,7 @@
 					"response": []
 				},
 				{
-					"name": "GET ALL SERVICE",
+					"name": "GET ALL DELIVERY",
 					"id": "ac0fa34e-9ed4-4f2f-bf77-644d946d146f",
 					"protocolProfileBehavior": {
 						"disableBodyPruning": true
@@ -1081,7 +1081,7 @@
 					"response": []
 				},
 				{
-					"name": "UPDATE SERVICE",
+					"name": "UPDATE DELIVERY",
 					"id": "a5fff68e-1f71-4892-9592-484122b73dd6",
 					"protocolProfileBehavior": {
 						"disableBodyPruning": true
@@ -1137,7 +1137,7 @@
 					"response": []
 				},
 				{
-					"name": "DELETE SERVICE",
+					"name": "DELETE DELIVERY",
 					"id": "5c25f704-eff2-4511-a3f4-3d38f73f5a8f",
 					"protocolProfileBehavior": {
 						"disableBodyPruning": true
