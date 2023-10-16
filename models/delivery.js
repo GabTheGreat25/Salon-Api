@@ -25,7 +25,7 @@ const deliverySchema = new mongoose.Schema({
         type:String,
         default:"pending",
         enum:{
-            values: ["completed","cancel"]
+            values: ["pending","completed","cancel"]
         }
     },
     quantity:{
