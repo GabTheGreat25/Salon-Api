@@ -37,7 +37,7 @@ exports.createDeliveryData = async (req, res) => {
     return delivery;
   };
 
-exports.updateDeliveryData = async(erq, res, id)=>{
+exports.updateDeliveryData = async(req, res, id)=>{
   if (!mongoose.Types.ObjectId.isValid(id))
   throw new ErrorHandler(`Invalid delivey ID: ${id}`);
 
@@ -83,6 +83,7 @@ exports.deleteDeliveryData = async (id) => {
   const delivery = await Delivery.findOne({ _id: id });
   if (!delivery) throw new ErrorHandler(`Delivery not found with ID: ${id}`);
 
+  const deliveryData = await Delivery.findOneAndDelete({ _id: id }).lean().exec();
 
-  return delivery;
+  return deliveryData;
 };
