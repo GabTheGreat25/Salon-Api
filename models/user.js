@@ -22,7 +22,7 @@ const userSchema = new mongoose.Schema({
   },
   contact_number:{
     type:String,
-    required: [true, "Please enter yourr contact number"],
+    required: [true, "Please enter your contact number"],
     maxLength:[11, "Contact number must not exceed to 11 characters"]
   },
   roles: [
