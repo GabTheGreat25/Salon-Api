@@ -9,5 +9,7 @@ module.exports = {
   NONE: "none",
   JWT: "jwt",
   SERVICE: "service",
-  DELIVERY:"delivery"
+  DELIVERY:"delivery",
+  COMMENT:"comment",
+  TRANSACTION:"transaction"
 };
