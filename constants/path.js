@@ -18,5 +18,8 @@ module.exports = {
   EDIT_SCHEDULE_ID: "/schedule/edit/:id",
   DELIVERY:"/delivery",
   DELIVERY_ID:"/delivery/:id",
-  EDIT_DELIVERY_ID:"/delivery/edit/:id"
+  EDIT_DELIVERY_ID:"/delivery/edit/:id",
+  COMMENT:"/comment",
+  COMMENT_ID:"/comment/:id",
+  EDIT_COMMENT_ID:"/comment/edit/:id"
 };
