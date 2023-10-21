@@ -4,6 +4,7 @@ const ErrorHandler = require("../utils/errorHandler");
 const asyncHandler = require("express-async-handler");
 const checkRequiredFields = require("../helpers/checkRequiredFields");
 const { STATUSCODE } = require("../constants/index");
+const customBadWords = require("../helpers/customBadWords");
 
 exports.getAllComment = asyncHandler(async(req, res, next)=>{
     const comments = await commentService.getAllCommentData();
@@ -35,6 +36,7 @@ exports.getSingleComment = asyncHandler(async(req, res, next)=>{
 
 exports.createNewComment = [
     checkRequiredFields(["description","suggestion","transaction"]),
+    customBadWords(["suggestion"]),
     asyncHandler(async(req, res, next)=>{
         const comment = await commentService.createCommentData(req);
 
