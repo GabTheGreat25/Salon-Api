@@ -207,7 +207,7 @@
 								"header": [],
 								"body": {
 									"mode": "raw",
-									"raw": "{\r\n    \"email\": \"renyel@gmail.com\",\r\n    \"password\": \"12345678\"\r\n}",
+									"raw": "{\r\n    \"email\": \"admin@gmail.com\",\r\n    \"password\": \"12345678\"\r\n}",
 									"options": {
 										"raw": {
 											"language": "json"
@@ -306,17 +306,22 @@
 							"formdata": [
 								{
 									"key": "name",
-									"value": "renyel",
+									"value": "gabriels",
 									"type": "text"
 								},
 								{
 									"key": "email",
-									"value": "renyel@gmail.com",
+									"value": "admin@gmail.com",
 									"type": "text"
 								},
 								{
 									"key": "password",
 									"value": "12345678",
+									"type": "text"
+								},
+								{
+									"key": "contact_number",
+									"value": "09958465564",
 									"type": "text"
 								},
 								{
@@ -327,61 +332,12 @@
 								{
 									"key": "image",
 									"type": "file",
-									"src": "/C:/Users/Jay/Downloads/384491622_1451503919039597_2945565614802010217_n (1).jpg"
+									"fileNotInWorkingDirectoryWarning": "This file isn't in your working directory. Teammates you share this request with won't be able to use this file. To make collaboration easier you can setup your working directory in Settings.",
+									"src": "/C:/Users/HP/Downloads/094A3072.jpg"
 								}
 							]
 						},
 						"url": "{{URI}}{{V1}}users"
-					},
-					"response": []
-				},
-				{
-					"name": "ACCEPT TEST",
-					"id": "c4d5fa71-94b3-4820-9d74-b40e2f48791e",
-					"protocolProfileBehavior": {
-						"disableBodyPruning": true
-					},
-					"request": {
-						"method": "POST",
-						"header": [
-							{
-								"key": "Content-Type",
-								"value": "application/json",
-								"type": "text"
-							}
-						],
-						"body": {
-							"mode": "formdata",
-							"formdata": [
-								{
-									"key": "name",
-									"value": "gab",
-									"type": "text"
-								},
-								{
-									"key": "email",
-									"value": "customergab@gmail.com",
-									"type": "text"
-								},
-								{
-									"key": "password",
-									"value": "12345678",
-									"type": "text"
-								},
-								{
-									"key": "roles",
-									"value": "Online Customer",
-									"type": "text"
-								},
-								{
-									"key": "image",
-									"type": "file",
-									"fileNotInWorkingDirectoryWarning": "This file isn't in your working directory. Teammates you share this request with won't be able to use this file. To make collaboration easier you can setup your working directory in Settings.",
-									"src": "/C:/Users/gabriel/Downloads/asdasdadasdasdas.png"
-								}
-							]
-						},
-						"url": "{{URI}}{{V1}}confirm-role/1697255394917-bez1c75tio8"
 					},
 					"response": []
 				},
@@ -420,6 +376,11 @@
 									"type": "text"
 								},
 								{
+									"key": "contact_number",
+									"value": "09958465564",
+									"type": "text"
+								},
+								{
 									"key": "roles",
 									"value": "Admin, Employee",
 									"type": "text"
@@ -429,13 +390,14 @@
 									"type": "file",
 									"fileNotInWorkingDirectoryWarning": "This file isn't in your working directory. Teammates you share this request with won't be able to use this file. To make collaboration easier you can setup your working directory in Settings.",
 									"src": [
-										"/C:/Users/gabriel/Downloads/369567914_24090671657197978_7567476637219736957_n.jpg",
-										"/C:/Users/gabriel/Downloads/375804592_7085713084772281_8388599802453045067_n.jpg"
+										"/C:/Users/HP/Downloads/094A3072.jpg",
+										"/C:/Users/HP/Downloads/094A3071.jpg",
+										"/C:/Users/HP/Downloads/094A3070.jpg"
 									]
 								}
 							]
 						},
-						"url": "{{URI}}{{V1}}/user/edit/651ed92121aee9a8dc1b43ed"
+						"url": "{{URI}}{{V1}}/user/edit/65350a4ceec5874f1f42b036"
 					},
 					"response": []
 				},
@@ -554,14 +516,19 @@
 									"type": "text"
 								},
 								{
-									"key": "quantity",
-									"value": "69",
+									"key": "created_date",
+									"value": "2023/11/12",
+									"type": "text"
+								},
+								{
+									"key": "expiration_date",
+									"value": "2024/11/12",
 									"type": "text"
 								},
 								{
 									"key": "image",
 									"type": "file",
-									"src": "/C:/Users/gabriel/Downloads/Palmolive.png"
+									"src": "/C:/Users/HP/Downloads/381315966_636240375028554_2370526391270814668_n.jpg"
 								}
 							]
 						},
@@ -609,8 +576,13 @@
 									"type": "text"
 								},
 								{
-									"key": "quantity",
-									"value": "69",
+									"key": "created_date",
+									"value": "2023/11/12",
+									"type": "text"
+								},
+								{
+									"key": "expiration_date",
+									"value": "2024/11/12",
 									"type": "text"
 								},
 								{
@@ -624,7 +596,7 @@
 								}
 							]
 						},
-						"url": "{{URI}}{{V1}}/product/edit/652341cc16060f5702d413a4"
+						"url": "{{URI}}{{V1}}/product/edit/65351a009d58ddb138988e75"
 					},
 					"response": []
 				},
@@ -1167,7 +1139,7 @@
 		{
 			"listen": "prerequest",
 			"script": {
-				"id": "45029733-356c-473c-8fa7-0ac6084f86a0",
+				"id": "6149daf3-375f-47a9-acd3-cd09dfe9bbad",
 				"type": "text/javascript",
 				"exec": [
 					""
@@ -1177,7 +1149,7 @@
 		{
 			"listen": "test",
 			"script": {
-				"id": "52227e46-b33d-4232-901e-e1ef04495b18",
+				"id": "24e62e19-c581-4de0-a0af-d3f67d14d1d6",
 				"type": "text/javascript",
 				"exec": [
 					""
@@ -1188,7 +1160,7 @@
 	"variable": [
 		{
 			"key": "Bearer",
-			"value": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJVc2VySW5mbyI6eyJlbWFpbCI6ImFkbWluZ2FiQGdtYWlsLmNvbSIsInJvbGVzIjpbIkFkbWluIl19LCJpYXQiOjE2OTcyNTExOTIsImV4cCI6MTY5Nzg1NTk5Mn0.Ehu9SJ70OxIkBNPOqXi_PitajD98ME2UJkqTCMWrUxY",
+			"value": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJVc2VySW5mbyI6eyJlbWFpbCI6ImFkbWluQGdtYWlsLmNvbSIsInJvbGVzIjpbIkFkbWluIl19LCJpYXQiOjE2OTc5NzQ4ODMsImV4cCI6MTY5ODU3OTY4M30.36L6XEXfUCdCWhH5Yh64OVC0LLcnookj4Ws2oZYlTMo",
 			"type": "string"
 		}
 	]
