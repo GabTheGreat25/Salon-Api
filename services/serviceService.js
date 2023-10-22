@@ -17,9 +17,7 @@ exports.getSingleServiceData = async (id) => {
 
   const service = await Service.findById(id).lean().exec();
 
-  if (!service) {
-    throw new ErrorHandler(`Service not found with ID: ${id}`);
-  }
+  if (!service) throw new ErrorHandler(`Service not found with ID: ${id}`);
 
   return service;
 };
@@ -32,9 +30,7 @@ exports.createServiceData = async (req, res) => {
     .lean()
     .exec();
 
-  if (duplicateService) {
-    throw new ErrorHandler("Duplicate Service Name");
-  }
+  if (duplicateService) throw new ErrorHandler("Duplicate Service Name");
 
   let image = [];
   if (req.files && Array.isArray(req.files)) {
