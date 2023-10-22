@@ -2,6 +2,8 @@ const mongoose = require("mongoose");
 const validator = require("validator");
 const { RESOURCE } = require("../constants/index");
 
+const phoneNumberRegex = /^\d{11}$/;
+
 const userSchema = new mongoose.Schema({
   name: {
     type: String,
@@ -20,10 +22,15 @@ const userSchema = new mongoose.Schema({
     minlength: [6, "Your password must be longer than 6 characters"],
     select: false,
   },
-  contact_number:{
-    type:String,
+  contact_number: {
+    type: String,
     required: [true, "Please enter your contact number"],
-    maxLength:[11, "Contact number must not exceed to 11 characters"]
+    validate: {
+      validator: function(value) {
+        return phoneNumberRegex.test(value);
+      },
+      message: "Please enter a valid 11-digit phone number"
+    }
   },
   roles: [
     {

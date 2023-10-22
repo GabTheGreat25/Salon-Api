@@ -62,7 +62,7 @@ exports.getSingleUserData = async (id) => {
   return user;
 };
 
-exports.CreateUserData = async (req, res) => {
+exports.createUserData = async (req, res) => {
   const duplicateUser = await User.findOne({ name: req.body.name })
     .collation({ locale: "en" })
     .lean()
@@ -102,6 +102,7 @@ exports.CreateUserData = async (req, res) => {
       req.body.password,
       Number(process.env.SALT_NUMBER)
     ),
+    contact_number: req.body.contact_number,
     roles: roles,
     image: image,
   });

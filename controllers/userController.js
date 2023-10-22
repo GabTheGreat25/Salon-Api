@@ -57,9 +57,9 @@ exports.getSingleUser = asyncHandler(async (req, res, next) => {
 
 exports.createNewUser = [
   upload.array("image"),
-  checkRequiredFields(["name", "email", "password", "image"]),
+  checkRequiredFields(["name", "email", "password", "contact_number", "image"]),
   asyncHandler(async (req, res, next) => {
-    const user = await usersService.CreateUserData(req);
+    const user = await usersService.createUserData(req);
 
     return SuccessHandler(
       res,
@@ -71,7 +71,7 @@ exports.createNewUser = [
 
 exports.updateUser = [
   upload.array("image"),
-  checkRequiredFields(["name", "email", "image"]),
+  checkRequiredFields(["name", "email", "contact_number", "image"]),
   asyncHandler(async (req, res, next) => {
     const user = await usersService.updateUserData(req, res, req.params.id);
 
