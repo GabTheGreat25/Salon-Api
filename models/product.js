@@ -17,11 +17,6 @@ const productSchema = new mongoose.Schema({
     required: [true, "Product Type Field Required"],
     maxLength: [60, "Type Field character must not exceed to 60 characters"],
   },
-  quantity: {
-    type: Number,
-    required: [true, "Product Quantity Field Required"],
-    maxLength: [8, "Quantity must not exceed to 8 characters"],
-  },
   image: [
     {
       public_id: {
@@ -41,11 +36,10 @@ const productSchema = new mongoose.Schema({
   created_date:{
     type:Date,
     required:[true, "Created date Field Required"],
-    
   },
-  expired_at:{
+  expiration_date:{
     type:Date,
-    required:[true, "Please enter expiration date"]
+    required:[true, "Expiration date Field Required"]
   }
 });
 

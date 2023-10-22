@@ -1,11 +1,17 @@
 const Product = require("../models/product");
 const mongoose = require("mongoose");
 const ErrorHandler = require("../utils/errorHandler");
-const { cloudinary } = require("../utils/cloudinary");
-const { STATUSCODE } = require("../constants/index");
+const {
+  cloudinary
+} = require("../utils/cloudinary");
+const {
+  STATUSCODE
+} = require("../constants/index");
 
 exports.getAllProductData = async () => {
-  const products = await Product.find().sort({ createdAt: -1 }).lean().exec();
+  const products = await Product.find().sort({
+    createdAt: -1
+  }).lean().exec();
 
   return products;
 };
@@ -17,24 +23,22 @@ exports.getSingleProductData = async (id) => {
 
   const product = await Product.findById(id).lean().exec();
 
-  if (!product) {
-    throw new ErrorHandler(`Product not found with ID: ${id}`);
-  }
+  if (!product) throw new ErrorHandler(`Product not found with ID: ${id}`);
 
   return product;
 };
 
 exports.createProductData = async (req, res) => {
   const duplicateProduct = await Product.findOne({
-    product: req.body.product_name,
-  })
-    .collation({ locale: "en" })
+      product: req.body.product_name,
+    })
+    .collation({
+      locale: "en"
+    })
     .lean()
     .exec();
 
-  if (duplicateProduct) {
-    throw new ErrorHandler("Duplicate product name");
-  }
+  if (duplicateProduct) throw new ErrorHandler("Duplicate product name");
 
   let image = [];
   if (req.files && Array.isArray(req.files)) {
@@ -69,14 +73,17 @@ exports.updateProductData = async (req, res, id) => {
 
   const existingProduct = await Product.findById(id).lean().exec();
 
-  if (!existingProduct)
-    throw new ErrorHandler(`Product not found with ID: ${id}`);
+  if (!existingProduct) throw new ErrorHandler(`Product not found with ID: ${id}`);
 
   const duplicateProduct = await Product.findOne({
-    name: req.body.product_name,
-    _id: { $ne: id },
-  })
-    .collation({ locale: "en" })
+      name: req.body.product_name,
+      _id: {
+        $ne: id
+      },
+    })
+    .collation({
+      locale: "en"
+    })
     .lean()
     .exec();
 
@@ -102,16 +109,14 @@ exports.updateProductData = async (req, res, id) => {
     );
   }
   const updatedProduct = await Product.findByIdAndUpdate(
-    id,
-    {
-      ...req.body,
-      image: image,
-    },
-    {
-      new: true,
-      runValidators: true,
-    }
-  )
+      id, {
+        ...req.body,
+        image: image,
+      }, {
+        new: true,
+        runValidators: true,
+      }
+    )
     .lean()
     .exec();
 
@@ -122,17 +127,19 @@ exports.updateProductData = async (req, res, id) => {
 };
 
 exports.deleteProductData = async (id) => {
-  if (!mongoose.Types.ObjectId.isValid(id)) {
-    throw new ErrorHandler(`Invalid product ID ${id}`);
-  }
+  if (!mongoose.Types.ObjectId.isValid(id)) throw new ErrorHandler(`Invalid product ID ${id}`);
 
-  const product = await Product.findOne({ _id: id });
+  const product = await Product.findOne({
+    _id: id
+  });
   if (!product) throw new ErrorHandler(`Product not found with ID: ${id}`);
 
   const publicIds = product.image.map((image) => image.public_id);
 
   await Promise.all([
-    Product.deleteOne({ _id: id }).lean().exec(),
+    Product.deleteOne({
+      _id: id
+    }).lean().exec(),
     cloudinary.api.delete_resources(publicIds),
   ]);
 
