@@ -34,9 +34,9 @@ exports.getSingleSchedule = asyncHandler(async (req, res, next) => {
 });
 
 exports.createNewSchedule = [
-  checkRequiredFields(["user", "date", "note"]),
+  checkRequiredFields(["employee", "date", "time","note"]),
   asyncHandler(async (req, res, next) => {
-    const schedule = await schedulesService.CreateScheduleData(req);
+    const schedule = await schedulesService.createScheduleData(req);
 
     return SuccessHandler(
       res,
@@ -47,7 +47,7 @@ exports.createNewSchedule = [
 ];
 
 exports.updateSchedule = [
-  checkRequiredFields(["user", "date", "note"]),
+  checkRequiredFields(["employee", "date", "time","note"]),
   asyncHandler(async (req, res, next) => {
     const schedule = await schedulesService.updateScheduleData(
       req,
