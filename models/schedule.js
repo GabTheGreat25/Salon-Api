@@ -20,6 +20,16 @@ const scheduleSchema = new mongoose.Schema({
     type: String,
     required: [true, "Please enter a note"],
   },
+  time: {
+    type: String, // Storing time as a string
+    required: [true, "Please enter a time"],
+    validate: {
+      validator: (value) => {
+        return /^[0-2][0-9]:[0-5][0-9]:[0-5][0-9]$/.test(value);
+      },
+      message: "Invalid time format. Please use 'HH:MM:SS'.",
+    },
+  },
 });
 
 scheduleSchema.plugin(AutoIncrement, {

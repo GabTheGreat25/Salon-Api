@@ -20,6 +20,11 @@ const userSchema = new mongoose.Schema({
     minlength: [6, "Your password must be longer than 6 characters"],
     select: false,
   },
+  contact_number:{
+    type:String,
+    required: [true, "Please enter your contact number"],
+    maxLength:[11, "Contact number must not exceed to 11 characters"]
+  },
   roles: [
     {
       type: String,
