@@ -36,7 +36,7 @@ exports.getSingleComment = asyncHandler(async(req, res, next)=>{
 
 exports.createNewComment = [
     checkRequiredFields(["description","suggestion","transaction"]),
-    customBadWords(["suggestion"]),
+    // customBadWords(["suggestion"]),
     asyncHandler(async(req, res, next)=>{
         const comment = await commentService.createCommentData(req);
 
