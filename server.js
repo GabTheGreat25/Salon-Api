@@ -17,6 +17,7 @@ const schedules = require("./routes/schedule");
 const delivery = require("./routes/delivery");
 const comments = require("./routes/comment");
 const appointments = require("./routes/appointment");
+const transactions = require("./routes/transaction");
 const { STATUSCODE } = require("./constants/index");
 const connectDB = require("./config/connectDB");
 const PORT = process.env.PORT || 4000;
@@ -30,7 +31,7 @@ app.use(cookieParser());
 app.use("/", express.static(path.join(__dirname, "/public")));
 app.use("/", require("./routes/root"));
 
-app.use("/api/v1", test, auth, users, products, schedules,services,delivery, comments, appointments);
+app.use("/api/v1", test, auth, users, products, schedules, services, delivery, appointments, transactions);
 
 app.all("*", (req, res) => {
   const filePath = req.accepts("html")
