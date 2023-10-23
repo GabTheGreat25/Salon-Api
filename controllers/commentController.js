@@ -1,78 +1,79 @@
-const commentService = require("../services/commentService");
 const SuccessHandler = require("../utils/successHandler");
 const ErrorHandler = require("../utils/errorHandler");
+const commentsService = require("../services/commentService");
 const asyncHandler = require("express-async-handler");
 const checkRequiredFields = require("../helpers/checkRequiredFields");
 const { STATUSCODE } = require("../constants/index");
-const customBadWords = require("../helpers/customBadWords");
+const { upload } = require("../utils/cloudinary");
 
-exports.getAllComment = asyncHandler(async(req, res, next)=>{
-    const comments = await commentService.getAllCommentData();
+exports.getAllComments = asyncHandler(async (req, res, next) => {
+  const comments = await commentsService.getAllCommentData();
 
-    return comments?.length === STATUSCODE.ZERO
-    ? next(new ErrorHandler("No Comments Found"))
+  return comments?.length === STATUSCODE.ZERO
+    ? next(new ErrorHandler("No comments found"))
     : SuccessHandler(
         res,
-        `Comments with description ${comments
-        .map((c)=> c?.description)
-        .join(", ")} and ID's ${comments
-        .map((c)=> c?._id)
-        .join(", ")}`,
+        `Comments with comment ${comments
+          .map((p) => p?.transaction?.customer?.name)
+          .join(", ")} and IDs ${comments
+          .map((p) => p?._id)
+          .join(", ")} retrieved`,
         comments
-    );
+      );
 });
 
-exports.getSingleComment = asyncHandler(async(req, res, next)=>{
-    const comment = await commentService.getSingleCommentData(req.params?.id);
+exports.getSingleComment = asyncHandler(async (req, res, next) => {
+  const comment = await commentsService.getSingleCommentData(req.params.id);
 
-    return !comment
+  return !comment
     ? next(new ErrorHandler("No comment found"))
     : SuccessHandler(
         res,
-        `comment with ${comment.description} and ID ${comment?._id} retrieved`,
+        `Comment ${comment?.transaction?.customer?.name} with ID ${comment?._id} retrieved`,
         comment
-        );
+      );
 });
 
 exports.createNewComment = [
-    checkRequiredFields(["description","suggestion","transaction"]),
-    // customBadWords(["suggestion"]),
-    asyncHandler(async(req, res, next)=>{
-        const comment = await commentService.createCommentData(req);
+  upload.array("image"),
+  checkRequiredFields(["ratings", "text","image","transaction"]),
+  asyncHandler(async (req, res, next) => {
+    const comment = await commentsService.CreateCommentData(req);
 
-        return SuccessHandler(
-            res,
-            `Created comment with description ${comment.description} and ID ${comment?._id}`,
-            comment
-        );
-    }),
+    return SuccessHandler(
+      res,
+      `New comment ${comment?.transaction?.customer?.name} created with an ID ${comment?._id}`,
+      comment
+    );
+  }),
 ];
 
 exports.updateComment = [
-    checkRequiredFields(["description","suggestion","transaction"]),
-    asyncHandler(async(req, res, next)=>{
-        const comment = await commentService.updateCommentData(
-            req,
-            res,
-            req.params.id
-        );
+  upload.array("image"),
+  checkRequiredFields(["ratings", "text","image","transaction"]),
+  asyncHandler(async (req, res, next) => {
+    const comment = await commentsService.updateCommentData(
+      req,
+      res,
+      req.params.id
+    );
 
-        return SuccessHandler(
-            res,
-            `Comment with description${comment.description} and ID ${comment?._id} is updated`,
-            comment
-        )
-    }),
+    return SuccessHandler(
+      res,
+      `Comment ${comment?.transaction?.customer?.name} with ID ${comment?._id} is updated`,
+      comment
+    );
+  }),
 ];
 
-exports.deleteComment = asyncHandler(async(req, res, next)=>{
-    const comment = await commentService.deleteCommentData(req.params.id);
+exports.deleteComment = asyncHandler(async (req, res, next) => {
+  const comment = await commentsService.deleteCommentData(req.params.id);
 
-    return !comment
-    ? next(new ErrorHandler("No Comment Found"))
+  return !comment
+    ? next(new ErrorHandler("No comment found"))
     : SuccessHandler(
         res,
-        `Comment with description${comment.description} and ID ${comment?._id} is deleted`,
+        `Comment ${comment?.transaction?.customer?.name} with ID ${comment?._id} is deleted`,
         comment
-    );
+      );
 });
