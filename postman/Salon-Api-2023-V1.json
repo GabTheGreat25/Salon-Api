@@ -654,7 +654,7 @@
 								}
 							]
 						},
-						"url": "{{URI}}{{V1}}schedule/65238242b42a623176fac788"
+						"url": "{{URI}}{{V1}}schedule/65352b058ac4581529624986"
 					},
 					"response": []
 				},
@@ -734,7 +734,7 @@
 							"mode": "raw",
 							"raw": "{\r\n    \"employee\": \"65350a4ceec5874f1f42b036\",\r\n    \"available\": true,\r\n    \"date\": \"2023-12-12\",\r\n    \"time\": \"12:12:12\",\r\n    \"note\": \"Hell Yeah\"\r\n}"
 						},
-						"url": "{{URI}}{{V1}}/schedule/edit/65238242b42a623176fac788"
+						"url": "{{URI}}{{V1}}/schedule/edit/65352b058ac4581529624986"
 					},
 					"response": []
 				},
