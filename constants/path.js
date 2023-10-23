@@ -19,7 +19,7 @@ module.exports = {
   DELIVERY:"/delivery",
   DELIVERY_ID:"/delivery/:id",
   EDIT_DELIVERY_ID:"/delivery/edit/:id",
-  COMMENT:"/comment",
+  COMMENTS:"/comments",
   COMMENT_ID:"/comment/:id",
   EDIT_COMMENT_ID:"/comment/edit/:id",
   APPOINTMENTS: "/appointments",
