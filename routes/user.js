@@ -40,6 +40,13 @@ const userRoutes = [
     middleware: [verifyJWT],
     handler: userController.deleteUser,
   },
+  {
+    method: METHOD.PATCH,
+    path: PATH.ACTIVATE_USER_ID,
+    roles: [ROLE.ADMIN],
+    middleware: [verifyJWT],
+    handler: userController.toggleUserActiveStatus,
+  }
 ];
 
 userRoutes.forEach((route) => {
