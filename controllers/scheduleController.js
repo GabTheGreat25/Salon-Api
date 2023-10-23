@@ -13,7 +13,7 @@ exports.getAllSchedules = asyncHandler(async (req, res, next) => {
     : SuccessHandler(
         res,
         `Schedules with schedule of ${schedules
-          .map((u) => u?.user?.name)
+          .map((u) => u?.employee?.name)
           .join(", ")} and IDs ${schedules
           .map((u) => u?._id)
           .join(", ")} retrieved`,
@@ -28,7 +28,7 @@ exports.getSingleSchedule = asyncHandler(async (req, res, next) => {
     ? next(new ErrorHandler("No schedule found"))
     : SuccessHandler(
         res,
-        `Schedule of ${schedule?.user?.name} with ID ${schedule._id} retrieved`,
+        `Schedule of ${schedule?.employee?.name} with ID ${schedule?._id} retrieved`,
         schedule
       );
 });
@@ -40,7 +40,7 @@ exports.createNewSchedule = [
 
     return SuccessHandler(
       res,
-      `New schedule of ${schedule?.user?.name} created with an ID ${schedule._id}`,
+      `New schedule of ${schedule?.employee?.name} created with an ID ${schedule?._id}`,
       schedule
     );
   }),
@@ -57,7 +57,7 @@ exports.updateSchedule = [
 
     return SuccessHandler(
       res,
-      `Schedule of ${schedule?.user?.name} with ID ${schedule._id} is updated`,
+      `Schedule of ${schedule?.employee?.name} with ID ${schedule?._id} is updated`,
       schedule
     );
   }),
@@ -70,7 +70,7 @@ exports.deleteSchedule = asyncHandler(async (req, res, next) => {
     ? next(new ErrorHandler("No schedule found"))
     : SuccessHandler(
         res,
-        `Schedule of ${schedule?.user?.name} with ID ${schedule._id} is deleted`,
+        `Schedule of ${schedule?.employee?.name} with ID ${schedule?._id} is deleted`,
         schedule
       );
 });
