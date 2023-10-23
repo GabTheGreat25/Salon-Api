@@ -1162,7 +1162,7 @@
 								}
 							]
 						},
-						"url": "{{URI}}{{V1}}appointment/65352b058ac4581529624986"
+						"url": "{{URI}}{{V1}}appointment/6536165e36ecafb19667395c"
 					},
 					"response": []
 				},
@@ -1240,9 +1240,9 @@
 						],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n    \"employee\": \"65350a4ceec5874f1f42b036\",\r\n    \"available\": true,\r\n    \"date\": \"2023-12-12\",\r\n    \"time\": \"12:12:12\",\r\n    \"note\": \"Hell Yeah\"\r\n}"
+							"raw": "{\r\n    \"employee\": \"65350a4ceec5874f1f42b036\",\r\n    \"customer\": \"653615955ce192e90e8c37b2\",\r\n    \"service\": \"65294eed1b9e20a2afe5c0de\",\r\n    \"total_price\": 1500,\r\n    \"date\": \"2023-12-11\",\r\n    \"time\": \"12:12:12\",\r\n    \"note\": \"Hell Yeah\"\r\n}"
 						},
-						"url": "{{URI}}{{V1}}/appointment/edit/65352b058ac4581529624986"
+						"url": "{{URI}}{{V1}}/appointment/edit/6536165e36ecafb19667395c"
 					},
 					"response": []
 				},
@@ -1265,7 +1265,7 @@
 							"mode": "formdata",
 							"formdata": []
 						},
-						"url": "{{URI}}{{V1}}appointment/65238242b42a623176fac788"
+						"url": "{{URI}}{{V1}}appointment/6536165e36ecafb19667395c"
 					},
 					"response": []
 				}
