@@ -25,4 +25,7 @@ module.exports = {
   APPOINTMENTS: "/appointments",
   APPOINTMENT_ID: "/appointment/:id",
   EDIT_APPOINTMENT_ID: "/appointment/edit/:id",
+  TRANSACTIONS: "/transactions",
+  TRANSACTION_ID: "/transaction/:id",
+  EDIT_TRANSACTION_ID: "/transaction/edit/:id",
 };
