@@ -7,6 +7,14 @@ const token = require("../utils/token");
 const { upload } = require("../utils/cloudinary");
 const { STATUSCODE } = require("../constants/index");
 
+exports.toggleUserActiveStatus = asyncHandler(async (req, res, next) => {
+  const userId = req.params.id;
+
+  await usersService.toggleUserActiveStatus(userId);
+
+  SuccessHandler(res, `User with ID ${userId} has been activated by the admin.`);
+});
+
 exports.login = [
   checkRequiredFields(["email", "password"]),
   asyncHandler(async (req, res, next) => {
