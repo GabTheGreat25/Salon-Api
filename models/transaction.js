@@ -3,7 +3,17 @@ const {
     RESOURCE
 } = require("../constants/index");
 
-const newTransactionSchema = new mongoose.Schema({
+const transactionSchema = new mongoose.Schema({
+    appointment: {
+        type: mongoose.Types.ObjectId,
+        required: [true, "Please enter a appointment"],
+        ref: RESOURCE.APPOINTMENT,
+    },
+    customer: {
+        type: mongoose.Types.ObjectId,
+        required: [true, "Please enter a user"],
+        ref: RESOURCE.USER,
+    },
     date: {
         type: Date,
         required: [true, "Please enter a date"]
@@ -28,13 +38,7 @@ const newTransactionSchema = new mongoose.Schema({
     payment: {
         type: String,
         required: [true, "Payment field required"],
-        maxLength: [60, "Payment field must not exceed to 60 characters"]
     },
-    customer: {
-        type: mongoose.Types.ObjectId,
-        required: [true, "Please enter a customer"],
-        ref: RESOURCE.USER
-    }
 });
 
-module.exports = mongoose.model(RESOURCE.TRANSACTION, newTransactionSchema);
+module.exports = mongoose.model(RESOURCE.TRANSACTION, transactionSchema);
