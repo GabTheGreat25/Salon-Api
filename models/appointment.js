@@ -3,7 +3,7 @@ const {
     RESOURCE
 } = require("../constants/index");
 
-const newTransactionSchema = new mongoose.Schema({
+const appointmentSchema = new mongoose.Schema({
     service: {
         type: mongoose.Types.ObjectId,
         required: [true, "Please enter a service"],
@@ -44,4 +44,4 @@ const newTransactionSchema = new mongoose.Schema({
     },
 });
 
-module.exports = mongoose.model(RESOURCE.TRANSACTION, newTransactionSchema);
+module.exports = mongoose.model(RESOURCE.APPOINTMENT, appointmentSchema);
