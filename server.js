@@ -31,7 +31,7 @@ app.use(cookieParser());
 app.use("/", express.static(path.join(__dirname, "/public")));
 app.use("/", require("./routes/root"));
 
-app.use("/api/v1", test, auth, users, products, schedules, services, delivery, appointments, transactions);
+app.use("/api/v1", test, auth, users, products, schedules, services, delivery, appointments, comments, transactions);
 
 app.all("*", (req, res) => {
   const filePath = req.accepts("html")
