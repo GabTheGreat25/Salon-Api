@@ -1,39 +1,47 @@
 const express = require("express");
 const router = express.Router();
 const commentController = require("../controllers/commentController");
-const { METHOD, PATH } = require("../constants/index");
+const { verifyJWT, authorizeRoles } = require("../middleware/verifyJWT");
+const { METHOD, PATH, ROLE } = require("../constants/index");
 
-const testRoutes = [
+router.use(verifyJWT);
+
+const commentRoutes = [
   {
     method: METHOD.GET,
-    path: PATH.COMMENT,
-    handler: commentController.getAllComment
+    path: PATH.COMMENTS,
+    roles: [ROLE.ADMIN, ROLE.EMPLOYEE, ROLE.CUSTOMER],
+    handler: commentController.getAllComments,
+  },
+  {
+    method: METHOD.POST,
+    path: PATH.COMMENTS,
+    roles: [ROLE.ADMIN ,ROLE.CUSTOMER],
+    handler: commentController.createNewComment,
   },
   {
     method: METHOD.GET,
     path: PATH.COMMENT_ID,
-    handler: commentController.getSingleComment
-  },
-  {
-    method: METHOD.POST,
-    path: PATH.COMMENT,
-    handler: commentController.createNewComment
+    roles: [ROLE.ADMIN, ROLE.EMPLOYEE, ROLE.CUSTOMER],
+    handler: commentController.getSingleComment,
   },
   {
     method: METHOD.PATCH,
     path: PATH.EDIT_COMMENT_ID,
+    roles: [ROLE.ADMIN, ROLE.CUSTOMER],
     handler: commentController.updateComment,
   },
   {
     method: METHOD.DELETE,
     path: PATH.COMMENT_ID,
+    roles: [ROLE.ADMIN, ROLE.EMPLOYEE, ROLE.CUSTOMER],
     handler: commentController.deleteComment,
   },
 ];
 
-testRoutes.forEach((route) => {
-  const { method, path, handler } = route;
-  router[method](path, handler);
+commentRoutes.forEach((route) => {
+  const { method, path, roles, handler } = route;
+  router[method](path, authorizeRoles(...roles), handler);
 });
 
 module.exports = router;
