@@ -8,8 +8,21 @@ const { cloudinary } = require("../utils/cloudinary");
 const { STATUSCODE, RESOURCE, ROLE } = require("../constants/index");
 const blacklistedTokens = [];
 
+exports.toggleUserActiveStatus = async (userId, adminId) => {
+  const user = await User.findById(userId);
+
+  if (!user) throw new ErrorHandler(`User not found with ID: ${userId}`);
+
+  user.active = true;
+
+  await user.save()
+};
+
 exports.loginToken = async (email, password) => {
   const foundUser = await User.findOne({ email }).select("+password").exec();
+
+  if (!foundUser.active)
+  throw new ErrorHandler("User can't login because you are not authenticated by an admin");
 
   if (!foundUser) throw new ErrorHandler("Wrong Email Or Password");
 
@@ -95,6 +108,8 @@ exports.createUserData = async (req, res) => {
       : req.body.roles.split(", ")
     : [ROLE.ONLINE_CUSTOMER];
 
+  const active = roles.includes('Admin');
+
   const user = await User.create({
     name: req.body.name,
     email: req.body.email,
@@ -105,6 +120,7 @@ exports.createUserData = async (req, res) => {
     contact_number: req.body.contact_number,
     roles: roles,
     image: image,
+    active: active,
   });
 
   return user;
