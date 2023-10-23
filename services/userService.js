@@ -8,10 +8,12 @@ const { cloudinary } = require("../utils/cloudinary");
 const { STATUSCODE, RESOURCE, ROLE } = require("../constants/index");
 const blacklistedTokens = [];
 
-exports.toggleUserActiveStatus = async (userId, adminId) => {
+exports.confirmUserRole = async (userId, adminId) => {
   const user = await User.findById(userId);
 
   if (!user) throw new ErrorHandler(`User not found with ID: ${userId}`);
+
+  if (user.active) throw new ErrorHandler(`User already activated`);
 
   user.active = true;
 

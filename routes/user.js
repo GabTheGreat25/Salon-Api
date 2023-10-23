@@ -45,7 +45,7 @@ const userRoutes = [
     path: PATH.ACTIVATE_USER_ID,
     roles: [ROLE.ADMIN],
     middleware: [verifyJWT],
-    handler: userController.toggleUserActiveStatus,
+    handler: userController.confirmUser,
   }
 ];
 
