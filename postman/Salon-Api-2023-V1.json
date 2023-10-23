@@ -306,12 +306,12 @@
 							"formdata": [
 								{
 									"key": "name",
-									"value": "gabriels",
+									"value": "gab",
 									"type": "text"
 								},
 								{
 									"key": "email",
-									"value": "admin@gmail.com",
+									"value": "customer@gmail.com",
 									"type": "text"
 								},
 								{
@@ -326,7 +326,7 @@
 								},
 								{
 									"key": "roles",
-									"value": "Admin",
+									"value": "Online Customer",
 									"type": "text"
 								},
 								{
