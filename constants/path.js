@@ -21,5 +21,8 @@ module.exports = {
   EDIT_DELIVERY_ID:"/delivery/edit/:id",
   COMMENT:"/comment",
   COMMENT_ID:"/comment/:id",
-  EDIT_COMMENT_ID:"/comment/edit/:id"
+  EDIT_COMMENT_ID:"/comment/edit/:id",
+  APPOINTMENTS: "/appointments",
+  APPOINTMENT_ID: "/appointment/:id",
+  EDIT_APPOINTMENT_ID: "/appointment/edit/:id",
 };
