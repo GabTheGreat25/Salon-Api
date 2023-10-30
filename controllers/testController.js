@@ -36,7 +36,7 @@ exports.getSingleTest = asyncHandler(async (req, res, next) => {
 
 exports.createNewTest = [
   upload.array("image"),
-  checkRequiredFields(["test"]),
+  checkRequiredFields(["test", "image"]),
   asyncHandler(async (req, res, next) => {
     const test = await testServices.createTestData(req);
 

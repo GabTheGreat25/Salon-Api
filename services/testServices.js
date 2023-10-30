@@ -70,7 +70,25 @@ exports.updateTestData = async (req, res, id) => {
   if (!mongoose.Types.ObjectId.isValid(id))
     throw new ErrorHandler(`Invalid test ID: ${id}`);
 
-  let image = existingProduct.image || [];
+  const existingTest = await Test.findById(id).lean().exec();
+
+  if (!existingTest) throw new ErrorHandler(`Test not found with ID: ${id}`);
+
+  const duplicateTest = await Test.findOne({
+      test: req.body.test,
+      _id: {
+        $ne: id
+      },
+    })
+    .collation({
+      locale: "en"
+    })
+    .lean()
+    .exec();
+
+  if (duplicateTest) throw new ErrorHandler("Duplicate test");
+
+  let image = existingTest.image || [];
   if (req.files && Array.isArray(req.files) && req.files.length > 0) {
     image = await Promise.all(
       req.files.map(async (file) => {
@@ -86,7 +104,7 @@ exports.updateTestData = async (req, res, id) => {
     );
 
     await cloudinary.api.delete_resources(
-      existingProduct.image.map((image) => image.public_id)
+      existingTest.image.map((image) => image.public_id)
     );
   }
 
@@ -101,20 +119,6 @@ exports.updateTestData = async (req, res, id) => {
     .exec();
 
   if (!updatedTest) throw new ErrorHandler(`Test not found with ID: ${id}`);
-
-  const duplicateTest = await Test.findOne({
-      test: req.body.test,
-      _id: {
-        $ne: id
-      },
-    })
-    .collation({
-      locale: "en"
-    })
-    .lean()
-    .exec();
-
-  if (duplicateTest) throw new ErrorHandler("Duplicate test");
 
   return updatedTest;
 };
