@@ -3,48 +3,54 @@ const ErrorHandler = require("../utils/errorHandler");
 const testServices = require("../services/testServices");
 const asyncHandler = require("express-async-handler");
 const checkRequiredFields = require("../helpers/checkRequiredFields");
+const { upload } = require("../utils/cloudinary");
+const {
+  STATUSCODE
+} = require("../constants/index");
 
 exports.getAllTests = asyncHandler(async (req, res, next) => {
   const tests = await testServices.getAllTestsData();
 
-  return tests?.length === STATUSCODE.ZERO
-    ? next(new ErrorHandler("No tests found"))
-    : SuccessHandler(
-        res,
-        `Tests with test ${tests.map((u) => u.test).join(", ")} and IDs ${tests
+  return tests?.length === STATUSCODE.ZERO ?
+    next(new ErrorHandler("No tests found")) :
+    SuccessHandler(
+      res,
+      `Tests with test ${tests.map((u) => u.test).join(", ")} and IDs ${tests
           .map((u) => u._id)
           .join(", ")} retrieved`,
-        tests
-      );
+      tests
+    );
 });
 
 exports.getSingleTest = asyncHandler(async (req, res, next) => {
   const test = await testServices.getSingleTestData(req.params?.id);
 
-  return !test
-    ? next(new ErrorHandler("No test found"))
-    : SuccessHandler(
-        res,
-        `Test ${test?.test} with ID ${test?._id} retrieved`,
-        test
-      );
+  return !test ?
+    next(new ErrorHandler("No test found")) :
+    SuccessHandler(
+      res,
+      `Test ${test?.test} with ID ${test?._id} retrieved`,
+      test
+    );
 });
 
 exports.createNewTest = [
+  upload.array("image"),
   checkRequiredFields(["test"]),
   asyncHandler(async (req, res, next) => {
-    const test = await testServices.CreateTestData(req);
+    const test = await testServices.createTestData(req);
 
     return SuccessHandler(
       res,
-      `New test ${test?.test} created with an ID ${test?._id}`,
+      `Created new Test ${test?.test} with an ID ${test?._id}`,
       test
     );
   }),
 ];
 
 exports.updateTest = [
-  checkRequiredFields(["test"]),
+  upload.array("image"),
+  checkRequiredFields(["test", "image"]),
   asyncHandler(async (req, res, next) => {
     const test = await testServices.updateTestData(req, res, req.params.id);
 
@@ -59,11 +65,11 @@ exports.updateTest = [
 exports.deleteTest = asyncHandler(async (req, res, next) => {
   const test = await testServices.deleteTestData(req.params.id);
 
-  return !test
-    ? next(new ErrorHandler("No test found"))
-    : SuccessHandler(
-        res,
-        `Test ${test?.test} with ID ${test?._id} is deleted`,
-        test
-      );
+  return !test ?
+    next(new ErrorHandler("No test found")) :
+    SuccessHandler(
+      res,
+      `Test ${test?.test} with ID ${test?._id} is deleted`,
+      test
+    );
 });

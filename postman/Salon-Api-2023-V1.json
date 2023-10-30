@@ -77,34 +77,8 @@
 							}
 						],
 						"body": {
-							"mode": "formdata",
-							"formdata": [
-								{
-									"key": "name",
-									"value": "gabriel",
-									"type": "text"
-								},
-								{
-									"key": "email",
-									"value": "admingab@gmail.com",
-									"type": "text"
-								},
-								{
-									"key": "password",
-									"value": "12345678",
-									"type": "text"
-								},
-								{
-									"key": "roles",
-									"value": "Admin, Employee",
-									"type": "text"
-								},
-								{
-									"key": "image",
-									"type": "file",
-									"src": "/C:/Users/gabriel/Downloads/R.jpeg"
-								}
-							]
+							"mode": "raw",
+							"raw": "{\r\n    \"test\": \"test\"\r\n}"
 						},
 						"url": "{{URI}}{{V1}}tests"
 					},
@@ -425,7 +399,7 @@
 							"mode": "raw",
 							"raw": ""
 						},
-						"url": "{{URI}}{{V1}}/user/activate/6536f7b5bf0f892ba48a4470"
+						"url": "{{URI}}{{V1}}/user/activate/6536fe50b6a8b60c42ef6d9e"
 					},
 					"response": []
 				},
@@ -1632,7 +1606,7 @@
 		{
 			"listen": "prerequest",
 			"script": {
-				"id": "c565b235-8a0a-4fc0-96e5-df10431a1999",
+				"id": "1677819a-19aa-4b8d-8b92-771293ed7a74",
 				"type": "text/javascript",
 				"exec": [
 					""
@@ -1642,7 +1616,7 @@
 		{
 			"listen": "test",
 			"script": {
-				"id": "1f08facd-f74e-40a6-87f6-04349d13840d",
+				"id": "48a97411-40f6-43cb-a16c-eee8031eeaa2",
 				"type": "text/javascript",
 				"exec": [
 					""
@@ -1653,7 +1627,7 @@
 	"variable": [
 		{
 			"key": "Bearer",
-			"value": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJVc2VySW5mbyI6eyJlbWFpbCI6ImFkbWluZ2FiQGdtYWlsLmNvbSIsInJvbGVzIjpbIkFkbWluIl19LCJpYXQiOjE2OTgxMDIyMTIsImV4cCI6MTY5ODcwNzAxMn0.SanXxdDbTyx6a626gj3QjlM8oY1q-ItaokLDJCg8BQQ",
+			"value": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJVc2VySW5mbyI6eyJlbWFpbCI6ImFkbWluZ2FiQGdtYWlsLmNvbSIsInJvbGVzIjpbIkFkbWluIl19LCJpYXQiOjE2OTgxMDI5OTcsImV4cCI6MTY5ODcwNzc5N30.cMWcqY1CVWQO1-aU8aoTtiemUec67A8cVQuGkscTIQA",
 			"type": "string"
 		}
 	]
