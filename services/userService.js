@@ -23,10 +23,9 @@ exports.confirmUserRole = async (userId, adminId) => {
 exports.loginToken = async (email, password) => {
   const foundUser = await User.findOne({ email }).select("+password").exec();
 
-  if (!foundUser.active)
-  throw new ErrorHandler("User can't login because you are not authenticated by an admin");
+  if (!foundUser) throw new ErrorHandler("Email not found or not existing");
 
-  if (!foundUser) throw new ErrorHandler("Wrong Email Or Password");
+  if (!foundUser.active) throw new ErrorHandler("User can't log in because you are not authenticated by an admin");
 
   const match = await bcrypt.compare(password, foundUser.password);
 
@@ -41,6 +40,7 @@ exports.loginToken = async (email, password) => {
 
   return { user: foundUser, accessToken, accessTokenMaxAge };
 };
+
 
 exports.logoutUser = (cookies, res) => {
   return new Promise((resolve, reject) => {
