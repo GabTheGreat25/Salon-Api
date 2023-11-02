@@ -32,7 +32,7 @@ const transactionSchema = new mongoose.Schema({
         type: String,
         default: "pending",
         enum: {
-            values: ["pending", "completed", "cancel"]
+            values: ["pending", "completed", "cancelled"]
         }
     },
     payment: {
