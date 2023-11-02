@@ -1,5 +1,8 @@
 const User = require("../models/user");
 const Schedule = require("../models/schedule");
+const Appointment = require("../models/appointment");
+const Transaction = require("../models/transaction");
+const Requirement = require("../models/requirement");
 const mongoose = require("mongoose");
 const ErrorHandler = require("../utils/errorHandler");
 const bcrypt = require("bcrypt");
@@ -8,7 +11,7 @@ const { cloudinary } = require("../utils/cloudinary");
 const { STATUSCODE, RESOURCE, ROLE } = require("../constants/index");
 const blacklistedTokens = [];
 
-exports.confirmUserRole = async (userId, adminId) => {
+exports.confirmUserRole = async (userId) => {
   const user = await User.findById(userId);
 
   if (!user) throw new ErrorHandler(`User not found with ID: ${userId}`);
@@ -85,9 +88,9 @@ exports.createUserData = async (req, res) => {
 
   if (duplicateUser) throw new ErrorHandler("Duplicate name");
 
-  let image = [];
+  let userImages = [];
   if (req.files && Array.isArray(req.files)) {
-    image = await Promise.all(
+    userImages = await Promise.all(
       req.files.map(async (file) => {
         const result = await cloudinary.uploader.upload(file.path, {
           public_id: file.filename,
@@ -101,7 +104,7 @@ exports.createUserData = async (req, res) => {
     );
   }
 
-  if (image.length === STATUSCODE.ZERO)
+  if (userImages.length === STATUSCODE.ZERO)
     throw new ErrorHandler("At least one image is required");
 
   const roles = req.body.roles
@@ -110,7 +113,7 @@ exports.createUserData = async (req, res) => {
       : req.body.roles.split(", ")
     : [ROLE.ONLINE_CUSTOMER];
 
-  const active = roles.includes('Admin');
+  const active = roles.includes(ROLE.ADMIN);
 
   const user = await User.create({
     name: req.body.name,
@@ -121,11 +124,42 @@ exports.createUserData = async (req, res) => {
     ),
     contact_number: req.body.contact_number,
     roles: roles,
-    image: image,
+    image: userImages,
     active: active,
   });
 
-  return user;
+  const isEmployee = req.body.roles.includes(ROLE.EMPLOYEE);
+
+  let newRequirement;
+
+  if (isEmployee) {
+    let docsImages = [];
+    if (req.files && Array.isArray(req.files)) {
+      docsImages = await Promise.all(
+        req.files.map(async (file) => {
+          const result = await cloudinary.uploader.upload(file.path, {
+            public_id: file.filename,
+          });
+          return {
+            public_id: result.public_id,
+            url: result.url,
+            originalname: file.originalname,
+          };
+        })
+      );
+    }
+
+    if (docsImages.length === STATUSCODE.ZERO)
+    throw new ErrorHandler("At least one image is required");
+
+    newRequirement = await Requirement.create({
+      employee: user?._id,
+      job: req.body.job,
+      image: docsImages,
+    });
+  }
+
+  return { user, newRequirement };
 };
 
 exports.updateUserData = async (req, res, id) => {
@@ -134,7 +168,7 @@ exports.updateUserData = async (req, res, id) => {
 
   const existingUser = await User.findById(id).lean().exec();
 
-  if (!existingUser) throw new ErrorHandler(`User not found with ID: ${id}`);
+  if (!existingUser) throw ErrorHandler(`User not found with ID: ${id}`);
 
   const duplicateUser = await User.findOne({
     name: req.body.name,
@@ -146,9 +180,9 @@ exports.updateUserData = async (req, res, id) => {
 
   if (duplicateUser) throw new ErrorHandler("Duplicate name");
 
-  let image = existingUser.image || [];
+  let images = existingUser.image || [];
   if (req.files && Array.isArray(req.files) && req.files.length > 0) {
-    image = await Promise.all(
+    images = await Promise.all(
       req.files.map(async (file) => {
         const result = await cloudinary.uploader.upload(file.path, {
           public_id: file.filename,
@@ -178,7 +212,7 @@ exports.updateUserData = async (req, res, id) => {
     {
       ...req.body,
       roles: roles,
-      image: image,
+      image: images,
     },
     {
       new: true,
@@ -190,7 +224,34 @@ exports.updateUserData = async (req, res, id) => {
 
   if (!updatedUser) throw new ErrorHandler(`User not found with ID: ${id}`);
 
-  return updatedUser;
+  let updateRequirement;
+  if (roles.includes(ROLE.EMPLOYEE)) {
+    let docsImages = images;
+    if (req.files && Array.isArray(req.files)) {
+      docsImages = await Promise.all(
+        req.files.map(async (file) => {
+          const result = await cloudinary.uploader.upload(file.path, {
+            public_id: file.filename,
+          });
+          return {
+            public_id: result.public_id,
+            url: result.url,
+            originalname: file.originalname,
+          };
+        })
+      );
+    }
+
+    if (docsImages.length === STATUSCODE.ZERO) docsImages = existingUser.docsImages || [];
+
+    updateRequirement = await Requirement.findOneAndUpdate(
+      { employee: id },
+      { job: req.body.job, image: docsImages },
+      { new: true, upsert: true }
+    ).lean().exec();
+  }
+
+  return { updatedUser, updateRequirement };
 };
 
 exports.deleteUserData = async (id) => {
@@ -204,7 +265,10 @@ exports.deleteUserData = async (id) => {
 
   await Promise.all([
     User.deleteOne({ _id: id }).lean().exec(),
-    Schedule.deleteMany({ user: id }).lean().exec(),
+    Schedule.deleteMany({ employee: id }).lean().exec(),
+    Appointment.deleteMany({ $or: [{ customer: id }, { employee: id }] }).lean().exec(),
+    Transaction.deleteMany({ customer: id }).lean().exec(),
+    Requirement.deleteMany({ employee: id }).lean().exec(),
     cloudinary.api.delete_resources(publicIds),
   ]);
 
