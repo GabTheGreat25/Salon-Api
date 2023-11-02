@@ -989,7 +989,7 @@
 						],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n    \"employee\": \"65350a4ceec5874f1f42b036\",\r\n    \"available\": true,\r\n    \"date\": \"2023-12-11\",\r\n    \"time\": \"12:12:12\",\r\n    \"note\": \"Hell Yeah\"\r\n}"
+							"raw": "{\r\n    \"employee\": \"65350a4ceec5874f1f42b036\",\r\n    \"available\": false,\r\n    \"date\": \"2023-12-11\",\r\n    \"time\": \"12:12:12\",\r\n    \"note\": \"Hell Yeah\"\r\n}"
 						},
 						"url": "{{URI}}{{V1}}schedules"
 					},
@@ -1018,9 +1018,9 @@
 						],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n    \"employee\": \"65350a4ceec5874f1f42b036\",\r\n    \"available\": true,\r\n    \"date\": \"2023-12-12\",\r\n    \"time\": \"12:12:12\",\r\n    \"note\": \"Hell Yeah\"\r\n}"
+							"raw": "{\r\n    \"employee\": \"65350a4ceec5874f1f42b036\",\r\n    \"available\": false,\r\n    \"date\": \"2023-12-12\",\r\n    \"time\": \"12:12:12\",\r\n    \"note\": \"Hell Yeah\"\r\n}"
 						},
-						"url": "{{URI}}{{V1}}/schedule/edit/65352b058ac4581529624986"
+						"url": "{{URI}}{{V1}}/schedule/edit/6543d3d03dabb2e60ec2258a"
 					},
 					"response": []
 				},
@@ -1664,9 +1664,9 @@
 						],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n    \"customer\": \"653615955ce192e90e8c37b2\",\r\n    \"appointment\": \"65368ba32a126d39cd1b9a43\",\r\n    \"payment\": \"Gcash\",\r\n    \"date\": \"2023-12-12\",\r\n    \"time\": \"12:12:12\"\r\n}"
+							"raw": "{\r\n    \"customer\": \"653615955ce192e90e8c37b2\",\r\n    \"appointment\": \"65368ba32a126d39cd1b9a43\",\r\n    \"payment\": \"Gcash\",\r\n    \"status\": \"completed\",\r\n    \"date\": \"2023-12-12\",\r\n    \"time\": \"12:12:12\"\r\n}"
 						},
-						"url": "{{URI}}{{V1}}/transaction/edit/65368bea5566c3027dbbaf19"
+						"url": "{{URI}}{{V1}}/transaction/edit/6543ccb8708446c580dd918c"
 					},
 					"response": []
 				},
