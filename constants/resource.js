@@ -12,5 +12,6 @@ module.exports = {
   DELIVERY: "delivery",
   COMMENT: "comment",
   TRANSACTION: "transaction",
-  APPOINTMENT: "appointment"
+  APPOINTMENT: "appointment",
+  REQUIREMENT: "requirement",
 };
