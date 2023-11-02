@@ -77,8 +77,26 @@
 							}
 						],
 						"body": {
-							"mode": "raw",
-							"raw": "{\r\n    \"test\": \"test\"\r\n}"
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "test",
+									"value": "test bro",
+									"type": "text"
+								},
+								{
+									"key": "image",
+									"type": "file",
+									"src": [
+										"/C:/Users/HP/Downloads/pink-muhly-grass.jpg",
+										"/C:/Users/HP/Downloads/lily.jpg",
+										"/C:/Users/HP/Downloads/conifers.jpg",
+										"/C:/Users/HP/Downloads/cycades.jpg",
+										"/C:/Users/HP/Downloads/fern.jpg",
+										"/C:/Users/HP/Downloads/moss.jpg"
+									]
+								}
+							]
 						},
 						"url": "{{URI}}{{V1}}tests"
 					},
@@ -261,7 +279,7 @@
 					"response": []
 				},
 				{
-					"name": "CREATE USER",
+					"name": "CREATE ADMIN",
 					"id": "57b3674d-89fd-43eb-b81c-e938c3429332",
 					"protocolProfileBehavior": {
 						"disableBodyPruning": true
@@ -280,12 +298,12 @@
 							"formdata": [
 								{
 									"key": "name",
-									"value": "gabzzzz",
+									"value": "hihe",
 									"type": "text"
 								},
 								{
 									"key": "email",
-									"value": "admingab@gmail.com",
+									"value": "hihe@gmail.com",
 									"type": "text"
 								},
 								{
@@ -306,7 +324,8 @@
 								{
 									"key": "image",
 									"type": "file",
-									"src": "/C:/Users/HP/Downloads/Functionality_of_genetic_algorithm_f256ad4dac.png"
+									"fileNotInWorkingDirectoryWarning": "This file isn't in your working directory. Teammates you share this request with won't be able to use this file. To make collaboration easier you can setup your working directory in Settings.",
+									"src": "/C:/Users/HP/Downloads/395359228_1021769989514637_1406762652259607267_n.png"
 								}
 							]
 						},
@@ -315,7 +334,73 @@
 					"response": []
 				},
 				{
-					"name": "UPDATE USER",
+					"name": "CREATE EMPLOYEE",
+					"id": "7136673f-0654-4c07-89c9-c39d01efda14",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "name",
+									"value": "hihi",
+									"type": "text"
+								},
+								{
+									"key": "email",
+									"value": "hihi@gmail.com",
+									"type": "text"
+								},
+								{
+									"key": "password",
+									"value": "12345678",
+									"type": "text"
+								},
+								{
+									"key": "contact_number",
+									"value": "09958465564",
+									"type": "text"
+								},
+								{
+									"key": "roles",
+									"value": "Employee",
+									"type": "text"
+								},
+								{
+									"key": "image",
+									"type": "file",
+									"fileNotInWorkingDirectoryWarning": "This file isn't in your working directory. Teammates you share this request with won't be able to use this file. To make collaboration easier you can setup your working directory in Settings.",
+									"src": "/C:/Users/HP/Downloads/395359228_1021769989514637_1406762652259607267_n.png"
+								},
+								{
+									"key": "job",
+									"value": "Stylist",
+									"type": "text"
+								},
+								{
+									"key": "image",
+									"type": "file",
+									"fileNotInWorkingDirectoryWarning": "This file isn't in your working directory. Teammates you share this request with won't be able to use this file. To make collaboration easier you can setup your working directory in Settings.",
+									"src": "/C:/Users/HP/Downloads/never forget.png"
+								}
+							]
+						},
+						"url": "{{URI}}{{V1}}users"
+					},
+					"response": []
+				},
+				{
+					"name": "UPDATE ADMIN",
 					"id": "38711308-51dc-4654-9fee-cbde08b9af42",
 					"protocolProfileBehavior": {
 						"disableBodyPruning": true
@@ -340,7 +425,7 @@
 							"formdata": [
 								{
 									"key": "name",
-									"value": "gabriels",
+									"value": "gabrielqwerty",
 									"type": "text"
 								},
 								{
@@ -355,22 +440,84 @@
 								},
 								{
 									"key": "roles",
-									"value": "Admin, Employee",
+									"value": "Admin",
 									"type": "text"
 								},
 								{
 									"key": "image",
 									"type": "file",
 									"fileNotInWorkingDirectoryWarning": "This file isn't in your working directory. Teammates you share this request with won't be able to use this file. To make collaboration easier you can setup your working directory in Settings.",
-									"src": [
-										"/C:/Users/HP/Downloads/094A3072.jpg",
-										"/C:/Users/HP/Downloads/094A3071.jpg",
-										"/C:/Users/HP/Downloads/094A3070.jpg"
-									]
+									"src": "/C:/Users/HP/Downloads/lily.jpg"
 								}
 							]
 						},
-						"url": "{{URI}}{{V1}}/user/edit/65350a4ceec5874f1f42b036"
+						"url": "{{URI}}{{V1}}/user/edit/6536fbb6b81526ce7c81ffb5"
+					},
+					"response": []
+				},
+				{
+					"name": "UPDATE EMPLOYEE",
+					"id": "c1b6b609-081a-4384-a237-da41b25e2ae0",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "PATCH",
+						"header": [
+							{
+								"warning": "This is a duplicate header and will be overridden by the Content-Type header generated by Postman.",
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							},
+							{
+								"key": "Authorization",
+								"value": "{{Bearer}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "name",
+									"value": "hihihi",
+									"type": "text"
+								},
+								{
+									"key": "email",
+									"value": "hihi@gmail.com",
+									"type": "text"
+								},
+								{
+									"key": "contact_number",
+									"value": "09958465564",
+									"type": "text"
+								},
+								{
+									"key": "roles",
+									"value": "Employee",
+									"type": "text"
+								},
+								{
+									"key": "image",
+									"type": "file",
+									"fileNotInWorkingDirectoryWarning": "This file isn't in your working directory. Teammates you share this request with won't be able to use this file. To make collaboration easier you can setup your working directory in Settings.",
+									"src": "/C:/Users/HP/Downloads/393864880_725350155711728_6749489122381010523_n.jpg"
+								},
+								{
+									"key": "job",
+									"value": "Stylist",
+									"type": "text"
+								},
+								{
+									"key": "image",
+									"type": "file",
+									"src": "/C:/Users/HP/Downloads/395359228_1021769989514637_1406762652259607267_n.png"
+								}
+							]
+						},
+						"url": "{{URI}}{{V1}}/user/edit/6543529442c3c0aad7e1f6a5"
 					},
 					"response": []
 				},
@@ -1606,7 +1753,7 @@
 		{
 			"listen": "prerequest",
 			"script": {
-				"id": "1677819a-19aa-4b8d-8b92-771293ed7a74",
+				"id": "4c6dc4ae-9b73-4872-958a-700fbabc5582",
 				"type": "text/javascript",
 				"exec": [
 					""
@@ -1616,7 +1763,7 @@
 		{
 			"listen": "test",
 			"script": {
-				"id": "48a97411-40f6-43cb-a16c-eee8031eeaa2",
+				"id": "3b9082ae-f79d-4d18-a20e-8e31e378d2f4",
 				"type": "text/javascript",
 				"exec": [
 					""
@@ -1627,7 +1774,7 @@
 	"variable": [
 		{
 			"key": "Bearer",
-			"value": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJVc2VySW5mbyI6eyJlbWFpbCI6ImFkbWluZ2FiQGdtYWlsLmNvbSIsInJvbGVzIjpbIkFkbWluIl19LCJpYXQiOjE2OTgxMDI5OTcsImV4cCI6MTY5ODcwNzc5N30.cMWcqY1CVWQO1-aU8aoTtiemUec67A8cVQuGkscTIQA",
+			"value": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJVc2VySW5mbyI6eyJlbWFpbCI6ImFkbWluZ2FiQGdtYWlsLmNvbSIsInJvbGVzIjpbIkFkbWluIl19LCJpYXQiOjE2OTg5MTA0MzEsImV4cCI6MTY5OTUxNTIzMX0.r0KrNBFwiAS2SJTqHlDiOOeiHgsZPfWjoXkkBQySAKM",
 			"type": "string"
 		}
 	]
