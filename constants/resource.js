@@ -16,4 +16,5 @@ module.exports = {
   REQUIREMENT: "requirement",
   INFORMATION: "information",
   VERIFICATION: "verification",
+  STATUS: "status",
 };
