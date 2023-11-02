@@ -3,6 +3,7 @@ const Schedule = require("../models/schedule");
 const Appointment = require("../models/appointment");
 const Transaction = require("../models/transaction");
 const Requirement = require("../models/requirement");
+const Information = require("../models/information");
 const mongoose = require("mongoose");
 const ErrorHandler = require("../utils/errorHandler");
 const bcrypt = require("bcrypt");
@@ -100,8 +101,7 @@ exports.createUserData = async (req, res) => {
           url: result.url,
           originalname: file.originalname,
         };
-      })
-    );
+      }));
   }
 
   if (userImages.length === STATUSCODE.ZERO)
@@ -128,11 +128,10 @@ exports.createUserData = async (req, res) => {
     active: active,
   });
 
-  const isEmployee = req.body.roles.includes(ROLE.EMPLOYEE);
-
   let newRequirement;
+  let newInformation;
 
-  if (isEmployee) {
+  if (roles.includes(ROLE.EMPLOYEE)) {
     let docsImages = [];
     if (req.files && Array.isArray(req.files)) {
       docsImages = await Promise.all(
@@ -145,30 +144,33 @@ exports.createUserData = async (req, res) => {
             url: result.url,
             originalname: file.originalname,
           };
-        })
-      );
+        }));
     }
 
-    if (docsImages.length === STATUSCODE.ZERO)
-    throw new ErrorHandler("At least one image is required");
+    if (docsImages.length === STATUSCODE.ZERO) docsImages = existingUser.docsImages || [];
 
     newRequirement = await Requirement.create({
       employee: user?._id,
       job: req.body.job,
       image: docsImages,
     });
+  } else if (roles.includes(ROLE.ONLINE_CUSTOMER) || roles.includes(ROLE.WALK_IN_CUSTOMER)) {
+    newInformation = await Information.create({
+      customer: user?._id,
+      allergy: req.body.allergy || [],
+      product_preference: req.body.product_preference || [],
+    });
   }
 
-  return { user, newRequirement };
+  return { user, newRequirement, newInformation };
 };
 
 exports.updateUserData = async (req, res, id) => {
-  if (!mongoose.Types.ObjectId.isValid(id))
-    throw new ErrorHandler(`Invalid user ID: ${id}`);
+  if (!mongoose.Types.ObjectId.isValid(id)) throw new ErrorHandler(`Invalid user ID: ${id}`);
 
   const existingUser = await User.findById(id).lean().exec();
 
-  if (!existingUser) throw ErrorHandler(`User not found with ID: ${id}`);
+  if (!existingUser) throw new ErrorHandler(`User not found with ID: ${id}`);
 
   const duplicateUser = await User.findOne({
     name: req.body.name,
@@ -181,6 +183,7 @@ exports.updateUserData = async (req, res, id) => {
   if (duplicateUser) throw new ErrorHandler("Duplicate name");
 
   let images = existingUser.image || [];
+
   if (req.files && Array.isArray(req.files) && req.files.length > 0) {
     images = await Promise.all(
       req.files.map(async (file) => {
@@ -192,15 +195,12 @@ exports.updateUserData = async (req, res, id) => {
           url: result.url,
           originalname: file.originalname,
         };
-      })
-    );
-
-    await cloudinary.api.delete_resources(
-      existingUser.image.map((image) => image.public_id)
-    );
+      }
+    ));
   }
 
   let roles = existingUser.roles;
+
   if (req.body.roles) {
     roles = Array.isArray(req.body.roles)
       ? req.body.roles
@@ -225,33 +225,42 @@ exports.updateUserData = async (req, res, id) => {
   if (!updatedUser) throw new ErrorHandler(`User not found with ID: ${id}`);
 
   let updateRequirement;
+  let updateInformation;
+
   if (roles.includes(ROLE.EMPLOYEE)) {
-    let docsImages = images;
-    if (req.files && Array.isArray(req.files)) {
-      docsImages = await Promise.all(
-        req.files.map(async (file) => {
-          const result = await cloudinary.uploader.upload(file.path, {
-            public_id: file.filename,
-          });
-          return {
-            public_id: result.public_id,
-            url: result.url,
-            originalname: file.originalname,
-          };
-        })
-      );
-    }
-
-    if (docsImages.length === STATUSCODE.ZERO) docsImages = existingUser.docsImages || [];
-
     updateRequirement = await Requirement.findOneAndUpdate(
       { employee: id },
-      { job: req.body.job, image: docsImages },
+      {
+        job: req.body.job,
+        docsImages: req.files
+          ? await Promise.all(
+              req.files.map(async (file) => {
+                const result = await cloudinary.uploader.upload(file.path, {
+                  public_id: file.filename,
+                });
+                return {
+                  public_id: result.public_id,
+                  url: result.url,
+                  originalname: file.originalname,
+                };
+              }
+            )
+          ): images
+      },
+      { new: true, upsert: true }
+    ).lean().exec();
+  } else if (roles.includes(ROLE.ONLINE_CUSTOMER) || roles.includes(ROLE.WALK_IN_CUSTOMER)) {
+    updateInformation = await Information.findOneAndUpdate(
+      { customer: id },
+      {
+        allergy: req.body.allergy || [],
+        product_preference: req.body.product_preference || [],
+      },
       { new: true, upsert: true }
     ).lean().exec();
   }
 
-  return { updatedUser, updateRequirement };
+  return { updatedUser, updateRequirement, updateInformation };
 };
 
 exports.deleteUserData = async (id) => {
@@ -269,6 +278,7 @@ exports.deleteUserData = async (id) => {
     Appointment.deleteMany({ $or: [{ customer: id }, { employee: id }] }).lean().exec(),
     Transaction.deleteMany({ customer: id }).lean().exec(),
     Requirement.deleteMany({ employee: id }).lean().exec(),
+    Information.deleteMany({ customer: id }).lean().exec(),
     cloudinary.api.delete_resources(publicIds),
   ]);
 

@@ -67,31 +67,39 @@ exports.createNewUser = [
   upload.array("image"),
   checkRequiredFields(["name", "email", "password", "contact_number", "image"]),
   asyncHandler(async (req, res, next) => {
-    const result = await usersService.createUserData(req);
-    const user = result.user;
-    const newRequirement = result.newRequirement;
+    const { user, newRequirement, newInformation } = await usersService.createUserData(req);
 
     return SuccessHandler(
       res,
       `New user ${user?.name} created with an ID ${user?._id}`,
-      { user, newRequirement }
+      { user, newRequirement, newInformation }
     );
   }),
 ];
+exports.createNewUser = [
+  upload.array("image"),
+  checkRequiredFields(["name", "email", "password", "contact_number", "image"]),
+  asyncHandler(async (req, res, next) => {
+    const { user, newRequirement, newInformation } = await usersService.createUserData(req);
 
+    return SuccessHandler(
+      res,
+      `New user ${user?.name} created with an ID ${user?._id}`,
+      { user, newRequirement, newInformation }
+    );
+  }),
+];
 
 exports.updateUser = [
   upload.array("image"),
   checkRequiredFields(["name", "email", "contact_number", "image"]),
   asyncHandler(async (req, res, next) => {
-    const result = await usersService.updateUserData(req, res, req.params.id);
-    const updatedUser = result.updatedUser;
-    const updateRequirement = result.updateRequirement;
+    const { updatedUser, updateRequirement, updateInformation } = await usersService.updateUserData(req, res, req.params.id);
 
     return SuccessHandler(
       res,
       `User ${updatedUser?.name} with ID ${updatedUser?._id} is updated`,
-      { updatedUser, updateRequirement }
+      { updatedUser, updateRequirement, updateInformation }
     );
   }),
 ];
