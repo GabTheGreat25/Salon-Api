@@ -113,7 +113,7 @@ exports.createUserData = async (req, res) => {
       : req.body.roles.split(", ")
     : [ROLE.ONLINE_CUSTOMER];
 
-  const active = roles.includes(ROLE.ADMIN);
+  const active = roles.includes(ROLE.ADMIN) || roles.includes(ROLE.ONLINE_CUSTOMER) || roles.includes(ROLE.WALK_IN_CUSTOMER);
 
   const user = await User.create({
     name: req.body.name,
@@ -157,8 +157,9 @@ exports.createUserData = async (req, res) => {
   } else if (roles.includes(ROLE.ONLINE_CUSTOMER) || roles.includes(ROLE.WALK_IN_CUSTOMER)) {
     newInformation = await Information.create({
       customer: user?._id,
-      allergy: req.body.allergy ? (req.body.allergy.includes(',') ? req.body.allergy.split(',') : [req.body.allergy]) : [],
-      product_preference: req.body.product_preference ? (req.body.product_preference.includes(',') ? req.body.product_preference.split(',') : [req.body.product_preference]) : [],
+      description: req.body.description,
+      allergy: req.body.allergy,
+      product_preference: req.body.product_preference,
     });
   }
 
@@ -253,8 +254,9 @@ exports.updateUserData = async (req, res, id) => {
     updateInformation = await Information.findOneAndUpdate(
       { customer: id },
       {
-        allergy: req.body.allergy || [],
-        product_preference: req.body.product_preference || [],
+        description: req.body.description,
+        allergy: req.body.allergy,
+        product_preference: req.body.product_preference,
       },
       { new: true, upsert: true }
     ).lean().exec();
