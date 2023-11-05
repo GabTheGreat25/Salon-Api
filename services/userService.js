@@ -157,8 +157,8 @@ exports.createUserData = async (req, res) => {
   } else if (roles.includes(ROLE.ONLINE_CUSTOMER) || roles.includes(ROLE.WALK_IN_CUSTOMER)) {
     newInformation = await Information.create({
       customer: user?._id,
-      allergy: req.body.allergy || [],
-      product_preference: req.body.product_preference || [],
+      allergy: req.body.allergy ? (req.body.allergy.includes(',') ? req.body.allergy.split(',') : [req.body.allergy]) : [],
+      product_preference: req.body.product_preference ? (req.body.product_preference.includes(',') ? req.body.product_preference.split(',') : [req.body.product_preference]) : [],
     });
   }
 
