@@ -9,14 +9,18 @@ const informationSchema = new mongoose.Schema({
         required: [true, "Please enter a customer"],
         ref: RESOURCE.USER
     },
-    allergy: [{
+    description: {
         type: String,
         required: false,
-    }],
-    product_preference: [{
+    },
+    allergy: {
         type: String,
         required: false,
-    }],
+    },
+    product_preference: {
+        type: String,
+        required: false,
+    },
 })
 
 module.exports = mongoose.model(RESOURCE.INFORMATION, informationSchema)
