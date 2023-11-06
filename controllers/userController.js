@@ -6,6 +6,7 @@ const checkRequiredFields = require("../helpers/checkRequiredFields");
 const token = require("../utils/token");
 const { upload } = require("../utils/cloudinary");
 const { STATUSCODE } = require("../constants/index");
+const { ROLE } = require("../constants/index");
 
 exports.confirmUser = asyncHandler(async (req, res, next) => {
   const userId = req.params.id;
@@ -69,22 +70,18 @@ exports.createNewUser = [
   asyncHandler(async (req, res, next) => {
     const { user, newRequirement, newInformation } = await usersService.createUserData(req);
 
-    return SuccessHandler(
-      res,
-      `New user ${user?.name} created with an ID ${user?._id}`,
-      { user, newRequirement, newInformation }
-    );
-  }),
-];
-exports.createNewUser = [
-  upload.array("image"),
-  checkRequiredFields(["name", "email", "password", "contact_number", "image"]),
-  asyncHandler(async (req, res, next) => {
-    const { user, newRequirement, newInformation } = await usersService.createUserData(req);
+    const successMessage =
+      user && user.roles.includes(ROLE.ONLINE_CUSTOMER)
+        ? `New customer ${user?.name} created with an ID ${user?._id}`
+        : user && user.roles.includes(ROLE.ADMIN)
+        ? `New admin ${user?.name} created with an ID ${user?._id}`
+        : user && user.roles.includes(ROLE.EMPLOYEE)
+        ? `New employee ${user?.name} created with an ID ${user?._id}. Please wait for the admin to confirm your account. Thank you!`
+        : null;
 
     return SuccessHandler(
       res,
-      `New user ${user?.name} created with an ID ${user?._id}`,
+      successMessage,
       { user, newRequirement, newInformation }
     );
   }),

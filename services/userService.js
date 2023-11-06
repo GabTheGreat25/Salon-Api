@@ -146,8 +146,7 @@ exports.createUserData = async (req, res) => {
           };
         }));
     }
-
-    if (docsImages.length === STATUSCODE.ZERO) docsImages = existingUser.docsImages || [];
+    if (docsImages.length === STATUSCODE.ZERO) throw new ErrorHandler("At least one docs is required");
 
     newRequirement = await Requirement.create({
       employee: user?._id,
