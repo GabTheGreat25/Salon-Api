@@ -8,12 +8,43 @@ const {
   STATUSCODE
 } = require("../constants/index");
 
-exports.getAllProductData = async () => {
-  const products = await Product.find().sort({
-    createdAt: -1
-  }).lean().exec();
+exports.getAllProductData = async (page, limit, search, sort, filter) => {
+  const skip = (page - 1) * limit;
 
-  return products;
+  let productsQuery = Product.find();
+
+  if (search) {
+    const searchFields = ["product_name", "brand", "category"];
+    const regexConditions = searchFields.map(field => ({
+      [field]: {
+        $regex: new RegExp(search, "i")
+      }
+    }));
+
+    productsQuery = productsQuery.or(regexConditions);
+  }
+
+  if (sort) {
+    const [field, order] = sort.split(":");
+    productsQuery = productsQuery.sort({
+      [field]: order === "asc" ? 1 : -1,
+    });
+  } else {
+    productsQuery = productsQuery.sort({
+      createdAt: -1
+    });
+  }
+
+  if (filter) {
+    const [field, value] = filter.split(":");
+    productsQuery = productsQuery.where(field).equals(value);
+  }
+
+  productsQuery = productsQuery
+    .skip(skip)
+    .limit(limit);
+
+  return productsQuery;
 };
 
 exports.getSingleProductData = async (id) => {
