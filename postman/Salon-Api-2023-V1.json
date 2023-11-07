@@ -1541,7 +1541,39 @@
 							"mode": "formdata",
 							"formdata": []
 						},
-						"url": "{{URI}}{{V1}}appointments"
+						"url": {
+							"raw": "{{URI}}{{V1}}appointments?search=1200&sort=date:desc&filter=date:2023-12-11&page=1&limit=100",
+							"host": [
+								"{{URI}}{{V1}}appointments"
+							],
+							"query": [
+								{
+									"key": "search",
+									"value": "1200",
+									"type": "text"
+								},
+								{
+									"key": "sort",
+									"value": "date:desc",
+									"type": "text"
+								},
+								{
+									"key": "filter",
+									"value": "date:2023-12-11",
+									"type": "text"
+								},
+								{
+									"key": "page",
+									"value": "1",
+									"type": "text"
+								},
+								{
+									"key": "limit",
+									"value": "100",
+									"type": "text"
+								}
+							]
+						}
 					},
 					"response": []
 				},
@@ -1679,7 +1711,45 @@
 							"mode": "formdata",
 							"formdata": []
 						},
-						"url": "{{URI}}{{V1}}transactions"
+						"url": {
+							"raw": "{{URI}}{{V1}}transactions?search=Gcash&sort=status:asc&filter=status:pending&page=1&limit=100",
+							"host": [
+								"{{URI}}{{V1}}transactions"
+							],
+							"query": [
+								{
+									"key": "search",
+									"value": "Gcash",
+									"type": "text"
+								},
+								{
+									"key": "sort",
+									"value": "status:asc",
+									"type": "text"
+								},
+								{
+									"key": "filter",
+									"value": "date:2023-12-12",
+									"type": "text",
+									"disabled": true
+								},
+								{
+									"key": "filter",
+									"value": "status:pending",
+									"type": "text"
+								},
+								{
+									"key": "page",
+									"value": "1",
+									"type": "text"
+								},
+								{
+									"key": "limit",
+									"value": "100",
+									"type": "text"
+								}
+							]
+						}
 					},
 					"response": []
 				},
