@@ -274,7 +274,37 @@
 							"mode": "formdata",
 							"formdata": []
 						},
-						"url": "{{URI}}{{V1}}users"
+						"url": {
+							"raw": "{{URI}}{{V1}}users?page=1&limit=1",
+							"host": [
+								"{{URI}}{{V1}}users"
+							],
+							"query": [
+								{
+									"key": "search",
+									"value": "gab",
+									"disabled": true
+								},
+								{
+									"key": "sort",
+									"value": "product_name:desc",
+									"disabled": true
+								},
+								{
+									"key": "filter",
+									"value": "product_name:dove",
+									"disabled": true
+								},
+								{
+									"key": "page",
+									"value": "1"
+								},
+								{
+									"key": "limit",
+									"value": "1"
+								}
+							]
+						}
 					},
 					"response": []
 				},
@@ -447,6 +477,11 @@
 									"type": "file",
 									"fileNotInWorkingDirectoryWarning": "This file isn't in your working directory. Teammates you share this request with won't be able to use this file. To make collaboration easier you can setup your working directory in Settings.",
 									"src": "/C:/Users/HP/Downloads/393864880_725350155711728_6749489122381010523_n.jpg"
+								},
+								{
+									"key": "description",
+									"value": "Pogi",
+									"type": "text"
 								},
 								{
 									"key": "allergy",
@@ -637,6 +672,11 @@
 									"src": "/C:/Users/HP/Downloads/never forget.png"
 								},
 								{
+									"key": "description",
+									"value": "Pogi",
+									"type": "text"
+								},
+								{
 									"key": "allergy",
 									"value": "Skin rashes",
 									"type": "text"
@@ -758,7 +798,37 @@
 							"mode": "formdata",
 							"formdata": []
 						},
-						"url": "{{URI}}{{V1}}products"
+						"url": {
+							"raw": "{{URI}}{{V1}}products?search=Dove&sort=product_name:desc&filter=brand:Dove&page=1&limit=100",
+							"host": [
+								"{{URI}}{{V1}}products"
+							],
+							"query": [
+								{
+									"key": "search",
+									"value": "Dove",
+									"type": "text"
+								},
+								{
+									"key": "sort",
+									"value": "product_name:desc",
+									"type": "text"
+								},
+								{
+									"key": "filter",
+									"value": "brand:Dove",
+									"type": "text"
+								},
+								{
+									"key": "page",
+									"value": "1"
+								},
+								{
+									"key": "limit",
+									"value": "100"
+								}
+							]
+						}
 					},
 					"response": []
 				},
@@ -788,12 +858,12 @@
 							"formdata": [
 								{
 									"key": "product_name",
-									"value": "Palmolive Naturals",
+									"value": "Dove Naturals",
 									"type": "text"
 								},
 								{
 									"key": "brand",
-									"value": "Palmolive",
+									"value": "Dove",
 									"type": "text"
 								},
 								{
@@ -814,7 +884,7 @@
 								{
 									"key": "image",
 									"type": "file",
-									"src": "/C:/Users/HP/Downloads/381315966_636240375028554_2370526391270814668_n.jpg"
+									"src": "/C:/Users/HP/Downloads/Grey and Pink Scientific Project Presentation (2).png"
 								}
 							]
 						},
@@ -1018,7 +1088,7 @@
 						],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n    \"employee\": \"65350a4ceec5874f1f42b036\",\r\n    \"available\": false,\r\n    \"date\": \"2023-12-12\",\r\n    \"time\": \"12:12:12\",\r\n    \"note\": \"Hell Yeah\"\r\n}"
+							"raw": "{\r\n    \"employee\": \"65350a4ceec5874f1f42b036\",\r\n    \"available\": true,\r\n    \"date\": \"2023-12-12\",\r\n    \"time\": \"12:12:12\",\r\n    \"note\": \"Hell Yeah\"\r\n}"
 						},
 						"url": "{{URI}}{{V1}}/schedule/edit/6543d3d03dabb2e60ec2258a"
 					},
@@ -1497,7 +1567,7 @@
 						],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n    \"employee\": \"65350a4ceec5874f1f42b036\",\r\n    \"customer\": \"653615955ce192e90e8c37b2\",\r\n    \"service\": \"65294eed1b9e20a2afe5c0de\",\r\n    \"total_price\": 1200,\r\n    \"date\": \"2023-12-11\",\r\n    \"time\": \"12:12:12\",\r\n    \"note\": \"Hell Yeah\"\r\n}"
+							"raw": "{\r\n    \"employee\": \"65350a4ceec5874f1f42b036\",\r\n    \"customer\": \"653615955ce192e90e8c37b2\",\r\n    \"service\": \"65294eed1b9e20a2afe5c0de\",\r\n    \"total_price\": 12000,\r\n    \"date\": \"2023-12-11\",\r\n    \"time\": \"12:12:12\",\r\n    \"note\": \"Hell Yeah\"\r\n}"
 						},
 						"url": "{{URI}}{{V1}}appointments"
 					},
@@ -1884,7 +1954,7 @@
 		{
 			"listen": "prerequest",
 			"script": {
-				"id": "4c6dc4ae-9b73-4872-958a-700fbabc5582",
+				"id": "06ca936e-267c-4015-b099-c36fbcd85d76",
 				"type": "text/javascript",
 				"exec": [
 					""
@@ -1894,7 +1964,7 @@
 		{
 			"listen": "test",
 			"script": {
-				"id": "3b9082ae-f79d-4d18-a20e-8e31e378d2f4",
+				"id": "92dee51e-44c7-47ab-9cd4-d6000dfbbfa7",
 				"type": "text/javascript",
 				"exec": [
 					""
@@ -1905,7 +1975,7 @@
 	"variable": [
 		{
 			"key": "Bearer",
-			"value": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJVc2VySW5mbyI6eyJlbWFpbCI6ImFkbWluZ2FiQGdtYWlsLmNvbSIsInJvbGVzIjpbIkFkbWluIl19LCJpYXQiOjE2OTg5MTA0MzEsImV4cCI6MTY5OTUxNTIzMX0.r0KrNBFwiAS2SJTqHlDiOOeiHgsZPfWjoXkkBQySAKM",
+			"value": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJVc2VySW5mbyI6eyJlbWFpbCI6ImFkbWluZ2FiQGdtYWlsLmNvbSIsInJvbGVzIjpbIkFkbWluIl19LCJpYXQiOjE2OTkzMzcyMjYsImV4cCI6MTY5OTk0MjAyNn0.POpmjvr4EyWeFYjH8sdgawJnc6bQqXEEsPShCjW_Wxs",
 			"type": "string"
 		}
 	]
