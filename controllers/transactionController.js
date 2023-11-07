@@ -6,7 +6,19 @@ const checkRequiredFields = require("../helpers/checkRequiredFields");
 const { STATUSCODE } = require("../constants/index");
 
 exports.getAllTransactions = asyncHandler(async (req, res, next) => {
-  const transactions = await transactionsService.getAllTransactionData();
+  const page = parseInt(req.query.page) || 1;
+  const limit = parseInt(req.query.limit) || 100;
+  const search = req.query.search;
+  const sort = req.query.sort;
+  const filter = req.query.filter;
+
+  const transactions = await transactionsService.getAllTransactionData(
+    page,
+    limit,
+    search,
+    sort,
+    filter
+  );
 
   return transactions?.length === STATUSCODE.ZERO
     ? next(new ErrorHandler("No transactions found"))

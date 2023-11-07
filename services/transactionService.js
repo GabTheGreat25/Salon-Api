@@ -7,20 +7,62 @@ const {
   RESOURCE
 } = require("../constants/index");
 
-exports.getAllTransactionData = async () => {
-  const transactions = await Transaction.find().sort({
-    createdAt: STATUSCODE.NEGATIVE_ONE
-  }).populate([{
-      path: "customer",
-      select: "name",
-    },
-    {
-      path: RESOURCE.APPOINTMENT,
-      select: "date time",
-    },
-  ]).lean().exec();
+exports.getAllTransactionData = async (page, limit, search, sort, filter) => {
+  const skip = (page - 1) * limit;
 
-  return transactions;
+  let transactionsQuery = Transaction.find();
+
+  if (search) {
+    const isNumericSearch = !isNaN(search);
+
+    const searchFields = ["status", "payment"];
+    const numericFields = ["date", "time"];
+
+    const conditions = [];
+
+    if (!isNumericSearch) {
+      conditions.push(
+        ...searchFields.map(field => ({
+          [field]: {
+            $regex: new RegExp(search, "i")
+          }
+        })
+        )
+      );
+    } else
+      conditions.push(
+        ...numericFields.map(field => ({
+          [field]: search
+        })
+        )
+      );
+
+    transactionsQuery = transactionsQuery.or(conditions);
+  }
+
+  if (sort) {
+    const [field, order] = sort.split(":");
+    transactionsQuery = transactionsQuery.sort({
+      [field]: order === "asc" ? 1 : -1,
+    });
+  } else {
+    transactionsQuery = transactionsQuery.sort({
+      createdAt: -1
+    });
+  }
+
+  if (filter) {
+    const [field, value] = filter.split(":");
+    transactionsQuery = transactionsQuery.where(field).equals(value);
+  }
+
+  transactionsQuery = transactionsQuery
+  .populate({ path: "customer", select: "name" })
+  .populate({ path: RESOURCE.APPOINTMENT, select: "date time" })
+  .skip(skip)
+  .limit(limit);
+
+  return transactionsQuery;
 };
 
 exports.getSingleTransactionData = async (id) => {

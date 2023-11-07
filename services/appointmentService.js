@@ -45,7 +45,6 @@ exports.getAllAppointmentsData = async (page, limit, search, sort, filter) => {
   return appointmentsQuery;
 };
 
-
 exports.getSingleAppointmentData = async (id) => {
   if (!mongoose.Types.ObjectId.isValid(id))
     throw new ErrorHandler(`Invalid appointment ID: ${id}`);
