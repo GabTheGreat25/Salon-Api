@@ -2,16 +2,49 @@ const Appointment = require("../models/appointment");
 const ErrorHandler = require("../utils/errorHandler");
 const mongoose = require("mongoose");
 
-exports.getAllAppointmentsData = async () => {
-  const appointments = await Appointment.find()
-    .sort({ createdAt: -1 })
+exports.getAllAppointmentsData = async (page, limit, search, sort, filter) => {
+  const skip = (page - 1) * limit;
+
+  let appointmentsQuery = Appointment.find();
+
+  if (search) {
+    const isNumericSearch = !isNaN(search);
+
+    if (isNumericSearch) {
+      const numericFields = ["total_price", "date", "time"];
+      const numericFieldConditions = numericFields.map(field => ({
+        [field]: search,
+      }));
+
+      appointmentsQuery = appointmentsQuery.or(numericFieldConditions);
+    }
+  }
+
+  if (sort) {
+    const [field, order] = sort.split(":");
+    appointmentsQuery = appointmentsQuery.sort({
+      [field]: order === "asc" ? 1 : -1,
+    });
+  } else {
+    appointmentsQuery = appointmentsQuery.sort({
+      createdAt: -1,
+    });
+  }
+
+  if (filter) {
+    const [field, value] = filter.split(":");
+    appointmentsQuery = appointmentsQuery.where(field).equals(value);
+  }
+
+  appointmentsQuery = appointmentsQuery
     .populate({ path: "employee customer", select: "name" })
     .populate({ path: "service", select: "service_name" })
-    .lean()
-    .exec();
+    .skip(skip)
+    .limit(limit);
 
-  return appointments;
+  return appointmentsQuery;
 };
+
 
 exports.getSingleAppointmentData = async (id) => {
   if (!mongoose.Types.ObjectId.isValid(id))

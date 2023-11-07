@@ -6,7 +6,19 @@ const checkRequiredFields = require("../helpers/checkRequiredFields");
 const { STATUSCODE } = require("../constants/index");
 
 exports.getAllAppointments = asyncHandler(async (req, res, next) => {
-  const appointments = await appointmentsService.getAllAppointmentsData();
+  const page = parseInt(req.query.page) || 1;
+  const limit = parseInt(req.query.limit) || 100;
+  const search = req.query.search;
+  const sort = req.query.sort;
+  const filter = req.query.filter;
+
+  const appointments = await appointmentsService.getAllAppointmentsData(
+    page,
+    limit,
+    search,
+    sort,
+    filter
+  );
 
   return appointments?.length === STATUSCODE.ZERO
     ? next(new ErrorHandler("No appointments found"))
