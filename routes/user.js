@@ -29,7 +29,7 @@ const userRoutes = [
   {
     method: METHOD.PATCH,
     path: PATH.EDIT_USER_ID,
-    roles: [ROLE.ADMIN, ROLE.EMPLOYEE],
+    roles: [ROLE.ADMIN, ROLE.EMPLOYEE, ROLE.ONLINE_CUSTOMER],
     middleware: [verifyJWT],
     handler: userController.updateUser,
   },
