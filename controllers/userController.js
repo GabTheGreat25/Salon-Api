@@ -22,13 +22,17 @@ exports.login = [
     const { user, accessToken, accessTokenMaxAge } =
       await usersService.loginToken(req.body?.email, req.body?.password);
 
+    const userData = {
+      user,
+      accessToken,
+      ...(user.requirement && { requirement: user.requirement }),
+      ...(user.information && { information: user.information }),
+    };
+
     const setCookie = token.setAccessTokenCookie(accessTokenMaxAge);
     setCookie(res, accessToken);
 
-    SuccessHandler(res, `User ${user?.name} successfully login`, {
-      user,
-      accessToken,
-    });
+    SuccessHandler(res, `User ${user?.name} successfully login`, userData);
   }),
 ];
 
@@ -53,15 +57,19 @@ exports.getAllUsers = asyncHandler(async (req, res, next) => {
 });
 
 exports.getSingleUser = asyncHandler(async (req, res, next) => {
-  const user = await usersService.getSingleUserData(req.params?.id);
+  const userRoles = req.userRoles;
 
-  return !user
-    ? next(new ErrorHandler("No user found"))
-    : SuccessHandler(
-        res,
-        `User ${user?.name} with ID ${user?._id} retrieved`,
-        user
-      );
+    const user = await usersService.getSingleUserData(req.params?.id, userRoles);
+
+    if (!user) {
+      return next(new ErrorHandler("No user found"));
+    }
+
+    return SuccessHandler(
+      res,
+      `User ${user?.name} with ID ${user?._id} retrieved`,
+      user
+    );
 });
 
 exports.createNewUser = [

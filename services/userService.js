@@ -25,7 +25,9 @@ exports.confirmUserRole = async (userId) => {
 };
 
 exports.loginToken = async (email, password) => {
-  const foundUser = await User.findOne({ email }).select("+password").exec();
+  const foundUser = await User.findOne({
+    email
+  }).select("+password").exec();
 
   if (!foundUser) throw new ErrorHandler("Email not found or not existing");
 
@@ -33,7 +35,7 @@ exports.loginToken = async (email, password) => {
 
   const match = await bcrypt.compare(password, foundUser.password);
 
-  if (!match) throw new ErrorHandler("Wrong Password");
+  if (!match) throw ErrorHandler("Wrong Password");
 
   const accessToken = token.generateAccessToken(
     foundUser.email,
@@ -42,9 +44,22 @@ exports.loginToken = async (email, password) => {
 
   const accessTokenMaxAge = 7 * 24 * 60 * 60 * 1000;
 
-  return { user: foundUser, accessToken, accessTokenMaxAge };
-};
+  if (foundUser.roles.includes(ROLE.EMPLOYEE)) {
+    foundUser.requirement = await Requirement.findOne({
+      employee: foundUser._id
+    }).lean().exec();
+  } else if (foundUser.roles.includes(ROLE.ONLINE_CUSTOMER) || foundUser.roles.includes(ROLE.WALK_IN_CUSTOMER)) {
+    foundUser.information = await Information.findOne({
+      customer: foundUser._id
+    }).lean().exec();
+  }
 
+  return {
+    user: foundUser,
+    accessToken,
+    accessTokenMaxAge
+  };
+};
 
 exports.logoutUser = (cookies, res) => {
   return new Promise((resolve, reject) => {
@@ -71,12 +86,25 @@ exports.getAllUsersData = async () => {
 };
 
 exports.getSingleUserData = async (id) => {
-  if (!mongoose.Types.ObjectId.isValid(id))
+  if (!mongoose.Types.ObjectId.isValid(id)) {
     throw new ErrorHandler(`Invalid user ID: ${id}`);
+  }
 
   const user = await User.findById(id).lean().exec();
 
-  if (!user) throw new ErrorHandler(`User not found with ID: ${id}`);
+  if (!user) {
+    throw new ErrorHandler(`User not found with ID: ${id}`);
+  }
+
+  if (user.roles.includes(ROLE.EMPLOYEE)) {
+    user.requirement = await Requirement.findOne({
+      employee: id
+    }).lean().exec();
+  } else if (user.roles.includes(ROLE.ONLINE_CUSTOMER) || user.roles.includes(ROLE.WALK_IN_CUSTOMER)) {
+    user.information = await Information.findOne({
+      customer: id
+    }).lean().exec();
+  }
 
   return user;
 };
