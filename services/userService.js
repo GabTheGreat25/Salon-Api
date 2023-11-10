@@ -12,6 +12,35 @@ const { cloudinary } = require("../utils/cloudinary");
 const { STATUSCODE, RESOURCE, ROLE } = require("../constants/index");
 const blacklistedTokens = [];
 
+exports.updatePassword = async (
+  id,
+  oldPassword,
+  newPassword,
+  confirmPassword
+) => {
+  const user = await User.findById(id).select("+password");
+
+  if (!user) throw new ErrorHandler("User not found");
+
+  const isMatch = await bcrypt.compare(oldPassword, user.password);
+
+  if (!isMatch) throw new ErrorHandler("Invalid old password");
+
+  if (newPassword !== confirmPassword)
+    throw new ErrorHandler("Passwords do not match");
+
+  const hashedPassword = await bcrypt.hash(
+    newPassword,
+    Number(process.env.SALT_NUMBER)
+  );
+
+  user.password = hashedPassword;
+
+  await user.save();
+
+  return user;
+};
+
 exports.confirmUserRole = async (userId) => {
   const user = await User.findById(userId);
 
@@ -35,7 +64,7 @@ exports.loginToken = async (email, password) => {
 
   const match = await bcrypt.compare(password, foundUser.password);
 
-  if (!match) throw ErrorHandler("Wrong Password");
+  if (!match) throw new ErrorHandler("Wrong Password");
 
   const accessToken = token.generateAccessToken(
     foundUser.email,

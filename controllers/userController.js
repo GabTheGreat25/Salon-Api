@@ -8,6 +8,21 @@ const { upload } = require("../utils/cloudinary");
 const { STATUSCODE } = require("../constants/index");
 const { ROLE } = require("../constants/index");
 
+exports.updatePassword = asyncHandler(async (req, res, next) => {
+  const { oldPassword, newPassword, confirmPassword } = req.body;
+  const updatedUser = await usersService.updatePassword(
+    req.params.id,
+    oldPassword,
+    newPassword,
+    confirmPassword
+  );
+  SuccessHandler(
+    res,
+    `Old Password ${oldPassword} Successfully Updated with ${newPassword}`,
+    updatedUser
+  );
+});
+
 exports.confirmUser = asyncHandler(async (req, res, next) => {
   const userId = req.params.id;
 
