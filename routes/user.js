@@ -46,7 +46,14 @@ const userRoutes = [
     roles: [ROLE.ADMIN],
     middleware: [verifyJWT],
     handler: userController.confirmUser,
-  }
+  },
+  {
+    method: METHOD.PATCH,
+    path: PATH.UPDATE_PASSWORD,
+    roles: [ROLE.ADMIN, ROLE.EMPLOYEE, ROLE.ONLINE_CUSTOMER],
+    middleware: [verifyJWT],
+    handler: userController.updatePassword,
+  },
 ];
 
 userRoutes.forEach((route) => {
