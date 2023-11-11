@@ -41,7 +41,7 @@ exports.createServiceData = async (req, res) => {
         });
         return {
           public_id: result.public_id,
-          url: result.url,
+          url: result.secure_url,
           originalname: file.originalname,
         };
       })
@@ -87,7 +87,7 @@ exports.updateServiceData = async (req, res, id) => {
         });
         return {
           public_id: result.public_id,
-          url: result.url,
+          url: result.secure_url,
           originalname: file.originalname,
         };
       })
