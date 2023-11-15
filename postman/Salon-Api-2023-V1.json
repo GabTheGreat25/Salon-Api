@@ -199,7 +199,7 @@
 								"header": [],
 								"body": {
 									"mode": "raw",
-									"raw": "{\r\n    \"email\": \"customergab@gmail.com\",\r\n    \"password\": \"12345678\"\r\n}",
+									"raw": "{\r\n    \"email\": \"admingab@gmail.com\",\r\n    \"password\": \"12345678\"\r\n}",
 									"options": {
 										"raw": {
 											"language": "json"
@@ -352,12 +352,12 @@
 							"formdata": [
 								{
 									"key": "name",
-									"value": "employeegab",
+									"value": "employee",
 									"type": "text"
 								},
 								{
 									"key": "email",
-									"value": "employeegab@gmail.com",
+									"value": "employee@gmail.com",
 									"type": "text"
 								},
 								{
@@ -379,7 +379,7 @@
 									"key": "image",
 									"type": "file",
 									"fileNotInWorkingDirectoryWarning": "This file isn't in your working directory. Teammates you share this request with won't be able to use this file. To make collaboration easier you can setup your working directory in Settings.",
-									"src": "/C:/Users/HP/Downloads/371487030_298145949722519_7862513822278912409_n.png"
+									"src": "/C:/Users/HP/Downloads/f79641bf-03ee-4559-836a-aff3c7b83cbf.jpg"
 								},
 								{
 									"key": "job",
@@ -387,9 +387,10 @@
 									"type": "text"
 								},
 								{
-									"key": "image",
+									"key": "file",
 									"type": "file",
-									"src": "/C:/Users/HP/Downloads/368672513_339409192073820_3334101240960891613_n.jpg"
+									"fileNotInWorkingDirectoryWarning": "This file isn't in your working directory. Teammates you share this request with won't be able to use this file. To make collaboration easier you can setup your working directory in Settings.",
+									"src": "/C:/Users/HP/Downloads/50dfb000-919d-4202-9fa3-d433f1b6d413.jpg"
 								}
 							]
 						},
@@ -684,7 +685,7 @@
 							"mode": "raw",
 							"raw": ""
 						},
-						"url": "{{URI}}{{V1}}/user/activate/654cf7bc239e1dc2ba9ea876"
+						"url": "{{URI}}{{V1}}/user/activate/654ef95251a40cb756103853"
 					},
 					"response": []
 				},
@@ -2020,7 +2021,7 @@
 		{
 			"listen": "prerequest",
 			"script": {
-				"id": "15c7aadd-dd1e-4d4b-961e-329f73926695",
+				"id": "982c0cec-2f49-412f-afa1-6ba0fa8fdc8a",
 				"type": "text/javascript",
 				"exec": [
 					""
@@ -2030,7 +2031,7 @@
 		{
 			"listen": "test",
 			"script": {
-				"id": "705986e2-1f59-4d6d-9a9b-d87cf352b76c",
+				"id": "1e904fd1-e818-482d-9dd6-f75c586b6717",
 				"type": "text/javascript",
 				"exec": [
 					""
@@ -2041,7 +2042,7 @@
 	"variable": [
 		{
 			"key": "Bearer",
-			"value": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJVc2VySW5mbyI6eyJlbWFpbCI6ImN1c3RvbWVyZ2FiQGdtYWlsLmNvbSIsInJvbGVzIjpbIk9ubGluZSBDdXN0b21lciJdfSwiaWF0IjoxNjk5NjA2NDQ4LCJleHAiOjE3MDAyMTEyNDh9.1yaSE4-GBivctQ9F8VEx6OILkMSrh_lFB_rxBqYSaao",
+			"value": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJVc2VySW5mbyI6eyJlbWFpbCI6ImFkbWluZ2FiQGdtYWlsLmNvbSIsInJvbGVzIjpbIkFkbWluIl19LCJpYXQiOjE2OTk2NzQ0NjcsImV4cCI6MTcwMDI3OTI2N30.pcZ8HADBW3V3tWtAzpuotJ7ONhv79kDCEFBA67tapJ8",
 			"type": "string"
 		}
 	]
