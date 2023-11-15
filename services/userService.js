@@ -12,6 +12,19 @@ const { cloudinary } = require("../utils/cloudinary");
 const { STATUSCODE, RESOURCE, ROLE } = require("../constants/index");
 const blacklistedTokens = [];
 
+const deleteUserAfterTimeout = async (userId) => {
+  const user = await User.findById(userId);
+  if (user && !user.active) {
+    const publicIds = user.image.map((image) => image.public_id);
+
+    await Promise.all([
+      User.findByIdAndDelete(userId).lean().exec(),
+      Requirement.deleteMany({ employee: userId }).lean().exec(),
+      cloudinary.api.delete_resources(publicIds),
+    ]);
+  }
+};
+
 exports.updatePassword = async (
   id,
   oldPassword,
@@ -158,7 +171,8 @@ exports.createUserData = async (req, res) => {
           url: result.secure_url,
           originalname: file.originalname,
         };
-      }));
+      })
+    );
   }
 
   if (userImages.length === STATUSCODE.ZERO)
@@ -170,7 +184,10 @@ exports.createUserData = async (req, res) => {
       : req.body.roles.split(", ")
     : [ROLE.ONLINE_CUSTOMER];
 
-  const active = roles.includes(ROLE.ADMIN) || roles.includes(ROLE.ONLINE_CUSTOMER) || roles.includes(ROLE.WALK_IN_CUSTOMER);
+  const active =
+    roles.includes(ROLE.ADMIN) ||
+    roles.includes(ROLE.ONLINE_CUSTOMER) ||
+    roles.includes(ROLE.WALK_IN_CUSTOMER);
 
   const user = await User.create({
     name: req.body.name,
@@ -201,16 +218,25 @@ exports.createUserData = async (req, res) => {
             url: result.secure_url,
             originalname: file.originalname,
           };
-        }));
+        })
+      );
     }
-    if (docsImages.length === STATUSCODE.ZERO) throw new ErrorHandler("At least one docs is required");
+    if (docsImages.length === STATUSCODE.ZERO)
+      throw new ErrorHandler("At least one docs is required");
 
     newRequirement = await Requirement.create({
       employee: user?._id,
       job: req.body.job,
       image: docsImages,
     });
-  } else if (roles.includes(ROLE.ONLINE_CUSTOMER) || roles.includes(ROLE.WALK_IN_CUSTOMER)) {
+
+    setTimeout(async () => {
+      await deleteUserAfterTimeout(user?._id);
+    }, 604800000);
+  } else if (
+    roles.includes(ROLE.ONLINE_CUSTOMER) ||
+    roles.includes(ROLE.WALK_IN_CUSTOMER)
+  ) {
     newInformation = await Information.create({
       customer: user?._id,
       description: req.body.description,
@@ -221,7 +247,6 @@ exports.createUserData = async (req, res) => {
 
   return { user, newRequirement, newInformation };
 };
-
 exports.updateUserData = async (req, res, id) => {
   if (!mongoose.Types.ObjectId.isValid(id)) throw new ErrorHandler(`Invalid user ID: ${id}`);
 
