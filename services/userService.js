@@ -210,40 +210,34 @@ exports.createUserData = async (req, res) => {
     roles.includes(ROLE.ONLINE_CUSTOMER) ||
     roles.includes(ROLE.WALK_IN_CUSTOMER);
 
-  const user = await User.create({
-    name: req.body.name,
-    email: req.body.email,
-    password: await bcrypt.hash(
-      req.body.password,
-      Number(process.env.SALT_NUMBER)
-    ),
-    contact_number: req.body.contact_number,
-    roles: roles,
-    image: userImages,
-    active: active,
-  });
-
+  let user;
   let newRequirement;
   let newInformation;
 
-  if (roles.includes(ROLE.EMPLOYEE)) {
-    let docsImages = [];
-    if (req.files && Array.isArray(req.files)) {
-      docsImages = await Promise.all(
-        req.files.map(async (file) => {
-          const result = await cloudinary.uploader.upload(file.path, {
-            public_id: file.filename,
-          });
-          return {
-            public_id: result.public_id,
-            url: result.secure_url,
-            originalname: file.originalname,
-          };
-        })
-      );
+  if (roles.includes(ROLE.ADMIN)) {
+    user = await User.create({
+      name: req.body.name,
+      email: req.body.email,
+      password: await bcrypt.hash(
+        req.body.password,
+        Number(process.env.SALT_NUMBER)
+      ),
+      contact_number: req.body.contact_number,
+      roles: roles,
+      image: userImages,
+      active: active,
+    });
+  } else if (roles.includes(ROLE.EMPLOYEE)) {
+    const currentDate = new Date();
+    const selectedDate = new Date(req.body.date);
+    if (
+      !(
+        selectedDate >= currentDate &&
+        selectedDate <= new Date(currentDate.getTime() + 7 * 24 * 60 * 60 * 1000)
+      )
+    ) {
+      throw new ErrorHandler("Invalid date. Date must be within the next 7 days and not in the past.");
     }
-    if (docsImages.length === STATUSCODE.ZERO)
-      throw new ErrorHandler("At least one docs is required");
 
     user = await User.create({
       name: req.body.name,
@@ -261,16 +255,30 @@ exports.createUserData = async (req, res) => {
     newRequirement = await Requirement.create({
       employee: user?._id,
       job: req.body.job,
-      image: docsImages,
+      date: req.body.date,
+      time: req.body.time,
     });
+
+    const deletionTime = selectedDate.getTime() + 7 * 24 * 60 * 60 * 1000 - currentDate.getTime();
 
     setTimeout(async () => {
       await deleteUserAfterTimeout(user?._id);
-    }, 604800000);
-  } else if (
-    roles.includes(ROLE.ONLINE_CUSTOMER) ||
-    roles.includes(ROLE.WALK_IN_CUSTOMER)
-  ) {
+    }, deletionTime);
+  } else {
+
+    user = await User.create({
+      name: req.body.name,
+      email: req.body.email,
+      password: await bcrypt.hash(
+        req.body.password,
+        Number(process.env.SALT_NUMBER)
+      ),
+      contact_number: req.body.contact_number,
+      roles: roles,
+      image: userImages,
+      active: active,
+    });
+
     newInformation = await Information.create({
       customer: user?._id,
       description: req.body.description,
@@ -281,6 +289,7 @@ exports.createUserData = async (req, res) => {
 
   return { user, newRequirement, newInformation };
 };
+
 exports.updateUserData = async (req, res, id) => {
   if (!mongoose.Types.ObjectId.isValid(id)) throw new ErrorHandler(`Invalid user ID: ${id}`);
 

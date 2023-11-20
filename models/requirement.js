@@ -1,33 +1,31 @@
 const mongoose = require("mongoose");
-const {
-    RESOURCE
-} = require("../constants/index");
+const { RESOURCE } = require("../constants/index");
 
 const requirementSchema = new mongoose.Schema({
-    employee: {
-        type: mongoose.Types.ObjectId,
-        required: [true, "Please enter a employee"],
-        ref: RESOURCE.USER
+  employee: {
+    type: mongoose.Types.ObjectId,
+    required: [true, "Please enter an employee"],
+    ref: RESOURCE.USER,
+  },
+  job: {
+    type: String,
+    required: [true, "Please pick a job"],
+    enum: ["Stylist", "Barber", "Nail technician", "Receptionist"],
+  },
+  date: {
+    type: Date,
+    required: [true, "Please enter a date"],
+  },
+  time: {
+    type: String,
+    required: [true, "Please enter a time"],
+    validate: {
+      validator: (value) => {
+        return /^(0?[1-9]|1[0-2]):[0-5][0-9] (AM|PM)$/i.test(value);
+      },
+      message: "Invalid time format. Please use 'HH:MM AM/PM'.",
     },
-    job: {
-        type: String,
-        required: [true, "Please pick a job"],
-        enum: ["Stylist", "Barber", "Nail technician", "Receptionist"],
-    },
-    image: [{
-        public_id: {
-            type: String,
-            required: true,
-        },
-        url: {
-            type: String,
-            required: true,
-        },
-        originalname: {
-            type: String,
-            required: true,
-        },
-    }, ],
-})
+  },
+});
 
-module.exports = mongoose.model(RESOURCE.REQUIREMENT, requirementSchema)
+module.exports = mongoose.model(RESOURCE.REQUIREMENT, requirementSchema);
