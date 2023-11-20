@@ -64,6 +64,8 @@ exports.confirmUserRole = async (userId) => {
   user.active = true;
 
   await user.save()
+
+  return user;
 };
 
 exports.loginToken = async (email, password) => {
@@ -124,7 +126,26 @@ exports.getBlacklistedTokens = () => {
 exports.getAllUsersData = async () => {
   const users = await User.find().sort({ createdAt: -1 }).lean().exec();
 
-  return users;
+  const allUsers = await Promise.all(
+    users?.map(async (user) => {
+      if (user.roles.includes(ROLE.EMPLOYEE)) {
+        user.requirement = await Requirement.findOne({
+          employee: user?._id,
+        }).lean().exec();
+      } else if (
+        user.roles.includes(ROLE.ONLINE_CUSTOMER) ||
+        user.roles.includes(ROLE.WALK_IN_CUSTOMER)
+      ) {
+        user.information = await Information.findOne({
+          customer: user?._id,
+        }).lean().exec();
+      }
+
+      return user;
+    })
+  );
+
+  return allUsers;
 };
 
 exports.getSingleUserData = async (id) => {
@@ -223,6 +244,19 @@ exports.createUserData = async (req, res) => {
     }
     if (docsImages.length === STATUSCODE.ZERO)
       throw new ErrorHandler("At least one docs is required");
+
+    user = await User.create({
+      name: req.body.name,
+      email: req.body.email,
+      password: await bcrypt.hash(
+        req.body.password,
+        Number(process.env.SALT_NUMBER)
+      ),
+      contact_number: req.body.contact_number,
+      roles: roles,
+      image: userImages,
+      active: active,
+    });
 
     newRequirement = await Requirement.create({
       employee: user?._id,

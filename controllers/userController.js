@@ -28,7 +28,7 @@ exports.confirmUser = asyncHandler(async (req, res, next) => {
 
   await usersService.confirmUserRole(userId);
 
-  SuccessHandler(res, `User with ID ${userId} has been activated by the admin.`);
+  SuccessHandler(res, `User with ID ${userId} has been activated by the admin.`, userId);
 });
 
 exports.login = [
