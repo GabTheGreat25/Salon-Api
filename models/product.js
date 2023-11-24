@@ -33,14 +33,6 @@ const productSchema = new mongoose.Schema({
       },
     },
   ],
-  created_date:{
-    type:Date,
-    required:[true, "Created date Field Required"],
-  },
-  expiration_date:{
-    type:Date,
-    required:[true, "Expiration date Field Required"]
-  }
 });
 
 module.exports = mongoose.model(RESOURCE.PRODUCT, productSchema);
