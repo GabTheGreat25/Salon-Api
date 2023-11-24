@@ -48,7 +48,7 @@ exports.getSingleProduct = asyncHandler(async (req, res, next) => {
 
 exports.createNewProduct = [
   upload.array("image"),
-  checkRequiredFields(["product_name", "brand", "type", "created_date", "expiration_date", "image"]),
+  checkRequiredFields(["product_name", "brand", "type", "image"]),
   asyncHandler(async (req, res, next) => {
     const product = await productsService.createProductData(req);
 
@@ -62,7 +62,7 @@ exports.createNewProduct = [
 
 exports.updateProduct = [
   upload.array("image"),
-  checkRequiredFields(["product_name", "brand", "type", "created_date", "expiration_date", "image"]),
+  checkRequiredFields(["product_name", "brand", "type", "image"]),
   asyncHandler(async (req, res, next) => {
     const product = await productsService.updateProductData(
       req,
