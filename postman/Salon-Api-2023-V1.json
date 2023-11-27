@@ -1405,7 +1405,7 @@
 								}
 							]
 						},
-						"url": "{{URI}}{{V1}}service"
+						"url": "{{URI}}{{V1}}delivery"
 					},
 					"response": []
 				},
@@ -1461,7 +1461,7 @@
 								}
 							]
 						},
-						"url": "{{URI}}{{V1}}/service/edit/6529504ea6a7fc19fc879561"
+						"url": "{{URI}}{{V1}}/delivery/edit/6529504ea6a7fc19fc879561"
 					},
 					"response": []
 				},
@@ -1484,7 +1484,7 @@
 							"mode": "formdata",
 							"formdata": []
 						},
-						"url": "{{URI}}{{V1}}service/6529504ea6a7fc19fc879561"
+						"url": "{{URI}}{{V1}}delivery/6529504ea6a7fc19fc879561"
 					},
 					"response": []
 				}
@@ -2045,6 +2045,7 @@
 	],
 	"variable": [
 		{
+			"id": "b88fa05d-fdcf-4c2d-9320-6aaeab183bcf",
 			"key": "Bearer",
 			"value": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJVc2VySW5mbyI6eyJlbWFpbCI6ImFkbWluZ2FiQGdtYWlsLmNvbSIsInJvbGVzIjpbIkFkbWluIl19LCJpYXQiOjE3MDAyNzk0ODAsImV4cCI6MTcwMDg4NDI4MH0.vkc2O_YSfTSKJkAlHgaoRqoOQ5O9CFG6Uu9oOeWef70",
 			"type": "string"
