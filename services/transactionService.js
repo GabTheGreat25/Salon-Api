@@ -1,11 +1,9 @@
 const Transaction = require("../models/transaction");
 const Verification = require("../models/verification");
+const Appointment = require("../models/appointment");
 const ErrorHandler = require("../utils/errorHandler");
 const mongoose = require("mongoose");
-const {
-  STATUSCODE,
-  RESOURCE
-} = require("../constants/index");
+const { STATUSCODE, RESOURCE } = require("../constants/index");
 
 exports.getAllTransactionData = async (page, limit, search, sort, filter) => {
   const skip = (page - 1) * limit;
@@ -22,19 +20,17 @@ exports.getAllTransactionData = async (page, limit, search, sort, filter) => {
 
     if (!isNumericSearch) {
       conditions.push(
-        ...searchFields.map(field => ({
+        ...searchFields.map((field) => ({
           [field]: {
-            $regex: new RegExp(search, "i")
-          }
-        })
-        )
+            $regex: new RegExp(search, "i"),
+          },
+        }))
       );
     } else
       conditions.push(
-        ...numericFields.map(field => ({
-          [field]: search
-        })
-        )
+        ...numericFields.map((field) => ({
+          [field]: search,
+        }))
       );
 
     transactionsQuery = transactionsQuery.or(conditions);
@@ -47,7 +43,7 @@ exports.getAllTransactionData = async (page, limit, search, sort, filter) => {
     });
   } else {
     transactionsQuery = transactionsQuery.sort({
-      createdAt: -1
+      createdAt: -1,
     });
   }
 
@@ -57,10 +53,9 @@ exports.getAllTransactionData = async (page, limit, search, sort, filter) => {
   }
 
   transactionsQuery = transactionsQuery
-  .populate({ path: "customer", select: "name" })
-  .populate({ path: RESOURCE.APPOINTMENT, select: "date time" })
-  .skip(skip)
-  .limit(limit);
+    .populate({ path: RESOURCE.APPOINTMENT, select: "date time" })
+    .skip(skip)
+    .limit(limit);
 
   return transactionsQuery;
 };
@@ -70,91 +65,86 @@ exports.getSingleTransactionData = async (id) => {
     throw new ErrorHandler(`Invalid transaction ID: ${id}`);
 
   const transaction = await Transaction.findById(id)
-    .populate([{
-        path: "customer",
-        select: "name",
-      },
-      {
-        path: RESOURCE.APPOINTMENT,
-        select: "date time",
-      },
-    ])
+    .populate({
+      path: RESOURCE.APPOINTMENT,
+      select: "date time",
+    })
     .lean()
     .exec();
 
-  if (!transaction) throw new ErrorHandler(`Transaction not found with ID: ${id}`);
+  if (!transaction)
+    throw new ErrorHandler(`Transaction not found with ID: ${id}`);
 
   return transaction;
 };
 
-exports.createTransactionData = async (req, res) => {
-  const transaction = await Transaction.create(req.body);
+exports.updateTransactionData = async (req, res, id) => {
+  if (!mongoose.Types.ObjectId.isValid(id))
+    throw new ErrorHandler(`Invalid transaction ID: ${id}`);
 
-  await Transaction.populate(transaction, [
-    { path: "customer", select: "name" },
-    { path: RESOURCE.APPOINTMENT, select: "date time" }
-  ]);
+  const newStatus = req.body.status;
+  const existingTransaction = await Transaction.findById(id).lean().exec();
 
-  const createVerification = await Verification.create({
-    transaction: transaction?._id,
-  });
+  if (!existingTransaction)
+    throw new ErrorHandler(`Transaction not found with ID: ${id}`);
 
-  return { transaction, createVerification };
-};
+  const wasCompleted = existingTransaction.status === "completed";
+  const confirm = newStatus === "completed";
 
-  exports.updateTransactionData = async (req, res, id) => {
-    if (!mongoose.Types.ObjectId.isValid(id)) throw new ErrorHandler(`Invalid transaction ID: ${id}`);
+  const updatedTransaction = await Transaction.findOneAndUpdate(
+    { _id: id },
+    req.body,
+    {
+      new: true,
+      runValidators: true,
+    }
+  )
+    .lean()
+    .exec();
 
-    const newStatus = req.body.status;
+  let updateVerification;
 
-    const confirm = newStatus === "completed";
-
-    const existingTransaction = await Transaction.findOneAndUpdate(
-      { _id: id },
-      req.body,
-      {
-        new: true,
-        runValidators: true,
-      }
-    )
-      .populate({ path: "customer", select: "name" })
-      .populate({ path: RESOURCE.APPOINTMENT, select: "date time" })
-      .lean()
-      .exec();
-
-    if (!existingTransaction) throw new ErrorHandler(`Transaction not found with ID: ${id}`);
-
-    const updateVerification = await Verification.findOneAndUpdate(
-      { transaction: id },
-      { confirm: confirm },
+  if (wasCompleted && !confirm) {
+    updateVerification = await Verification.findOneAndUpdate(
+      { transaction: updatedTransaction?._id },
+      { confirm: false },
       {
         new: true,
         runValidators: true,
       }
     );
+  } else {
+    updateVerification = await Verification.findOneAndUpdate(
+      { transaction: updatedTransaction?._id },
+      { confirm: confirm },
+      {
+        new: true,
+        runValidators: true,
+        upsert: true,
+      }
+    );
+  }
 
-    if (!verification) throw new ErrorHandler(`Verification record not found for transaction: ${id}`);
-
-    return { existingTransaction, updateVerification };
-  };
+  return { existingTransaction, updatedTransaction, updateVerification };
+};
 
 exports.deleteTransactionData = async (id) => {
   if (!mongoose.Types.ObjectId.isValid(id))
     throw new ErrorHandler(`Invalid transaction ID: ${id}`);
 
   const transaction = await Transaction.findOne({
-    _id: id
+    _id: id,
   });
-  if (!transaction) throw new ErrorHandler(`Transaction not found with ID: ${id}`);
+  if (!transaction)
+    throw new ErrorHandler(`Transaction not found with ID: ${id}`);
 
   await Promise.all([
     Transaction.deleteOne({
-      _id: id
+      _id: id,
     })
-    .populate({ path: "customer", select: "name" })
-    .populate({ path: RESOURCE.APPOINTMENT, select: "date time" })
-    .lean()
-    .exec(),
+      .populate({ path: RESOURCE.APPOINTMENT, select: "date time" })
+      .lean()
+      .exec(),
     Verification.deleteMany({ transaction: id }).lean().exec(),
   ]);
 
