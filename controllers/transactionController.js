@@ -47,35 +47,19 @@ exports.getSingleTransaction = asyncHandler(async (req, res, next) => {
       );
 });
 
-exports.createNewTransaction = [
-    checkRequiredFields(["date", "time", "payment" ,"customer", "appointment"]),
-    asyncHandler(async (req, res, next) => {
-      const { transaction, createVerification } = await transactionsService.createTransactionData(req);
-  
-      return SuccessHandler(
-        res,
-        `New transaction of ${transaction?.customer?.name} created with an ID ${transaction?._id}`,
-        { transaction, createVerification }
-      );
-    }),
-  ];
+exports.updateTransaction = [
+  checkRequiredFields(["status"]),
+  asyncHandler(async (req, res, next) => {
+    const { existingTransaction, updatedTransaction, updateVerification } =
+      await transactionsService.updateTransactionData(req, res, req.params.id);
 
-  exports.updateTransaction = [
-    checkRequiredFields(["date", "time", "payment", "customer", "appointment"]),
-    asyncHandler(async (req, res, next) => {
-      const { existingTransaction, updateVerification } = await transactionsService.updateTransactionData(
-        req,
-        res,
-        req.params.id
-      );
-
-      return SuccessHandler(
-        res,
-        `Transaction of ${existingTransaction?.customer?.name} with an ID ${existingTransaction?._id} is updated`,
-        { transaction: existingTransaction, updateVerification }
-      );
-    }),
-  ];
+    return SuccessHandler(
+      res,
+      `Transaction with an ID ${existingTransaction?._id} is updated`,
+      { transaction: updatedTransaction, updateVerification }
+    );
+  }),
+];
 
 exports.deleteTransaction = asyncHandler(async (req, res, next) => {
   const transaction = await transactionsService.deleteTransactionData(
