@@ -11,7 +11,7 @@ exports.getAllServiceData = async () => {
     })
     .populate({
       path: RESOURCE.PRODUCT,
-      select: "product_name image",
+      select: "product_name type",
     })
     .lean()
     .exec();
@@ -27,7 +27,7 @@ exports.getSingleServiceData = async (id) => {
   const service = await Service.findById(id)
     .populate({
       path: RESOURCE.PRODUCT,
-      select: "product_name image",
+      select: "product_name type",
     })
     .lean()
     .exec();
@@ -75,7 +75,7 @@ exports.createServiceData = async (req, res) => {
 
   await Service.populate(service, {
     path: RESOURCE.PRODUCT,
-    select: "product_name image",
+    select: "product_name type",
   });
 
   return service;
@@ -123,7 +123,7 @@ exports.updateServiceData = async (req, res, id) => {
   )
     .populate({
       path: RESOURCE.PRODUCT,
-      select: "product_name image",
+      select: "product_name type",
     })
     .lean()
     .exec();
