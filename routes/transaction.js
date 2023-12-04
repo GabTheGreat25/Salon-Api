@@ -14,12 +14,6 @@ const transactionRoutes = [
     handler: transactionController.getAllTransactions,
   },
   {
-    method: METHOD.POST,
-    path: PATH.TRANSACTIONS,
-    roles: [ROLE.ADMIN, ROLE.CUSTOMER],
-    handler: transactionController.createNewTransaction,
-  },
-  {
     method: METHOD.GET,
     path: PATH.TRANSACTION_ID,
     roles: [ROLE.ADMIN, ROLE.EMPLOYEE, ROLE.CUSTOMER],
