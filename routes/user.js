@@ -8,7 +8,7 @@ const userRoutes = [
   {
     method: METHOD.GET,
     path: PATH.USERS,
-    roles: [ROLE.ADMIN, ROLE.EMPLOYEE],
+    roles: [ROLE.ADMIN, ROLE.EMPLOYEE, ROLE.ONLINE_CUSTOMER],
     middleware: [verifyJWT],
     handler: userController.getAllUsers,
   },
