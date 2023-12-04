@@ -1,4 +1,5 @@
 const Appointment = require("../models/appointment");
+const Transaction = require("../models/transaction");
 const ErrorHandler = require("../utils/errorHandler");
 const mongoose = require("mongoose");
 
@@ -11,8 +12,8 @@ exports.getAllAppointmentsData = async (page, limit, search, sort, filter) => {
     const isNumericSearch = !isNaN(search);
 
     if (isNumericSearch) {
-      const numericFields = ["total_price", "date", "time"];
-      const numericFieldConditions = numericFields.map(field => ({
+      const numericFields = ["price", "date", "time"];
+      const numericFieldConditions = numericFields.map((field) => ({
         [field]: search,
       }));
 
@@ -55,21 +56,33 @@ exports.getSingleAppointmentData = async (id) => {
     .lean()
     .exec();
 
-  if (!appointment) throw new ErrorHandler(`Appointment not found with ID: ${id}`);
+  if (!appointment)
+    throw new ErrorHandler(`Appointment not found with ID: ${id}`);
 
   return appointment;
 };
 
 exports.createAppointmentData = async (req, res) => {
-    const appointment = await Appointment.create(req.body);
+  const appointment = await Appointment.create(req.body);
 
-    await Appointment.populate(appointment, [
-        { path: "employee customer", select: "name" },
-        { path: "service", select: "service_name" }
-      ]);
+  await Appointment.populate(appointment, [
+    { path: "employee customer", select: "name" },
+    { path: "service", select: "service_name" },
+  ]);
 
-    return appointment;
-  };
+  const transaction = await Transaction.create({
+    appointment: appointment._id,
+    date: new Date(),
+    status: req.body.status,
+    payment: req.body.payment,
+  });
+
+  appointment.transaction = transaction._id;
+
+  await appointment.save();
+
+  return { appointment, transaction };
+};
 
 exports.updateAppointmentData = async (req, res, id) => {
   if (!mongoose.Types.ObjectId.isValid(id))
