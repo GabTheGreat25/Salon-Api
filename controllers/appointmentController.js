@@ -34,7 +34,9 @@ exports.getAllAppointments = asyncHandler(async (req, res, next) => {
 });
 
 exports.getSingleAppointment = asyncHandler(async (req, res, next) => {
-  const appointment = await appointmentsService.getSingleAppointmentData(req.params.id);
+  const appointment = await appointmentsService.getSingleAppointmentData(
+    req.params.id
+  );
 
   return !appointment
     ? next(new ErrorHandler("No appointment found"))
@@ -46,7 +48,15 @@ exports.getSingleAppointment = asyncHandler(async (req, res, next) => {
 });
 
 exports.createNewAppointment = [
-  checkRequiredFields(["service", "employee", "customer" ,"date", "time", "total_price", "note"]),
+  checkRequiredFields([
+    "service",
+    "employee",
+    "customer",
+    "date",
+    "time",
+    "price",
+    "note",
+  ]),
   asyncHandler(async (req, res, next) => {
     const appointment = await appointmentsService.createAppointmentData(req);
 
@@ -59,7 +69,15 @@ exports.createNewAppointment = [
 ];
 
 exports.updateAppointment = [
-  checkRequiredFields(["service", "employee", "customer" ,"date", "time", "total_price", "note"]),
+  checkRequiredFields([
+    "service",
+    "employee",
+    "customer",
+    "date",
+    "time",
+    "price",
+    "note",
+  ]),
   asyncHandler(async (req, res, next) => {
     const appointment = await appointmentsService.updateAppointmentData(
       req,
@@ -76,7 +94,9 @@ exports.updateAppointment = [
 ];
 
 exports.deleteAppointment = asyncHandler(async (req, res, next) => {
-  const appointment = await appointmentsService.deleteAppointmentData(req.params.id);
+  const appointment = await appointmentsService.deleteAppointmentData(
+    req.params.id
+  );
 
   return !appointment
     ? next(new ErrorHandler("No appointment found"))
