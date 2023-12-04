@@ -1,21 +1,20 @@
 const Service = require("../models/service");
 const mongoose = require("mongoose");
 const ErrorHandler = require("../utils/errorHandler");
-const {
-  cloudinary
-} = require("../utils/cloudinary");
-const {
-  STATUSCODE,
-  RESOURCE
-} = require("../constants/index");
+const { cloudinary } = require("../utils/cloudinary");
+const { STATUSCODE, RESOURCE } = require("../constants/index");
 
 exports.getAllServiceData = async () => {
-  const services = await Service.find().sort({
-    createdAt: -1
-  }).populate({
-    path: RESOURCE.PRODUCT,
-    select: "product_name"
-  }).lean().exec();
+  const services = await Service.find()
+    .sort({
+      createdAt: -1,
+    })
+    .populate({
+      path: RESOURCE.PRODUCT,
+      select: "product_name",
+    })
+    .lean()
+    .exec();
 
   return services;
 };
@@ -25,10 +24,13 @@ exports.getSingleServiceData = async (id) => {
     throw new ErrorHandler(`Invalid Service ID ${id}`);
   }
 
-  const service = await Service.findById(id).populate({
-    path: RESOURCE.PRODUCT,
-    select: "product_name"
-  }).lean().exec();
+  const service = await Service.findById(id)
+    .populate({
+      path: RESOURCE.PRODUCT,
+      select: "product_name",
+    })
+    .lean()
+    .exec();
 
   if (!service) throw new ErrorHandler(`Service not found with ID: ${id}`);
 
@@ -37,10 +39,10 @@ exports.getSingleServiceData = async (id) => {
 
 exports.createServiceData = async (req, res) => {
   const duplicateService = await Service.findOne({
-      service: req.body.service_name,
-    })
+    service: req.body.service_name,
+  })
     .collation({
-      locale: "en"
+      locale: "en",
     })
     .lean()
     .exec();
@@ -73,7 +75,7 @@ exports.createServiceData = async (req, res) => {
 
   await Service.populate(service, {
     path: RESOURCE.PRODUCT,
-    select: "product_name"
+    select: "product_name",
   });
 
   return service;
@@ -87,20 +89,6 @@ exports.updateServiceData = async (req, res, id) => {
 
   if (!existingService)
     throw new ErrorHandler(`Service not found with ID: ${id}`);
-
-  const duplicateService = await Service.findOne({
-      name: req.body.service_name,
-      _id: {
-        $ne: id
-      },
-    })
-    .collation({
-      locale: "en"
-    })
-    .lean()
-    .exec();
-
-  if (duplicateService) throw new ErrorHandler("Duplicate service name");
 
   let image = existingService.image || [];
   if (req.files && Array.isArray(req.files) && req.files.length > 0) {
@@ -123,17 +111,19 @@ exports.updateServiceData = async (req, res, id) => {
   }
 
   const updatedService = await Service.findByIdAndUpdate(
-      id, {
-        ...req.body,
-        image: image,
-      }, {
-        new: true,
-        runValidators: true,
-      }
-    )
+    id,
+    {
+      ...req.body,
+      image: image,
+    },
+    {
+      new: true,
+      runValidators: true,
+    }
+  )
     .populate({
       path: RESOURCE.PRODUCT,
-      select: "product_name"
+      select: "product_name",
     })
     .lean()
     .exec();
@@ -150,7 +140,7 @@ exports.deleteServiceData = async (id) => {
   }
 
   const service = await Service.findOne({
-    _id: id
+    _id: id,
   });
   if (!service) throw new ErrorHandler(`Service not found with ID: ${id}`);
 
@@ -158,8 +148,10 @@ exports.deleteServiceData = async (id) => {
 
   await Promise.all([
     Service.deleteOne({
-      _id: id
-    }).lean().exec(),
+      _id: id,
+    })
+      .lean()
+      .exec(),
     cloudinary.api.delete_resources(publicIds),
   ]);
 
