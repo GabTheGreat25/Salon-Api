@@ -53,7 +53,10 @@ exports.getAllTransactionData = async (page, limit, search, sort, filter) => {
   }
 
   transactionsQuery = transactionsQuery
-    .populate({ path: RESOURCE.APPOINTMENT, select: "date time" })
+    .populate({
+      path: RESOURCE.APPOINTMENT,
+      select: "date time price extraFee",
+    })
     .skip(skip)
     .limit(limit);
 
@@ -67,7 +70,7 @@ exports.getSingleTransactionData = async (id) => {
   const transaction = await Transaction.findById(id)
     .populate({
       path: RESOURCE.APPOINTMENT,
-      select: "date time",
+      select: "date time price extraFee",
     })
     .lean()
     .exec();
@@ -142,7 +145,10 @@ exports.deleteTransactionData = async (id) => {
     Transaction.deleteOne({
       _id: id,
     })
-      .populate({ path: RESOURCE.APPOINTMENT, select: "date time" })
+      .populate({
+        path: RESOURCE.APPOINTMENT,
+        select: "date time price extraFee",
+      })
       .lean()
       .exec(),
     Verification.deleteMany({ transaction: id }).lean().exec(),
