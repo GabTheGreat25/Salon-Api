@@ -1,17 +1,11 @@
 const express = require("express");
 const router = express.Router();
 const testController = require("../controllers/testController");
-const {
-  verifyJWT,
-  authorizeRoles
-} = require("../middleware/verifyJWT");
-const {
-  METHOD,
-  PATH,
-  ROLE
-} = require("../constants/index");
+const { authorizeRoles } = require("../middleware/verifyJWT");
+const { METHOD, PATH, ROLE } = require("../constants/index");
 
-const testRoutes = [{
+const testRoutes = [
+  {
     method: METHOD.GET,
     path: PATH.TESTS,
     roles: [],
@@ -28,8 +22,8 @@ const testRoutes = [{
   {
     method: METHOD.POST,
     path: PATH.TESTS,
-    roles: [ROLE.ADMIN],
-    middleware: [verifyJWT],
+    roles: [],
+    middleware: [],
     handler: testController.createNewTest,
   },
   {
@@ -49,13 +43,7 @@ const testRoutes = [{
 ];
 
 testRoutes.forEach((route) => {
-  const {
-    method,
-    path,
-    roles = [],
-    middleware = [],
-    handler
-  } = route;
+  const { method, path, roles = [], middleware = [], handler } = route;
   router[method](path, middleware.concat(authorizeRoles(...roles)), handler);
 });
 
