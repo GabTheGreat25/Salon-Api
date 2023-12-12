@@ -17,4 +17,5 @@ module.exports = {
   INFORMATION: "information",
   VERIFICATION: "verification",
   STATUS: "status",
+  FEEDBACK: "feedback",
 };
