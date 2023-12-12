@@ -1,5 +1,5 @@
 require("dotenv").config({
-  path: "./config/.env"
+  path: "./config/.env",
 });
 const express = require("express");
 const compression = require("compression");
@@ -9,14 +9,8 @@ const cookieParser = require("cookie-parser");
 const cors = require("cors");
 const corsOptions = require("./config/corsOptions");
 const mongoose = require("mongoose");
-const {
-  logger,
-  logEvents
-} = require("./middleware/logger");
-const {
-  errorJson,
-  errorHandler
-} = require("./middleware/errorJson");
+const { logger, logEvents } = require("./middleware/logger");
+const { errorJson, errorHandler } = require("./middleware/errorJson");
 const test = require("./routes/test");
 const products = require("./routes/product");
 const auth = require("./routes/auth");
@@ -27,9 +21,8 @@ const delivery = require("./routes/delivery");
 const comments = require("./routes/comment");
 const appointments = require("./routes/appointment");
 const transactions = require("./routes/transaction");
-const {
-  STATUSCODE
-} = require("./constants/index");
+const feedbacks = require("./routes/feedback");
+const { STATUSCODE } = require("./constants/index");
 const connectDB = require("./config/connectDB");
 const PORT = process.env.PORT || 4000;
 
@@ -46,6 +39,7 @@ app.use("/", require("./routes/root"));
 app.use(
   "/api/v1",
   test,
+  feedbacks,
   auth,
   users,
   products,
@@ -58,13 +52,13 @@ app.use(
 );
 
 app.all("*", (req, res) => {
-  const filePath = req.accepts("html") ?
-    path.join(__dirname, "views", "404.html") :
-    req.accepts("json") ?
-    {
-      message: "404 Not Found"
-    } :
-    "404 Not Found";
+  const filePath = req.accepts("html")
+    ? path.join(__dirname, "views", "404.html")
+    : req.accepts("json")
+    ? {
+        message: "404 Not Found",
+      }
+    : "404 Not Found";
 
   res.status(STATUSCODE.NOT_FOUND).sendFile(filePath);
 });
