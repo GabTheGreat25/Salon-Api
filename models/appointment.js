@@ -2,11 +2,13 @@ const mongoose = require("mongoose");
 const { RESOURCE } = require("../constants/index");
 
 const appointmentSchema = new mongoose.Schema({
-  service: {
-    type: mongoose.Types.ObjectId,
-    required: [true, "Please enter a service"],
-    ref: RESOURCE.SERVICE,
-  },
+  service: [
+    {
+      type: mongoose.Types.ObjectId,
+      required: [true, "Please enter a service"],
+      ref: RESOURCE.SERVICE,
+    },
+  ],
   employee: {
     type: mongoose.Types.ObjectId,
     required: [true, "Please enter a user"],
@@ -43,7 +45,7 @@ const appointmentSchema = new mongoose.Schema({
   },
   note: {
     type: String,
-    required: [true, "Please enter a note"],
+    required: false,
   },
 });
 

@@ -37,7 +37,6 @@ exports.getSingleAppointment = asyncHandler(async (req, res, next) => {
   const appointment = await appointmentsService.getSingleAppointmentData(
     req.params.id
   );
-
   return !appointment
     ? next(new ErrorHandler("No appointment found"))
     : SuccessHandler(
@@ -55,29 +54,20 @@ exports.createNewAppointment = [
     "date",
     "time",
     "price",
-    "note",
   ]),
   asyncHandler(async (req, res, next) => {
-    const appointment = await appointmentsService.createAppointmentData(req);
-
+    const { appointment, transaction } =
+      await appointmentsService.createAppointmentData(req);
     return SuccessHandler(
       res,
       `New appointment of ${appointment?.customer?.name} created with an ID ${appointment?._id}`,
-      appointment
+      { appointment, transaction }
     );
   }),
 ];
 
 exports.updateAppointment = [
-  checkRequiredFields([
-    "service",
-    "employee",
-    "customer",
-    "date",
-    "time",
-    "price",
-    "note",
-  ]),
+  checkRequiredFields(["date", "time", "price"]),
   asyncHandler(async (req, res, next) => {
     const appointment = await appointmentsService.updateAppointmentData(
       req,
