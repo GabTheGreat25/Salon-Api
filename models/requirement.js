@@ -2,9 +2,9 @@ const mongoose = require("mongoose");
 const { RESOURCE } = require("../constants/index");
 
 const requirementSchema = new mongoose.Schema({
-  employee: {
+  beautician: {
     type: mongoose.Types.ObjectId,
-    required: [true, "Please enter an employee"],
+    required: [true, "Please enter an beautician"],
     ref: RESOURCE.USER,
   },
   job: {

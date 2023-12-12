@@ -6,7 +6,7 @@ const mongoose = require("mongoose");
 exports.getAllSchedulesData = async () => {
   const schedules = await Schedule.find()
     .sort({ createdAt: -1 })
-    .populate({ path: "employee", select: "name" })
+    .populate({ path: "beautician", select: "name" })
     .lean()
     .exec();
 
@@ -18,7 +18,7 @@ exports.getSingleScheduleData = async (id) => {
     throw new ErrorHandler(`Invalid schedule ID: ${id}`);
 
   const schedule = await Schedule.findById(id)
-    .populate({ path: "employee", select: "name" })
+    .populate({ path: "beautician", select: "name" })
     .lean()
     .exec();
 
@@ -30,7 +30,7 @@ exports.getSingleScheduleData = async (id) => {
 exports.createScheduleData = async (req, res) => {
   const schedule = await Schedule.create(req.body);
 
-  await Schedule.populate(schedule, { path: "employee", select: "name" });
+  await Schedule.populate(schedule, { path: "beautician", select: "name" });
 
   const attendance = schedule.available ? "present" : "absent";
 
@@ -50,7 +50,7 @@ exports.updateScheduleData = async (req, res, id) => {
     new: true,
     runValidators: true,
   })
-    .populate({ path: "employee", select: "name" })
+    .populate({ path: "beautician", select: "name" })
     .lean()
     .exec();
 
@@ -68,7 +68,7 @@ exports.updateScheduleData = async (req, res, id) => {
     }
   );
 
-  return {updatedSchedule, updateStatus};
+  return { updatedSchedule, updateStatus };
 };
 
 exports.deleteScheduleData = async (id) => {
@@ -76,17 +76,17 @@ exports.deleteScheduleData = async (id) => {
     throw new ErrorHandler(`Invalid schedule ID: ${id}`);
 
   const schedule = await Schedule.findOne({
-    _id: id
+    _id: id,
   });
   if (!schedule) throw new ErrorHandler(`Schedule not found with ID: ${id}`);
 
   await Promise.all([
     Schedule.deleteOne({
-      _id: id
+      _id: id,
     })
-    .populate({ path: "employee", select: "name" })
-    .lean()
-    .exec(),
+      .populate({ path: "beautician", select: "name" })
+      .lean()
+      .exec(),
     Status.deleteMany({ schedule: id }).lean().exec(),
   ]);
 

@@ -10,19 +10,19 @@ const commentRoutes = [
   {
     method: METHOD.GET,
     path: PATH.COMMENTS,
-    roles: [ROLE.ADMIN, ROLE.EMPLOYEE, ROLE.CUSTOMER],
+    roles: [ROLE.ADMIN, ROLE.BEAUTICIAN, ROLE.CUSTOMER],
     handler: commentController.getAllComments,
   },
   {
     method: METHOD.POST,
     path: PATH.COMMENTS,
-    roles: [ROLE.ADMIN ,ROLE.CUSTOMER],
+    roles: [ROLE.ADMIN, ROLE.CUSTOMER],
     handler: commentController.createNewComment,
   },
   {
     method: METHOD.GET,
     path: PATH.COMMENT_ID,
-    roles: [ROLE.ADMIN, ROLE.EMPLOYEE, ROLE.CUSTOMER],
+    roles: [ROLE.ADMIN, ROLE.BEAUTICIAN, ROLE.CUSTOMER],
     handler: commentController.getSingleComment,
   },
   {
@@ -34,7 +34,7 @@ const commentRoutes = [
   {
     method: METHOD.DELETE,
     path: PATH.COMMENT_ID,
-    roles: [ROLE.ADMIN, ROLE.EMPLOYEE, ROLE.CUSTOMER],
+    roles: [ROLE.ADMIN, ROLE.BEAUTICIAN, ROLE.CUSTOMER],
     handler: commentController.deleteComment,
   },
 ];

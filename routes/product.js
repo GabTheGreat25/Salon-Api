@@ -10,7 +10,7 @@ const productRoutes = [
   {
     method: METHOD.GET,
     path: PATH.PRODUCTS,
-    roles: [ROLE.ADMIN, ROLE.EMPLOYEE],
+    roles: [ROLE.ADMIN, ROLE.BEAUTICIAN],
     handler: productController.getAllProducts,
   },
   {
@@ -22,7 +22,7 @@ const productRoutes = [
   {
     method: METHOD.GET,
     path: PATH.PRODUCT_ID,
-    roles: [ROLE.ADMIN, ROLE.EMPLOYEE],
+    roles: [ROLE.ADMIN, ROLE.BEAUTICIAN],
     handler: productController.getSingleProduct,
   },
   {

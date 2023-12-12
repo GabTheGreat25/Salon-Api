@@ -9,9 +9,9 @@ const appointmentSchema = new mongoose.Schema({
       ref: RESOURCE.SERVICE,
     },
   ],
-  employee: {
+  beautician: {
     type: mongoose.Types.ObjectId,
-    required: [true, "Please enter a user"],
+    required: [true, "Please enter a beautician"],
     ref: RESOURCE.USER,
   },
   customer: {

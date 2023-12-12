@@ -16,6 +16,12 @@ const userSchema = new mongoose.Schema({
     unique: true,
     validate: [validator.isEmail, "Please enter valid email address"],
   },
+  age: {
+    type: Number,
+    required: [true, "Please enter your age"],
+    min: [18, "You must be at least 18 years old"],
+    max: [100, "You must be at most 100 years old"],
+  },
   password: {
     type: String,
     required: [true, "Please enter your password"],
@@ -44,7 +50,7 @@ const userSchema = new mongoose.Schema({
   roles: [
     {
       type: String,
-      enum: ["Admin", "Employee", "Online Customer", "Walk-in Customer"],
+      enum: ["Admin", "Beautician", "Online Customer", "Walk-in Customer"],
       default: "Online Customer",
     },
   ],

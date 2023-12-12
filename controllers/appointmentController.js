@@ -49,7 +49,7 @@ exports.getSingleAppointment = asyncHandler(async (req, res, next) => {
 exports.createNewAppointment = [
   checkRequiredFields([
     "service",
-    "employee",
+    "beautician",
     "customer",
     "date",
     "time",

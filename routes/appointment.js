@@ -10,25 +10,25 @@ const appointmentRoutes = [
   {
     method: METHOD.GET,
     path: PATH.APPOINTMENTS,
-    roles: [ROLE.ADMIN, ROLE.EMPLOYEE, ROLE.ONLINE_CUSTOMER],
+    roles: [ROLE.ADMIN, ROLE.BEAUTICIAN, ROLE.ONLINE_CUSTOMER],
     handler: appointmentController.getAllAppointments,
   },
   {
     method: METHOD.POST,
     path: PATH.APPOINTMENTS,
-    roles: [ROLE.ADMIN, ROLE.EMPLOYEE, ROLE.ONLINE_CUSTOMER],
+    roles: [ROLE.ADMIN, ROLE.BEAUTICIAN, ROLE.ONLINE_CUSTOMER],
     handler: appointmentController.createNewAppointment,
   },
   {
     method: METHOD.GET,
     path: PATH.APPOINTMENT_ID,
-    roles: [ROLE.ADMIN, ROLE.EMPLOYEE],
+    roles: [ROLE.ADMIN, ROLE.BEAUTICIAN],
     handler: appointmentController.getSingleAppointment,
   },
   {
     method: METHOD.PATCH,
     path: PATH.EDIT_APPOINTMENT_ID,
-    roles: [ROLE.ADMIN, ROLE.EMPLOYEE],
+    roles: [ROLE.ADMIN, ROLE.BEAUTICIAN],
     handler: appointmentController.updateAppointment,
   },
   {

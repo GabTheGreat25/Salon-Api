@@ -1,6 +1,6 @@
 module.exports = {
   ADMIN: "Admin",
-  EMPLOYEE: "Employee",
+  BEAUTICIAN: "Beautician",
   ONLINE_CUSTOMER: "Online Customer",
   WALK_IN_CUSTOMER: "Walk-in Customer",
 };

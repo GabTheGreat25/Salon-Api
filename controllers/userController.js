@@ -28,7 +28,11 @@ exports.confirmUser = asyncHandler(async (req, res, next) => {
 
   await usersService.confirmUserRole(userId);
 
-  SuccessHandler(res, `User with ID ${userId} has been activated by the admin.`, userId);
+  SuccessHandler(
+    res,
+    `User with ID ${userId} has been activated by the admin.`,
+    userId
+  );
 });
 
 exports.login = [
@@ -74,39 +78,40 @@ exports.getAllUsers = asyncHandler(async (req, res, next) => {
 exports.getSingleUser = asyncHandler(async (req, res, next) => {
   const userRoles = req.userRoles;
 
-    const user = await usersService.getSingleUserData(req.params?.id, userRoles);
+  const user = await usersService.getSingleUserData(req.params?.id, userRoles);
 
-    if (!user) {
-      return next(new ErrorHandler("No user found"));
-    }
+  if (!user) {
+    return next(new ErrorHandler("No user found"));
+  }
 
-    return SuccessHandler(
-      res,
-      `User ${user?.name} with ID ${user?._id} retrieved`,
-      user
-    );
+  return SuccessHandler(
+    res,
+    `User ${user?.name} with ID ${user?._id} retrieved`,
+    user
+  );
 });
 
 exports.createNewUser = [
   upload.array("image"),
   checkRequiredFields(["name", "email", "password", "contact_number", "image"]),
   asyncHandler(async (req, res, next) => {
-    const { user, newRequirement, newInformation } = await usersService.createUserData(req);
+    const { user, newRequirement, newInformation } =
+      await usersService.createUserData(req);
 
     const successMessage =
       user && user.roles.includes(ROLE.ONLINE_CUSTOMER)
         ? `New customer ${user?.name} created with an ID ${user?._id}`
         : user && user.roles.includes(ROLE.ADMIN)
         ? `New admin ${user?.name} created with an ID ${user?._id}`
-        : user && user.roles.includes(ROLE.EMPLOYEE)
-        ? `New employee ${user?.name} created with an ID ${user?._id}. Please wait for the admin to confirm your account. Thank you!`
+        : user && user.roles.includes(ROLE.BEAUTICIAN)
+        ? `New beautician ${user?.name} created with an ID ${user?._id}. Please wait for the admin to confirm your account. Thank you!`
         : null;
 
-    return SuccessHandler(
-      res,
-      successMessage,
-      { user, newRequirement, newInformation }
-    );
+    return SuccessHandler(res, successMessage, {
+      user,
+      newRequirement,
+      newInformation,
+    });
   }),
 ];
 
@@ -114,7 +119,8 @@ exports.updateUser = [
   upload.array("image"),
   checkRequiredFields(["name", "email", "contact_number", "image"]),
   asyncHandler(async (req, res, next) => {
-    const { updatedUser, updateRequirement, updateInformation } = await usersService.updateUserData(req, res, req.params.id);
+    const { updatedUser, updateRequirement, updateInformation } =
+      await usersService.updateUserData(req, res, req.params.id);
 
     return SuccessHandler(
       res,

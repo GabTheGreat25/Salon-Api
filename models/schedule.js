@@ -3,9 +3,9 @@ const AutoIncrement = require("mongoose-sequence")(mongoose);
 const { RESOURCE } = require("../constants/index");
 
 const scheduleSchema = new mongoose.Schema({
-  employee: {
+  beautician: {
     type: mongoose.Schema.Types.ObjectId,
-    required: [true, "Please enter a user"],
+    required: [true, "Please enter a beautician"],
     ref: RESOURCE.USER,
   },
   available: {

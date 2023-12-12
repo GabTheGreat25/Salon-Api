@@ -38,7 +38,7 @@ exports.getAllAppointmentsData = async (page, limit, search, sort, filter) => {
   }
 
   appointmentsQuery = appointmentsQuery
-    .populate({ path: "employee customer", select: "name" })
+    .populate({ path: "beautician customer", select: "name" })
     .populate({ path: "service", select: "service_name image" })
     .skip(skip)
     .limit(limit);
@@ -51,7 +51,7 @@ exports.getSingleAppointmentData = async (id) => {
     throw new ErrorHandler(`Invalid appointment ID: ${id}`);
 
   const appointment = await Appointment.findById(id)
-    .populate({ path: "employee customer", select: "name" })
+    .populate({ path: "beautician customer", select: "name" })
     .populate({ path: "service", select: "service_name image" })
     .lean()
     .exec();
@@ -71,7 +71,7 @@ exports.createAppointmentData = async (req, res) => {
   });
 
   await Appointment.populate(appointment, [
-    { path: "employee customer", select: "name" },
+    { path: "beautician customer", select: "name" },
     { path: "service", select: "service_name image" },
   ]);
 
@@ -97,7 +97,7 @@ exports.updateAppointmentData = async (req, res, id) => {
     new: true,
     runValidators: true,
   })
-    .populate({ path: "employee customer", select: "name" })
+    .populate({ path: "beautician customer", select: "name" })
     .populate({ path: "service", select: "service_name image" })
     .lean()
     .exec();
@@ -115,7 +115,7 @@ exports.deleteAppointmentData = async (id) => {
   if (!id) throw new ErrorHandler(`Appointment not found with ID: ${id}`);
 
   const appointment = await Appointment.findOneAndDelete({ _id: id })
-    .populate({ path: "employee customer", select: "name" })
+    .populate({ path: "beautician customer", select: "name" })
     .populate({ path: "service", select: "service_name image" })
     .lean()
     .exec();

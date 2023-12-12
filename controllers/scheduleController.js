@@ -13,7 +13,7 @@ exports.getAllSchedules = asyncHandler(async (req, res, next) => {
     : SuccessHandler(
         res,
         `Schedules with schedule of ${schedules
-          .map((u) => u?.employee?.name)
+          .map((u) => u?.beautician?.name)
           .join(", ")} and IDs ${schedules
           .map((u) => u?._id)
           .join(", ")} retrieved`,
@@ -28,36 +28,34 @@ exports.getSingleSchedule = asyncHandler(async (req, res, next) => {
     ? next(new ErrorHandler("No schedule found"))
     : SuccessHandler(
         res,
-        `Schedule of ${schedule?.employee?.name} with ID ${schedule?._id} retrieved`,
+        `Schedule of ${schedule?.beautician?.name} with ID ${schedule?._id} retrieved`,
         schedule
       );
 });
 
 exports.createNewSchedule = [
-  checkRequiredFields(["employee", "date", "time","note"]),
+  checkRequiredFields(["beautician", "date", "time", "note"]),
   asyncHandler(async (req, res, next) => {
-    const { schedule, createStatus } = await schedulesService.createScheduleData(req);
+    const { schedule, createStatus } =
+      await schedulesService.createScheduleData(req);
 
     return SuccessHandler(
       res,
-      `New schedule of ${schedule?.employee?.name} created with an ID ${schedule?._id}`,
+      `New schedule of ${schedule?.beautician?.name} created with an ID ${schedule?._id}`,
       { schedule, createStatus }
     );
   }),
 ];
 
 exports.updateSchedule = [
-  checkRequiredFields(["employee", "date", "time", "note"]),
+  checkRequiredFields(["beautician", "date", "time", "note"]),
   asyncHandler(async (req, res, next) => {
-    const { updatedSchedule, updateStatus } = await schedulesService.updateScheduleData(
-      req,
-      res,
-      req.params.id
-    );
+    const { updatedSchedule, updateStatus } =
+      await schedulesService.updateScheduleData(req, res, req.params.id);
 
     return SuccessHandler(
       res,
-      `Schedule of ${updatedSchedule?.employee?.name} with ID ${updatedSchedule?._id} is updated`,
+      `Schedule of ${updatedSchedule?.beautician?.name} with ID ${updatedSchedule?._id} is updated`,
       { updatedSchedule, updateStatus }
     );
   }),
@@ -70,7 +68,7 @@ exports.deleteSchedule = asyncHandler(async (req, res, next) => {
     ? next(new ErrorHandler("No schedule found"))
     : SuccessHandler(
         res,
-        `Schedule of ${schedule?.employee?.name} with ID ${schedule?._id} is deleted`,
+        `Schedule of ${schedule?.beautician?.name} with ID ${schedule?._id} is deleted`,
         schedule
       );
 });

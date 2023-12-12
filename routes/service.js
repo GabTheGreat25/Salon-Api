@@ -12,7 +12,7 @@ const serviceRoutes = [
     path: PATH.SERVICE,
     roles: [
       ROLE.ADMIN,
-      ROLE.EMPLOYEE,
+      ROLE.BEAUTICIAN,
       ROLE.ONLINE_CUSTOMER,
       ROLE.WALK_IN_CUSTOMER,
     ],
@@ -23,7 +23,7 @@ const serviceRoutes = [
     path: PATH.SERVICE_ID,
     roles: [
       ROLE.ADMIN,
-      ROLE.EMPLOYEE,
+      ROLE.BEAUTICIAN,
       ROLE.ONLINE_CUSTOMER,
       ROLE.WALK_IN_CUSTOMER,
     ],

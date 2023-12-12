@@ -19,7 +19,7 @@ const deleteUserAfterTimeout = async (userId) => {
 
     await Promise.all([
       User.findByIdAndDelete(userId).lean().exec(),
-      Requirement.deleteMany({ employee: userId }).lean().exec(),
+      Requirement.deleteMany({ beautician: userId }).lean().exec(),
       cloudinary.api.delete_resources(publicIds),
     ]);
   }
@@ -63,19 +63,24 @@ exports.confirmUserRole = async (userId) => {
 
   user.active = true;
 
-  await user.save()
+  await user.save();
 
   return user;
 };
 
 exports.loginToken = async (email, password) => {
   const foundUser = await User.findOne({
-    email
-  }).select("+password").exec();
+    email,
+  })
+    .select("+password")
+    .exec();
 
   if (!foundUser) throw new ErrorHandler("Email not found or not existing");
 
-  if (!foundUser.active) throw new ErrorHandler("User can't log in because you are not authenticated by an admin");
+  if (!foundUser.active)
+    throw new ErrorHandler(
+      "User can't log in because you are not authenticated by an admin"
+    );
 
   const match = await bcrypt.compare(password, foundUser.password);
 
@@ -88,20 +93,27 @@ exports.loginToken = async (email, password) => {
 
   const accessTokenMaxAge = 7 * 24 * 60 * 60 * 1000;
 
-  if (foundUser.roles.includes(ROLE.EMPLOYEE)) {
+  if (foundUser.roles.includes(ROLE.BEAUTICIAN)) {
     foundUser.requirement = await Requirement.findOne({
-      employee: foundUser._id
-    }).lean().exec();
-  } else if (foundUser.roles.includes(ROLE.ONLINE_CUSTOMER) || foundUser.roles.includes(ROLE.WALK_IN_CUSTOMER)) {
+      beautician: foundUser._id,
+    })
+      .lean()
+      .exec();
+  } else if (
+    foundUser.roles.includes(ROLE.ONLINE_CUSTOMER) ||
+    foundUser.roles.includes(ROLE.WALK_IN_CUSTOMER)
+  ) {
     foundUser.information = await Information.findOne({
-      customer: foundUser._id
-    }).lean().exec();
+      customer: foundUser._id,
+    })
+      .lean()
+      .exec();
   }
 
   return {
     user: foundUser,
     accessToken,
-    accessTokenMaxAge
+    accessTokenMaxAge,
   };
 };
 
@@ -128,17 +140,21 @@ exports.getAllUsersData = async () => {
 
   const allUsers = await Promise.all(
     users?.map(async (user) => {
-      if (user.roles.includes(ROLE.EMPLOYEE)) {
+      if (user.roles.includes(ROLE.BEAUTICIAN)) {
         user.requirement = await Requirement.findOne({
-          employee: user?._id,
-        }).lean().exec();
+          beautician: user?._id,
+        })
+          .lean()
+          .exec();
       } else if (
         user.roles.includes(ROLE.ONLINE_CUSTOMER) ||
         user.roles.includes(ROLE.WALK_IN_CUSTOMER)
       ) {
         user.information = await Information.findOne({
           customer: user?._id,
-        }).lean().exec();
+        })
+          .lean()
+          .exec();
       }
 
       return user;
@@ -159,14 +175,21 @@ exports.getSingleUserData = async (id) => {
     throw new ErrorHandler(`User not found with ID: ${id}`);
   }
 
-  if (user.roles.includes(ROLE.EMPLOYEE)) {
+  if (user.roles.includes(ROLE.BEAUTICIAN)) {
     user.requirement = await Requirement.findOne({
-      employee: id
-    }).lean().exec();
-  } else if (user.roles.includes(ROLE.ONLINE_CUSTOMER) || user.roles.includes(ROLE.WALK_IN_CUSTOMER)) {
+      beautician: id,
+    })
+      .lean()
+      .exec();
+  } else if (
+    user.roles.includes(ROLE.ONLINE_CUSTOMER) ||
+    user.roles.includes(ROLE.WALK_IN_CUSTOMER)
+  ) {
     user.information = await Information.findOne({
-      customer: id
-    }).lean().exec();
+      customer: id,
+    })
+      .lean()
+      .exec();
   }
 
   return user;
@@ -227,16 +250,19 @@ exports.createUserData = async (req, res) => {
       image: userImages,
       active: active,
     });
-  } else if (roles.includes(ROLE.EMPLOYEE)) {
+  } else if (roles.includes(ROLE.BEAUTICIAN)) {
     const currentDate = new Date();
     const selectedDate = new Date(req.body.date);
     if (
       !(
         selectedDate >= currentDate &&
-        selectedDate <= new Date(currentDate.getTime() + 7 * 24 * 60 * 60 * 1000)
+        selectedDate <=
+          new Date(currentDate.getTime() + 7 * 24 * 60 * 60 * 1000)
       )
     ) {
-      throw new ErrorHandler("Invalid date. Date must be within the next 7 days and not in the past.");
+      throw new ErrorHandler(
+        "Invalid date. Date must be within the next 7 days and not in the past."
+      );
     }
 
     user = await User.create({
@@ -253,19 +279,19 @@ exports.createUserData = async (req, res) => {
     });
 
     newRequirement = await Requirement.create({
-      employee: user?._id,
+      beautician: user?._id,
       job: req.body.job,
       date: req.body.date,
       time: req.body.time,
     });
 
-    const deletionTime = selectedDate.getTime() + 7 * 24 * 60 * 60 * 1000 - currentDate.getTime();
+    const deletionTime =
+      selectedDate.getTime() + 7 * 24 * 60 * 60 * 1000 - currentDate.getTime();
 
     setTimeout(async () => {
       await deleteUserAfterTimeout(user?._id);
     }, deletionTime);
   } else {
-
     user = await User.create({
       name: req.body.name,
       email: req.body.email,
@@ -291,7 +317,8 @@ exports.createUserData = async (req, res) => {
 };
 
 exports.updateUserData = async (req, res, id) => {
-  if (!mongoose.Types.ObjectId.isValid(id)) throw new ErrorHandler(`Invalid user ID: ${id}`);
+  if (!mongoose.Types.ObjectId.isValid(id))
+    throw new ErrorHandler(`Invalid user ID: ${id}`);
 
   const existingUser = await User.findById(id).lean().exec();
 
@@ -320,8 +347,8 @@ exports.updateUserData = async (req, res, id) => {
           url: result.secure_url,
           originalname: file.originalname,
         };
-      }
-    ));
+      })
+    );
   }
 
   let roles = existingUser.roles;
@@ -352,9 +379,9 @@ exports.updateUserData = async (req, res, id) => {
   let updateRequirement;
   let updateInformation;
 
-  if (roles.includes(ROLE.EMPLOYEE)) {
+  if (roles.includes(ROLE.BEAUTICIAN)) {
     updateRequirement = await Requirement.findOneAndUpdate(
-      { employee: id },
+      { beautician: id },
       {
         job: req.body.job,
         docsImages: req.files
@@ -368,13 +395,18 @@ exports.updateUserData = async (req, res, id) => {
                   url: result.secure_url,
                   originalname: file.originalname,
                 };
-              }
+              })
             )
-          ): images
+          : images,
       },
       { new: true, upsert: true }
-    ).lean().exec();
-  } else if (roles.includes(ROLE.ONLINE_CUSTOMER) || roles.includes(ROLE.WALK_IN_CUSTOMER)) {
+    )
+      .lean()
+      .exec();
+  } else if (
+    roles.includes(ROLE.ONLINE_CUSTOMER) ||
+    roles.includes(ROLE.WALK_IN_CUSTOMER)
+  ) {
     updateInformation = await Information.findOneAndUpdate(
       { customer: id },
       {
@@ -383,7 +415,9 @@ exports.updateUserData = async (req, res, id) => {
         product_preference: req.body.product_preference,
       },
       { new: true, upsert: true }
-    ).lean().exec();
+    )
+      .lean()
+      .exec();
   }
 
   return { updatedUser, updateRequirement, updateInformation };
@@ -400,10 +434,12 @@ exports.deleteUserData = async (id) => {
 
   await Promise.all([
     User.deleteOne({ _id: id }).lean().exec(),
-    Schedule.deleteMany({ employee: id }).lean().exec(),
-    Appointment.deleteMany({ $or: [{ customer: id }, { employee: id }] }).lean().exec(),
+    Schedule.deleteMany({ beautician: id }).lean().exec(),
+    Appointment.deleteMany({ $or: [{ customer: id }, { beautician: id }] })
+      .lean()
+      .exec(),
     Transaction.deleteMany({ customer: id }).lean().exec(),
-    Requirement.deleteMany({ employee: id }).lean().exec(),
+    Requirement.deleteMany({ beautician: id }).lean().exec(),
     Information.deleteMany({ customer: id }).lean().exec(),
     cloudinary.api.delete_resources(publicIds),
   ]);

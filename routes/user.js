@@ -8,7 +8,7 @@ const userRoutes = [
   {
     method: METHOD.GET,
     path: PATH.USERS,
-    roles: [ROLE.ADMIN, ROLE.EMPLOYEE, ROLE.ONLINE_CUSTOMER],
+    roles: [ROLE.ADMIN, ROLE.BEAUTICIAN, ROLE.ONLINE_CUSTOMER],
     middleware: [verifyJWT],
     handler: userController.getAllUsers,
   },
@@ -22,14 +22,14 @@ const userRoutes = [
   {
     method: METHOD.GET,
     path: PATH.USER_ID,
-    roles: [ROLE.ADMIN, ROLE.EMPLOYEE],
+    roles: [ROLE.ADMIN, ROLE.BEAUTICIAN],
     middleware: [verifyJWT],
     handler: userController.getSingleUser,
   },
   {
     method: METHOD.PATCH,
     path: PATH.EDIT_USER_ID,
-    roles: [ROLE.ADMIN, ROLE.EMPLOYEE, ROLE.ONLINE_CUSTOMER],
+    roles: [ROLE.ADMIN, ROLE.BEAUTICIAN, ROLE.ONLINE_CUSTOMER],
     middleware: [verifyJWT],
     handler: userController.updateUser,
   },
@@ -50,7 +50,7 @@ const userRoutes = [
   {
     method: METHOD.PATCH,
     path: PATH.UPDATE_PASSWORD,
-    roles: [ROLE.ADMIN, ROLE.EMPLOYEE, ROLE.ONLINE_CUSTOMER],
+    roles: [ROLE.ADMIN, ROLE.BEAUTICIAN, ROLE.ONLINE_CUSTOMER],
     middleware: [verifyJWT],
     handler: userController.updatePassword,
   },
