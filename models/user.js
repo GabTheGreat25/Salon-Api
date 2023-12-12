@@ -24,13 +24,22 @@ const userSchema = new mongoose.Schema({
   },
   contact_number: {
     type: String,
-    required: [true, "Please enter your contact number"],
-    validate: {
-      validator: function(value) {
-        return phoneNumberRegex.test(value);
+    required: [true, "Contact number Field Required"],
+    unique: true,
+    validate: [
+      {
+        validator: function (value) {
+          return /^\d{11}$/.test(value);
+        },
+        message: "Contact number must be exactly 11 digits.",
       },
-      message: "Please enter a valid 11-digit phone number"
-    }
+      {
+        validator: function (value) {
+          return /^09\d{9}$/.test(value);
+        },
+        message: "Invalid Philippine contact number format.",
+      },
+    ],
   },
   roles: [
     {
