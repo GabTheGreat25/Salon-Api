@@ -12,10 +12,10 @@ exports.getAllSchedules = asyncHandler(async (req, res, next) => {
     ? next(new ErrorHandler("No schedules found"))
     : SuccessHandler(
         res,
-        `Schedules with schedule of ${schedules
-          .map((u) => u?.beautician?.name)
+        `Schedules of ${schedules
+          .map((schedule) => schedule?.beautician?.name)
           .join(", ")} and IDs ${schedules
-          .map((u) => u?._id)
+          .map((schedule) => schedule?._id)
           .join(", ")} retrieved`,
         schedules
       );
@@ -34,7 +34,7 @@ exports.getSingleSchedule = asyncHandler(async (req, res, next) => {
 });
 
 exports.createNewSchedule = [
-  checkRequiredFields(["beautician", "date", "time", "note"]),
+  checkRequiredFields(["beautician", "available", "date", "time"]),
   asyncHandler(async (req, res, next) => {
     const { schedule, createStatus } =
       await schedulesService.createScheduleData(req);
@@ -48,7 +48,7 @@ exports.createNewSchedule = [
 ];
 
 exports.updateSchedule = [
-  checkRequiredFields(["beautician", "date", "time", "note"]),
+  checkRequiredFields(["beautician", "available", "date", "time"]),
   asyncHandler(async (req, res, next) => {
     const { updatedSchedule, updateStatus } =
       await schedulesService.updateScheduleData(req, res, req.params.id);

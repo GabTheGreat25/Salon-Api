@@ -24,10 +24,10 @@ exports.getAllTransactions = asyncHandler(async (req, res, next) => {
     ? next(new ErrorHandler("No transactions found"))
     : SuccessHandler(
         res,
-        `Transactions with transaction ${transactions
-          .map((p) => p?.customer?.name)
+        `Transactions of ${transactions
+          .map((transaction) => transaction?.customer?.name)
           .join(", ")} and IDs ${transactions
-          .map((p) => p?._id)
+          .map((transaction) => transaction?._id)
           .join(", ")} retrieved`,
         transactions
       );
@@ -55,7 +55,7 @@ exports.updateTransaction = [
 
     return SuccessHandler(
       res,
-      `Transaction with an ID ${existingTransaction?._id} is updated`,
+      `Transaction of ${existingTransaction?.customer?.name} with an ID ${existingTransaction?._id} is updated`,
       { transaction: updatedTransaction, updateVerification }
     );
   }),

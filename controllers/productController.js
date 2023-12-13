@@ -25,10 +25,10 @@ exports.getAllProducts = asyncHandler(async (req, res, next) => {
     ? next(new ErrorHandler("No products found"))
     : SuccessHandler(
         res,
-        `Products with product ${products
-          .map((p) => p?.product_name)
+        `Products ${products
+          .map((product) => product?.product_name)
           .join(", ")} and IDs ${products
-          .map((p) => p?._id)
+          .map((product) => product?._id)
           .join(", ")} retrieved`,
         products
       );
@@ -48,7 +48,14 @@ exports.getSingleProduct = asyncHandler(async (req, res, next) => {
 
 exports.createNewProduct = [
   upload.array("image"),
-  checkRequiredFields(["product_name", "brand", "type", "image"]),
+  checkRequiredFields([
+    "product_name",
+    "brand",
+    "type",
+    "measurement",
+    "isNew",
+    "image",
+  ]),
   asyncHandler(async (req, res, next) => {
     const product = await productsService.createProductData(req);
 
@@ -62,7 +69,14 @@ exports.createNewProduct = [
 
 exports.updateProduct = [
   upload.array("image"),
-  checkRequiredFields(["product_name", "brand", "type", "image"]),
+  checkRequiredFields([
+    "product_name",
+    "brand",
+    "type",
+    "measurement",
+    "isNew",
+    "image",
+  ]),
   asyncHandler(async (req, res, next) => {
     const product = await productsService.updateProductData(
       req,

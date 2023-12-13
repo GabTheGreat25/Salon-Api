@@ -68,8 +68,8 @@ exports.getAllUsers = asyncHandler(async (req, res, next) => {
     ? next(new ErrorHandler("No users found"))
     : SuccessHandler(
         res,
-        `Users ${users.map((u) => u?.name).join(", ")} and IDs ${users
-          .map((u) => u?._id)
+        `Users ${users.map((user) => user?.name).join(", ")} and IDs ${users
+          .map((user) => user?._id)
           .join(", ")} retrieved`,
         users
       );
@@ -80,15 +80,13 @@ exports.getSingleUser = asyncHandler(async (req, res, next) => {
 
   const user = await usersService.getSingleUserData(req.params?.id, userRoles);
 
-  if (!user) {
-    return next(new ErrorHandler("No user found"));
-  }
-
-  return SuccessHandler(
-    res,
-    `User ${user?.name} with ID ${user?._id} retrieved`,
-    user
-  );
+  return !user
+    ? next(new ErrorHandler("No user found"))
+    : SuccessHandler(
+        res,
+        `User ${user?.name} with ID ${user?._id} is retrieved`,
+        user
+      );
 });
 
 exports.createNewUser = [
@@ -108,6 +106,8 @@ exports.createNewUser = [
     const successMessage =
       user && user.roles.includes(ROLE.ONLINE_CUSTOMER)
         ? `New customer ${user?.name} created with an ID ${user?._id}`
+        : user.roles.includes(ROLE.WALK_IN_CUSTOMER)
+        ? `New customer ${user?.name} created with an ID ${user?._id}`
         : user && user.roles.includes(ROLE.ADMIN)
         ? `New admin ${user?.name} created with an ID ${user?._id}`
         : user && user.roles.includes(ROLE.BEAUTICIAN)
@@ -124,14 +124,7 @@ exports.createNewUser = [
 
 exports.updateUser = [
   upload.array("image"),
-  checkRequiredFields([
-    "name",
-    "age",
-    "email",
-    "password",
-    "contact_number",
-    "image",
-  ]),
+  checkRequiredFields(["name", "age", "email", "contact_number", "image"]),
   asyncHandler(async (req, res, next) => {
     const { updatedUser, updateRequirement, updateInformation } =
       await usersService.updateUserData(req, res, req.params.id);

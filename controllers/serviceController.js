@@ -13,10 +13,10 @@ exports.getAllServices = asyncHandler(async (req, res, next) => {
     ? next(new ErrorHandler("No Services found"))
     : SuccessHandler(
         res,
-        `Services with service ${services
-          .map((s) => s.service_name)
+        `Services ${services
+          .map((service) => service.service_name)
           .join(", ")} and ID's ${services
-          .map((s) => s?._id)
+          .map((service) => service?._id)
           .join(", ")} retrieved`,
         services
       );
@@ -29,7 +29,7 @@ exports.getSingleService = asyncHandler(async (req, res, next) => {
     ? next(new ErrorHandler("No Service Found"))
     : SuccessHandler(
         res,
-        `Service with service ${service.service_name} with ID ${service?._id} retrieved`,
+        `Service ${service.service_name} with ID ${service?._id} retrieved`,
         service
       );
 });
@@ -44,11 +44,13 @@ exports.createNewService = [
     "image",
   ]),
   asyncHandler(async (req, res) => {
-    const service = await serviceService.createServiceData(req);
+    const product = req.body.product || [];
+
+    const service = await serviceService.createServiceData(req, product);
 
     return SuccessHandler(
       res,
-      `Create new Service ${service.service_name} with ID ${service?._id}`,
+      `New service of ${service.service_name} is created with ID ${service?._id}`,
       service
     );
   }),
@@ -64,8 +66,11 @@ exports.updateService = [
     "image",
   ]),
   asyncHandler(async (req, res, next) => {
+    const product = req.body.product || [];
+
     const service = await serviceService.updateServiceData(
       req,
+      product,
       res,
       req.params.id
     );

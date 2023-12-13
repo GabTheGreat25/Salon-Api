@@ -13,10 +13,10 @@ exports.getAllComments = asyncHandler(async (req, res, next) => {
     ? next(new ErrorHandler("No comments found"))
     : SuccessHandler(
         res,
-        `Comments with comment ${comments
-          .map((p) => p?.transaction?.customer?.name)
+        `Comments of ${comments
+          .map((comment) => comment?.transaction?.customer?.name)
           .join(", ")} and IDs ${comments
-          .map((p) => p?._id)
+          .map((comment) => comment?._id)
           .join(", ")} retrieved`,
         comments
       );
@@ -29,20 +29,20 @@ exports.getSingleComment = asyncHandler(async (req, res, next) => {
     ? next(new ErrorHandler("No comment found"))
     : SuccessHandler(
         res,
-        `Comment ${comment?.transaction?.customer?.name} with ID ${comment?._id} retrieved`,
+        `Comment of ${comment?.transaction?.customer?.name} with ID ${comment?._id} retrieved`,
         comment
       );
 });
 
 exports.createNewComment = [
   upload.array("image"),
-  checkRequiredFields(["ratings", "text","image","transaction"]),
+  checkRequiredFields(["ratings", "description", "image", "transaction"]),
   asyncHandler(async (req, res, next) => {
     const comment = await commentsService.CreateCommentData(req);
 
     return SuccessHandler(
       res,
-      `New comment ${comment?.transaction?.customer?.name} created with an ID ${comment?._id}`,
+      `New comment of ${comment?.transaction?.customer?.name} created with an ID ${comment?._id}`,
       comment
     );
   }),
@@ -50,7 +50,7 @@ exports.createNewComment = [
 
 exports.updateComment = [
   upload.array("image"),
-  checkRequiredFields(["ratings", "text","image","transaction"]),
+  checkRequiredFields(["ratings", "description", "image"]),
   asyncHandler(async (req, res, next) => {
     const comment = await commentsService.updateCommentData(
       req,
@@ -60,7 +60,7 @@ exports.updateComment = [
 
     return SuccessHandler(
       res,
-      `Comment ${comment?.transaction?.customer?.name} with ID ${comment?._id} is updated`,
+      `Comment of ${comment?.transaction?.customer?.name} with ID ${comment?._id} is updated`,
       comment
     );
   }),
@@ -73,7 +73,7 @@ exports.deleteComment = asyncHandler(async (req, res, next) => {
     ? next(new ErrorHandler("No comment found"))
     : SuccessHandler(
         res,
-        `Comment ${comment?.transaction?.customer?.name} with ID ${comment?._id} is deleted`,
+        `Comment of ${comment?.transaction?.customer?.name} with ID ${comment?._id} is deleted`,
         comment
       );
 });

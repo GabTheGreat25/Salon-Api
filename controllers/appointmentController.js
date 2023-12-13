@@ -24,10 +24,10 @@ exports.getAllAppointments = asyncHandler(async (req, res, next) => {
     ? next(new ErrorHandler("No appointments found"))
     : SuccessHandler(
         res,
-        `Appointments with appointment of ${appointments
-          .map((u) => u?.customer?.name)
+        `Appointments of ${appointments
+          .map((appointment) => appointment?.customer?.name)
           .join(", ")} and IDs ${appointments
-          .map((u) => u?._id)
+          .map((appointment) => appointment?._id)
           .join(", ")} retrieved`,
         appointments
       );
@@ -56,8 +56,11 @@ exports.createNewAppointment = [
     "price",
   ]),
   asyncHandler(async (req, res, next) => {
+    const service = req.body.service || [];
+
     const { appointment, transaction } =
-      await appointmentsService.createAppointmentData(req);
+      await appointmentsService.createAppointmentData(req, service);
+
     return SuccessHandler(
       res,
       `New appointment of ${appointment?.customer?.name} created with an ID ${appointment?._id}`,
@@ -67,10 +70,13 @@ exports.createNewAppointment = [
 ];
 
 exports.updateAppointment = [
-  checkRequiredFields(["date", "time", "price"]),
+  checkRequiredFields(["service", , "date", "time", "price"]),
   asyncHandler(async (req, res, next) => {
+    const service = req.body.service || [];
+
     const appointment = await appointmentsService.updateAppointmentData(
       req,
+      service,
       res,
       req.params.id
     );

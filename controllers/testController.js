@@ -4,34 +4,32 @@ const testServices = require("../services/testServices");
 const asyncHandler = require("express-async-handler");
 const checkRequiredFields = require("../helpers/checkRequiredFields");
 const { upload } = require("../utils/cloudinary");
-const {
-  STATUSCODE
-} = require("../constants/index");
+const { STATUSCODE } = require("../constants/index");
 
 exports.getAllTests = asyncHandler(async (req, res, next) => {
   const tests = await testServices.getAllTestsData();
 
-  return tests?.length === STATUSCODE.ZERO ?
-    next(new ErrorHandler("No tests found")) :
-    SuccessHandler(
-      res,
-      `Tests with test ${tests.map((u) => u.test).join(", ")} and IDs ${tests
+  return tests?.length === STATUSCODE.ZERO
+    ? next(new ErrorHandler("No tests found"))
+    : SuccessHandler(
+        res,
+        `Tests with test ${tests.map((u) => u.test).join(", ")} and IDs ${tests
           .map((u) => u._id)
           .join(", ")} retrieved`,
-      tests
-    );
+        tests
+      );
 });
 
 exports.getSingleTest = asyncHandler(async (req, res, next) => {
   const test = await testServices.getSingleTestData(req.params?.id);
 
-  return !test ?
-    next(new ErrorHandler("No test found")) :
-    SuccessHandler(
-      res,
-      `Test ${test?.test} with ID ${test?._id} retrieved`,
-      test
-    );
+  return !test
+    ? next(new ErrorHandler("No test found"))
+    : SuccessHandler(
+        res,
+        `Test ${test?.test} with ID ${test?._id} retrieved`,
+        test
+      );
 });
 
 exports.createNewTest = [
@@ -65,11 +63,11 @@ exports.updateTest = [
 exports.deleteTest = asyncHandler(async (req, res, next) => {
   const test = await testServices.deleteTestData(req.params.id);
 
-  return !test ?
-    next(new ErrorHandler("No test found")) :
-    SuccessHandler(
-      res,
-      `Test ${test?.test} with ID ${test?._id} is deleted`,
-      test
-    );
+  return !test
+    ? next(new ErrorHandler("No test found"))
+    : SuccessHandler(
+        res,
+        `Test ${test?.test} with ID ${test?._id} is deleted`,
+        test
+      );
 });
