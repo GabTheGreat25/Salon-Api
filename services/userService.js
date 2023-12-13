@@ -196,13 +196,6 @@ exports.getSingleUserData = async (id) => {
 };
 
 exports.createUserData = async (req, res) => {
-  const duplicateUser = await User.findOne({ name: req.body.name })
-    .collation({ locale: "en" })
-    .lean()
-    .exec();
-
-  if (duplicateUser) throw new ErrorHandler("Duplicate name");
-
   let userImages = [];
   if (req.files && Array.isArray(req.files)) {
     userImages = await Promise.all(
@@ -240,6 +233,7 @@ exports.createUserData = async (req, res) => {
   if (roles.includes(ROLE.ADMIN)) {
     user = await User.create({
       name: req.body.name,
+      age: req.body.age,
       email: req.body.email,
       password: await bcrypt.hash(
         req.body.password,
@@ -267,6 +261,7 @@ exports.createUserData = async (req, res) => {
 
     user = await User.create({
       name: req.body.name,
+      age: req.body.age,
       email: req.body.email,
       password: await bcrypt.hash(
         req.body.password,
@@ -294,6 +289,7 @@ exports.createUserData = async (req, res) => {
   } else {
     user = await User.create({
       name: req.body.name,
+      age: req.body.age,
       email: req.body.email,
       password: await bcrypt.hash(
         req.body.password,
@@ -323,16 +319,6 @@ exports.updateUserData = async (req, res, id) => {
   const existingUser = await User.findById(id).lean().exec();
 
   if (!existingUser) throw new ErrorHandler(`User not found with ID: ${id}`);
-
-  const duplicateUser = await User.findOne({
-    name: req.body.name,
-    _id: { $ne: id },
-  })
-    .collation({ locale: "en" })
-    .lean()
-    .exec();
-
-  if (duplicateUser) throw new ErrorHandler("Duplicate name");
 
   let images = existingUser.image || [];
 

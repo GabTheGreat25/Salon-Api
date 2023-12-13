@@ -68,7 +68,7 @@ exports.getAllUsers = asyncHandler(async (req, res, next) => {
     ? next(new ErrorHandler("No users found"))
     : SuccessHandler(
         res,
-        `Users with user ${users.map((u) => u?.name).join(", ")} and IDs ${users
+        `Users ${users.map((u) => u?.name).join(", ")} and IDs ${users
           .map((u) => u?._id)
           .join(", ")} retrieved`,
         users
@@ -93,7 +93,14 @@ exports.getSingleUser = asyncHandler(async (req, res, next) => {
 
 exports.createNewUser = [
   upload.array("image"),
-  checkRequiredFields(["name", "email", "password", "contact_number", "image"]),
+  checkRequiredFields([
+    "name",
+    "age",
+    "email",
+    "password",
+    "contact_number",
+    "image",
+  ]),
   asyncHandler(async (req, res, next) => {
     const { user, newRequirement, newInformation } =
       await usersService.createUserData(req);
@@ -117,7 +124,14 @@ exports.createNewUser = [
 
 exports.updateUser = [
   upload.array("image"),
-  checkRequiredFields(["name", "email", "contact_number", "image"]),
+  checkRequiredFields([
+    "name",
+    "age",
+    "email",
+    "password",
+    "contact_number",
+    "image",
+  ]),
   asyncHandler(async (req, res, next) => {
     const { updatedUser, updateRequirement, updateInformation } =
       await usersService.updateUserData(req, res, req.params.id);
