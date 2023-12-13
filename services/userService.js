@@ -275,7 +275,7 @@ exports.createUserData = async (req, res) => {
 
     newRequirement = await Requirement.create({
       beautician: user?._id,
-      job: req.body.job,
+      job_type: req.body.job_type,
       date: req.body.date,
       time: req.body.time,
     });
@@ -369,7 +369,7 @@ exports.updateUserData = async (req, res, id) => {
     updateRequirement = await Requirement.findOneAndUpdate(
       { beautician: id },
       {
-        job: req.body.job,
+        job_type: req.body.job_type,
         docsImages: req.files
           ? await Promise.all(
               req.files.map(async (file) => {

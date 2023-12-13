@@ -7,9 +7,9 @@ const requirementSchema = new mongoose.Schema({
     required: [true, "Please enter an beautician"],
     ref: RESOURCE.USER,
   },
-  job: {
+  job_type: {
     type: String,
-    required: [true, "Please pick a job"],
+    required: [true, "Please pick a job_type"],
     enum: ["Stylist", "Barber", "Nail technician", "Receptionist"],
   },
   date: {

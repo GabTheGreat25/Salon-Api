@@ -524,7 +524,7 @@
                   "src": "/C:/Users/HP/Downloads/400370119_649302763951854_9121728449250058438_n.jpg"
                 },
                 {
-                  "key": "job",
+                  "key": "job_type",
                   "value": "Stylist",
                   "type": "text"
                 },
@@ -720,7 +720,7 @@
                   "src": "/C:/Users/HP/Downloads/393864880_725350155711728_6749489122381010523_n.jpg"
                 },
                 {
-                  "key": "job",
+                  "key": "job_type",
                   "value": "Stylist",
                   "type": "text"
                 },
