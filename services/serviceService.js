@@ -1,4 +1,5 @@
 const Service = require("../models/service");
+const Appointment = require("../models/appointment");
 const mongoose = require("mongoose");
 const ErrorHandler = require("../utils/errorHandler");
 const { cloudinary } = require("../utils/cloudinary");
@@ -7,11 +8,11 @@ const { STATUSCODE, RESOURCE } = require("../constants/index");
 exports.getAllServiceData = async () => {
   const services = await Service.find()
     .sort({
-      createdAt: -1,
+      createdAt: STATUSCODE.NEGATIVE_ONE,
     })
     .populate({
       path: RESOURCE.PRODUCT,
-      select: "product_name type",
+      select: "product_name type brand",
     })
     .lean()
     .exec();
@@ -20,14 +21,13 @@ exports.getAllServiceData = async () => {
 };
 
 exports.getSingleServiceData = async (id) => {
-  if (!mongoose.Types.ObjectId) {
+  if (!mongoose.Types.ObjectId)
     throw new ErrorHandler(`Invalid Service ID ${id}`);
-  }
 
   const service = await Service.findById(id)
     .populate({
       path: RESOURCE.PRODUCT,
-      select: "product_name type",
+      select: "product_name type brand",
     })
     .lean()
     .exec();
@@ -75,7 +75,7 @@ exports.createServiceData = async (req, res) => {
 
   await Service.populate(service, {
     path: RESOURCE.PRODUCT,
-    select: "product_name type",
+    select: "product_name type brand",
   });
 
   return service;
@@ -89,6 +89,20 @@ exports.updateServiceData = async (req, res, id) => {
 
   if (!existingService)
     throw new ErrorHandler(`Service not found with ID: ${id}`);
+
+  const duplicateService = await Service.findOne({
+    service_name: { $regex: new RegExp(`^${req.body.service_name}$`, "i") },
+    _id: {
+      $ne: id,
+    },
+  })
+    .collation({
+      locale: "en",
+    })
+    .lean()
+    .exec();
+
+  if (duplicateService) throw new ErrorHandler("Duplicate Service Name");
 
   let image = existingService.image || [];
   if (req.files && Array.isArray(req.files) && req.files.length > 0) {
@@ -123,25 +137,22 @@ exports.updateServiceData = async (req, res, id) => {
   )
     .populate({
       path: RESOURCE.PRODUCT,
-      select: "product_name type",
+      select: "product_name type brand",
     })
     .lean()
     .exec();
-
-  if (!updatedService)
-    throw new ErrorHandler(`Product not found with ID: ${id}`);
 
   return updatedService;
 };
 
 exports.deleteServiceData = async (id) => {
-  if (!mongoose.Types.ObjectId.isValid(id)) {
+  if (!mongoose.Types.ObjectId.isValid(id))
     throw new ErrorHandler(`Invalid service ID ${id}`);
-  }
 
   const service = await Service.findOne({
     _id: id,
   });
+
   if (!service) throw new ErrorHandler(`Service not found with ID: ${id}`);
 
   const publicIds = service.image.map((image) => image.public_id);
@@ -149,6 +160,11 @@ exports.deleteServiceData = async (id) => {
   await Promise.all([
     Service.deleteOne({
       _id: id,
+    })
+      .lean()
+      .exec(),
+    Appointment.deleteMany({
+      service: id,
     })
       .lean()
       .exec(),

@@ -1,28 +1,27 @@
 const Comment = require("../models/comment");
 const ErrorHandler = require("../utils/errorHandler");
 const mongoose = require("mongoose");
-const {
-  STATUSCODE,
-  RESOURCE
-} = require("../constants/index");
-const {
-  cloudinary
-} = require("../utils/cloudinary");
+const { STATUSCODE, RESOURCE } = require("../constants/index");
+const { cloudinary } = require("../utils/cloudinary");
 
 exports.getAllCommentData = async () => {
-  const comments = await Comment.find().sort({
-      createdAt: STATUSCODE.NEGATIVE_ONE
-    }).populate({
+  const comments = await Comment.find()
+    .sort({
+      createdAt: STATUSCODE.NEGATIVE_ONE,
+    })
+    .populate({
       path: RESOURCE.TRANSACTION,
-      select: "status"
+      select: "status",
     })
     .populate({
       path: RESOURCE.TRANSACTION,
       populate: {
         path: "customer",
-        select: "name"
-      }
-    }).lean().exec();
+        select: "name",
+      },
+    })
+    .lean()
+    .exec();
 
   return comments;
 };
@@ -34,14 +33,14 @@ exports.getSingleCommentData = async (id) => {
   const comment = await Comment.findById(id)
     .populate({
       path: RESOURCE.TRANSACTION,
-      select: "status"
+      select: "status",
     })
     .populate({
       path: RESOURCE.TRANSACTION,
       populate: {
         path: "customer",
-        select: "name"
-      }
+        select: "name",
+      },
     })
     .lean()
     .exec();
@@ -68,7 +67,8 @@ exports.CreateCommentData = async (req, res) => {
     );
   }
 
-  if (images.length === 0) throw new ErrorHandler("At least one image is required");
+  if (images.length === 0)
+    throw new ErrorHandler("At least one image is required");
 
   const commentData = {
     ...req.body,
@@ -82,8 +82,8 @@ exports.CreateCommentData = async (req, res) => {
     select: "status",
     populate: {
       path: "customer",
-      select: "name"
-    }
+      select: "name",
+    },
   });
 
   return comment;
@@ -91,6 +91,12 @@ exports.CreateCommentData = async (req, res) => {
 
 exports.updateCommentData = async (req, res, id) => {
   const existingComment = await Comment.findById(id).lean().exec();
+
+  if (!mongoose.Types.ObjectId.isValid(id))
+    throw new ErrorHandler(`Invalid comment ID: ${id}`);
+
+  if (!existingComment)
+    throw new ErrorHandler(`Comment not found with ID: ${id}`);
 
   let images = existingComment.image || [];
   if (req.files && Array.isArray(req.files) && req.files.length > 0) {
@@ -112,32 +118,30 @@ exports.updateCommentData = async (req, res, id) => {
     );
   }
 
-  const updatedComment = await Comment.findByIdAndUpdate(id, {
+  const updatedComment = await Comment.findByIdAndUpdate(
+    id,
+    {
       ...req.body,
       image: images,
-    }, {
+    },
+    {
       new: true,
       runValidators: true,
-    })
+    }
+  )
     .populate({
       path: RESOURCE.TRANSACTION,
-      select: "status"
+      select: "status",
     })
     .populate({
       path: RESOURCE.TRANSACTION,
       populate: {
         path: "customer",
-        select: "name"
-      }
+        select: "name",
+      },
     })
     .lean()
     .exec();
-
-  if (!mongoose.Types.ObjectId.isValid(id))
-    throw new ErrorHandler(`Invalid comment ID: ${id}`);
-
-  if (!updatedComment)
-    throw new ErrorHandler(`Comment not found with ID: ${id}`);
 
   return updatedComment;
 };
@@ -147,7 +151,7 @@ exports.deleteCommentData = async (id) => {
     throw new ErrorHandler(`Invalid comment ID: ${id}`);
 
   const comment = await Comment.findOne({
-    _id: id
+    _id: id,
   });
 
   if (!comment) throw new ErrorHandler(`Comment not found with ID: ${id}`);
@@ -156,18 +160,21 @@ exports.deleteCommentData = async (id) => {
 
   await Promise.all([
     Comment.deleteOne({
-      _id: id
-    }).populate({
-      path: RESOURCE.TRANSACTION,
-      select: "status"
+      _id: id,
     })
-    .populate({
-      path: RESOURCE.TRANSACTION,
-      populate: {
-        path: "customer",
-        select: "name"
-      }
-    }).lean().exec(),
+      .populate({
+        path: RESOURCE.TRANSACTION,
+        select: "status",
+      })
+      .populate({
+        path: RESOURCE.TRANSACTION,
+        populate: {
+          path: "customer",
+          select: "name",
+        },
+      })
+      .lean()
+      .exec(),
     cloudinary.api.delete_resources(publicIds),
   ]);
 

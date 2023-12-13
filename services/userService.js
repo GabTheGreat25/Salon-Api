@@ -165,15 +165,12 @@ exports.getAllUsersData = async () => {
 };
 
 exports.getSingleUserData = async (id) => {
-  if (!mongoose.Types.ObjectId.isValid(id)) {
+  if (!mongoose.Types.ObjectId.isValid(id))
     throw new ErrorHandler(`Invalid user ID: ${id}`);
-  }
 
   const user = await User.findById(id).lean().exec();
 
-  if (!user) {
-    throw new ErrorHandler(`User not found with ID: ${id}`);
-  }
+  if (!user) throw new ErrorHandler(`User not found with ID: ${id}`);
 
   if (user.roles.includes(ROLE.BEAUTICIAN)) {
     user.requirement = await Requirement.findOne({

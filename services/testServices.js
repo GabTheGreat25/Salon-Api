@@ -1,17 +1,16 @@
 const Test = require("../models/test");
 const ErrorHandler = require("../utils/errorHandler");
 const mongoose = require("mongoose");
-const {
-  cloudinary
-} = require("../utils/cloudinary");
-const {
-  STATUSCODE
-} = require("../constants/index");
+const { cloudinary } = require("../utils/cloudinary");
+const { STATUSCODE } = require("../constants/index");
 
 exports.getAllTestsData = async () => {
-  const tests = await Test.find().sort({
-    createdAt: -1
-  }).lean().exec();
+  const tests = await Test.find()
+    .sort({
+      createdAt: -1,
+    })
+    .lean()
+    .exec();
 
   return tests;
 };
@@ -29,10 +28,10 @@ exports.getSingleTestData = async (id) => {
 
 exports.createTestData = async (req, res) => {
   const duplicateTest = await Test.findOne({
-      test: req.body.test
-    })
+    test: req.body.test,
+  })
     .collation({
-      locale: "en"
+      locale: "en",
     })
     .lean()
     .exec();
@@ -75,13 +74,13 @@ exports.updateTestData = async (req, res, id) => {
   if (!existingTest) throw new ErrorHandler(`Test not found with ID: ${id}`);
 
   const duplicateTest = await Test.findOne({
-      test: req.body.test,
-      _id: {
-        $ne: id
-      },
-    })
+    test: req.body.test,
+    _id: {
+      $ne: id,
+    },
+  })
     .collation({
-      locale: "en"
+      locale: "en",
     })
     .lean()
     .exec();
@@ -108,13 +107,17 @@ exports.updateTestData = async (req, res, id) => {
     );
   }
 
-  const updatedTest = await Test.findByIdAndUpdate(id, {
+  const updatedTest = await Test.findByIdAndUpdate(
+    id,
+    {
       ...req.body,
       image: image,
-    }, {
+    },
+    {
       new: true,
       runValidators: true,
-    })
+    }
+  )
     .lean()
     .exec();
 
@@ -124,10 +127,11 @@ exports.updateTestData = async (req, res, id) => {
 };
 
 exports.deleteTestData = async (id) => {
-  if (!mongoose.Types.ObjectId.isValid(id)) throw new ErrorHandler(`Invalid test ID ${id}`);
+  if (!mongoose.Types.ObjectId.isValid(id))
+    throw new ErrorHandler(`Invalid test ID ${id}`);
 
   const test = await Test.findOne({
-    _id: id
+    _id: id,
   });
   if (!test) throw new ErrorHandler(`Test not found with ID: ${id}`);
 
@@ -135,8 +139,10 @@ exports.deleteTestData = async (id) => {
 
   await Promise.all([
     Test.deleteOne({
-      _id: id
-    }).lean().exec(),
+      _id: id,
+    })
+      .lean()
+      .exec(),
     cloudinary.api.delete_resources(publicIds),
   ]);
 

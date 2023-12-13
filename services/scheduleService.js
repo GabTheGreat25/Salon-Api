@@ -2,10 +2,13 @@ const Schedule = require("../models/schedule");
 const Status = require("../models/status");
 const ErrorHandler = require("../utils/errorHandler");
 const mongoose = require("mongoose");
+const { STATUSCODE } = require("../constants/index");
 
 exports.getAllSchedulesData = async () => {
   const schedules = await Schedule.find()
-    .sort({ createdAt: -1 })
+    .sort({
+      createdAt: STATUSCODE.NEGATIVE_ONE,
+    })
     .populate({ path: "beautician", select: "name" })
     .lean()
     .exec();
@@ -32,7 +35,11 @@ exports.createScheduleData = async (req, res) => {
 
   await Schedule.populate(schedule, { path: "beautician", select: "name" });
 
-  const attendance = schedule.available ? "present" : "absent";
+  const attendance = schedule.isLeave
+    ? "leave"
+    : schedule.available
+    ? "present"
+    : "absent";
 
   const createStatus = await Status.create({
     schedule: schedule?._id,
@@ -57,7 +64,11 @@ exports.updateScheduleData = async (req, res, id) => {
   if (!updatedSchedule)
     throw new ErrorHandler(`Schedule not found with ID: ${id}`);
 
-  const attendance = updatedSchedule.available ? "present" : "absent";
+  const attendance = updatedSchedule.isLeave
+    ? "leave"
+    : updatedSchedule.available
+    ? "present"
+    : "absent";
 
   const updateStatus = await Status.findOneAndUpdate(
     { schedule: id },
@@ -78,6 +89,7 @@ exports.deleteScheduleData = async (id) => {
   const schedule = await Schedule.findOne({
     _id: id,
   });
+
   if (!schedule) throw new ErrorHandler(`Schedule not found with ID: ${id}`);
 
   await Promise.all([

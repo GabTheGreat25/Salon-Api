@@ -31,9 +31,7 @@ exports.getSingleDeliveryData = async (id) => {
     .lean()
     .exec();
 
-  if (!delivery) {
-    throw new ErrorHandler(`Delivery not found with ID ${id}`);
-  }
+  if (!delivery) throw new ErrorHandler(`Delivery not found with ID ${id}`);
 
   return delivery;
 };
@@ -75,27 +73,26 @@ exports.updateDeliveryData = async (req, res, id) => {
     .lean()
     .exec();
 
-  if (!updatedDelivery)
-    throw new ErrorHandler(`Delivery not found with ID: ${id}`);
-
   return updatedDelivery;
 };
 
 exports.deleteDeliveryData = async (id) => {
-  if (!mongoose.Types.ObjectId.isValid(id)) {
+  if (!mongoose.Types.ObjectId.isValid(id))
     throw new ErrorHandler(`Invalid delivery ID ${id}`);
-  }
 
   const delivery = await Delivery.findOne({
     _id: id,
   });
+
   if (!delivery) throw new ErrorHandler(`Delivery not found with ID: ${id}`);
 
-  const deliveryData = await Delivery.findOneAndDelete({
-    _id: id,
-  })
-    .lean()
-    .exec();
+  await Promise.all([
+    Delivery.deleteOne({
+      _id: id,
+    })
+      .lean()
+      .exec(),
+  ]);
 
-  return deliveryData;
+  return delivery;
 };

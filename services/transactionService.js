@@ -1,6 +1,5 @@
 const Transaction = require("../models/transaction");
 const Verification = require("../models/verification");
-const Appointment = require("../models/appointment");
 const ErrorHandler = require("../utils/errorHandler");
 const mongoose = require("mongoose");
 const { STATUSCODE, RESOURCE } = require("../constants/index");
@@ -138,6 +137,7 @@ exports.deleteTransactionData = async (id) => {
   const transaction = await Transaction.findOne({
     _id: id,
   });
+
   if (!transaction)
     throw new ErrorHandler(`Transaction not found with ID: ${id}`);
 

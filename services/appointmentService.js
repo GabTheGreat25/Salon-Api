@@ -77,7 +77,6 @@ exports.createAppointmentData = async (req, res) => {
 
   const transaction = await Transaction.create({
     appointment: appointment._id,
-    date: new Date(),
     status: req.body.status,
     payment: req.body.payment,
   });

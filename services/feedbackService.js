@@ -15,15 +15,12 @@ exports.getAllFeedbackData = async () => {
 };
 
 exports.getSingleFeedbackData = async (id) => {
-  if (!mongoose.Types.ObjectId.isValid(id)) {
+  if (!mongoose.Types.ObjectId.isValid(id))
     throw new ErrorHandler(`Invalid feedback ID: ${id}`);
-  }
 
   const feedback = await Feedback.findById(id).lean().exec();
 
-  if (!feedback) {
-    throw new ErrorHandler(`Feedback not found with ID: ${id}`);
-  }
+  if (!feedback) throw new ErrorHandler(`Feedback not found with ID: ${id}`);
 
   return feedback;
 };
@@ -62,9 +59,8 @@ exports.updateFeedbackData = async (req, res, id) => {
 };
 
 exports.deleteFeedbackData = async (id) => {
-  if (!mongoose.Types.ObjectId.isValid(id)) {
+  if (!mongoose.Types.ObjectId.isValid(id))
     throw new ErrorHandler(`Invalid feedback ID ${id}`);
-  }
 
   const feedback = await Feedback.findOne({
     _id: id,
