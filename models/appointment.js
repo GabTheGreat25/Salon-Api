@@ -16,7 +16,7 @@ const appointmentSchema = new mongoose.Schema({
   },
   customer: {
     type: mongoose.Types.ObjectId,
-    required: [true, "Please enter a user"],
+    required: [true, "Please enter a customer"],
     ref: RESOURCE.USER,
   },
   date: {

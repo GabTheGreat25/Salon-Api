@@ -12,13 +12,20 @@ const scheduleSchema = new mongoose.Schema({
     type: Boolean,
     default: false,
   },
+  isLeave: {
+    type: Boolean,
+    default: false,
+  },
+  leaveNote: {
+    type: String,
+    required: function () {
+      return this.isLeave;
+    },
+    maxLength: [60, "Leave note must not exceed 60 characters"],
+  },
   date: {
     type: Date,
     required: [true, "Please enter a date"],
-  },
-  note: {
-    type: String,
-    required: [true, "Please enter a note"],
   },
   time: {
     type: String,

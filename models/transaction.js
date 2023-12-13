@@ -7,10 +7,6 @@ const transactionSchema = new mongoose.Schema({
     required: [true, "Please enter a appointment"],
     ref: RESOURCE.APPOINTMENT,
   },
-  date: {
-    type: Date,
-    required: [true, "Please enter a date"],
-  },
   status: {
     type: String,
     default: "pending",

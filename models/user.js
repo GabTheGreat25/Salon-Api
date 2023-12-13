@@ -2,8 +2,6 @@ const mongoose = require("mongoose");
 const validator = require("validator");
 const { RESOURCE } = require("../constants/index");
 
-const phoneNumberRegex = /^\d{11}$/;
-
 const userSchema = new mongoose.Schema({
   name: {
     type: String,
