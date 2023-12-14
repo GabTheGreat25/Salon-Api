@@ -37,7 +37,14 @@ exports.getSingleDeliveryData = async (id) => {
 };
 
 exports.createDeliveryData = async (req, res) => {
-  const delivery = await Delivery.create(req.body);
+  const productValues = Array.isArray(req.body.product)
+    ? req.body.product
+    : req.body.product.split(", ");
+
+  const delivery = await Delivery.create({
+    ...req.body,
+    product: productValues,
+  });
 
   await Delivery.populate(delivery, {
     path: RESOURCE.PRODUCT,
@@ -49,17 +56,22 @@ exports.createDeliveryData = async (req, res) => {
 
 exports.updateDeliveryData = async (req, res, id) => {
   if (!mongoose.Types.ObjectId.isValid(id))
-    throw new ErrorHandler(`Invalid delivey ID: ${id}`);
+    throw new ErrorHandler(`Invalid delivery ID: ${id}`);
 
   const existingDelivery = await Delivery.findById(id).lean().exec();
 
   if (!existingDelivery)
     throw new ErrorHandler(`Delivery not found with ID: ${id}`);
 
+  const productValues = Array.isArray(req.body.product)
+    ? req.body.product
+    : req.body.product.split(", ");
+
   const updatedDelivery = await Delivery.findByIdAndUpdate(
     id,
     {
       ...req.body,
+      product: productValues,
     },
     {
       new: true,

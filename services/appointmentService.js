@@ -63,11 +63,13 @@ exports.getSingleAppointmentData = async (id) => {
 };
 
 exports.createAppointmentData = async (req, res) => {
-  const serviceIds = req.body.service;
+  const serviceValues = Array.isArray(req.body.service)
+    ? req.body.service
+    : req.body.service.split(", ");
 
   const appointment = await Appointment.create({
     ...req.body,
-    service: serviceIds,
+    service: serviceValues,
   });
 
   await Appointment.populate(appointment, [
@@ -92,10 +94,21 @@ exports.updateAppointmentData = async (req, res, id) => {
   if (!mongoose.Types.ObjectId.isValid(id))
     throw new ErrorHandler(`Invalid appointment ID: ${id}`);
 
-  const updatedAppointment = await Appointment.findByIdAndUpdate(id, req.body, {
-    new: true,
-    runValidators: true,
-  })
+  const serviceValues = Array.isArray(req.body.service)
+    ? req.body.service
+    : req.body.service.split(", ");
+
+  const updatedAppointment = await Appointment.findByIdAndUpdate(
+    id,
+    {
+      ...req.body,
+      service: serviceValues,
+    },
+    {
+      new: true,
+      runValidators: true,
+    }
+  )
     .populate({ path: "beautician customer", select: "name" })
     .populate({ path: "service", select: "service_name image" })
     .lean()

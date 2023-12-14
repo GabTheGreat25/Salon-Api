@@ -54,6 +54,10 @@ exports.getAllTransactionData = async (page, limit, search, sort, filter) => {
   transactionsQuery = transactionsQuery
     .populate({
       path: RESOURCE.APPOINTMENT,
+      populate: {
+        path: "customer",
+        select: "name",
+      },
       select: "date time price extraFee",
     })
     .skip(skip)
@@ -69,6 +73,10 @@ exports.getSingleTransactionData = async (id) => {
   const transaction = await Transaction.findById(id)
     .populate({
       path: RESOURCE.APPOINTMENT,
+      populate: {
+        path: "customer",
+        select: "name",
+      },
       select: "date time price extraFee",
     })
     .lean()

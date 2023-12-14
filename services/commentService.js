@@ -13,13 +13,6 @@ exports.getAllCommentData = async () => {
       path: RESOURCE.TRANSACTION,
       select: "status",
     })
-    .populate({
-      path: RESOURCE.TRANSACTION,
-      populate: {
-        path: "customer",
-        select: "name",
-      },
-    })
     .lean()
     .exec();
 
@@ -35,13 +28,6 @@ exports.getSingleCommentData = async (id) => {
       path: RESOURCE.TRANSACTION,
       select: "status",
     })
-    .populate({
-      path: RESOURCE.TRANSACTION,
-      populate: {
-        path: "customer",
-        select: "name",
-      },
-    })
     .lean()
     .exec();
 
@@ -50,7 +36,7 @@ exports.getSingleCommentData = async (id) => {
   return comment;
 };
 
-exports.CreateCommentData = async (req, res) => {
+exports.createCommentData = async (req, res) => {
   let images = [];
   if (req.files && Array.isArray(req.files)) {
     images = await Promise.all(
@@ -80,10 +66,6 @@ exports.CreateCommentData = async (req, res) => {
   await Comment.populate(comment, {
     path: RESOURCE.TRANSACTION,
     select: "status",
-    populate: {
-      path: "customer",
-      select: "name",
-    },
   });
 
   return comment;
@@ -133,13 +115,6 @@ exports.updateCommentData = async (req, res, id) => {
       path: RESOURCE.TRANSACTION,
       select: "status",
     })
-    .populate({
-      path: RESOURCE.TRANSACTION,
-      populate: {
-        path: "customer",
-        select: "name",
-      },
-    })
     .lean()
     .exec();
 
@@ -165,13 +140,6 @@ exports.deleteCommentData = async (id) => {
       .populate({
         path: RESOURCE.TRANSACTION,
         select: "status",
-      })
-      .populate({
-        path: RESOURCE.TRANSACTION,
-        populate: {
-          path: "customer",
-          select: "name",
-        },
       })
       .lean()
       .exec(),
