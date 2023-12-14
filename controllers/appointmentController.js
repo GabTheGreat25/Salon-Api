@@ -76,9 +76,9 @@ exports.updateAppointment = [
 
     const appointment = await appointmentsService.updateAppointmentData(
       req,
-      service,
       res,
-      req.params.id
+      req.params.id,
+      service
     );
 
     return SuccessHandler(

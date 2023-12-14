@@ -15,7 +15,7 @@ exports.getAllServices = asyncHandler(async (req, res, next) => {
         res,
         `Services ${services
           .map((service) => service.service_name)
-          .join(", ")} and ID's ${services
+          .join(", ")} and IDs ${services
           .map((service) => service?._id)
           .join(", ")} retrieved`,
         services
@@ -70,9 +70,9 @@ exports.updateService = [
 
     const service = await serviceService.updateServiceData(
       req,
-      product,
       res,
-      req.params.id
+      req.params.id,
+      product
     );
 
     return SuccessHandler(

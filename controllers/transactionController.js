@@ -25,7 +25,7 @@ exports.getAllTransactions = asyncHandler(async (req, res, next) => {
     : SuccessHandler(
         res,
         `Transactions of ${transactions
-          .map((transaction) => transaction?.customer?.name)
+          .map((transaction) => transaction?.appointment?.customer?.name)
           .join(", ")} and IDs ${transactions
           .map((transaction) => transaction?._id)
           .join(", ")} retrieved`,
@@ -42,7 +42,7 @@ exports.getSingleTransaction = asyncHandler(async (req, res, next) => {
     ? next(new ErrorHandler("No transaction found"))
     : SuccessHandler(
         res,
-        `Transaction of ${transaction?.customer?.name} is ${transaction?.status}`,
+        `Transaction of ${transaction?.appointment?.customer?.name} is ${transaction?.status}`,
         transaction
       );
 });
@@ -55,7 +55,7 @@ exports.updateTransaction = [
 
     return SuccessHandler(
       res,
-      `Transaction of ${existingTransaction?.customer?.name} with an ID ${existingTransaction?._id} is updated`,
+      `Transaction of ${existingTransaction?.appointment?.customer?.name} with an ID ${existingTransaction?._id} is updated`,
       { transaction: updatedTransaction, updateVerification }
     );
   }),
@@ -70,7 +70,7 @@ exports.deleteTransaction = asyncHandler(async (req, res, next) => {
     ? next(new ErrorHandler("No transaction found"))
     : SuccessHandler(
         res,
-        `transaction of ${transaction?.customer?.name} with an ID ${transaction?._id} is deleted`,
+        `transaction of ${transaction?.appointment?.customer?.name} with an ID ${transaction?._id} is deleted`,
         transaction
       );
 });

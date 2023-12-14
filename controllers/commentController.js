@@ -14,7 +14,7 @@ exports.getAllComments = asyncHandler(async (req, res, next) => {
     : SuccessHandler(
         res,
         `Comments of ${comments
-          .map((comment) => comment?.transaction?.customer?.name)
+          .map((comment) => comment?.transaction?.status)
           .join(", ")} and IDs ${comments
           .map((comment) => comment?._id)
           .join(", ")} retrieved`,
@@ -29,7 +29,7 @@ exports.getSingleComment = asyncHandler(async (req, res, next) => {
     ? next(new ErrorHandler("No comment found"))
     : SuccessHandler(
         res,
-        `Comment of ${comment?.transaction?.customer?.name} with ID ${comment?._id} retrieved`,
+        `Comment of ${comment?.transaction?.status} with ID ${comment?._id} retrieved`,
         comment
       );
 });
@@ -38,11 +38,11 @@ exports.createNewComment = [
   upload.array("image"),
   checkRequiredFields(["ratings", "description", "image", "transaction"]),
   asyncHandler(async (req, res, next) => {
-    const comment = await commentsService.CreateCommentData(req);
+    const comment = await commentsService.createCommentData(req);
 
     return SuccessHandler(
       res,
-      `New comment of ${comment?.transaction?.customer?.name} created with an ID ${comment?._id}`,
+      `New comment of ${comment?.transaction?.status} created with an ID ${comment?._id}`,
       comment
     );
   }),
@@ -60,7 +60,7 @@ exports.updateComment = [
 
     return SuccessHandler(
       res,
-      `Comment of ${comment?.transaction?.customer?.name} with ID ${comment?._id} is updated`,
+      `Comment of ${comment?.transaction?.status} with ID ${comment?._id} is updated`,
       comment
     );
   }),
@@ -73,7 +73,7 @@ exports.deleteComment = asyncHandler(async (req, res, next) => {
     ? next(new ErrorHandler("No comment found"))
     : SuccessHandler(
         res,
-        `Comment of ${comment?.transaction?.customer?.name} with ID ${comment?._id} is deleted`,
+        `Comment of ${comment?.transaction?.status} with ID ${comment?._id} is deleted`,
         comment
       );
 });

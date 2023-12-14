@@ -34,7 +34,7 @@ exports.getSingleSchedule = asyncHandler(async (req, res, next) => {
 });
 
 exports.createNewSchedule = [
-  checkRequiredFields(["beautician", "available", "date", "time"]),
+  checkRequiredFields(["beautician", "date", "time"]),
   asyncHandler(async (req, res, next) => {
     const { schedule, createStatus } =
       await schedulesService.createScheduleData(req);
@@ -48,7 +48,7 @@ exports.createNewSchedule = [
 ];
 
 exports.updateSchedule = [
-  checkRequiredFields(["beautician", "available", "date", "time"]),
+  checkRequiredFields(["beautician", "date", "time"]),
   asyncHandler(async (req, res, next) => {
     const { updatedSchedule, updateStatus } =
       await schedulesService.updateScheduleData(req, res, req.params.id);

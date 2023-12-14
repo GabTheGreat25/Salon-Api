@@ -14,7 +14,7 @@ exports.getAllDelivery = asyncHandler(async (req, res, next) => {
         res,
         `Deliveries  of ${deliveries
           .map((delivery) => delivery?.compamy_name)
-          .join(", ")} and ID's ${deliveries
+          .join(", ")} and IDs ${deliveries
           .map((delivery) => delivery?._id)
           .join(", ")}`,
         deliveries
@@ -62,9 +62,9 @@ exports.updateDelivery = [
 
     const delivery = await deliveryService.updateDeliveryData(
       req,
-      product,
       res,
-      req.params.id
+      req.params.id,
+      product
     );
 
     return SuccessHandler(
