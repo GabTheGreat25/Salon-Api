@@ -10,7 +10,7 @@ const requirementSchema = new mongoose.Schema({
   job_type: {
     type: String,
     required: [true, "Please pick a job_type"],
-    enum: ["Stylist", "Barber", "Nail technician", "Receptionist"],
+    enum: ["Hair", "Nail", "Skin", "Others"],
   },
   date: {
     type: Date,

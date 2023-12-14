@@ -18,28 +18,26 @@ const productSchema = new mongoose.Schema({
     maxLength: [60, "Type Field must not exceed 60 characters"],
   },
   measurement: {
-    type: {
-      quantity: {
-        type: Number,
-        required: [true, "Quantity Field Required"],
-        min: [0, "Quantity must be a positive number"],
-      },
-      unit: {
-        type: String,
-        required: [true, "Unit Field Required"],
-        enum: [
-          "Liter",
-          "Milliliter",
-          "Gallon",
-          "Ounce",
-          "Pound",
-          "Kilogram",
-          "Other",
-        ],
-      },
+    quantity: {
+      type: Number,
+      required: [true, "Quantity Field Required"],
+      min: [0, "Quantity must be a positive number"],
     },
-    required: [true, "Product Measurement Field Required"],
+    unit: {
+      type: String,
+      required: [true, "Unit Field Required"],
+      enum: [
+        "Liter",
+        "Milliliter",
+        "Gallon",
+        "Ounce",
+        "Pound",
+        "Kilogram",
+        "Other",
+      ],
+    },
   },
+
   isNew: {
     type: Boolean,
     default: false,
