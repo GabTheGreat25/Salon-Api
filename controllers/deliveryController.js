@@ -12,8 +12,8 @@ exports.getAllDelivery = asyncHandler(async (req, res, next) => {
     ? next(new ErrorHandler("No Deliveries Found"))
     : SuccessHandler(
         res,
-        `Deliveries  of ${deliveries
-          .map((delivery) => delivery?.compamy_name)
+        `Deliveries of ${deliveries
+          .map((delivery) => delivery?.company_name)
           .join(", ")} and IDs ${deliveries
           .map((delivery) => delivery?._id)
           .join(", ")}`,
