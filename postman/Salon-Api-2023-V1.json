@@ -2074,7 +2074,7 @@
 							"mode": "raw",
 							"raw": "{\r\n    \"status\": \"completed\"\r\n}"
 						},
-						"url": "{{URI}}{{V1}}/transaction/edit/656cb2b5b8914ff5e3aad1aa"
+						"url": "{{URI}}{{V1}}/transaction/edit/657af3c217361748299bffc4"
 					},
 					"response": []
 				},
@@ -2254,18 +2254,14 @@
 									"type": "text"
 								},
 								{
-									"key": "image",
-									"type": "file",
-									"fileNotInWorkingDirectoryWarning": "This file isn't in your working directory. Teammates you share this request with won't be able to use this file. To make collaboration easier you can setup your working directory in Settings.",
-									"filesNotInWorkingDirectory": [
-										"/C:/Users/HP/Downloads/+++.png"
-									],
-									"src": "/C:/Users/HP/Downloads/+++.png"
-								},
-								{
 									"key": "suggestion",
 									"value": "still none",
 									"type": "text"
+								},
+								{
+									"key": "image",
+									"type": "file",
+									"src": "/C:/Users/gabriel/Downloads/Animal-Cell-Generalized.jpg"
 								}
 							]
 						},
