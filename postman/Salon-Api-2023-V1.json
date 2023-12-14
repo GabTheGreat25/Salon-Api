@@ -1664,25 +1664,6 @@
 			"name": "DELIVERY",
 			"item": [
 				{
-					"name": "GET SINGLE DELIVERY",
-					"id": "88613004-79a4-481c-a9bd-1cfe9f004277",
-					"protocolProfileBehavior": {
-						"disableBodyPruning": true
-					},
-					"request": {
-						"method": "GET",
-						"header": [
-							{
-								"key": "Authorization",
-								"value": "{{Bearer}}",
-								"type": "text"
-							}
-						],
-						"url": "{{URI}}{{V1}}delivery/656442f80d83c8c57076f677"
-					},
-					"response": []
-				},
-				{
 					"name": "GET ALL DELIVERY",
 					"id": "ac0fa34e-9ed4-4f2f-bf77-644d946d146f",
 					"protocolProfileBehavior": {
@@ -1702,6 +1683,25 @@
 							"formdata": []
 						},
 						"url": "{{URI}}{{V1}}delivery"
+					},
+					"response": []
+				},
+				{
+					"name": "GET SINGLE DELIVERY",
+					"id": "88613004-79a4-481c-a9bd-1cfe9f004277",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "{{Bearer}}",
+								"type": "text"
+							}
+						],
+						"url": "{{URI}}{{V1}}delivery/657aee9142a3f49ddad4ac49"
 					},
 					"response": []
 				},
@@ -1756,7 +1756,7 @@
 						],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n    \"product\": [\"657aac512b97d4e01843a20d\", \"657abfe3bb089c21151ca53e\"],\r\n    \"company_name\": \"Lazada\",\r\n    \"date\": \"2023-11-16\",\r\n    \"price\": 10000,\r\n    \"status\": \"pending\",\r\n    \"quantity\": 69\r\n}"
+							"raw": "{\r\n    \"product\": [\"657aac512b97d4e01843a20d\", \"657abfe3bb089c21151ca53e\"],\r\n    \"company_name\": \"Lazada\",\r\n    \"date\": \"2023-11-16\",\r\n    \"price\": 10000,\r\n    \"status\": \"completed\",\r\n    \"quantity\": 69\r\n}"
 						},
 						"url": "{{URI}}{{V1}}/delivery/edit/657aee9142a3f49ddad4ac49"
 					},
