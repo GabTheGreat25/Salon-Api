@@ -224,8 +224,8 @@ exports.createUserData = async (req, res) => {
     roles.includes(ROLE.WALK_IN_CUSTOMER);
 
   let user;
-  let newRequirement;
-  let newInformation;
+  let requirement;
+  let information;
 
   if (roles.includes(ROLE.ADMIN)) {
     user = await User.create({
@@ -270,7 +270,7 @@ exports.createUserData = async (req, res) => {
       active: active,
     });
 
-    newRequirement = await Requirement.create({
+    requirement = await Requirement.create({
       beautician: user?._id,
       job_type: req.body.job_type,
       date: req.body.date,
@@ -298,15 +298,22 @@ exports.createUserData = async (req, res) => {
       active: active,
     });
 
-    newInformation = await Information.create({
+    const allergies = req.body.allergy
+      ? req.body.allergy.split(", ").map((item) => item.trim())
+      : [];
+    const productPreferences = req.body.product_preference
+      ? req.body.product_preference.split(", ").map((item) => item.trim())
+      : [];
+
+    information = await Information.create({
       customer: user?._id,
       description: req.body.description,
-      allergy: req.body.allergy,
-      product_preference: req.body.product_preference,
+      allergy: allergies,
+      product_preference: productPreferences,
     });
   }
 
-  return { user, newRequirement, newInformation };
+  return { user, requirement, information };
 };
 
 exports.updateUserData = async (req, res, id) => {
@@ -342,7 +349,7 @@ exports.updateUserData = async (req, res, id) => {
       : req.body.roles.split(", ");
   }
 
-  const updatedUser = await User.findByIdAndUpdate(
+  const user = await User.findByIdAndUpdate(
     id,
     {
       ...req.body,
@@ -357,13 +364,13 @@ exports.updateUserData = async (req, res, id) => {
     .lean()
     .exec();
 
-  if (!updatedUser) throw new ErrorHandler(`User not found with ID: ${id}`);
+  if (!user) throw new ErrorHandler(`User not found with ID: ${id}`);
 
-  let updateRequirement;
-  let updateInformation;
+  let requirement;
+  let information;
 
   if (roles.includes(ROLE.BEAUTICIAN)) {
-    updateRequirement = await Requirement.findOneAndUpdate(
+    requirement = await Requirement.findOneAndUpdate(
       { beautician: id },
       {
         job_type: req.body.job_type,
@@ -390,7 +397,7 @@ exports.updateUserData = async (req, res, id) => {
     roles.includes(ROLE.ONLINE_CUSTOMER) ||
     roles.includes(ROLE.WALK_IN_CUSTOMER)
   ) {
-    updateInformation = await Information.findOneAndUpdate(
+    information = await Information.findOneAndUpdate(
       { customer: id },
       {
         description: req.body.description,
@@ -403,7 +410,7 @@ exports.updateUserData = async (req, res, id) => {
       .exec();
   }
 
-  return { updatedUser, updateRequirement, updateInformation };
+  return { user, requirement, information };
 };
 
 exports.deleteUserData = async (id) => {

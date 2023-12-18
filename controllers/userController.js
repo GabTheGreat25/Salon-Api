@@ -100,7 +100,7 @@ exports.createNewUser = [
     "image",
   ]),
   asyncHandler(async (req, res, next) => {
-    const { user, newRequirement, newInformation } =
+    const { user, requirement, information } =
       await usersService.createUserData(req);
 
     const successMessage =
@@ -116,8 +116,8 @@ exports.createNewUser = [
 
     return SuccessHandler(res, successMessage, {
       user,
-      newRequirement,
-      newInformation,
+      requirement,
+      information,
     });
   }),
 ];
@@ -126,13 +126,13 @@ exports.updateUser = [
   upload.array("image"),
   checkRequiredFields(["name", "age", "email", "contact_number", "image"]),
   asyncHandler(async (req, res, next) => {
-    const { updatedUser, updateRequirement, updateInformation } =
+    const { user, requirement, information } =
       await usersService.updateUserData(req, res, req.params.id);
 
     return SuccessHandler(
       res,
-      `User ${updatedUser?.name} with ID ${updatedUser?._id} is updated`,
-      { updatedUser, updateRequirement, updateInformation }
+      `User ${user?.name} with ID ${user?._id} is updated`,
+      { user, requirement, information }
     );
   }),
 ];
