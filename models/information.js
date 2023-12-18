@@ -14,13 +14,13 @@ const informationSchema = new mongoose.Schema({
   allergy: [
     {
       type: String,
-      required: [true, "Please enter your allergy"],
+      default: "None",
     },
   ],
   product_preference: [
     {
       type: String,
-      required: [true, "Please enter your product preference"],
+      default: "None",
     },
   ],
 });
