@@ -11,14 +11,18 @@ const informationSchema = new mongoose.Schema({
     type: String,
     required: [true, "Please enter your description"],
   },
-  allergy: {
-    type: String,
-    required: [true, "Please enter your allergy"],
-  },
-  product_preference: {
-    type: String,
-    required: [true, "Please enter your product preference"],
-  },
+  allergy: [
+    {
+      type: String,
+      required: [true, "Please enter your allergy"],
+    },
+  ],
+  product_preference: [
+    {
+      type: String,
+      required: [true, "Please enter your product preference"],
+    },
+  ],
 });
 
 module.exports = mongoose.model(RESOURCE.INFORMATION, informationSchema);
