@@ -11,7 +11,7 @@ const userSchema = new mongoose.Schema({
   email: {
     type: String,
     required: [true, "Please enter your email"],
-    unique: true,
+    unique: [true, "Email is already use by another user."],
     validate: [validator.isEmail, "Please enter valid email address"],
   },
   age: {
@@ -29,7 +29,7 @@ const userSchema = new mongoose.Schema({
   contact_number: {
     type: String,
     required: [true, "Contact number Field Required"],
-    unique: true,
+    unique: [true, "Contact number is already use by another user."],
     validate: [
       {
         validator: function (value) {
