@@ -9,7 +9,7 @@ router.use(verifyJWT);
 const serviceRoutes = [
   {
     method: METHOD.GET,
-    path: PATH.SERVICE,
+    path: PATH.SERVICES,
     roles: [
       ROLE.ADMIN,
       ROLE.BEAUTICIAN,
@@ -31,7 +31,7 @@ const serviceRoutes = [
   },
   {
     method: METHOD.POST,
-    path: PATH.SERVICE,
+    path: PATH.SERVICES,
     roles: [ROLE.ADMIN],
     handler: serviceController.createNewService,
   },

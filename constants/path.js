@@ -12,7 +12,7 @@ module.exports = {
   EDIT_USER_ID: "/user/edit/:id",
   ACTIVATE_USER_ID: "/user/activate/:id",
   UPDATE_PASSWORD: "/updatePassword/:id",
-  SERVICE: "/service",
+  SERVICES: "/services",
   SERVICE_ID: "/service/:id",
   EDIT_SERVICE_ID: "/service/edit/:id",
   SCHEDULES: "/schedules",
