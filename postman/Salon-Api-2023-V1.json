@@ -686,11 +686,7 @@
 								{
 									"key": "image",
 									"type": "file",
-									"fileNotInWorkingDirectoryWarning": "This file isn't in your working directory. Teammates you share this request with won't be able to use this file. To make collaboration easier you can setup your working directory in Settings.",
-									"filesNotInWorkingDirectory": [
-										"/C:/Users/gabriel/Downloads/Cells-that-Race-and-Dance.jpg"
-									],
-									"src": "/C:/Users/gabriel/Downloads/Cells-that-Race-and-Dance.jpg"
+									"src": "/C:/Users/gabriel/Downloads/QR Code (1).png"
 								},
 								{
 									"key": "description",
@@ -699,7 +695,7 @@
 								},
 								{
 									"key": "allergy",
-									"value": "None",
+									"value": "Dove, Sunsilk, Palmolive",
 									"type": "text"
 								},
 								{
@@ -1091,7 +1087,7 @@
 							"mode": "formdata",
 							"formdata": []
 						},
-						"url": "{{URI}}{{V1}}user/652a0cb78979908ad624accc"
+						"url": "{{URI}}{{V1}}user/657ab0a92b97d4e01843a228"
 					},
 					"response": []
 				}
@@ -1300,11 +1296,28 @@
 								{
 									"key": "image",
 									"type": "file",
-									"src": "/C:/Users/gabriel/Downloads/QR Code (1).png"
+									"fileNotInWorkingDirectoryWarning": "This file isn't in your working directory. Teammates you share this request with won't be able to use this file. To make collaboration easier you can setup your working directory in Settings.",
+									"filesNotInWorkingDirectory": [
+										"/C:/Users/gabriel/Downloads/customerFive.png",
+										"/C:/Users/gabriel/Downloads/customerFour.png",
+										"/C:/Users/gabriel/Downloads/customerSix.jpg",
+										"/C:/Users/gabriel/Downloads/customerThree.png"
+									],
+									"src": [
+										"/C:/Users/gabriel/Downloads/customerFive.png",
+										"/C:/Users/gabriel/Downloads/customerFour.png",
+										"/C:/Users/gabriel/Downloads/customerSix.jpg",
+										"/C:/Users/gabriel/Downloads/customerThree.png"
+									]
+								},
+								{
+									"key": "isNew",
+									"value": "true",
+									"type": "text"
 								}
 							]
 						},
-						"url": "{{URI}}{{V1}}/product/edit/65351a009d58ddb138988e75"
+						"url": "{{URI}}{{V1}}/product/edit/657abfe3bb089c21151ca53e"
 					},
 					"response": []
 				},
@@ -1494,7 +1507,7 @@
 							"mode": "formdata",
 							"formdata": []
 						},
-						"url": "{{URI}}{{V1}}service"
+						"url": "{{URI}}{{V1}}services"
 					},
 					"response": []
 				},
@@ -1566,12 +1579,12 @@
 								},
 								{
 									"key": "product",
-									"value": "657aac512b97d4e01843a20d",
+									"value": "657abfe3bb089c21151ca53e",
 									"type": "text"
 								}
 							]
 						},
-						"url": "{{URI}}{{V1}}service"
+						"url": "{{URI}}{{V1}}services"
 					},
 					"response": []
 				},
@@ -1617,11 +1630,12 @@
 								{
 									"key": "image",
 									"type": "file",
-									"fileNotInWorkingDirectoryWarning": "This file isn't in your working directory. Teammates you share this request with won't be able to use this file. To make collaboration easier you can setup your working directory in Settings.",
-									"filesNotInWorkingDirectory": [
-										"/C:/Users/gabriel/Downloads/Success.png"
-									],
-									"src": "/C:/Users/gabriel/Downloads/Success.png"
+									"src": [
+										"/C:/Users/gabriel/Downloads/customerFive.png",
+										"/C:/Users/gabriel/Downloads/customerFour.png",
+										"/C:/Users/gabriel/Downloads/customerSix.jpg",
+										"/C:/Users/gabriel/Downloads/customerThree.png"
+									]
 								},
 								{
 									"key": "product",
