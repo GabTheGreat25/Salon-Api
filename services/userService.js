@@ -298,18 +298,11 @@ exports.createUserData = async (req, res) => {
       active: active,
     });
 
-    const allergies = req.body.allergy
-      ? req.body.allergy.split(", ").map((item) => item.trim())
-      : [];
-    const productPreferences = req.body.product_preference
-      ? req.body.product_preference.split(", ").map((item) => item.trim())
-      : [];
-
     information = await Information.create({
       customer: user?._id,
       description: req.body.description,
-      allergy: allergies,
-      product_preference: productPreferences,
+      allergy: req.body.allergy,
+      product_preference: req.body.product_preference,
     });
   }
 
