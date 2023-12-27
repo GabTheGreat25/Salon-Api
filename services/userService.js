@@ -1,7 +1,7 @@
 const User = require("../models/user");
 const Schedule = require("../models/schedule");
-const Appointment = require("../models/appointment");
 const Transaction = require("../models/transaction");
+const Appointment = require("../models/appointment");
 const Requirement = require("../models/requirement");
 const Information = require("../models/information");
 const mongoose = require("mongoose");
@@ -250,11 +250,20 @@ exports.createUserData = async (req, res) => {
         selectedDate <=
           new Date(currentDate.getTime() + 7 * 24 * 60 * 60 * 1000)
       )
-    ) {
+    )
       throw new ErrorHandler(
         "Invalid date. Date must be within the next 7 days and not in the past."
       );
-    }
+
+    const existingRequirement = await Requirement.findOne({
+      date: req.body.date,
+      time: req.body.time,
+    });
+
+    if (existingRequirement)
+      throw new ErrorHandler(
+        "Beautician already has an requirement at this date and time."
+      );
 
     user = await User.create({
       name: req.body.name,
