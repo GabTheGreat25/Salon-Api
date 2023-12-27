@@ -341,7 +341,7 @@
 								"header": [],
 								"body": {
 									"mode": "raw",
-									"raw": "{\r\n    \"email\": \"admingab@gmail.com\",\r\n    \"password\": \"12345678\"\r\n}",
+									"raw": "{\r\n    \"email\": \"cust@gmail.com\",\r\n    \"password\": \"12345678\"\r\n}",
 									"options": {
 										"raw": {
 											"language": "json"
@@ -416,7 +416,7 @@
 								}
 							]
 						},
-						"url": "{{URI}}{{V1}}user/654cf814239e1dc2ba9ea884"
+						"url": "{{URI}}{{V1}}user/657c5b0858bbe7f79d54187a"
 					},
 					"response": []
 				},
@@ -499,7 +499,7 @@
 							"formdata": [
 								{
 									"key": "name",
-									"value": "beauticiangab",
+									"value": "lolinggggg",
 									"type": "text"
 								},
 								{
@@ -509,7 +509,7 @@
 								},
 								{
 									"key": "email",
-									"value": "beauticiangab@gmail.com",
+									"value": "lolingggggggg@gmail.com",
 									"type": "text"
 								},
 								{
@@ -519,7 +519,7 @@
 								},
 								{
 									"key": "contact_number",
-									"value": "09938465564",
+									"value": "09987654477",
 									"type": "text"
 								},
 								{
@@ -532,9 +532,9 @@
 									"type": "file",
 									"fileNotInWorkingDirectoryWarning": "This file isn't in your working directory. Teammates you share this request with won't be able to use this file. To make collaboration easier you can setup your working directory in Settings.",
 									"filesNotInWorkingDirectory": [
-										"/C:/Users/gabriel/Downloads/demo.jpeg"
+										"/C:/Users/gabriel/Downloads/bwahahaha.png"
 									],
-									"src": "/C:/Users/gabriel/Downloads/demo.jpeg"
+									"src": "/C:/Users/gabriel/Downloads/bwahahaha.png"
 								},
 								{
 									"key": "job_type",
@@ -543,7 +543,7 @@
 								},
 								{
 									"key": "date",
-									"value": "2023-12-15",
+									"value": "2023-12-29",
 									"type": "text"
 								},
 								{
@@ -927,7 +927,7 @@
 								}
 							]
 						},
-						"url": "{{URI}}{{V1}}/user/edit/65437faee2655c6f35b6067f"
+						"url": "{{URI}}{{V1}}/user/edit/657ab0382b97d4e01843a21f"
 					},
 					"response": []
 				},
@@ -1087,7 +1087,7 @@
 							"mode": "formdata",
 							"formdata": []
 						},
-						"url": "{{URI}}{{V1}}user/657ab0a92b97d4e01843a228"
+						"url": "{{URI}}{{V1}}user/6589838958af5aa5c1bf6df7"
 					},
 					"response": []
 				}
@@ -1555,7 +1555,7 @@
 							"formdata": [
 								{
 									"key": "service_name",
-									"value": "solo",
+									"value": "popopopop",
 									"type": "text"
 								},
 								{
@@ -1573,9 +1573,9 @@
 									"type": "file",
 									"fileNotInWorkingDirectoryWarning": "This file isn't in your working directory. Teammates you share this request with won't be able to use this file. To make collaboration easier you can setup your working directory in Settings.",
 									"filesNotInWorkingDirectory": [
-										"/C:/Users/gabriel/Downloads/385544266_1285819138770072_3202405923009190722_n.jpg"
+										"/C:/Users/gabriel/Downloads/board (1).gif"
 									],
-									"src": "/C:/Users/gabriel/Downloads/385544266_1285819138770072_3202405923009190722_n.jpg"
+									"src": "/C:/Users/gabriel/Downloads/board (1).gif"
 								},
 								{
 									"key": "product",
@@ -1909,7 +1909,7 @@
 						],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n    \"beautician\": \"657aafef2b97d4e01843a215\",\r\n    \"customer\": \"657ab0382b97d4e01843a21f\",\r\n    \"service\": [\"657ad43c284b15421ec0c643\", \"657af0aa3e7ece017501d980\"],\r\n    \"date\": \"2023-12-16\",\r\n    \"time\": \"09:00 AM\",\r\n    \"price\": 6000,\r\n    \"extraFee\": 500,\r\n    \"note\": \"Just make it simple\",\r\n    \"status\": \"pending\",\r\n    \"payment\": \"Gcash\"\r\n}"
+							"raw": "{\r\n    \"beautician\": \"657aafef2b97d4e01843a215\",\r\n    \"customer\": \"657c5b0858bbe7f79d54187a\",\r\n    \"service\": [\"657ad43c284b15421ec0c643\", \"657af0aa3e7ece017501d980\"],\r\n    \"date\": \"2023-12-27\",\r\n    \"time\": \"03:57 PM\",\r\n    \"price\": 6000,\r\n    \"extraFee\": 500,\r\n    \"note\": \"Just make it simple\",\r\n    \"status\": \"pending\",\r\n    \"payment\": \"Gcash\"\r\n}"
 						},
 						"url": "{{URI}}{{V1}}appointments"
 					},
@@ -2314,7 +2314,7 @@
 		{
 			"listen": "prerequest",
 			"script": {
-				"id": "d1162bea-2ceb-454f-a650-11d3622b80f4",
+				"id": "78deae30-141e-4103-88b6-634ed765cabe",
 				"type": "text/javascript",
 				"exec": [
 					""
@@ -2324,7 +2324,7 @@
 		{
 			"listen": "test",
 			"script": {
-				"id": "5ca22fad-ba0e-4ee3-b0b3-a6e1acaab263",
+				"id": "93509cd0-2bc6-4ed8-991f-87a980238436",
 				"type": "text/javascript",
 				"exec": [
 					""
@@ -2335,7 +2335,7 @@
 	"variable": [
 		{
 			"key": "Bearer",
-			"value": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJVc2VySW5mbyI6eyJlbWFpbCI6ImFkbWluZ2FiQGdtYWlsLmNvbSIsInJvbGVzIjpbIkFkbWluIl19LCJpYXQiOjE3MDI1MzgyMzQsImV4cCI6MTcwMzE0MzAzNH0.xdxHZeNMlyhTxJ6imj3llkPDGxNffzNfzHDFWa4ozCw",
+			"value": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJVc2VySW5mbyI6eyJlbWFpbCI6ImN1c3RAZ21haWwuY29tIiwicm9sZXMiOlsiV2Fsay1pbiBDdXN0b21lciJdfSwiaWF0IjoxNzAzNjYxNzQ4LCJleHAiOjE3MDQyNjY1NDh9.aI_XK8bWPluCw3b1Ze9mYYvJvrG6DSxkEtYrZZ9O6PY",
 			"type": "string"
 		}
 	]
