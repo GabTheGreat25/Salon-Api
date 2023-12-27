@@ -84,6 +84,16 @@ exports.createAppointmentData = async (req, res) => {
     ? req.body.service
     : req.body.service.split(", ");
 
+  const existingAppointment = await Appointment.findOne({
+    date: req.body.date,
+    time: req.body.time,
+  });
+
+  if (existingAppointment)
+    throw new ErrorHandler(
+      "Appointment slot is already booked by another customer."
+    );
+
   const appointmentDateTime = new Date(`${req.body.date} ${req.body.time}`);
   const deletionTimeForOnlineCustomer =
     appointmentDateTime.getTime() - 60 * 60 * 1000;
