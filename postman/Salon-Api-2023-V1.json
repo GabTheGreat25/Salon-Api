@@ -1888,7 +1888,7 @@
 					"response": []
 				},
 				{
-					"name": "CREATE APPOINTMENT",
+					"name": "CREATE APPOINTMENT CASH",
 					"id": "438edfb8-ce01-402f-91c7-6d8d2c578e4d",
 					"protocolProfileBehavior": {
 						"disableBodyPruning": true
@@ -1909,7 +1909,95 @@
 						],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n    \"beautician\": \"657aafef2b97d4e01843a215\",\r\n    \"customer\": \"657c5b0858bbe7f79d54187a\",\r\n    \"service\": [\"657ad43c284b15421ec0c643\", \"657af0aa3e7ece017501d980\"],\r\n    \"date\": \"2023-12-27\",\r\n    \"time\": \"03:57 PM\",\r\n    \"price\": 6000,\r\n    \"extraFee\": 500,\r\n    \"note\": \"Just make it simple\",\r\n    \"status\": \"pending\",\r\n    \"payment\": \"Gcash\"\r\n}"
+							"raw": "{\r\n    \"beautician\": \"657aafef2b97d4e01843a215\",\r\n    \"customer\": \"657c5b0858bbe7f79d54187a\",\r\n    \"service\": [\"657ad43c284b15421ec0c643\", \"657af0aa3e7ece017501d980\"],\r\n    \"date\": \"2023-12-27\",\r\n    \"time\": \"05:30 PM\",\r\n    \"price\": 6000,\r\n    \"extraFee\": 500,\r\n    \"note\": \"Just make it simple\",\r\n    \"status\": \"pending\",\r\n    \"payment\": \"Cash\"\r\n}"
+						},
+						"url": "{{URI}}{{V1}}appointments"
+					},
+					"response": []
+				},
+				{
+					"name": "CREATE APPOINTMENT GCASH",
+					"id": "b3cccc0c-cce0-4156-91ce-74ea22bfd260",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							},
+							{
+								"key": "Authorization",
+								"value": "{{Bearer}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "beautician",
+									"value": "657aafef2b97d4e01843a215",
+									"type": "text"
+								},
+								{
+									"key": "customer",
+									"value": "657c5b0858bbe7f79d54187a",
+									"type": "text"
+								},
+								{
+									"key": "service",
+									"value": "657ad43c284b15421ec0c643, 657af0aa3e7ece017501d980",
+									"type": "text"
+								},
+								{
+									"key": "date",
+									"value": "2023-12-27",
+									"type": "text"
+								},
+								{
+									"key": "time",
+									"value": "05:30 PM",
+									"type": "text"
+								},
+								{
+									"key": "price",
+									"value": "6000",
+									"type": "text"
+								},
+								{
+									"key": "extraFee",
+									"value": "500",
+									"type": "text"
+								},
+								{
+									"key": "note",
+									"value": "Just make it simple",
+									"type": "text"
+								},
+								{
+									"key": "status",
+									"value": "pending",
+									"type": "text"
+								},
+								{
+									"key": "payment",
+									"value": "Gcash",
+									"type": "text"
+								},
+								{
+									"key": "image",
+									"type": "file",
+									"fileNotInWorkingDirectoryWarning": "This file isn't in your working directory. Teammates you share this request with won't be able to use this file. To make collaboration easier you can setup your working directory in Settings.",
+									"filesNotInWorkingDirectory": [
+										"/C:/Users/gabriel/Downloads/bwahahaha.png"
+									],
+									"src": "/C:/Users/gabriel/Downloads/bwahahaha.png"
+								}
+							]
 						},
 						"url": "{{URI}}{{V1}}appointments"
 					},
