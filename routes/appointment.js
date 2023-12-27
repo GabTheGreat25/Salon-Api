@@ -10,13 +10,23 @@ const appointmentRoutes = [
   {
     method: METHOD.GET,
     path: PATH.APPOINTMENTS,
-    roles: [ROLE.ADMIN, ROLE.BEAUTICIAN, ROLE.ONLINE_CUSTOMER],
+    roles: [
+      ROLE.ADMIN,
+      ROLE.BEAUTICIAN,
+      ROLE.ONLINE_CUSTOMER,
+      ROLE.WALK_IN_CUSTOMER,
+    ],
     handler: appointmentController.getAllAppointments,
   },
   {
     method: METHOD.POST,
     path: PATH.APPOINTMENTS,
-    roles: [ROLE.ADMIN, ROLE.BEAUTICIAN, ROLE.ONLINE_CUSTOMER],
+    roles: [
+      ROLE.ADMIN,
+      ROLE.BEAUTICIAN,
+      ROLE.ONLINE_CUSTOMER,
+      ROLE.WALK_IN_CUSTOMER,
+    ],
     handler: appointmentController.createNewAppointment,
   },
   {

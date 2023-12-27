@@ -16,7 +16,12 @@ const transactionRoutes = [
   {
     method: METHOD.GET,
     path: PATH.TRANSACTION_ID,
-    roles: [ROLE.ADMIN, ROLE.BEAUTICIAN, ROLE.CUSTOMER],
+    roles: [
+      ROLE.ADMIN,
+      ROLE.BEAUTICIAN,
+      ROLE.ONLINE_CUSTOMER,
+      ROLE.WALK_IN_CUSTOMER,
+    ],
     handler: transactionController.getSingleTransaction,
   },
   {
