@@ -58,13 +58,13 @@ exports.createNewAppointment = [
   asyncHandler(async (req, res, next) => {
     const service = req.body.service || [];
 
-    const { appointment, transaction } =
+    const { appointment, transaction, verification } =
       await appointmentsService.createAppointmentData(req, service);
 
     return SuccessHandler(
       res,
       `New appointment of ${appointment?.customer?.name} created with an ID ${appointment?._id}`,
-      { appointment, transaction }
+      { appointment, transaction, verification }
     );
   }),
 ];
