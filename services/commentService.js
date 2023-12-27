@@ -53,9 +53,6 @@ exports.createCommentData = async (req, res) => {
     );
   }
 
-  if (images.length === 0)
-    throw new ErrorHandler("At least one image is required");
-
   const commentData = {
     ...req.body,
     image: images,
