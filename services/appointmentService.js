@@ -4,6 +4,7 @@ const Verification = require("../models/verification");
 const ErrorHandler = require("../utils/errorHandler");
 const mongoose = require("mongoose");
 const { ROLE } = require("../constants");
+const { cloudinary } = require("../utils/cloudinary");
 
 const deleteAppointmentAfterTimeout = async (appointmentId, verification) => {
   const appointment = await Appointment.findById(appointmentId);
@@ -89,7 +90,9 @@ exports.createAppointmentData = async (req, res) => {
   const deletionTimeForWalkInCustomer =
     appointmentDateTime.getTime() - 30 * 60 * 1000;
 
-  const appointment = await Appointment.create({
+  let appointment;
+
+  appointment = await Appointment.create({
     ...req.body,
     service: serviceValues,
   });
@@ -99,18 +102,52 @@ exports.createAppointmentData = async (req, res) => {
     { path: "service", select: "service_name image" },
   ]);
 
-  const transaction = await Transaction.create({
-    appointment: appointment._id,
-    status: req.body.status,
-    payment: req.body.payment,
-  });
+  let images = [];
+  let transaction;
 
-  appointment.transaction = transaction._id;
+  if (req.body.payment === "Gcash") {
+    if (req.files && Array.isArray(req.files)) {
+      images = await Promise.all(
+        req.files.map(async (file) => {
+          const result = await cloudinary.uploader.upload(file.path, {
+            public_id: file.filename,
+          });
+          return {
+            public_id: result.public_id,
+            url: result.secure_url,
+            originalname: file.originalname,
+          };
+        })
+      );
+    }
 
-  await appointment.save();
+    transaction = await Transaction.create({
+      appointment: appointment._id,
+      status: req.body.status,
+      payment: req.body.payment,
+      image: images,
+    });
+
+    appointment.transaction = transaction._id;
+    await appointment.save();
+
+    transaction.image = images;
+    await transaction.save();
+  } else if (req.body.payment === "Cash") {
+    transaction = await Transaction.create({
+      appointment: appointment._id,
+      status: req.body.status,
+      payment: req.body.payment,
+    });
+
+    appointment.transaction = transaction._id;
+    await appointment.save();
+  } else {
+    throw new Error("Invalid payment method");
+  }
 
   const verification = await Verification.create({
-    transaction: transaction._id,
+    transaction: appointment.transaction,
     confirm: false,
   });
 
@@ -129,6 +166,36 @@ exports.createAppointmentData = async (req, res) => {
   return { appointment, transaction, verification };
 };
 
+exports.updateAppointmentData = async (req, res, id) => {
+  if (!mongoose.Types.ObjectId.isValid(id))
+    throw new ErrorHandler(`Invalid appointment ID: ${id}`);
+
+  const serviceValues = Array.isArray(req.body.service)
+    ? req.body.service
+    : req.body.service.split(", ");
+
+  const updatedAppointment = await Appointment.findByIdAndUpdate(
+    id,
+    {
+      ...req.body,
+      service: serviceValues,
+    },
+    {
+      new: true,
+      runValidators: true,
+    }
+  )
+    .populate({ path: "beautician customer", select: "name" })
+    .populate({ path: "service", select: "service_name image" })
+    .lean()
+    .exec();
+
+  if (!updatedAppointment)
+    throw new ErrorHandler(`Appointment not found with ID: ${id}`);
+
+  return updatedAppointment;
+};
+
 exports.deleteAppointmentData = async (id) => {
   if (!mongoose.Types.ObjectId.isValid(id))
     throw new ErrorHandler(`Invalid appointment ID: ${id}`);
@@ -141,7 +208,11 @@ exports.deleteAppointmentData = async (id) => {
     throw new ErrorHandler(`Appointment not found with ID: ${id}`);
 
   await Promise.all([
-    Appointment.deleteOne({ _id: id }).lean().exec(),
+    Appointment.deleteOne({ _id: id })
+      .lean()
+      .exec()
+      .populate({ path: "beautician customer", select: "name" })
+      .populate({ path: "service", select: "service_name image" }),
     Transaction.deleteMany({ appointment: id }).lean().exec(),
     Verification.deleteMany({ transaction: appointment.transaction })
       .lean()

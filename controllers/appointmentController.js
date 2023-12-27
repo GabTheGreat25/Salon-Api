@@ -4,6 +4,7 @@ const appointmentsService = require("../services/appointmentService");
 const asyncHandler = require("express-async-handler");
 const checkRequiredFields = require("../helpers/checkRequiredFields");
 const { STATUSCODE } = require("../constants/index");
+const { upload } = require("../utils/cloudinary");
 
 exports.getAllAppointments = asyncHandler(async (req, res, next) => {
   const page = parseInt(req.query.page) || 1;
@@ -47,6 +48,7 @@ exports.getSingleAppointment = asyncHandler(async (req, res, next) => {
 });
 
 exports.createNewAppointment = [
+  upload.array("image"),
   checkRequiredFields([
     "service",
     "beautician",

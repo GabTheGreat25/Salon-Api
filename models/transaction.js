@@ -4,7 +4,7 @@ const { RESOURCE } = require("../constants/index");
 const transactionSchema = new mongoose.Schema({
   appointment: {
     type: mongoose.Types.ObjectId,
-    required: [true, "Please enter a appointment"],
+    required: [true, "Please enter an appointment"],
     ref: RESOURCE.APPOINTMENT,
   },
   status: {
@@ -21,6 +21,28 @@ const transactionSchema = new mongoose.Schema({
       values: ["Cash", "Gcash"],
     },
   },
+  image: [
+    {
+      public_id: {
+        type: String,
+        required: function () {
+          return this.payment === "Gcash";
+        },
+      },
+      url: {
+        type: String,
+        required: function () {
+          return this.payment === "Gcash";
+        },
+      },
+      originalname: {
+        type: String,
+        required: function () {
+          return this.payment === "Gcash";
+        },
+      },
+    },
+  ],
 });
 
 module.exports = mongoose.model(RESOURCE.TRANSACTION, transactionSchema);

@@ -36,7 +36,7 @@ exports.getSingleComment = asyncHandler(async (req, res, next) => {
 
 exports.createNewComment = [
   upload.array("image"),
-  checkRequiredFields(["ratings", "description", "image", "transaction"]),
+  checkRequiredFields(["ratings", "description", "transaction"]),
   asyncHandler(async (req, res, next) => {
     const comment = await commentsService.createCommentData(req);
 
@@ -50,7 +50,7 @@ exports.createNewComment = [
 
 exports.updateComment = [
   upload.array("image"),
-  checkRequiredFields(["ratings", "description", "image"]),
+  checkRequiredFields(["ratings", "description"]),
   asyncHandler(async (req, res, next) => {
     const comment = await commentsService.updateCommentData(
       req,
