@@ -1,7 +1,21 @@
 const Appointment = require("../models/appointment");
 const Transaction = require("../models/transaction");
+const Verification = require("../models/verification");
 const ErrorHandler = require("../utils/errorHandler");
 const mongoose = require("mongoose");
+const { ROLE } = require("../constants");
+
+const deleteAppointmentAfterTimeout = async (appointmentId, verification) => {
+  const appointment = await Appointment.findById(appointmentId);
+
+  if (appointment && verification && verification.confirm === false) {
+    await Promise.all([
+      Appointment.findByIdAndDelete(appointmentId).lean().exec(),
+      Transaction.deleteMany({ appointment: appointmentId }).lean().exec(),
+      Verification.deleteMany({ transaction: verification._id }).lean().exec(),
+    ]);
+  }
+};
 
 exports.getAllAppointmentsData = async (page, limit, search, sort, filter) => {
   const skip = (page - 1) * limit;
@@ -63,9 +77,17 @@ exports.getSingleAppointmentData = async (id) => {
 };
 
 exports.createAppointmentData = async (req, res) => {
+  const currentDate = new Date();
+
   const serviceValues = Array.isArray(req.body.service)
     ? req.body.service
     : req.body.service.split(", ");
+
+  const appointmentDateTime = new Date(`${req.body.date} ${req.body.time}`);
+  const deletionTimeForOnlineCustomer =
+    appointmentDateTime.getTime() - 60 * 60 * 1000;
+  const deletionTimeForWalkInCustomer =
+    appointmentDateTime.getTime() - 30 * 60 * 1000;
 
   const appointment = await Appointment.create({
     ...req.body,
@@ -73,7 +95,7 @@ exports.createAppointmentData = async (req, res) => {
   });
 
   await Appointment.populate(appointment, [
-    { path: "beautician customer", select: "name" },
+    { path: "beautician customer", select: "name roles" },
     { path: "service", select: "service_name image" },
   ]);
 
@@ -87,50 +109,44 @@ exports.createAppointmentData = async (req, res) => {
 
   await appointment.save();
 
-  return { appointment, transaction };
-};
+  const verification = await Verification.create({
+    transaction: transaction._id,
+    confirm: false,
+  });
 
-exports.updateAppointmentData = async (req, res, id) => {
-  if (!mongoose.Types.ObjectId.isValid(id))
-    throw new ErrorHandler(`Invalid appointment ID: ${id}`);
+  const customerRoles = appointment.customer.roles;
 
-  const serviceValues = Array.isArray(req.body.service)
-    ? req.body.service
-    : req.body.service.split(", ");
+  if (customerRoles.includes(ROLE.ONLINE_CUSTOMER)) {
+    setTimeout(async () => {
+      await deleteAppointmentAfterTimeout(appointment, verification);
+    }, Math.max(0, deletionTimeForOnlineCustomer - currentDate.getTime()));
+  } else if (customerRoles.includes(ROLE.WALK_IN_CUSTOMER)) {
+    setTimeout(async () => {
+      await deleteAppointmentAfterTimeout(appointment, verification);
+    }, Math.max(0, deletionTimeForWalkInCustomer - currentDate.getTime()));
+  }
 
-  const updatedAppointment = await Appointment.findByIdAndUpdate(
-    id,
-    {
-      ...req.body,
-      service: serviceValues,
-    },
-    {
-      new: true,
-      runValidators: true,
-    }
-  )
-    .populate({ path: "beautician customer", select: "name" })
-    .populate({ path: "service", select: "service_name image" })
-    .lean()
-    .exec();
-
-  if (!updatedAppointment)
-    throw new ErrorHandler(`Appointment not found with ID: ${id}`);
-
-  return updatedAppointment;
+  return { appointment, transaction, verification };
 };
 
 exports.deleteAppointmentData = async (id) => {
   if (!mongoose.Types.ObjectId.isValid(id))
     throw new ErrorHandler(`Invalid appointment ID: ${id}`);
 
-  if (!id) throw new ErrorHandler(`Appointment not found with ID: ${id}`);
+  const appointment = await Appointment.findOne({
+    _id: id,
+  });
 
-  const appointment = await Appointment.findOneAndDelete({ _id: id })
-    .populate({ path: "beautician customer", select: "name" })
-    .populate({ path: "service", select: "service_name image" })
-    .lean()
-    .exec();
+  if (!appointment)
+    throw new ErrorHandler(`Appointment not found with ID: ${id}`);
+
+  await Promise.all([
+    Appointment.deleteOne({ _id: id }).lean().exec(),
+    Transaction.deleteMany({ appointment: id }).lean().exec(),
+    Verification.deleteMany({ transaction: appointment.transaction })
+      .lean()
+      .exec(),
+  ]);
 
   return appointment;
 };
