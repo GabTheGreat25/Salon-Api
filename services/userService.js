@@ -262,7 +262,7 @@ exports.createUserData = async (req, res) => {
 
     if (existingRequirement)
       throw new ErrorHandler(
-        "Beautician already has an requirement at this date and time."
+        "Someone already has an appointment at this date and time."
       );
 
     user = await User.create({
