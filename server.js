@@ -68,9 +68,11 @@ app.use(errorHandler);
 
 mongoose.connection.once("open", () => {
   app.listen(PORT);
-  console.log(`Connected to MongoDB on ${mongoose.connection.host}:${PORT}`);
+  console.log(
+    `Connected to MongoDB. Click here to view: http://localhost:${PORT}`
+  );
   logEvents(
-    `Connected to MongoDB on ${mongoose.connection.host}:${PORT}`,
+    `Connected to MongoDB. Click here to view: http://localhost:${PORT}`,
     "mongoLog.log"
   );
 });
