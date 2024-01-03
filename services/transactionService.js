@@ -55,10 +55,14 @@ exports.getAllTransactionData = async (page, limit, search, sort, filter) => {
     .populate({
       path: RESOURCE.APPOINTMENT,
       populate: {
-        path: "customer",
+        path: "beautician customer",
         select: "name",
       },
-      select: "date time price extraFee",
+      populate: {
+        path: "service",
+        select: "service_name image",
+      },
+      select: "date time price extraFee note",
     })
     .skip(skip)
     .limit(limit);
@@ -74,10 +78,14 @@ exports.getSingleTransactionData = async (id) => {
     .populate({
       path: RESOURCE.APPOINTMENT,
       populate: {
-        path: "customer",
+        path: "beautician customer",
         select: "name",
       },
-      select: "date time price extraFee",
+      populate: {
+        path: "service",
+        select: "service_name image",
+      },
+      select: "date time price extraFee note",
     })
     .lean()
     .exec();
@@ -155,7 +163,15 @@ exports.deleteTransactionData = async (id) => {
     })
       .populate({
         path: RESOURCE.APPOINTMENT,
-        select: "date time price extraFee",
+        populate: {
+          path: "beautician customer",
+          select: "name",
+        },
+        populate: {
+          path: "service",
+          select: "service_name image",
+        },
+        select: "date time price extraFee note",
       })
       .lean()
       .exec(),
