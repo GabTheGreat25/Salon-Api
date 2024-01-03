@@ -5,6 +5,7 @@ const ErrorHandler = require("../utils/errorHandler");
 const mongoose = require("mongoose");
 const { ROLE } = require("../constants");
 const { cloudinary } = require("../utils/cloudinary");
+const { STATUSCODE } = require("../constants/index");
 
 const deleteAppointmentAfterTimeout = async (appointmentId, verification) => {
   const appointment = await Appointment.findById(appointmentId);
