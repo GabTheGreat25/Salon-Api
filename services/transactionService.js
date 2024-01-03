@@ -54,14 +54,17 @@ exports.getAllTransactionData = async (page, limit, search, sort, filter) => {
   transactionsQuery = transactionsQuery
     .populate({
       path: RESOURCE.APPOINTMENT,
-      populate: {
-        path: "beautician customer",
-        select: "name",
-      },
-      populate: {
-        path: "service",
-        select: "service_name image",
-      },
+      populate: [
+        { path: "beautician customer", select: "name" },
+        {
+          path: "service",
+          select: "service_name image",
+          populate: {
+            path: "product",
+            select: "product_name type brand isNew",
+          },
+        },
+      ],
       select: "date time price extraFee note",
     })
     .skip(skip)
@@ -77,14 +80,17 @@ exports.getSingleTransactionData = async (id) => {
   const transaction = await Transaction.findById(id)
     .populate({
       path: RESOURCE.APPOINTMENT,
-      populate: {
-        path: "beautician customer",
-        select: "name",
-      },
-      populate: {
-        path: "service",
-        select: "service_name image",
-      },
+      populate: [
+        { path: "beautician customer", select: "name" },
+        {
+          path: "service",
+          select: "service_name image",
+          populate: {
+            path: "product",
+            select: "product_name type brand isNew",
+          },
+        },
+      ],
       select: "date time price extraFee note",
     })
     .lean()
