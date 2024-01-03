@@ -56,6 +56,7 @@ exports.getAllAppointmentsData = async (page, limit, search, sort, filter) => {
   appointmentsQuery = appointmentsQuery
     .populate({ path: "beautician customer", select: "name" })
     .populate({ path: "service", select: "service_name image" })
+    .populate({ path: "transaction", select: "status" })
     .skip(skip)
     .limit(limit);
 
@@ -69,6 +70,7 @@ exports.getSingleAppointmentData = async (id) => {
   const appointment = await Appointment.findById(id)
     .populate({ path: "beautician customer", select: "name" })
     .populate({ path: "service", select: "service_name image" })
+    .populate({ path: "transaction", select: "status" })
     .lean()
     .exec();
 
@@ -111,6 +113,7 @@ exports.createAppointmentData = async (req, res) => {
   await Appointment.populate(appointment, [
     { path: "beautician customer", select: "name roles" },
     { path: "service", select: "service_name image" },
+    { path: "transaction", select: "status" },
   ]);
 
   let image = [];
@@ -201,6 +204,7 @@ exports.updateAppointmentData = async (req, res, id) => {
   )
     .populate({ path: "beautician customer", select: "name" })
     .populate({ path: "service", select: "service_name image" })
+    .populate({ path: "transaction", select: "status" })
     .lean()
     .exec();
 
@@ -226,7 +230,8 @@ exports.deleteAppointmentData = async (id) => {
       .lean()
       .exec()
       .populate({ path: "beautician customer", select: "name" })
-      .populate({ path: "service", select: "service_name image" }),
+      .populate({ path: "service", select: "service_name image" })
+      .populate({ path: "transaction", select: "status" }),
     Transaction.deleteMany({ appointment: id }).lean().exec(),
     Verification.deleteMany({ transaction: appointment.transaction })
       .lean()
