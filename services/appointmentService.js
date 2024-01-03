@@ -112,12 +112,12 @@ exports.createAppointmentData = async (req, res) => {
     { path: "service", select: "service_name image" },
   ]);
 
-  let images = [];
+  let image = [];
   let transaction;
 
   if (req.body.payment === "Gcash") {
     if (req.files && Array.isArray(req.files)) {
-      images = await Promise.all(
+      image = await Promise.all(
         req.files.map(async (file) => {
           const result = await cloudinary.uploader.upload(file.path, {
             public_id: file.filename,
@@ -131,17 +131,20 @@ exports.createAppointmentData = async (req, res) => {
       );
     }
 
+    if (image.length === STATUSCODE.ZERO)
+      throw new ErrorHandler("At least one image is required");
+
     transaction = await Transaction.create({
       appointment: appointment._id,
       status: req.body.status,
       payment: req.body.payment,
-      image: images,
+      image: image,
     });
 
     appointment.transaction = transaction._id;
     await appointment.save();
 
-    transaction.image = images;
+    transaction.image = image;
     await transaction.save();
   } else if (req.body.payment === "Cash") {
     transaction = await Transaction.create({
