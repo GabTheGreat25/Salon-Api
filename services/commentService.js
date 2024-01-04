@@ -11,6 +11,16 @@ exports.getAllCommentData = async () => {
     })
     .populate({
       path: RESOURCE.TRANSACTION,
+      populate: [
+        {
+          path: "appointment",
+          populate: {
+            path: "beautician customer",
+            select: "name",
+          },
+          select: "date time price extraFee note",
+        },
+      ],
       select: "status",
     })
     .lean()
@@ -26,6 +36,16 @@ exports.getSingleCommentData = async (id) => {
   const comment = await Comment.findById(id)
     .populate({
       path: RESOURCE.TRANSACTION,
+      populate: [
+        {
+          path: "appointment",
+          populate: {
+            path: "beautician customer",
+            select: "name",
+          },
+          select: "date time price extraFee note",
+        },
+      ],
       select: "status",
     })
     .lean()
@@ -128,7 +148,10 @@ exports.deleteCommentData = async (id) => {
 
   if (!comment) throw new ErrorHandler(`Comment not found with ID: ${id}`);
 
-  const publicIds = comment.image.map((image) => image.public_id);
+  // Extract publicIds only if comment has images
+  const publicIds = comment.image
+    ? comment.image.map((image) => image.public_id)
+    : [];
 
   await Promise.all([
     Comment.deleteOne({
@@ -136,11 +159,21 @@ exports.deleteCommentData = async (id) => {
     })
       .populate({
         path: RESOURCE.TRANSACTION,
+        populate: [
+          {
+            path: "appointment",
+            populate: {
+              path: "beautician customer",
+              select: "name",
+            },
+            select: "date time price extraFee note",
+          },
+        ],
         select: "status",
       })
       .lean()
       .exec(),
-    cloudinary.api.delete_resources(publicIds),
+    publicIds.length > 0 && cloudinary.api.delete_resources(publicIds),
   ]);
 
   return comment;
