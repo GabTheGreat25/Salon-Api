@@ -327,7 +327,6 @@ exports.updateUserData = async (req, res, id) => {
   if (!existingUser) throw new ErrorHandler(`User not found with ID: ${id}`);
 
   let images = existingUser.image || [];
-
   if (req.files && Array.isArray(req.files) && req.files.length > 0) {
     images = await Promise.all(
       req.files.map(async (file) => {
@@ -340,6 +339,12 @@ exports.updateUserData = async (req, res, id) => {
           originalname: file.originalname,
         };
       })
+    );
+  }
+
+  if (existingUser.image && existingUser.image.length > 0) {
+    await cloudinary.api.delete_resources(
+      existingUser.image.map((image) => image.public_id)
     );
   }
 
@@ -376,20 +381,6 @@ exports.updateUserData = async (req, res, id) => {
       { beautician: id },
       {
         job_type: req.body.job_type,
-        docsImages: req.files
-          ? await Promise.all(
-              req.files.map(async (file) => {
-                const result = await cloudinary.uploader.upload(file.path, {
-                  public_id: file.filename,
-                });
-                return {
-                  public_id: result.public_id,
-                  url: result.secure_url,
-                  originalname: file.originalname,
-                };
-              })
-            )
-          : images,
       },
       { new: true, upsert: true }
     )

@@ -122,9 +122,11 @@ exports.updateServiceData = async (req, res, id) => {
       })
     );
 
-    await cloudinary.api.delete_resources(
-      existingService.image.map((image) => image.public_id)
-    );
+    if (existingService.image && existingService.image.length > 0) {
+      await cloudinary.api.delete_resources(
+        existingService.image.map((image) => image.public_id)
+      );
+    }
   }
 
   const productValues = req.body.product ? req.body.product.split(", ") : [];

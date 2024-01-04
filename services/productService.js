@@ -131,9 +131,11 @@ exports.updateProductData = async (req, res, id) => {
       })
     );
 
-    await cloudinary.api.delete_resources(
-      existingProduct.image.map((image) => image.public_id)
-    );
+    if (existingProduct.image && existingProduct.image.length > 0) {
+      await cloudinary.api.delete_resources(
+        existingProduct.image.map((image) => image.public_id)
+      );
+    }
   }
   const updatedProduct = await Product.findByIdAndUpdate(
     id,

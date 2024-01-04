@@ -102,9 +102,11 @@ exports.updateTestData = async (req, res, id) => {
       })
     );
 
-    await cloudinary.api.delete_resources(
-      existingTest.image.map((image) => image.public_id)
-    );
+    if (existingTest.image && existingTest.image.length > 0) {
+      await cloudinary.api.delete_resources(
+        existingTest.image.map((image) => image.public_id)
+      );
+    }
   }
 
   const updatedTest = await Test.findByIdAndUpdate(

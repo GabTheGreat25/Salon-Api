@@ -98,44 +98,54 @@ exports.updateCommentData = async (req, res, id) => {
     throw new ErrorHandler(`Comment not found with ID: ${id}`);
 
   let images = existingComment.image || [];
-  if (req.files && Array.isArray(req.files) && req.files.length > 0) {
-    images = await Promise.all(
-      req.files.map(async (file) => {
-        const result = await cloudinary.uploader.upload(file.path, {
-          public_id: file.filename,
-        });
-        return {
-          public_id: result.public_id,
-          url: result.secure_url,
-          originalname: file.originalname,
-        };
-      })
-    );
 
-    await cloudinary.api.delete_resources(
-      existingComment.image.map((image) => image.public_id)
-    );
-  }
+  try {
+    if (req.files && Array.isArray(req.files) && req.files.length > 0) {
+      const newImages = await Promise.all(
+        req.files.map(async (file) => {
+          const result = await cloudinary.uploader.upload(file.path, {
+            public_id: file.filename,
+          });
+          return {
+            public_id: result.public_id,
+            url: result.secure_url,
+            originalname: file.originalname,
+          };
+        })
+      );
 
-  const updatedComment = await Comment.findByIdAndUpdate(
-    id,
-    {
-      ...req.body,
-      image: images,
-    },
-    {
-      new: true,
-      runValidators: true,
+      images = [...images, ...newImages];
+
+      if (existingComment.image && existingComment.image.length > 0) {
+        await cloudinary.api.delete_resources(
+          existingComment.image.map((image) => image.public_id)
+        );
+      }
     }
-  )
-    .populate({
-      path: RESOURCE.TRANSACTION,
-      select: "status",
-    })
-    .lean()
-    .exec();
 
-  return updatedComment;
+    const updatedComment = await Comment.findByIdAndUpdate(
+      id,
+      {
+        ...req.body,
+        image: images,
+      },
+      {
+        new: true,
+        runValidators: true,
+      }
+    )
+      .populate({
+        path: RESOURCE.TRANSACTION,
+        select: "status",
+      })
+      .lean()
+      .exec();
+
+    return updatedComment;
+  } catch (error) {
+    console.error(error);
+    throw new ErrorHandler("Internal Server Error");
+  }
 };
 
 exports.deleteCommentData = async (id) => {
@@ -148,7 +158,6 @@ exports.deleteCommentData = async (id) => {
 
   if (!comment) throw new ErrorHandler(`Comment not found with ID: ${id}`);
 
-  // Extract publicIds only if comment has images
   const publicIds = comment.image
     ? comment.image.map((image) => image.public_id)
     : [];
