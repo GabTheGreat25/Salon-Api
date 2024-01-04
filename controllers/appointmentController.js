@@ -92,15 +92,19 @@ exports.updateAppointment = [
 ];
 
 exports.deleteAppointment = asyncHandler(async (req, res, next) => {
-  const appointment = await appointmentsService.deleteAppointmentData(
+  const appointment = await appointmentsService.getSingleAppointmentData(
     req.params.id
   );
+
+  const customerName = appointment?.customer?.name || "Unknown";
+
+  await appointmentsService.deleteAppointmentData(req.params.id);
 
   return !appointment
     ? next(new ErrorHandler("No appointment found"))
     : SuccessHandler(
         res,
-        `Appointment of ${appointment?.user?.name} with ID ${appointment?._id} is deleted`,
+        `Appointment of ${customerName} with ID ${appointment?._id} is deleted`,
         appointment
       );
 });

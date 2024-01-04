@@ -62,13 +62,17 @@ exports.updateSchedule = [
 ];
 
 exports.deleteSchedule = asyncHandler(async (req, res, next) => {
-  const schedule = await schedulesService.deleteScheduleData(req.params.id);
+  const schedule = await schedulesService.getSingleScheduleData(req.params.id);
+
+  const beauticianName = schedule?.beautician?.name || "Unknown";
+
+  await schedulesService.deleteScheduleData(req.params.id);
 
   return !schedule
     ? next(new ErrorHandler("No schedule found"))
     : SuccessHandler(
         res,
-        `Schedule of ${schedule?.beautician?.name} with ID ${schedule?._id} is deleted`,
+        `Schedule of ${beauticianName} with ID ${schedule?._id} is deleted`,
         schedule
       );
 });

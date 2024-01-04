@@ -67,13 +67,18 @@ exports.updateComment = [
 ];
 
 exports.deleteComment = asyncHandler(async (req, res, next) => {
-  const comment = await commentsService.deleteCommentData(req.params.id);
+  const comment = await commentsService.getSingleCommentData(req.params.id);
+
+  const customerName =
+    comment?.transaction?.appointment?.customer?.name || "Unknown";
+
+  await commentsService.deleteCommentData(req.params.id);
 
   return !comment
     ? next(new ErrorHandler("No comment found"))
     : SuccessHandler(
         res,
-        `Comment of ${comment?.transaction?.status} with ID ${comment?._id} is deleted`,
+        `Comment of ${customerName} with ID ${comment?._id} is deleted`,
         comment
       );
 });

@@ -62,15 +62,19 @@ exports.updateTransaction = [
 ];
 
 exports.deleteTransaction = asyncHandler(async (req, res, next) => {
-  const transaction = await transactionsService.deleteTransactionData(
+  const transaction = await transactionsService.getSingleTransactionData(
     req.params.id
   );
+
+  const customerName = transaction?.appointment?.customer?.name || "Unknown";
+
+  await transactionsService.deleteTransactionData(req.params.id);
 
   return !transaction
     ? next(new ErrorHandler("No transaction found"))
     : SuccessHandler(
         res,
-        `transaction of ${transaction?.appointment?.customer?.name} with an ID ${transaction?._id} is deleted`,
+        `transaction of ${customerName} with an ID ${transaction?._id} is deleted`,
         transaction
       );
 });
