@@ -223,10 +223,10 @@ exports.deleteAppointmentData = async (id) => {
 
   await Promise.all([
     Appointment.deleteOne({ _id: id })
-      .lean()
-      .exec()
       .populate({ path: "beautician customer", select: "name" })
-      .populate({ path: "service", select: "service_name image" }),
+      .populate({ path: "service", select: "service_name image" })
+      .lean()
+      .exec(),
     Transaction.deleteMany({ appointment: id }).lean().exec(),
     Verification.deleteMany({ transaction: appointment.transaction })
       .lean()
