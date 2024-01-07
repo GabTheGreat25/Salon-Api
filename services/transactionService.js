@@ -3,6 +3,20 @@ const Verification = require("../models/verification");
 const ErrorHandler = require("../utils/errorHandler");
 const mongoose = require("mongoose");
 const { STATUSCODE, RESOURCE } = require("../constants/index");
+const QRCode = require("qrcode");
+
+const generatePinkQRCode = async (data) => {
+  const qrOptions = {
+    color: {
+      dark: "#000",
+      light: "#FDA7DF",
+    },
+  };
+
+  const qrCodeDataUrl = await QRCode.toDataURL(data, qrOptions);
+
+  return qrCodeDataUrl;
+};
 
 exports.getAllTransactionData = async (page, limit, search, sort, filter) => {
   const skip = (page - 1) * limit;
@@ -58,7 +72,7 @@ exports.getAllTransactionData = async (page, limit, search, sort, filter) => {
         { path: "beautician customer", select: "name" },
         {
           path: "service",
-          select: "service_name image",
+          select: "service_name price image",
           populate: {
             path: "product",
             select: "product_name type brand isNew",
@@ -84,7 +98,7 @@ exports.getSingleTransactionData = async (id) => {
         { path: "beautician customer", select: "name" },
         {
           path: "service",
-          select: "service_name image",
+          select: "service_name price image",
           populate: {
             path: "product",
             select: "product_name type brand isNew",
@@ -107,7 +121,24 @@ exports.updateTransactionData = async (req, res, id) => {
     throw new ErrorHandler(`Invalid transaction ID: ${id}`);
 
   const newStatus = req.body.status;
-  const existingTransaction = await Transaction.findById(id).lean().exec();
+  const existingTransaction = await Transaction.findById(id)
+    .populate({
+      path: RESOURCE.APPOINTMENT,
+      populate: [
+        { path: "beautician customer", select: "name" },
+        {
+          path: "service",
+          select: "service_name price image",
+          populate: {
+            path: "product",
+            select: "product_name type brand isNew",
+          },
+        },
+      ],
+      select: "date time price extraFee note",
+    })
+    .lean()
+    .exec();
 
   if (!existingTransaction)
     throw new ErrorHandler(`Transaction not found with ID: ${id}`);
@@ -122,9 +153,7 @@ exports.updateTransactionData = async (req, res, id) => {
       new: true,
       runValidators: true,
     }
-  )
-    .lean()
-    .exec();
+  ).exec();
 
   let updateVerification;
 
@@ -149,7 +178,47 @@ exports.updateTransactionData = async (req, res, id) => {
     );
   }
 
-  return { existingTransaction, updatedTransaction, updateVerification };
+  if (confirm) {
+    const totalFee =
+      existingTransaction.appointment.price +
+      existingTransaction.appointment.extraFee;
+
+    const formattedReceipt =
+      `========================================\n` +
+      `             APPOINTMENT RECEIPT         \n` +
+      `----------------------------------------\n` +
+      ` Date: ${
+        existingTransaction.appointment.date.toISOString().split("T")[0]
+      }\n` +
+      ` Time: ${existingTransaction.appointment.time}\n` +
+      `----------------------------------------\n` +
+      `           Service Details              \n` +
+      `----------------------------------------\n` +
+      ` Service: ${
+        existingTransaction.appointment.service.length > 1
+          ? existingTransaction.appointment.service
+              .map((s) => s.service_name)
+              .join(", ")
+          : existingTransaction.appointment.service[0]?.service_name
+      }\n` +
+      `----------------------------------------\n` +
+      ` Beautician:\n` +
+      `   Name: ${existingTransaction.appointment.beautician.name}\n` +
+      `----------------------------------------\n` +
+      ` Payment: ${updatedTransaction.payment}\n` +
+      ` Total Fee: ${totalFee}\n` +
+      `----------------------------------------\n` +
+      ` Thank you for choosing our services, ${existingTransaction.appointment.customer.name}!\n` +
+      `----------------------------------------\n` +
+      ` This receipt is an official proof of payment.\n` +
+      ` Please keep it for your reference and in case of any future inquiries or problems.\n` +
+      `========================================`;
+
+    updatedTransaction.qrCode = await generatePinkQRCode(formattedReceipt);
+    await updatedTransaction.save();
+
+    return { existingTransaction, updatedTransaction, updateVerification };
+  }
 };
 
 exports.deleteTransactionData = async (id) => {
@@ -175,7 +244,7 @@ exports.deleteTransactionData = async (id) => {
         },
         populate: {
           path: "service",
-          select: "service_name image",
+          select: "service_name price image",
         },
         select: "date time price extraFee note",
       })
