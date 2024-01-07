@@ -43,6 +43,10 @@ const transactionSchema = new mongoose.Schema({
       },
     },
   ],
+  qrCode: {
+    type: String,
+    required: false,
+  },
 });
 
 module.exports = mongoose.model(RESOURCE.TRANSACTION, transactionSchema);
