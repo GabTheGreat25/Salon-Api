@@ -185,8 +185,9 @@ exports.updateTransactionData = async (req, res, id) => {
 
     const formattedReceipt =
       `========================================\n` +
-      `             APPOINTMENT RECEIPT         \n` +
+      `         APPOINTMENT RECEIPT           \n` +
       `----------------------------------------\n` +
+      ` Reference ID: ${existingTransaction._id}\n` +
       ` Date: ${
         existingTransaction.appointment.date.toISOString().split("T")[0]
       }\n` +
@@ -211,7 +212,8 @@ exports.updateTransactionData = async (req, res, id) => {
       ` Thank you for choosing our services, ${existingTransaction.appointment.customer.name}!\n` +
       `----------------------------------------\n` +
       ` This receipt is an official proof of payment.\n` +
-      ` Please keep it for your reference and in case of any future inquiries or problems.\n` +
+      ` Please keep it for your reference (Reference ID: ${existingTransaction._id})\n` +
+      ` in case of any future inquiries or problems.\n` +
       `========================================`;
 
     updatedTransaction.qrCode = await generatePinkQRCode(formattedReceipt);
