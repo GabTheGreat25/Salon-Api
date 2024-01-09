@@ -4,18 +4,18 @@ const { RESOURCE } = require("../constants/index");
 const appointmentSchema = new mongoose.Schema({
   service: [
     {
-      type: mongoose.Types.ObjectId,
+      type: mongoose.Schema.Types.ObjectId,
       required: [true, "Please enter a service"],
       ref: RESOURCE.SERVICE,
     },
   ],
   beautician: {
-    type: mongoose.Types.ObjectId,
+    type: mongoose.Schema.Types.ObjectId,
     required: [true, "Please enter a beautician"],
     ref: RESOURCE.USER,
   },
   customer: {
-    type: mongoose.Types.ObjectId,
+    type: mongoose.Schema.Types.ObjectId,
     required: [true, "Please enter a customer"],
     ref: RESOURCE.USER,
   },

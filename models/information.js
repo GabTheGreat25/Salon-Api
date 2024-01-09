@@ -3,7 +3,7 @@ const { RESOURCE } = require("../constants/index");
 
 const informationSchema = new mongoose.Schema({
   customer: {
-    type: mongoose.Types.ObjectId,
+    type: mongoose.Schema.Types.ObjectId,
     required: [true, "Please enter a customer"],
     ref: RESOURCE.USER,
   },

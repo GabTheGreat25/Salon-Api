@@ -36,9 +36,7 @@ exports.getSingleDelivery = asyncHandler(async (req, res, next) => {
 exports.createNewDelivery = [
   checkRequiredFields(["product", "company_name", "date", "price", "quantity"]),
   asyncHandler(async (req, res, next) => {
-    const product = req.body.product || [];
-
-    const delivery = await deliveryService.createDeliveryData(req, product);
+    const delivery = await deliveryService.createDeliveryData(req);
 
     return SuccessHandler(
       res,

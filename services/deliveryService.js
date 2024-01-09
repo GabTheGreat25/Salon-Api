@@ -37,13 +37,8 @@ exports.getSingleDeliveryData = async (id) => {
 };
 
 exports.createDeliveryData = async (req, res) => {
-  const productValues = Array.isArray(req.body.product)
-    ? req.body.product
-    : req.body.product.split(", ");
-
   const delivery = await Delivery.create({
     ...req.body,
-    product: productValues,
   });
 
   await Delivery.populate(delivery, {

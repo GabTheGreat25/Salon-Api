@@ -3,7 +3,7 @@ const { RESOURCE } = require("../constants/index");
 
 const transactionSchema = new mongoose.Schema({
   appointment: {
-    type: mongoose.Types.ObjectId,
+    type: mongoose.Schema.Types.ObjectId,
     required: [true, "Please enter an appointment"],
     ref: RESOURCE.APPOINTMENT,
   },

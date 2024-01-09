@@ -3,7 +3,7 @@ const { RESOURCE } = require("../constants/index");
 
 const verificationSchema = new mongoose.Schema({
   transaction: {
-    type: mongoose.Types.ObjectId,
+    type: mongoose.Schema.Types.ObjectId,
     required: [true, "Please enter a transaction"],
     ref: RESOURCE.TRANSACTION,
   },

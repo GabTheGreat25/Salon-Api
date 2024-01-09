@@ -4,7 +4,7 @@ const { RESOURCE } = require("../constants/index");
 const deliverySchema = new mongoose.Schema({
   product: [
     {
-      type: mongoose.Types.ObjectId,
+      type: mongoose.Schema.Types.ObjectId,
       required: [true, "Please enter a product"],
       ref: RESOURCE.PRODUCT,
     },
