@@ -70,7 +70,7 @@ exports.deleteFeedback = asyncHandler(async (req, res, next) => {
     ? next(new ErrorHandler("No feedback found"))
     : SuccessHandler(
         res,
-        `Feedback ${feedback?.feedback} with ID ${feedback?._id} is deleted`,
+        `Feedback ${feedback?.name} with ID ${feedback?._id} is deleted`,
         feedback
       );
 });
