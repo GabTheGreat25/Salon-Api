@@ -68,12 +68,9 @@ exports.createServiceData = async (req, res) => {
   if (image.length === STATUSCODE.ZERO)
     throw new ErrorHandler("At least one image is required");
 
-  const productValues = req.body.product ? req.body.product.split(", ") : [];
-
   const service = await Service.create({
     ...req.body,
     image: image,
-    product: productValues,
   });
 
   await Service.populate(service, {
@@ -129,14 +126,11 @@ exports.updateServiceData = async (req, res, id) => {
     }
   }
 
-  const productValues = req.body.product ? req.body.product.split(", ") : [];
-
   const updatedService = await Service.findByIdAndUpdate(
     id,
     {
       ...req.body,
       image: image,
-      product: productValues,
     },
     {
       new: true,

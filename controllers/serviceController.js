@@ -44,9 +44,7 @@ exports.createNewService = [
     "image",
   ]),
   asyncHandler(async (req, res) => {
-    const product = req.body.product || [];
-
-    const service = await serviceService.createServiceData(req, product);
+    const service = await serviceService.createServiceData(req);
 
     return SuccessHandler(
       res,
@@ -66,13 +64,10 @@ exports.updateService = [
     "image",
   ]),
   asyncHandler(async (req, res, next) => {
-    const product = req.body.product || [];
-
     const service = await serviceService.updateServiceData(
       req,
       res,
-      req.params.id,
-      product
+      req.params.id
     );
 
     return SuccessHandler(

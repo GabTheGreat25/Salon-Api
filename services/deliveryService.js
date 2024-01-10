@@ -58,15 +58,10 @@ exports.updateDeliveryData = async (req, res, id) => {
   if (!existingDelivery)
     throw new ErrorHandler(`Delivery not found with ID: ${id}`);
 
-  const productValues = Array.isArray(req.body.product)
-    ? req.body.product
-    : req.body.product.split(", ");
-
   const updatedDelivery = await Delivery.findByIdAndUpdate(
     id,
     {
       ...req.body,
-      product: productValues,
     },
     {
       new: true,

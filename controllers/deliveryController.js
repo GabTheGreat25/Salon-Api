@@ -56,13 +56,10 @@ exports.updateDelivery = [
     "quantity",
   ]),
   asyncHandler(async (req, res, next) => {
-    const product = req.body.product || [];
-
     const delivery = await deliveryService.updateDeliveryData(
       req,
       res,
-      req.params.id,
-      product
+      req.params.id
     );
 
     return SuccessHandler(
