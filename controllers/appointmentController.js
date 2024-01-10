@@ -72,7 +72,7 @@ exports.createNewAppointment = [
 ];
 
 exports.updateAppointment = [
-  checkRequiredFields(["service", , "date", "time", "price"]),
+  checkRequiredFields(["service", "price"]),
   asyncHandler(async (req, res, next) => {
     const service = req.body.service || [];
 
