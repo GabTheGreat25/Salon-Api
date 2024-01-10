@@ -160,7 +160,7 @@ exports.updateTransactionData = async (req, res, id) => {
   if (wasCompleted && !confirm) {
     updateVerification = await Verification.findOneAndUpdate(
       { transaction: updatedTransaction?._id },
-      { confirm: false },
+      { confirm: req.body.status !== "completed" },
       {
         new: true,
         runValidators: true,
@@ -218,9 +218,12 @@ exports.updateTransactionData = async (req, res, id) => {
 
     updatedTransaction.qrCode = await generatePinkQRCode(formattedReceipt);
     await updatedTransaction.save();
-
-    return { existingTransaction, updatedTransaction, updateVerification };
+  } else {
+    updatedTransaction.qrCode = "";
+    await updatedTransaction.save();
   }
+
+  return { existingTransaction, updatedTransaction, updateVerification };
 };
 
 exports.deleteTransactionData = async (id) => {
