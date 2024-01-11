@@ -14,10 +14,20 @@ exports.getAllCommentData = async () => {
       populate: [
         {
           path: "appointment",
-          populate: {
-            path: "beautician customer",
-            select: "name",
-          },
+          populate: [
+            {
+              path: "beautician customer",
+              select: "name",
+            },
+            {
+              path: "service",
+              select: "service_name price image",
+              populate: {
+                path: "product",
+                select: "product_name type brand isNew",
+              },
+            },
+          ],
           select: "date time price extraFee note",
         },
       ],
@@ -39,10 +49,20 @@ exports.getSingleCommentData = async (id) => {
       populate: [
         {
           path: "appointment",
-          populate: {
-            path: "beautician customer",
-            select: "name",
-          },
+          populate: [
+            {
+              path: "beautician customer",
+              select: "name",
+            },
+            {
+              path: "service",
+              select: "service_name price image",
+              populate: {
+                path: "product",
+                select: "product_name type brand isNew",
+              },
+            },
+          ],
           select: "date time price extraFee note",
         },
       ],
@@ -171,10 +191,20 @@ exports.deleteCommentData = async (id) => {
         populate: [
           {
             path: "appointment",
-            populate: {
-              path: "beautician customer",
-              select: "name",
-            },
+            populate: [
+              {
+                path: "beautician customer",
+                select: "name",
+              },
+              {
+                path: "service",
+                select: "service_name price image",
+                populate: {
+                  path: "product",
+                  select: "product_name type brand isNew",
+                },
+              },
+            ],
             select: "date time price extraFee note",
           },
         ],
