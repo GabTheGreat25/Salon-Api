@@ -21,7 +21,7 @@ exports.getAllCommentData = async () => {
             },
             {
               path: "service",
-              select: "service_name price image",
+              select: "service_name description price image",
               populate: {
                 path: "product",
                 select: "product_name type brand isNew",
@@ -56,7 +56,7 @@ exports.getSingleCommentData = async (id) => {
             },
             {
               path: "service",
-              select: "service_name price image",
+              select: "service_name description price image",
               populate: {
                 path: "product",
                 select: "product_name type brand isNew",
@@ -198,7 +198,7 @@ exports.deleteCommentData = async (id) => {
               },
               {
                 path: "service",
-                select: "service_name price image",
+                select: "service_name description price image",
                 populate: {
                   path: "product",
                   select: "product_name type brand isNew",
