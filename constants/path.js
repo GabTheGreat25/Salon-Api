@@ -33,4 +33,6 @@ module.exports = {
   FEEDBACKS: "/feedbacks",
   FEEDBACK_ID: "/feedback/:id",
   EDIT_FEEDBACK_ID: "/feedback/edit/:id",
+  SEARCH_SERVICE_NAME: "/search/service/:service_name",
+
 };
