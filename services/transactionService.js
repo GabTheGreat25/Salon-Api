@@ -187,7 +187,6 @@ exports.updateTransactionData = async (req, res, id) => {
       `========================================\n` +
       `         APPOINTMENT RECEIPT           \n` +
       `----------------------------------------\n` +
-      ` Reference ID: ${existingTransaction._id}\n` +
       ` Date: ${
         existingTransaction.appointment.date.toISOString().split("T")[0]
       }\n` +
