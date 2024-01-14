@@ -18,54 +18,11 @@ const generatePinkQRCode = async (data) => {
   return qrCodeDataUrl;
 };
 
-exports.getAllTransactionData = async (page, limit, search, sort, filter) => {
-  const skip = (page - 1) * limit;
-
-  let transactionsQuery = Transaction.find();
-
-  if (search) {
-    const isNumericSearch = !isNaN(search);
-
-    const searchFields = ["status", "payment"];
-    const numericFields = ["date", "time"];
-
-    const conditions = [];
-
-    if (!isNumericSearch) {
-      conditions.push(
-        ...searchFields.map((field) => ({
-          [field]: {
-            $regex: new RegExp(search, "i"),
-          },
-        }))
-      );
-    } else
-      conditions.push(
-        ...numericFields.map((field) => ({
-          [field]: search,
-        }))
-      );
-
-    transactionsQuery = transactionsQuery.or(conditions);
-  }
-
-  if (sort) {
-    const [field, order] = sort.split(":");
-    transactionsQuery = transactionsQuery.sort({
-      [field]: order === "asc" ? 1 : -1,
-    });
-  } else {
-    transactionsQuery = transactionsQuery.sort({
-      createdAt: -1,
-    });
-  }
-
-  if (filter) {
-    const [field, value] = filter.split(":");
-    transactionsQuery = transactionsQuery.where(field).equals(value);
-  }
-
-  transactionsQuery = transactionsQuery
+exports.getAllTransactionData = async () => {
+  const transactions = await Transaction.find()
+    .sort({
+      createdAt: STATUSCODE.NEGATIVE_ONE,
+    })
     .populate({
       path: RESOURCE.APPOINTMENT,
       populate: [
@@ -81,10 +38,9 @@ exports.getAllTransactionData = async (page, limit, search, sort, filter) => {
       ],
       select: "date time price extraFee note",
     })
-    .skip(skip)
-    .limit(limit);
-
-  return transactionsQuery;
+    .lean()
+    .exec();
+  return transactions;
 };
 
 exports.getSingleTransactionData = async (id) => {

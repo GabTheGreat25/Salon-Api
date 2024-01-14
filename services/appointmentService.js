@@ -19,47 +19,17 @@ const deleteAppointmentAfterTimeout = async (appointmentId, verification) => {
   }
 };
 
-exports.getAllAppointmentsData = async (page, limit, search, sort, filter) => {
-  const skip = (page - 1) * limit;
-
-  let appointmentsQuery = Appointment.find();
-
-  if (search) {
-    const isNumericSearch = !isNaN(search);
-
-    if (isNumericSearch) {
-      const numericFields = ["price", "date", "time"];
-      const numericFieldConditions = numericFields.map((field) => ({
-        [field]: search,
-      }));
-
-      appointmentsQuery = appointmentsQuery.or(numericFieldConditions);
-    }
-  }
-
-  if (sort) {
-    const [field, order] = sort.split(":");
-    appointmentsQuery = appointmentsQuery.sort({
-      [field]: order === "asc" ? 1 : -1,
-    });
-  } else {
-    appointmentsQuery = appointmentsQuery.sort({
-      createdAt: -1,
-    });
-  }
-
-  if (filter) {
-    const [field, value] = filter.split(":");
-    appointmentsQuery = appointmentsQuery.where(field).equals(value);
-  }
-
-  appointmentsQuery = appointmentsQuery
-    .populate({ path: "beautician customer", select: "name" })
+exports.getAllAppointmentsData = async () => {
+  const appointments = await Appointment.find()
+    .sort({ createdAt: -1 })
+    .populate({
+      path: "beautician customer",
+      select: "name roles contact_number",
+    })
     .populate({ path: "service", select: "service_name image" })
-    .skip(skip)
-    .limit(limit);
-
-  return appointmentsQuery;
+    .lean()
+    .exec();
+  return appointments;
 };
 
 exports.getSingleAppointmentData = async (id) => {
@@ -67,7 +37,10 @@ exports.getSingleAppointmentData = async (id) => {
     throw new ErrorHandler(`Invalid appointment ID: ${id}`);
 
   const appointment = await Appointment.findById(id)
-    .populate({ path: "beautician customer", select: "name" })
+    .populate({
+      path: "beautician customer",
+      select: "name roles contact_number",
+    })
     .populate({ path: "service", select: "service_name image" })
     .lean()
     .exec();
@@ -109,7 +82,7 @@ exports.createAppointmentData = async (req, res) => {
   });
 
   await Appointment.populate(appointment, [
-    { path: "beautician customer", select: "name roles" },
+    { path: "beautician customer", select: "name roles contact_number" },
     { path: "service", select: "service_name image" },
   ]);
 
@@ -156,9 +129,7 @@ exports.createAppointmentData = async (req, res) => {
 
     appointment.transaction = transaction._id;
     await appointment.save();
-  } else {
-    throw new Error("Invalid payment method");
-  }
+  } else throw new Error("Invalid payment method");
 
   const verification = await Verification.create({
     transaction: appointment.transaction,
@@ -199,7 +170,10 @@ exports.updateAppointmentData = async (req, res, id) => {
       runValidators: true,
     }
   )
-    .populate({ path: "beautician customer", select: "name" })
+    .populate({
+      path: "beautician customer",
+      select: "name roles contact_number",
+    })
     .populate({ path: "service", select: "service_name image" })
     .lean()
     .exec();
@@ -223,7 +197,10 @@ exports.deleteAppointmentData = async (id) => {
 
   await Promise.all([
     Appointment.deleteOne({ _id: id })
-      .populate({ path: "beautician customer", select: "name" })
+      .populate({
+        path: "beautician customer",
+        select: "name roles contact_number",
+      })
       .populate({ path: "service", select: "service_name image" })
       .lean()
       .exec(),

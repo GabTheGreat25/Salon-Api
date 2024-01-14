@@ -7,20 +7,7 @@ const { STATUSCODE } = require("../constants/index");
 const { upload } = require("../utils/cloudinary");
 
 exports.getAllAppointments = asyncHandler(async (req, res, next) => {
-  const page = parseInt(req.query.page) || 1;
-  const limit = parseInt(req.query.limit) || 100;
-  const search = req.query.search;
-  const sort = req.query.sort;
-  const filter = req.query.filter;
-
-  const appointments = await appointmentsService.getAllAppointmentsData(
-    page,
-    limit,
-    search,
-    sort,
-    filter
-  );
-
+  const appointments = await appointmentsService.getAllAppointmentsData();
   return appointments?.length === STATUSCODE.ZERO
     ? next(new ErrorHandler("No appointments found"))
     : SuccessHandler(
@@ -33,7 +20,6 @@ exports.getAllAppointments = asyncHandler(async (req, res, next) => {
         appointments
       );
 });
-
 exports.getSingleAppointment = asyncHandler(async (req, res, next) => {
   const appointment = await appointmentsService.getSingleAppointmentData(
     req.params.id

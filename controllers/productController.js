@@ -7,20 +7,7 @@ const { upload } = require("../utils/cloudinary");
 const { STATUSCODE } = require("../constants/index");
 
 exports.getAllProducts = asyncHandler(async (req, res, next) => {
-  const page = parseInt(req.query.page) || 1;
-  const limit = parseInt(req.query.limit) || 100;
-  const search = req.query.search;
-  const sort = req.query.sort;
-  const filter = req.query.filter;
-
-  const products = await productsService.getAllProductData(
-    page,
-    limit,
-    search,
-    sort,
-    filter
-  );
-
+  const products = await productsService.getAllProductData();
   return products?.length === STATUSCODE.ZERO
     ? next(new ErrorHandler("No products found"))
     : SuccessHandler(
