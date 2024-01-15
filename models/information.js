@@ -23,6 +23,23 @@ const informationSchema = new mongoose.Schema({
       default: "None",
     },
   ],
+  messageDate: {
+    type: String,
+    enum: [
+      "1 minute",
+      "1 month",
+      "2 months",
+      "4 months",
+      "6 months",
+      "1 year",
+      "stop",
+    ],
+    default: "1 minute",
+  },
+  created_at: {
+    type: Date,
+    default: Date.now,
+  },
 });
 
 module.exports = mongoose.model(RESOURCE.INFORMATION, informationSchema);
