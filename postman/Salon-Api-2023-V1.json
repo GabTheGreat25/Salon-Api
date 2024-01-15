@@ -1096,17 +1096,11 @@
 			"item": [
 				{
 					"name": "GET ALL PRODUCTS",
-					"id": "987eb756-5ff5-492d-9d00-d7533dacef06",
+					"id": "f4350548-38ee-4ce5-9da6-4cad7c8fe051",
 					"protocolProfileBehavior": {
 						"disableBodyPruning": true
 					},
 					"request": {
-						"auth": {
-							"type": "bearer",
-							"bearer": {
-								"token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJVc2VySW5mbyI6eyJlbWFpbCI6InJlbnllbDEyM0BnbWFpbC5jb20iLCJyb2xlcyI6WyJBZG1pbiJdfSwiaWF0IjoxNzAzNDM2MzI5LCJleHAiOjE3MDQwNDExMjl9.-hkS4ERvTZDuJQi0zKv-_fHRveN4tQfJMq-isVdPSNA"
-							}
-						},
 						"method": "GET",
 						"header": [
 							{
@@ -1119,29 +1113,7 @@
 							"mode": "formdata",
 							"formdata": []
 						},
-						"url": {
-							"raw": "{{URI}}{{V1}}products",
-							"host": [
-								"{{URI}}{{V1}}products"
-							],
-							"query": [
-								{
-									"key": "search",
-									"value": "Dove",
-									"disabled": true
-								},
-								{
-									"key": "sort",
-									"value": "product_name:desc",
-									"disabled": true
-								},
-								{
-									"key": "filter",
-									"value": "brand:Dove",
-									"disabled": true
-								}
-							]
-						}
+						"url": "{{URI}}{{V1}}products"
 					},
 					"response": []
 				},
@@ -1876,7 +1848,7 @@
 						],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n    \"beautician\": \"657aafef2b97d4e01843a215\",\r\n    \"customer\": \"657c5b0858bbe7f79d54187a\",\r\n    \"service\": [\"657ad43c284b15421ec0c643\", \"657af0aa3e7ece017501d980\"],\r\n    \"date\": \"2023-12-27\",\r\n    \"time\": \"11:30 PM\",\r\n    \"price\": 6000,\r\n    \"extraFee\": 500,\r\n    \"note\": \"Just make it simple\",\r\n    \"status\": \"pending\",\r\n    \"payment\": \"Cash\"\r\n}"
+							"raw": "{\r\n    \"beautician\": \"657aafef2b97d4e01843a215\",\r\n    \"customer\": \"657c3f6958bbe7f79d541819\",\r\n    \"service\": [\"657af0aa3e7ece017501d980\", \"65902d6e29515bedd0e32285\"],\r\n    \"date\": \"2024-01-19\",\r\n    \"time\": \"11:00 AM\",\r\n    \"price\": 6000,\r\n    \"extraFee\": 500,\r\n    \"note\": \"Just make it simple\",\r\n    \"status\": \"pending\",\r\n    \"payment\": \"Cash\"\r\n}"
 						},
 						"url": "{{URI}}{{V1}}appointments"
 					},
@@ -2036,17 +2008,11 @@
 			"item": [
 				{
 					"name": "GET ALL TRANSACTIONS",
-					"id": "5b54de4e-1289-4aff-817e-4ed28b27b3be",
+					"id": "3bef5d49-259b-4ba5-9c72-df60ffe74fdc",
 					"protocolProfileBehavior": {
 						"disableBodyPruning": true
 					},
 					"request": {
-						"auth": {
-							"type": "bearer",
-							"bearer": {
-								"token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJVc2VySW5mbyI6eyJlbWFpbCI6InJlbnllbDEyM0BnbWFpbC5jb20iLCJyb2xlcyI6WyJBZG1pbiJdfSwiaWF0IjoxNzA0Mzc2MTc4LCJleHAiOjE3MDQ5ODA5Nzh9.hAhZ_TZwwyAyhKVxOgHM7bGyz0_3SOztlMAH_0MrtfU"
-							}
-						},
 						"method": "GET",
 						"header": [
 							{
@@ -2059,20 +2025,7 @@
 							"mode": "formdata",
 							"formdata": []
 						},
-						"url": {
-							"raw": "{{URI}}{{V1}}transactions",
-							"host": [
-								"{{URI}}{{V1}}transactions"
-							],
-							"query": [
-								{
-									"key": "filter",
-									"value": "date:2023-12-12",
-									"type": "text",
-									"disabled": true
-								}
-							]
-						}
+						"url": "{{URI}}{{V1}}transactions"
 					},
 					"response": []
 				},
@@ -2350,31 +2303,6 @@
 				}
 			],
 			"id": "7f329437-df3e-4eee-ab9d-22b306397fcb"
-		},
-		{
-			"name": "SEARCH",
-			"item": [
-				{
-					"name": "SEARCH SERVICE",
-					"id": "d9b54ab2-fa98-4a16-a589-0be403b91694",
-					"protocolProfileBehavior": {
-						"disableBodyPruning": true
-					},
-					"request": {
-						"auth": {
-							"type": "bearer",
-							"bearer": {
-								"token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJVc2VySW5mbyI6eyJlbWFpbCI6InJlbnllbDEyM0BnbWFpbC5jb20iLCJyb2xlcyI6WyJBZG1pbiJdfSwiaWF0IjoxNzA0ODYwNDQyLCJleHAiOjE3MDU0NjUyNDJ9.ccwK16xl648i5COWUnF6HbKs4LbLRH-A2Fq_lk3m0DY"
-							}
-						},
-						"method": "GET",
-						"header": [],
-						"url": "{{URI}}{{V1}}search/service/man"
-					},
-					"response": []
-				}
-			],
-			"id": "9da3f7fd-e0ad-453e-9897-1b1ad447e152"
 		}
 	],
 	"event": [
