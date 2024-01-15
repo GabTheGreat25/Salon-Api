@@ -12,6 +12,7 @@ const bcrypt = require("bcrypt");
 const token = require("../utils/token");
 const { cloudinary } = require("../utils/cloudinary");
 const { STATUSCODE, RESOURCE, ROLE } = require("../constants/index");
+const { sendSMS } = require("../utils/twilio");
 const blacklistedTokens = [];
 
 const deleteUserAfterTimeout = async (userId) => {
@@ -64,6 +65,10 @@ exports.confirmUserRole = async (userId) => {
   if (user.active) throw new ErrorHandler(`User already activated`);
 
   user.active = true;
+
+  const smsMessage = `Dear ${user.name}, your account has been successfully activated. Thank you for choosing Lhanlee Salon.`;
+
+  await sendSMS(`+63${user.contact_number.substring(1)}`, smsMessage);
 
   await user.save();
 
@@ -287,6 +292,10 @@ exports.createUserData = async (req, res) => {
       date: req.body.date,
       time: req.body.time,
     });
+
+    const smsMessage = `Dear ${user.name}, your account has been successfully created. Please attend your setup meeting at the salon.`;
+
+    await sendSMS(`+63${user.contact_number.substring(1)}`, smsMessage);
 
     const deletionTime =
       selectedDate.getTime() + 7 * 24 * 60 * 60 * 1000 - currentDate.getTime();
