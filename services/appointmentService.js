@@ -6,6 +6,7 @@ const mongoose = require("mongoose");
 const { ROLE } = require("../constants");
 const { cloudinary } = require("../utils/cloudinary");
 const { STATUSCODE } = require("../constants/index");
+const { sendSMS } = require("../utils/twilio");
 
 const deleteAppointmentAfterTimeout = async (appointmentId, verification) => {
   const appointment = await Appointment.findById(appointmentId);
@@ -147,6 +148,13 @@ exports.createAppointmentData = async (req, res) => {
       await deleteAppointmentAfterTimeout(appointment, verification);
     }, Math.max(0, deletionTimeForWalkInCustomer - currentDate.getTime()));
   }
+
+  const smsMessage = `Dear ${appointment.customer.name}, your appointment was successfully booked. Please wait for the admin to review and confirm. Thank you for choosing Lhanlee Salon.`;
+
+  await sendSMS(
+    `+63${appointment.customer.contact_number.substring(1)}`,
+    smsMessage
+  );
 
   return { appointment, transaction, verification };
 };

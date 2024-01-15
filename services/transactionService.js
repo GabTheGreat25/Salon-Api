@@ -4,6 +4,7 @@ const ErrorHandler = require("../utils/errorHandler");
 const mongoose = require("mongoose");
 const { STATUSCODE, RESOURCE } = require("../constants/index");
 const QRCode = require("qrcode");
+const { sendSMS } = require("../utils/twilio");
 
 const generatePinkQRCode = async (data) => {
   const qrOptions = {
@@ -26,7 +27,7 @@ exports.getAllTransactionData = async () => {
     .populate({
       path: RESOURCE.APPOINTMENT,
       populate: [
-        { path: "beautician customer", select: "name" },
+        { path: "beautician customer", select: "name contact_number" },
         {
           path: "service",
           select: "service_name price image",
@@ -51,7 +52,7 @@ exports.getSingleTransactionData = async (id) => {
     .populate({
       path: RESOURCE.APPOINTMENT,
       populate: [
-        { path: "beautician customer", select: "name" },
+        { path: "beautician customer", select: "name contact_number" },
         {
           path: "service",
           select: "service_name price image",
@@ -79,9 +80,9 @@ exports.updateTransactionData = async (req, res, id) => {
   const newStatus = req.body.status;
   const existingTransaction = await Transaction.findById(id)
     .populate({
-      path: RESOURCE.APPOINTMENT,
+      path: "appointment",
       populate: [
-        { path: "beautician customer", select: "name" },
+        { path: "beautician customer", select: "name contact_number roles" },
         {
           path: "service",
           select: "service_name price image",
@@ -165,6 +166,7 @@ exports.updateTransactionData = async (req, res, id) => {
       ` Total Fee: ${totalFee}\n` +
       `----------------------------------------\n` +
       ` Thank you for choosing our services, ${existingTransaction.appointment.customer.name}!\n` +
+      ` Roles: ${existingTransaction.appointment.customer.roles.join(", ")}\n` +
       `----------------------------------------\n` +
       ` This receipt is an official proof of payment.\n` +
       ` Please keep it for your reference (Reference ID: ${existingTransaction._id})\n` +
@@ -172,6 +174,22 @@ exports.updateTransactionData = async (req, res, id) => {
       `========================================`;
 
     updatedTransaction.qrCode = await generatePinkQRCode(formattedReceipt);
+
+    const customerRoles = existingTransaction.appointment.customer.roles;
+    const isOnlineCustomer = customerRoles.includes("Online Customer");
+    const customerURL = isOnlineCustomer
+      ? "/onlineCustomer"
+      : "/walkInCustomer";
+
+    const smsMessage = `Dear ${existingTransaction.appointment.customer.name}, your transaction has been approved! You can review your transaction details http://localhost:6969${customerURL}/history. Thank you for choosing Lhanlee Salon.`;
+
+    await sendSMS(
+      `+63${existingTransaction.appointment.customer.contact_number.substring(
+        1
+      )}`,
+      smsMessage
+    );
+
     await updatedTransaction.save();
   } else {
     updatedTransaction.qrCode = "";
@@ -200,7 +218,7 @@ exports.deleteTransactionData = async (id) => {
         path: RESOURCE.APPOINTMENT,
         populate: {
           path: "beautician customer",
-          select: "name",
+          select: "name contact_number",
         },
         populate: {
           path: "service",
