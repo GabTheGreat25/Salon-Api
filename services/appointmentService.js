@@ -220,3 +220,16 @@ exports.deleteAppointmentData = async (id) => {
 
   return appointment;
 };
+
+exports.getBeauticianAppointmentsData = async (id) => {
+  let appointments = await Appointment.find({
+    beautician: id,
+  })
+    .collation({ locale: "en" })
+    .populate({ path: "beautician customer", select: "name image" })
+    .populate({ path: "service", select: "service_name description image" })
+    .lean()
+    .exec();
+
+  return appointments;
+};
