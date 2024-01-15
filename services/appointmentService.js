@@ -1,6 +1,7 @@
 const Appointment = require("../models/appointment");
 const Transaction = require("../models/transaction");
 const Verification = require("../models/verification");
+const Comment = require("../models/comment");
 const ErrorHandler = require("../utils/errorHandler");
 const mongoose = require("mongoose");
 const { ROLE } = require("../constants");
@@ -203,19 +204,24 @@ exports.deleteAppointmentData = async (id) => {
   if (!appointment)
     throw new ErrorHandler(`Appointment not found with ID: ${id}`);
 
+  const appointmentId = appointment?._id;
+
+  const transaction = await Transaction.findOne({
+    appointment: appointmentId,
+  });
+
+  if (!transaction)
+    throw new ErrorHandler(
+      `Transaction not found for appointment ID: ${appointmentId}`
+    );
+
+  const transactionId = transaction?._id;
+
   await Promise.all([
-    Appointment.deleteOne({ _id: id })
-      .populate({
-        path: "beautician customer",
-        select: "name roles contact_number",
-      })
-      .populate({ path: "service", select: "service_name image" })
-      .lean()
-      .exec(),
-    Transaction.deleteMany({ appointment: id }).lean().exec(),
-    Verification.deleteMany({ transaction: appointment.transaction })
-      .lean()
-      .exec(),
+    Appointment.deleteOne({ _id: id }).lean().exec(),
+    Transaction.deleteMany({ appointment: appointmentId }).lean().exec(),
+    Verification.deleteMany({ transaction: transactionId }).lean().exec(),
+    Comment.deleteMany({ transaction: transactionId }).lean().exec(),
   ]);
 
   return appointment;

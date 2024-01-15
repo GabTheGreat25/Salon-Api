@@ -1,5 +1,7 @@
 const Transaction = require("../models/transaction");
 const Verification = require("../models/verification");
+const Appointment = require("../models/appointment");
+const Comment = require("../models/comment");
 const ErrorHandler = require("../utils/errorHandler");
 const mongoose = require("mongoose");
 const { STATUSCODE, RESOURCE } = require("../constants/index");
@@ -228,7 +230,9 @@ exports.deleteTransactionData = async (id) => {
       })
       .lean()
       .exec(),
+    Appointment.deleteOne({ _id: transaction.appointment }).lean().exec(),
     Verification.deleteMany({ transaction: id }).lean().exec(),
+    Comment.deleteMany({ transaction: id }).lean().exec(),
   ]);
 
   return transaction;

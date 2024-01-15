@@ -4,6 +4,8 @@ const Transaction = require("../models/transaction");
 const Appointment = require("../models/appointment");
 const Requirement = require("../models/requirement");
 const Information = require("../models/information");
+const Verification = require("../models/verification");
+const Comment = require("../models/comment");
 const mongoose = require("mongoose");
 const ErrorHandler = require("../utils/errorHandler");
 const bcrypt = require("bcrypt");
@@ -415,13 +417,46 @@ exports.deleteUserData = async (id) => {
 
   const publicIds = user.image.map((image) => image.public_id);
 
+  const appointment = await Appointment.findOne({
+    $or: [{ customer: id }, { beautician: id }],
+  });
+
+  const appointmentId = appointment?._id;
+
+  const transaction = await Transaction.findOne({
+    appointment: appointmentId,
+  });
+
+  const transactionId = transaction?._id;
+
+  if (!appointmentId || !transactionId)
+    throw new ErrorHandler(
+      `Appointment or Transaction not found for user ID: ${id}`
+    );
+
   await Promise.all([
     User.deleteOne({ _id: id }).lean().exec(),
     Schedule.deleteMany({ beautician: id }).lean().exec(),
-    Appointment.deleteMany({ $or: [{ customer: id }, { beautician: id }] })
+    Appointment.deleteMany({
+      $or: [{ customer: id }, { beautician: id }],
+    })
       .lean()
       .exec(),
-    Transaction.deleteMany({ customer: id }).lean().exec(),
+    Transaction.deleteMany({
+      appointment: appointmentId,
+    })
+      .lean()
+      .exec(),
+    Verification.deleteMany({
+      transaction: transactionId,
+    })
+      .lean()
+      .exec(),
+    Comment.deleteMany({
+      transaction: transactionId,
+    })
+      .lean()
+      .exec(),
     Requirement.deleteMany({ beautician: id }).lean().exec(),
     Information.deleteMany({ customer: id }).lean().exec(),
     cloudinary.api.delete_resources(publicIds),

@@ -1,5 +1,8 @@
 const Service = require("../models/service");
 const Appointment = require("../models/appointment");
+const Transaction = require("../models/transaction");
+const Verification = require("../models/verification");
+const Comment = require("../models/comment");
 const mongoose = require("mongoose");
 const ErrorHandler = require("../utils/errorHandler");
 const { cloudinary } = require("../utils/cloudinary");
@@ -159,14 +162,46 @@ exports.deleteServiceData = async (id) => {
 
   const publicIds = service.image.map((image) => image.public_id);
 
+  const appointment = await Appointment.findOne({
+    service: id,
+  });
+
+  const appointmentId = appointment?._id;
+
+  const transaction = await Transaction.findOne({
+    appointment: appointmentId,
+  });
+
+  const transactionId = transaction?._id;
+
+  if (!appointmentId || !transactionId)
+    throw new ErrorHandler(
+      `Appointment or Transaction not found for service ID: ${id}`
+    );
+
   await Promise.all([
     Service.deleteOne({
       _id: id,
     })
       .lean()
       .exec(),
-    Appointment.deleteMany({
+    Appointment.deleteOne({
       service: id,
+    })
+      .lean()
+      .exec(),
+    Transaction.deleteOne({
+      appointment: appointmentId,
+    })
+      .lean()
+      .exec(),
+    Verification.deleteMany({
+      transaction: transactionId,
+    })
+      .lean()
+      .exec(),
+    Comment.deleteMany({
+      transaction: transactionId,
     })
       .lean()
       .exec(),
