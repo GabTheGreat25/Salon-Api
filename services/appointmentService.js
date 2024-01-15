@@ -210,11 +210,6 @@ exports.deleteAppointmentData = async (id) => {
     appointment: appointmentId,
   });
 
-  if (!transaction)
-    throw new ErrorHandler(
-      `Transaction not found for appointment ID: ${appointmentId}`
-    );
-
   const transactionId = transaction?._id;
 
   await Promise.all([

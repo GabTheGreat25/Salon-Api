@@ -174,11 +174,6 @@ exports.deleteServiceData = async (id) => {
 
   const transactionId = transaction?._id;
 
-  if (!appointmentId || !transactionId)
-    throw new ErrorHandler(
-      `Appointment or Transaction not found for service ID: ${id}`
-    );
-
   await Promise.all([
     Service.deleteOne({
       _id: id,
