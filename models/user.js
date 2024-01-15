@@ -29,7 +29,7 @@ const userSchema = new mongoose.Schema({
   contact_number: {
     type: String,
     required: [true, "Contact number Field Required"],
-    unique: [true, "Contact number is already use by another user."],
+    // unique: [true, "Contact number is already use by another user."],
     validate: [
       {
         validator: function (value) {
