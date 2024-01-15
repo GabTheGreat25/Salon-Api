@@ -183,7 +183,9 @@ exports.updateTransactionData = async (req, res, id) => {
       ? "/onlineCustomer"
       : "/walkInCustomer";
 
-    const smsMessage = `Dear ${existingTransaction.appointment.customer.name}, your transaction has been approved! You can review your transaction details http://localhost:6969${customerURL}/history. Thank you for choosing Lhanlee Salon.`;
+    // http://localhost:6969${customerURL}/history
+
+    const smsMessage = `Dear ${existingTransaction.appointment.customer.name}, your transaction has been approved! You can review your transaction details by checking your history. Thank you for choosing Lhanlee Salon.`;
 
     await sendSMS(
       `+63${existingTransaction.appointment.customer.contact_number.substring(
