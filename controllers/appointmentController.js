@@ -94,3 +94,13 @@ exports.deleteAppointment = asyncHandler(async (req, res, next) => {
         appointment
       );
 });
+
+exports.getBeauticianAppointment = asyncHandler(async (req, res, next) => {
+  const appointment = await appointmentsService.getBeauticianAppointmentsData(
+    req.params.id
+  );
+
+  return !appointment
+    ? next(new ErrorHandler("No beautician appointment found"))
+    : SuccessHandler(res, `Appointment Data found`, appointment);
+});

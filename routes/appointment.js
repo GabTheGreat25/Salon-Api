@@ -47,6 +47,12 @@ const appointmentRoutes = [
     roles: [ROLE.ADMIN],
     handler: appointmentController.deleteAppointment,
   },
+  {
+    method: METHOD.GET,
+    path: PATH.BEAUTICIAN_APPOINTMENT,
+    roles: [ROLE.BEAUTICIAN],
+    handler: appointmentController.getBeauticianAppointment,
+  },
 ];
 
 appointmentRoutes.forEach((route) => {
