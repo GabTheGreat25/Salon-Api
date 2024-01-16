@@ -194,6 +194,18 @@ exports.updateTransactionData = async (req, res, id) => {
       smsMessage
     );
 
+    setTimeout(async () => {
+      const additionalSmsMessage = `Dear ${existingTransaction.appointment.customer.name}, it's been a while since your last visit. We miss you! Come and visit us again. Thank you for choosing Lhanlee Salon.`;
+
+      await sendSMS(
+        `+63${existingTransaction.appointment.customer.contact_number.substring(
+          1
+        )}`,
+        additionalSmsMessage
+      );
+    }, 2 * 30 * 24 * 60 * 60 * 1000);
+    // }, 2 * 60 * 1000); // 2 minutes
+
     await updatedTransaction.save();
   } else {
     updatedTransaction.qrCode = "";
