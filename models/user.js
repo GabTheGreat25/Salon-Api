@@ -68,9 +68,15 @@ const userSchema = new mongoose.Schema({
       },
     },
   ],
-  resetTokenUsed: {
-    type: Boolean,
-    default: false,
+  verificationCode: {
+    code: {
+      type: String,
+      default: null,
+    },
+    createdAt: {
+      type: Date,
+      default: null,
+    },
   },
   active: {
     type: Boolean,
