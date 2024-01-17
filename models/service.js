@@ -23,6 +23,17 @@ const serviceSchema = new mongoose.Schema({
     required: [true, "Please enter a price"],
     min: 0,
   },
+  occassion: {
+    type: String,
+    enum: [
+      "Graduation",
+      "Js Prom",
+      "Halloween",
+      "Christmas",
+      "Valentines",
+      "Wedding",
+    ],
+  },
   image: [
     {
       public_id: {
