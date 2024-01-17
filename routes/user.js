@@ -69,6 +69,20 @@ const userRoutes = [
     middleware: [verifyJWT],
     handler: userController.updatePassword,
   },
+  {
+    method: METHOD.PUT,
+    path: PATH.FORGOT_PASSWORD,
+    roles: [],
+    middleware: [],
+    handler: userController.forgotPassword,
+  },
+  {
+    method: METHOD.POST,
+    path: PATH.RESET_PASSWORD,
+    roles: [],
+    middleware: [],
+    handler: userController.resetPassword,
+  },
 ];
 
 userRoutes.forEach((route) => {
