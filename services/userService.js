@@ -634,3 +634,72 @@ exports.deleteUserData = async (id) => {
 
   return user;
 };
+
+const generateRandomCode = () => {
+  const length = 6;
+  let code = "";
+
+  for (let i = 0; i < length; i++) {
+    code += Math.floor(Math.random() * 10);
+  }
+
+  return code;
+};
+
+exports.sendPasswordResetSMS = async (req, email) => {
+  if (!email) throw new ErrorHandler("Please provide an email");
+
+  const user = await User.findOne({ email });
+
+  if (!user) throw new ErrorHandler("User not found");
+
+  const verificationCode = generateRandomCode();
+  user.verificationCode.code = verificationCode;
+  user.verificationCode.createdAt = new Date();
+  await user.save();
+
+  const smsMessage = `Your verification code is: ${verificationCode}. Use this code to reset your password. Ignore if you didn't request a password reset.`;
+
+  await sendSMS(`+63${user.contact_number.substring(1)}`, smsMessage);
+
+  return `Verification code SMS sent successfully to ${user.contact_number}`;
+};
+
+exports.sendResetPassword = async (
+  verificationCode,
+  newPassword,
+  confirmPassword,
+  req
+) => {
+  const user = await User.findOne({
+    "verificationCode.code": verificationCode,
+  });
+
+  if (!user) throw new ErrorHandler("Invalid or expired verification code");
+
+  const expirationTime = 5 * 60 * 1000;
+  const codeCreatedAt = user.verificationCode.createdAt;
+
+  if (Date.now() - codeCreatedAt.getTime() > expirationTime) {
+    user.verificationCode = null;
+    await user.save();
+    throw new ErrorHandler("Verification code has expired");
+  }
+
+  if (newPassword !== confirmPassword)
+    throw new ErrorHandler("Passwords don't match");
+
+  const hashedPassword = await bcrypt.hash(
+    newPassword,
+    Number(process.env.SALT_NUMBER)
+  );
+  user.password = hashedPassword;
+  user.verificationCode = null;
+  await user.save();
+
+  const successMessage = `Your password has been successfully reset. If you did not perform this action, please contact support immediately.`;
+
+  await sendSMS(`+63${user.contact_number.substring(1)}`, successMessage);
+
+  return `Password updated successfully for user with email ${user.email}`;
+};
