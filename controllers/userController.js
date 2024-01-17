@@ -16,7 +16,11 @@ exports.resetPassword = asyncHandler(async (req, res, next) => {
     confirmPassword,
     req
   );
-  SuccessHandler(res, `New Password ${newPassword} Was Successful`, result);
+  SuccessHandler(
+    res,
+    `New password "${newPassword}" set successfully!`,
+    result
+  );
 });
 
 exports.forgotPassword = asyncHandler(async (req, res, next) => {
