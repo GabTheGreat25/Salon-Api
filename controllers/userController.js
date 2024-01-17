@@ -8,6 +8,23 @@ const { upload } = require("../utils/cloudinary");
 const { STATUSCODE } = require("../constants/index");
 const { ROLE } = require("../constants/index");
 
+exports.resetPassword = asyncHandler(async (req, res, next) => {
+  const { verificationCode, newPassword, confirmPassword } = req.body;
+  const result = await usersService.sendResetPassword(
+    verificationCode,
+    newPassword,
+    confirmPassword,
+    req
+  );
+  SuccessHandler(res, `New Password ${newPassword} Was Successful`, result);
+});
+
+exports.forgotPassword = asyncHandler(async (req, res, next) => {
+  const { email } = req.body;
+  const details = await usersService.sendPasswordResetSMS(req, email);
+  SuccessHandler(res, "Successfully Sent Please Check Your SMS", details);
+});
+
 exports.updatePassword = asyncHandler(async (req, res, next) => {
   const { oldPassword, newPassword, confirmPassword } = req.body;
   const updatedUser = await usersService.updatePassword(
