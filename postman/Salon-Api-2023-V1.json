@@ -1095,6 +1095,50 @@
 						"url": "{{URI}}{{V1}}user/6589838958af5aa5c1bf6df7"
 					},
 					"response": []
+				},
+				{
+					"name": "FORGOT PASSWORD",
+					"id": "401d08f9-b2c6-4254-8497-0cabed11c3a3",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"email\" : \"test123@gmail.com\"\r\n} ",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": "{{URI}}{{V1}}forgotPassword"
+					},
+					"response": []
+				},
+				{
+					"name": "RESET PASSWORD",
+					"id": "faa12dff-ae66-438a-804b-ab4ec7169638",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"verificationCode\": \"781520\",\r\n    \"newPassword\": \"12345678\",\r\n    \"confirmPassword\": \"12345678\" \r\n}\r\n",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": "{{URI}}{{V1}}password/reset"
+					},
+					"response": []
 				}
 			],
 			"id": "67bb02df-74c0-4ed0-b173-07875d973ea1"
