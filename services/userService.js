@@ -15,6 +15,17 @@ const { STATUSCODE, RESOURCE, ROLE } = require("../constants/index");
 const { sendSMS } = require("../utils/twilio");
 const blacklistedTokens = [];
 
+const generateRandomCode = () => {
+  const length = 6;
+  let code = "";
+
+  for (let i = 0; i < length; i++) {
+    code += Math.floor(Math.random() * 10);
+  }
+
+  return code;
+};
+
 const deleteUserAfterTimeout = async (userId) => {
   const user = await User.findById(userId);
   if (user && !user.active) {
@@ -26,6 +37,74 @@ const deleteUserAfterTimeout = async (userId) => {
       cloudinary.api.delete_resources(publicIds),
     ]);
   }
+};
+
+exports.sendPasswordResetSMS = async (req, email) => {
+  if (!email) throw new ErrorHandler("Please provide an email");
+
+  const user = await User.findOne({ email });
+
+  if (!user) throw new ErrorHandler("User not found");
+
+  const currentTime = new Date();
+  const lastCodeSentTime = user.verificationCode.createdAt;
+
+  const timeDifferenceMilliseconds = currentTime - lastCodeSentTime;
+  if (timeDifferenceMilliseconds < 5 * 60 * 1000) {
+    throw new ErrorHandler(
+      "Please wait 5 minutes before requesting a new verification code"
+    );
+  }
+
+  const verificationCode = generateRandomCode();
+  user.verificationCode.code = verificationCode;
+  user.verificationCode.createdAt = currentTime;
+  await user.save();
+
+  const smsMessage = `Your verification code is: ${verificationCode}. Use this code to reset your password. Ignore if you didn't request a password reset.`;
+
+  await sendSMS(`+63${user.contact_number.substring(1)}`, smsMessage);
+
+  return `Verification code SMS sent successfully to ${user.contact_number}`;
+};
+
+exports.sendResetPassword = async (
+  verificationCode,
+  newPassword,
+  confirmPassword,
+  req
+) => {
+  const user = await User.findOne({
+    "verificationCode.code": verificationCode,
+  });
+
+  if (!user) throw new ErrorHandler("Invalid or expired verification code");
+
+  const expirationTime = 5 * 60 * 1000;
+  const codeCreatedAt = user.verificationCode.createdAt;
+
+  if (Date.now() - codeCreatedAt.getTime() > expirationTime) {
+    user.verificationCode = null;
+    await user.save();
+    throw new ErrorHandler("Verification code has expired");
+  }
+
+  if (newPassword !== confirmPassword)
+    throw new ErrorHandler("Passwords don't match");
+
+  const hashedPassword = await bcrypt.hash(
+    newPassword,
+    Number(process.env.SALT_NUMBER)
+  );
+  user.password = hashedPassword;
+  user.verificationCode = null;
+  await user.save();
+
+  const successMessage = `Your password has been successfully reset. If you did not perform this action, please contact support immediately.`;
+
+  await sendSMS(`+63${user.contact_number.substring(1)}`, successMessage);
+
+  return `Password updated successfully for user with email ${user.email}`;
 };
 
 exports.updatePassword = async (
@@ -197,49 +276,6 @@ exports.getSingleUserData = async (id) => {
   }
 
   return user;
-};
-
-const sendMonthlyUpdate = async (user, monthDifference) => {
-  let customMessage;
-
-  monthDifference %= 12;
-
-  if (monthDifference === 0) {
-    customMessage = "Happy New Year! Check out our new products this month!";
-  } else if (monthDifference === 1) {
-    customMessage = "Special discounts available this February!";
-  } else if (monthDifference === 2) {
-    customMessage = "Spring is here! Enjoy our seasonal offerings.";
-  } else if (monthDifference === 3) {
-    customMessage = "Summer is in full swing! Stay cool with our products.";
-  } else if (monthDifference === 4) {
-    customMessage = "May brings hot deals! Don't miss out!";
-  } else if (monthDifference === 5) {
-    customMessage = "Celebrate June with exclusive promotions!";
-  } else if (monthDifference === 6) {
-    customMessage = "Fall into savings this July!";
-  } else if (monthDifference === 7) {
-    customMessage = "Thankful August! Enjoy discounts on us.";
-  } else if (monthDifference === 8) {
-    customMessage = "Thankful September! Enjoy discounts on us.";
-  } else if (monthDifference === 9) {
-    customMessage =
-      "Festive October! Celebrate Halloween with our spooky specials.";
-  } else if (monthDifference === 10) {
-    customMessage =
-      "Happy Halloween! Check out our spooky specials this November.";
-  } else if (monthDifference === 11) {
-    customMessage =
-      "Merry Christmas! Check out our holiday specials this December!";
-  } else {
-    customMessage = "Thank you for being our valued customer!";
-  }
-
-  const smsMessage = `Dear ${user.name}, ${customMessage}`;
-
-  console.log(`SMS sent to ${user.name} with message: ${customMessage}`);
-
-  await sendSMS(`+63${user.contact_number.substring(1)}`, smsMessage);
 };
 
 exports.createUserData = async (req, res) => {
@@ -633,73 +669,4 @@ exports.deleteUserData = async (id) => {
   ]);
 
   return user;
-};
-
-const generateRandomCode = () => {
-  const length = 6;
-  let code = "";
-
-  for (let i = 0; i < length; i++) {
-    code += Math.floor(Math.random() * 10);
-  }
-
-  return code;
-};
-
-exports.sendPasswordResetSMS = async (req, email) => {
-  if (!email) throw new ErrorHandler("Please provide an email");
-
-  const user = await User.findOne({ email });
-
-  if (!user) throw new ErrorHandler("User not found");
-
-  const verificationCode = generateRandomCode();
-  user.verificationCode.code = verificationCode;
-  user.verificationCode.createdAt = new Date();
-  await user.save();
-
-  const smsMessage = `Your verification code is: ${verificationCode}. Use this code to reset your password. Ignore if you didn't request a password reset.`;
-
-  await sendSMS(`+63${user.contact_number.substring(1)}`, smsMessage);
-
-  return `Verification code SMS sent successfully to ${user.contact_number}`;
-};
-
-exports.sendResetPassword = async (
-  verificationCode,
-  newPassword,
-  confirmPassword,
-  req
-) => {
-  const user = await User.findOne({
-    "verificationCode.code": verificationCode,
-  });
-
-  if (!user) throw new ErrorHandler("Invalid or expired verification code");
-
-  const expirationTime = 5 * 60 * 1000;
-  const codeCreatedAt = user.verificationCode.createdAt;
-
-  if (Date.now() - codeCreatedAt.getTime() > expirationTime) {
-    user.verificationCode = null;
-    await user.save();
-    throw new ErrorHandler("Verification code has expired");
-  }
-
-  if (newPassword !== confirmPassword)
-    throw new ErrorHandler("Passwords don't match");
-
-  const hashedPassword = await bcrypt.hash(
-    newPassword,
-    Number(process.env.SALT_NUMBER)
-  );
-  user.password = hashedPassword;
-  user.verificationCode = null;
-  await user.save();
-
-  const successMessage = `Your password has been successfully reset. If you did not perform this action, please contact support immediately.`;
-
-  await sendSMS(`+63${user.contact_number.substring(1)}`, successMessage);
-
-  return `Password updated successfully for user with email ${user.email}`;
 };
