@@ -11,6 +11,8 @@ module.exports = {
   USER_ID: "/user/:id",
   EDIT_USER_ID: "/user/edit/:id",
   ACTIVATE_USER_ID: "/user/activate/:id",
+  RESET_PASSWORD: "/password/reset",
+  FORGOT_PASSWORD: "/forgotPassword",
   UPDATE_PASSWORD: "/updatePassword/:id",
   SERVICES: "/services",
   SERVICE_ID: "/service/:id",
