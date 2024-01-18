@@ -49,6 +49,24 @@ exports.updateTransaction = [
   }),
 ];
 
+exports.updateCustomerTransaction = [
+  checkRequiredFields(["status", "cancelReason"]),
+  asyncHandler(async (req, res, next) => {
+    const { existingTransaction, updatedTransaction } =
+      await transactionsService.updateCustomerTransactionData(
+        req,
+        res,
+        req.params.id
+      );
+
+    return SuccessHandler(
+      res,
+      `Transaction of ${existingTransaction?.appointment?.customer?.name} with an ID ${existingTransaction?._id} is updated`,
+      { transaction: updatedTransaction }
+    );
+  }),
+];
+
 exports.deleteTransaction = asyncHandler(async (req, res, next) => {
   const transaction = await transactionsService.getSingleTransactionData(
     req.params.id
