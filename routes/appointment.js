@@ -53,6 +53,12 @@ const appointmentRoutes = [
     roles: [ROLE.BEAUTICIAN],
     handler: appointmentController.getBeauticianAppointment,
   },
+  {
+    method:METHOD.GET,
+    path: PATH.BEAUTICIAN_HISTORY,
+    roles: [ROLE.BEAUTICIAN],
+    handler: appointmentController.getAppointmentHistory
+  }
 ];
 
 appointmentRoutes.forEach((route) => {
