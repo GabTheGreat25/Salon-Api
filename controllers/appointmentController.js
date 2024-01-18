@@ -104,3 +104,11 @@ exports.getBeauticianAppointment = asyncHandler(async (req, res, next) => {
     ? next(new ErrorHandler("No beautician appointment found"))
     : SuccessHandler(res, `Appointment Data found`, appointment);
 });
+
+exports.getAppointmentHistory = asyncHandler(async (req, res, next) => {
+  const history = await appointmentsService.appointmentHistoryData(req.params.id);
+
+  return !history
+    ? next(new ErrorHandler("No Pending Appointment records"))
+    : SuccessHandler(res, `Finished Appointment Found`, history);
+});
