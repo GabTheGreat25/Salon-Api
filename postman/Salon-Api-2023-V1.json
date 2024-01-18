@@ -337,7 +337,7 @@
 								"header": [],
 								"body": {
 									"mode": "raw",
-									"raw": "{\r\n    \"email\": \"admingab@gmail.com\",\r\n    \"password\": \"12345678\"\r\n}",
+									"raw": "{\r\n    \"email\": \"renyel123@gmail.com\",\r\n    \"password\": \"12345678\"\r\n}",
 									"options": {
 										"raw": {
 											"language": "json"
@@ -371,6 +371,12 @@
 						"disableBodyPruning": true
 					},
 					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": {
+								"token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJVc2VySW5mbyI6eyJlbWFpbCI6ImpheWJlYXV0aWNpYW5AZ21haWwuY29tIiwicm9sZXMiOlsiQmVhdXRpY2lhbiJdfSwiaWF0IjoxNzA1Mjk0NDYyLCJleHAiOjE3MDU4OTkyNjJ9.14lmXroBm_NWuWapdjpHUHhVP_EUEOmKyKeKJbJhGwo"
+							}
+						},
 						"method": "GET",
 						"header": [
 							{
@@ -457,15 +463,11 @@
 								{
 									"key": "image",
 									"type": "file",
-									"fileNotInWorkingDirectoryWarning": "This file isn't in your working directory. Teammates you share this request with won't be able to use this file. To make collaboration easier you can setup your working directory in Settings.",
-									"filesNotInWorkingDirectory": [
-										"/C:/Users/gabriel/Downloads/Hotpot.png"
-									],
-									"src": "/C:/Users/gabriel/Downloads/Hotpot.png"
+									"src": "/C:/Users/User/Downloads/user.png"
 								},
 								{
 									"key": "contact_number",
-									"value": "09938465564",
+									"value": "09308650272",
 									"type": "text"
 								},
 								{
@@ -927,12 +929,12 @@
 								},
 								{
 									"key": "messageDate",
-									"value": "1 minute",
+									"value": "stop",
 									"type": "text"
 								}
 							]
 						},
-						"url": "{{URI}}{{V1}}/user/edit/65a548e50dfe94e8da39ef3f"
+						"url": "{{URI}}{{V1}}/user/edit/65a55ceb3b8a4c60869fabbd"
 					},
 					"response": []
 				},
@@ -1833,6 +1835,12 @@
 						"disableBodyPruning": true
 					},
 					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": {
+								"token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJVc2VySW5mbyI6eyJlbWFpbCI6ImpheWJlYXV0aWNpYW5AZ21haWwuY29tIiwicm9sZXMiOlsiQmVhdXRpY2lhbiJdfSwiaWF0IjoxNzA1Mjk0NDYyLCJleHAiOjE3MDU4OTkyNjJ9.14lmXroBm_NWuWapdjpHUHhVP_EUEOmKyKeKJbJhGwo"
+							}
+						},
 						"method": "GET",
 						"header": [
 							{
@@ -2067,7 +2075,19 @@
 						},
 						"method": "GET",
 						"header": [],
-						"url": "{{URI}}{{V1}}appointment/beautician/657aafef2b97d4e01843a215"
+						"url": "{{URI}}{{V1}}appointment/beautician/65a4db1d238da805bd9100a7"
+					},
+					"response": []
+				},
+				{
+					"name": "APPOINTMENT HISTORY",
+					"id": "82d1b20d-7f78-4f03-8f1b-d763462ff0db",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": []
 					},
 					"response": []
 				}
