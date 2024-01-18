@@ -52,6 +52,12 @@ const appointmentRoutes = [
     handler: appointmentController.updateAppointment,
   },
   {
+    method: METHOD.PATCH,
+    path: PATH.SCHEDULE_EDIT_APPOINTMENT_ID,
+    roles: [ROLE.ONLINE_CUSTOMER, ROLE.WALK_IN_CUSTOMER],
+    handler: appointmentController.updateScheduleAppointment,
+  },
+  {
     method: METHOD.DELETE,
     path: PATH.APPOINTMENT_ID,
     roles: [ROLE.ADMIN],
