@@ -29,6 +29,7 @@ module.exports = {
   APPOINTMENTS: "/appointments",
   APPOINTMENT_ID: "/appointment/:id",
   EDIT_APPOINTMENT_ID: "/appointment/edit/:id",
+  SCHEDULE_EDIT_APPOINTMENT_ID: "/appointment/schedule/edit/:id",
   TRANSACTIONS: "/transactions",
   TRANSACTION_ID: "/transaction/:id",
   EDIT_TRANSACTION_ID: "/transaction/edit/:id",
@@ -36,5 +37,5 @@ module.exports = {
   FEEDBACK_ID: "/feedback/:id",
   EDIT_FEEDBACK_ID: "/feedback/edit/:id",
   BEAUTICIAN_APPOINTMENT: "/appointment/beautician/:id",
-  BEAUTICIAN_HISTORY: "/appointment/history/:id"
+  BEAUTICIAN_HISTORY: "/appointment/history/:id",
 };
