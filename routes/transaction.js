@@ -32,7 +32,12 @@ const transactionRoutes = [
   {
     method: METHOD.PATCH,
     path: PATH.EDIT_TRANSACTION_ID,
-    roles: [ROLE.ADMIN, ROLE.BEAUTICIAN],
+    roles: [
+      ROLE.ADMIN,
+      ROLE.BEAUTICIAN,
+      ROLE.ONLINE_CUSTOMER,
+      ROLE.WALK_IN_CUSTOMER,
+    ],
     handler: transactionController.updateTransaction,
   },
   {

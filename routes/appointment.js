@@ -32,13 +32,23 @@ const appointmentRoutes = [
   {
     method: METHOD.GET,
     path: PATH.APPOINTMENT_ID,
-    roles: [ROLE.ADMIN, ROLE.BEAUTICIAN],
+    roles: [
+      ROLE.ADMIN,
+      ROLE.BEAUTICIAN,
+      ROLE.ONLINE_CUSTOMER,
+      ROLE.WALK_IN_CUSTOMER,
+    ],
     handler: appointmentController.getSingleAppointment,
   },
   {
     method: METHOD.PATCH,
     path: PATH.EDIT_APPOINTMENT_ID,
-    roles: [ROLE.ADMIN, ROLE.BEAUTICIAN],
+    roles: [
+      ROLE.ADMIN,
+      ROLE.BEAUTICIAN,
+      ROLE.ONLINE_CUSTOMER,
+      ROLE.WALK_IN_CUSTOMER,
+    ],
     handler: appointmentController.updateAppointment,
   },
   {
@@ -54,11 +64,11 @@ const appointmentRoutes = [
     handler: appointmentController.getBeauticianAppointment,
   },
   {
-    method:METHOD.GET,
+    method: METHOD.GET,
     path: PATH.BEAUTICIAN_HISTORY,
     roles: [ROLE.BEAUTICIAN],
-    handler: appointmentController.getAppointmentHistory
-  }
+    handler: appointmentController.getAppointmentHistory,
+  },
 ];
 
 appointmentRoutes.forEach((route) => {
