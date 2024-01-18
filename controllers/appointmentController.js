@@ -77,6 +77,23 @@ exports.updateAppointment = [
   }),
 ];
 
+exports.updateScheduleAppointment = [
+  checkRequiredFields(["date", "time"]),
+  asyncHandler(async (req, res, next) => {
+    const appointment = await appointmentsService.updateScheduleAppointmentData(
+      req,
+      res,
+      req.params.id
+    );
+
+    return SuccessHandler(
+      res,
+      `Appointment schedule of ${appointment?.customer?.name} with ID ${appointment?._id} is updated`,
+      appointment
+    );
+  }),
+];
+
 exports.deleteAppointment = asyncHandler(async (req, res, next) => {
   const appointment = await appointmentsService.getSingleAppointmentData(
     req.params.id
@@ -106,7 +123,9 @@ exports.getBeauticianAppointment = asyncHandler(async (req, res, next) => {
 });
 
 exports.getAppointmentHistory = asyncHandler(async (req, res, next) => {
-  const history = await appointmentsService.appointmentHistoryData(req.params.id);
+  const history = await appointmentsService.appointmentHistoryData(
+    req.params.id
+  );
 
   return !history
     ? next(new ErrorHandler("No Pending Appointment records"))
