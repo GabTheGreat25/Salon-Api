@@ -51,12 +51,12 @@ const transactionSchema = new mongoose.Schema({
     type: String,
     enum: {
       values: [
-        "schedule_conflict",
-        "change_of_plans",
-        "emergency",
-        "travel_conflict",
-        "personal_reasons",
-        "others",
+        "Schedule Conflict",
+        "Change Of Plans",
+        "Emergency",
+        "Travel Conflict",
+        "Personal Reasons",
+        "Others",
       ],
     },
     required: function () {
