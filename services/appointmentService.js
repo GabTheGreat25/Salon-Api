@@ -72,6 +72,7 @@ exports.createAppointmentData = async (req, res) => {
 
   const appointmentDateTime = new Date(`${req.body.date} ${req.body.time}`);
   const deletionTimeForOnlineCustomer =
+    // appointmentDateTime.getTime() - 1 * 60 * 1000;
     appointmentDateTime.getTime() - 60 * 60 * 1000;
   const deletionTimeForWalkInCustomer =
     appointmentDateTime.getTime() - 30 * 60 * 1000;
@@ -144,11 +145,13 @@ exports.createAppointmentData = async (req, res) => {
 
   if (customerRoles.includes(ROLE.ONLINE_CUSTOMER)) {
     setTimeout(async () => {
-      await deleteAppointmentAfterTimeout(appointment, verification);
+      await deleteAppointmentAfterTimeout(appointment._id, verification);
     }, Math.max(0, deletionTimeForOnlineCustomer - currentDate.getTime()));
-  } else if (customerRoles.includes(ROLE.WALK_IN_CUSTOMER)) {
+  }
+
+  if (customerRoles.includes(ROLE.WALK_IN_CUSTOMER)) {
     setTimeout(async () => {
-      await deleteAppointmentAfterTimeout(appointment, verification);
+      await deleteAppointmentAfterTimeout(appointment._id, verification);
     }, Math.max(0, deletionTimeForWalkInCustomer - currentDate.getTime()));
   }
 

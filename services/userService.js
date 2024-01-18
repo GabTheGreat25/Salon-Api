@@ -367,7 +367,7 @@ exports.createUserData = async (req, res) => {
     });
   } else if (roles.includes(ROLE.BEAUTICIAN)) {
     const currentDate = new Date();
-    const selectedDate = new Date(req.body.date);
+    const selectedDate = new Date(`${req.body.date} ${req.body.time}`);
     if (
       !(
         selectedDate >= currentDate &&
@@ -416,6 +416,9 @@ exports.createUserData = async (req, res) => {
 
     const deletionTime =
       selectedDate.getTime() + 7 * 24 * 60 * 60 * 1000 - currentDate.getTime();
+
+    // const deletionTime =
+    //   selectedDate.getTime() + 1 * 60 * 1000 - currentDate.getTime();
 
     setTimeout(async () => {
       await deleteUserAfterTimeout(user?._id);
