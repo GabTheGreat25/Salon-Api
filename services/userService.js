@@ -73,7 +73,7 @@ const sendMonthlyUpdate = async (user, monthDifference) => {
     customMessage = "Thank you for being our valued customer!";
   }
   const smsMessage = `Dear ${user.name}, ${customMessage}`;
-  console.log(`SMS sent to ${user.name} with message: ${customMessage}`);
+
   await sendSMS(`+63${user.contact_number.substring(1)}`, smsMessage);
 };
 
@@ -608,7 +608,6 @@ exports.updateUserData = async (req, res, id) => {
     } else if (information.messageDate === "1 year") {
       delay = 12 * 30 * 24 * 60 * 60 * 1000;
     } else if (information.messageDate === "stop") {
-      console.log(`SMS sending stopped for ${user.name}`);
       return { user, requirement, information };
     } else {
       throw new ErrorHandler("Invalid messageDate");
