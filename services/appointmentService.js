@@ -223,14 +223,79 @@ exports.deleteAppointmentData = async (id) => {
 };
 
 exports.getBeauticianAppointmentsData = async (id) => {
-  let appointments = await Appointment.find({
-    beautician: id,
-  })
+  const beauticianAppointments = await Appointment.find({ beautician: id })
     .collation({ locale: "en" })
-    .populate({ path: "beautician customer", select: "name image" })
-    .populate({ path: "service", select: "service_name description image" })
     .lean()
     .exec();
 
-  return appointments;
+  if (!beauticianAppointments || beauticianAppointments.length === 0) {
+    return next(new ErrorHandler("No Appointments Found for Beautician"));
+  }
+
+  const appointmentIds = beauticianAppointments.map(
+    (appointment) => appointment._id
+  );
+
+  const transactions = await Transaction.find({
+    appointment: { $in: appointmentIds },
+    status: "pending",
+  })
+    .collation({ locale: "en" })
+    .populate({
+      path: "appointment",
+      select: "date time price  customer service",
+      populate: [
+        {
+          path: "customer",
+          select: "name image",
+        },
+        {
+          path: "service",
+          select: "service_name description price",
+        },
+      ],
+    })
+    .lean()
+    .exec();
+
+  return transactions;
+};
+
+exports.appointmentHistoryData = async (id) => {
+  const beauticianAppointments = await Appointment.find({ beautician: id })
+    .collation({ locale: "en" })
+    .lean()
+    .exec();
+
+  if (!beauticianAppointments || beauticianAppointments.length === 0) {
+    return next(new ErrorHandler("No Appointments Found for Beautician"));
+  }
+
+  const appointmentIds = beauticianAppointments.map(
+    (appointment) => appointment._id
+  );
+
+  const history = await Transaction.find({
+    appointment: { $in: appointmentIds },
+    status: "completed",
+  })
+    .collation({ locale: "en" })
+    .populate({
+      path: "appointment",
+      select: "date time price service customer",
+      populate: [
+        {
+          path: "customer",
+          select: "name image",
+        },
+        {
+          path: "service",
+          select: "service_name description price",
+        },
+      ],
+    })
+    .lean()
+    .exec();
+
+  return history;
 };
