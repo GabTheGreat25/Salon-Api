@@ -195,6 +195,46 @@ exports.updateAppointmentData = async (req, res, id) => {
   return updatedAppointment;
 };
 
+exports.updateScheduleAppointmentData = async (req, res, id) => {
+  if (!mongoose.Types.ObjectId.isValid(id))
+    throw new ErrorHandler(`Invalid appointment ID: ${id}`);
+
+  const existingAppointment = await Appointment.findOne({
+    date: req.body.date,
+    time: req.body.time,
+    _id: { $ne: id },
+  });
+
+  if (existingAppointment)
+    throw new ErrorHandler(
+      "Appointment slot is already booked by another customer."
+    );
+
+  const updatedScheduleAppointment = await Appointment.findByIdAndUpdate(
+    id,
+    {
+      date: req.body.date,
+      time: req.body.time,
+    },
+    {
+      new: true,
+      runValidators: true,
+    }
+  )
+    .populate({
+      path: "beautician customer",
+      select: "name roles contact_number",
+    })
+    .populate({ path: "service", select: "service_name image" })
+    .lean()
+    .exec();
+
+  if (!updatedScheduleAppointment)
+    throw new ErrorHandler(`Appointment not found with ID: ${id}`);
+
+  return updatedScheduleAppointment;
+};
+
 exports.deleteAppointmentData = async (id) => {
   if (!mongoose.Types.ObjectId.isValid(id))
     throw new ErrorHandler(`Invalid appointment ID: ${id}`);
