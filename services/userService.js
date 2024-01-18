@@ -39,6 +39,44 @@ const deleteUserAfterTimeout = async (userId) => {
   }
 };
 
+const sendMonthlyUpdate = async (user, monthDifference) => {
+  let customMessage;
+  monthDifference %= 12;
+  if (monthDifference === 0) {
+    customMessage = "Happy New Year! Check out our new products this month!";
+  } else if (monthDifference === 1) {
+    customMessage = "Special discounts available this February!";
+  } else if (monthDifference === 2) {
+    customMessage = "Spring is here! Enjoy our seasonal offerings.";
+  } else if (monthDifference === 3) {
+    customMessage = "Summer is in full swing! Stay cool with our products.";
+  } else if (monthDifference === 4) {
+    customMessage = "May brings hot deals! Don't miss out!";
+  } else if (monthDifference === 5) {
+    customMessage = "Celebrate June with exclusive promotions!";
+  } else if (monthDifference === 6) {
+    customMessage = "Fall into savings this July!";
+  } else if (monthDifference === 7) {
+    customMessage = "Thankful August! Enjoy discounts on us.";
+  } else if (monthDifference === 8) {
+    customMessage = "Thankful September! Enjoy discounts on us.";
+  } else if (monthDifference === 9) {
+    customMessage =
+      "Festive October! Celebrate Halloween with our spooky specials.";
+  } else if (monthDifference === 10) {
+    customMessage =
+      "Happy Halloween! Check out our spooky specials this November.";
+  } else if (monthDifference === 11) {
+    customMessage =
+      "Merry Christmas! Check out our holiday specials this December!";
+  } else {
+    customMessage = "Thank you for being our valued customer!";
+  }
+  const smsMessage = `Dear ${user.name}, ${customMessage}`;
+  console.log(`SMS sent to ${user.name} with message: ${customMessage}`);
+  await sendSMS(`+63${user.contact_number.substring(1)}`, smsMessage);
+};
+
 exports.sendPasswordResetSMS = async (req, email) => {
   if (!email) throw new ErrorHandler("Please provide an email");
 
@@ -548,7 +586,7 @@ exports.updateUserData = async (req, res, id) => {
         description: req.body.description,
         allergy: req.body.allergy,
         product_preference: req.body.product_preference,
-        messageDate: req.body.messageDate || "1 minute",
+        messageDate: req.body.messageDate,
       },
       { new: true, upsert: true }
     )
