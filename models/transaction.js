@@ -47,6 +47,22 @@ const transactionSchema = new mongoose.Schema({
     type: String,
     required: false,
   },
+  cancelReason: {
+    type: String,
+    enum: {
+      values: [
+        "schedule_conflict",
+        "change_of_plans",
+        "emergency",
+        "travel_conflict",
+        "personal_reasons",
+        "others",
+      ],
+    },
+    required: function () {
+      return this.status === "cancelled";
+    },
+  },
 });
 
 module.exports = mongoose.model(RESOURCE.TRANSACTION, transactionSchema);

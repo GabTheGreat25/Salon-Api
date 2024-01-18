@@ -177,14 +177,6 @@ exports.updateTransactionData = async (req, res, id) => {
 
     updatedTransaction.qrCode = await generatePinkQRCode(formattedReceipt);
 
-    const customerRoles = existingTransaction.appointment.customer.roles;
-    const isOnlineCustomer = customerRoles.includes("Online Customer");
-    const customerURL = isOnlineCustomer
-      ? "/onlineCustomer"
-      : "/walkInCustomer";
-
-    // http://localhost:6969${customerURL}/history
-
     const smsMessage = `Dear ${existingTransaction.appointment.customer.name}, your transaction has been approved! You can review your transaction details by checking your history. Thank you for choosing Lhanlee Salon.`;
 
     await sendSMS(
