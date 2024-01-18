@@ -33,6 +33,7 @@ module.exports = {
   TRANSACTIONS: "/transactions",
   TRANSACTION_ID: "/transaction/:id",
   EDIT_TRANSACTION_ID: "/transaction/edit/:id",
+  CANCEL_TRANSACTION_ID: "/transaction/cancel/:id",
   FEEDBACKS: "/feedbacks",
   FEEDBACK_ID: "/feedback/:id",
   EDIT_FEEDBACK_ID: "/feedback/edit/:id",
