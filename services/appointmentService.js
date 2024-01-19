@@ -60,15 +60,58 @@ exports.createAppointmentData = async (req, res) => {
     ? req.body.service
     : req.body.service.split(", ");
 
-  const existingAppointment = await Appointment.findOne({
+  const existingAppointments = await Appointment.find({
     date: req.body.date,
     time: req.body.time,
   });
 
-  if (existingAppointment)
-    throw new ErrorHandler(
-      "Appointment slot is already booked by another customer."
-    );
+  if (existingAppointments.length > 0) {
+    const existingCancelledTransaction = await Transaction.findOne({
+      appointment: {
+        $in: existingAppointments.map((appointment) => appointment._id),
+      },
+      status: "cancelled",
+    });
+
+    const existingPendingTransaction = await Transaction.findOne({
+      appointment: {
+        $in: existingAppointments.map((appointment) => appointment._id),
+      },
+      status: "pending",
+    });
+
+    const existingCompletedTransaction = await Transaction.findOne({
+      appointment: {
+        $in: existingAppointments.map((appointment) => appointment._id),
+      },
+      status: "completed",
+    });
+
+    const existingTransaction = await Transaction.findOne({
+      appointment: existingAppointments[0]._id,
+    });
+
+    if (
+      existingTransaction &&
+      ["pending", "completed"].includes(existingTransaction.status)
+    ) {
+      throw new ErrorHandler(
+        "Appointment slot is already booked by another customer."
+      );
+    }
+
+    if (existingCancelledTransaction && existingPendingTransaction) {
+      throw new ErrorHandler(
+        "Appointment slot is already booked by another customer."
+      );
+    }
+
+    if (existingCancelledTransaction && existingCompletedTransaction) {
+      throw new ErrorHandler(
+        "Appointment slot is already booked by another customer."
+      );
+    }
+  }
 
   const appointmentDateTime = new Date(`${req.body.date} ${req.body.time}`);
   const deletionTimeForOnlineCustomer =
@@ -202,16 +245,33 @@ exports.updateScheduleAppointmentData = async (req, res, id) => {
   if (!mongoose.Types.ObjectId.isValid(id))
     throw new ErrorHandler(`Invalid appointment ID: ${id}`);
 
-  const existingAppointment = await Appointment.findOne({
+  const existingAppointmentsWithSameDateTime = await Appointment.find({
     date: req.body.date,
     time: req.body.time,
     _id: { $ne: id },
   });
 
-  if (existingAppointment)
+  const existingTransactions = await Transaction.find({
+    appointment: {
+      $in: existingAppointmentsWithSameDateTime.map(
+        (appointment) => appointment._id
+      ),
+    },
+    status: { $in: ["cancelled", "pending", "completed"] },
+  });
+
+  const isSlotBooked = existingTransactions.some((transaction) => {
+    return (
+      transaction.status !== "cancelled" &&
+      transaction.appointment.toString() !== id
+    );
+  });
+
+  if (isSlotBooked) {
     throw new ErrorHandler(
       "Appointment slot is already booked by another customer."
     );
+  }
 
   const updatedScheduleAppointment = await Appointment.findByIdAndUpdate(
     id,
