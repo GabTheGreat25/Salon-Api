@@ -481,7 +481,7 @@ exports.createUserData = async (req, res) => {
           !existingInformation ||
           existingInformation.messageDate === "stop"
         ) {
-          return;
+          return { user, requirement, information };
         }
 
         const monthDifference =
@@ -494,7 +494,7 @@ exports.createUserData = async (req, res) => {
           nextMessageDate = new Date(currentDate.getTime() + delay);
 
           const existingUser = await User.findById(user?._id);
-          if (!existingUser || information.messageDate === "stop") {
+          if (!existingUser || existingInformation.messageDate === "stop") {
             clearInterval(sendInterval);
             return;
           }
@@ -601,15 +601,15 @@ exports.updateUserData = async (req, res, id) => {
     if (information.messageDate === "1 minute") {
       delay = 1 * 60 * 1000;
     } else if (information.messageDate === "1 month") {
-      delay = 30 * 24 * 60 * 60 * 1000;
+      delay = 30n * 24n * 60n * 60n * 1000n;
     } else if (information.messageDate === "2 months") {
-      delay = 2 * 30 * 24 * 60 * 60 * 1000;
+      delay = 2n * 30n * 24n * 60n * 60n * 1000n;
     } else if (information.messageDate === "4 months") {
-      delay = 4 * 30 * 24 * 60 * 60 * 1000;
+      delay = 4n * 30n * 24n * 60n * 60n * 1000n;
     } else if (information.messageDate === "6 months") {
-      delay = 6 * 30 * 24 * 60 * 60 * 1000;
+      delay = 6n * 30n * 24n * 60n * 60n * 1000n;
     } else if (information.messageDate === "1 year") {
-      delay = 12 * 30 * 24 * 60 * 60 * 1000;
+      delay = 12n * 30n * 24n * 60n * 60n * 1000n;
     } else if (information.messageDate === "stop") {
       return { user, requirement, information };
     } else {
@@ -627,11 +627,11 @@ exports.updateUserData = async (req, res, id) => {
           !existingInformation ||
           existingInformation.messageDate === "stop"
         ) {
-          return;
+          return { user, requirement, information };
         }
 
         const currentDate = new Date();
-        let nextMessageDate = new Date(currentDate.getTime() + delay);
+        let nextMessageDate = new Date(BigInt(currentDate.getTime()) + delay);
         const monthDifference =
           (nextMessageDate.getFullYear() - currentDate.getFullYear()) * 12 +
           (nextMessageDate.getMonth() - currentDate.getMonth());
@@ -639,10 +639,10 @@ exports.updateUserData = async (req, res, id) => {
 
         const sendInterval = setInterval(async () => {
           const currentDate = new Date();
-          nextMessageDate = new Date(currentDate.getTime() + delay);
+          nextMessageDate = new Date(BigInt(currentDate.getTime()) + delay);
 
           const existingUser = await User.findById(id);
-          if (!existingUser || information.messageDate === "stop") {
+          if (!existingUser || existingInformation.messageDate === "stop") {
             clearInterval(sendInterval);
             return;
           }
@@ -651,8 +651,8 @@ exports.updateUserData = async (req, res, id) => {
             (nextMessageDate.getFullYear() - currentDate.getFullYear()) * 12 +
             (nextMessageDate.getMonth() - currentDate.getMonth());
           await sendMonthlyUpdate(user, monthDifference);
-        }, delay);
-      }, delay);
+        }, Number(delay));
+      }, Number(delay));
     }
   }
 

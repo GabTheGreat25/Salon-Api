@@ -186,7 +186,21 @@ exports.updateTransactionData = async (req, res, id) => {
       smsMessage
     );
 
-    setTimeout(async () => {
+    // setTimeout(async () => {
+    //   const additionalSmsMessage = `Dear ${existingTransaction.appointment.customer.name}, it's been a while since your last visit. We miss you! Come and visit us again. Thank you for choosing Lhanlee Salon.`;
+
+    //   await sendSMS(
+    //     `+63${existingTransaction.appointment.customer.contact_number.substring(
+    //       1
+    //     )}`,
+    //     additionalSmsMessage
+    //   );
+    // }, 2 * 60 * 1000); // 2minutes
+
+    const delayInMilliseconds = 2 * 30 * 24 * 60 * 60 * 1000;
+    const timeoutInterval = 10 * 60 * 1000;
+
+    const sendSmsAfterDelay = async () => {
       const additionalSmsMessage = `Dear ${existingTransaction.appointment.customer.name}, it's been a while since your last visit. We miss you! Come and visit us again. Thank you for choosing Lhanlee Salon.`;
 
       await sendSMS(
@@ -195,8 +209,22 @@ exports.updateTransactionData = async (req, res, id) => {
         )}`,
         additionalSmsMessage
       );
-    }, 2 * 30 * 24 * 60 * 60 * 1000);
-    // }, 2 * 60 * 1000); // 2 minutes
+    };
+
+    const runTimeouts = async () => {
+      let remainingDelay = delayInMilliseconds;
+
+      while (remainingDelay > 0) {
+        const currentDelay = Math.min(remainingDelay, timeoutInterval);
+        await new Promise((resolve) => setTimeout(resolve, currentDelay));
+
+        await sendSmsAfterDelay();
+
+        remainingDelay -= currentDelay;
+      }
+    };
+
+    runTimeouts();
 
     await updatedTransaction.save();
   } else {
