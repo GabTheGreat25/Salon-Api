@@ -410,7 +410,7 @@ exports.createUserData = async (req, res) => {
       time: req.body.time,
     });
 
-    const smsMessage = `Dear ${user.name}, your account has been successfully created. Please attend your setup meeting at the salon.`;
+    const smsMessage = `Dear ${user.name}, your account has been successfully created. Please attend the meeting at the salon.`;
 
     await sendSMS(`+63${user.contact_number.substring(1)}`, smsMessage);
 
