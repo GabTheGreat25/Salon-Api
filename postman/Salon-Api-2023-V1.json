@@ -337,7 +337,7 @@
 								"header": [],
 								"body": {
 									"mode": "raw",
-									"raw": "{\r\n    \"email\": \"renyel123@gmail.com\",\r\n    \"password\": \"12345678\"\r\n}",
+									"raw": "{\r\n    \"email\": \"adminjay@gmail.com\",\r\n    \"password\": \"12345678\"\r\n}",
 									"options": {
 										"raw": {
 											"language": "json"
@@ -418,7 +418,7 @@
 								}
 							]
 						},
-						"url": "{{URI}}{{V1}}user/657c5b0858bbe7f79d54187a"
+						"url": "{{URI}}{{V1}}user/65a95ba042e7a56957e7000e"
 					},
 					"response": []
 				},
@@ -442,12 +442,12 @@
 							"formdata": [
 								{
 									"key": "name",
-									"value": "admingab",
+									"value": "adminjay",
 									"type": "text"
 								},
 								{
 									"key": "email",
-									"value": "admingab@gmail.com",
+									"value": "adminjay@gmail.com",
 									"type": "text"
 								},
 								{
@@ -463,7 +463,12 @@
 								{
 									"key": "image",
 									"type": "file",
-									"src": "/C:/Users/User/Downloads/user.png"
+									"fileNotInWorkingDirectoryWarning": "This file isn't in your working directory. Teammates you share this request with won't be able to use this file. To make collaboration easier you can setup your working directory in Settings.",
+									"filesNotInWorkingDirectory": [
+										"/C:/Users/User/Downloads/user.png",
+										"/C:/Users/Jay/Downloads/280277780_3107950699444924_5111866638435619201_n.jpg"
+									],
+									"src": "/C:/Users/Jay/Downloads/280277780_3107950699444924_5111866638435619201_n.jpg"
 								},
 								{
 									"key": "contact_number",
@@ -534,9 +539,9 @@
 									"type": "file",
 									"fileNotInWorkingDirectoryWarning": "This file isn't in your working directory. Teammates you share this request with won't be able to use this file. To make collaboration easier you can setup your working directory in Settings.",
 									"filesNotInWorkingDirectory": [
-										"/C:/Users/gabriel/Downloads/bwahahaha.png"
+										"/C:/Users/gabriel/Downloads/board (7).gif"
 									],
-									"src": "/C:/Users/gabriel/Downloads/bwahahaha.png"
+									"src": "/C:/Users/gabriel/Downloads/board (7).gif"
 								},
 								{
 									"key": "job_type",
@@ -545,12 +550,12 @@
 								},
 								{
 									"key": "date",
-									"value": "2023-12-28",
+									"value": "2024-01-19",
 									"type": "text"
 								},
 								{
 									"key": "time",
-									"value": "10:00 AM",
+									"value": "01:12 AM",
 									"type": "text"
 								}
 							]
@@ -1882,7 +1887,7 @@
 								}
 							]
 						},
-						"url": "{{URI}}{{V1}}appointment/659176c8ee290039089c9e12"
+						"url": "{{URI}}{{V1}}appointment/65a9578e0670a02c7af34804"
 					},
 					"response": []
 				},
@@ -1908,7 +1913,7 @@
 						],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n    \"beautician\": \"657aafef2b97d4e01843a215\",\r\n    \"customer\": \"657c3f6958bbe7f79d541819\",\r\n    \"service\": [\"657af0aa3e7ece017501d980\", \"65902d6e29515bedd0e32285\"],\r\n    \"date\": \"2024-01-19\",\r\n    \"time\": \"11:00 AM\",\r\n    \"price\": 6000,\r\n    \"extraFee\": 500,\r\n    \"note\": \"Just make it simple\",\r\n    \"status\": \"pending\",\r\n    \"payment\": \"Cash\"\r\n}"
+							"raw": "{\r\n    \"beautician\": \"65a4cddfaaca7a45bc074d60\",\r\n    \"customer\": \"65a55ceb3b8a4c60869fabbd\",\r\n    \"service\": [\"65a77704bd2fe98833caf2ba\", \"65a776cebd2fe98833caf2b2\"],\r\n    \"date\": \"2024-01-19\",\r\n    \"time\": \"12:55 AM\",\r\n    \"price\": 6000,\r\n    \"extraFee\": 500,\r\n    \"note\": \"Just make it simple\",\r\n    \"status\": \"pending\",\r\n    \"payment\": \"Cash\"\r\n}"
 						},
 						"url": "{{URI}}{{V1}}appointments"
 					},
@@ -2394,13 +2399,98 @@
 				}
 			],
 			"id": "7f329437-df3e-4eee-ab9d-22b306397fcb"
+		},
+		{
+			"name": "BRAND",
+			"item": [
+				{
+					"name": "GET ALL BRANDS",
+					"id": "633d9117-0cec-4695-b4c5-696a15b9a62f",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": []
+					},
+					"response": []
+				},
+				{
+					"name": "GET SINGLE BRAND",
+					"id": "f269f191-0bc8-4643-b29a-6c114d8cb061",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": []
+					},
+					"response": []
+				},
+				{
+					"name": "ADD BRAND",
+					"id": "831dc688-6294-4b84-ba4b-d1613f9498dd",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": {
+								"token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJVc2VySW5mbyI6eyJlbWFpbCI6ImFkbWluamF5QGdtYWlsLmNvbSIsInJvbGVzIjpbIkFkbWluIl19LCJpYXQiOjE3MDU3MzAzNTIsImV4cCI6MTcwNjMzNTE1Mn0.8SMgdwAugwjvYRoLygK59PlCK_uYuPWBa-n_oV-nmZI"
+							}
+						},
+						"method": "POST",
+						"header": [],
+						"url": {
+							"raw": "{{URI}}{{V1}}brands?brand_name=Palmolive",
+							"host": [
+								"{{URI}}{{V1}}brands"
+							],
+							"query": [
+								{
+									"key": "brand_name",
+									"value": "Palmolive",
+									"type": "text"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "UPDATE BRAND",
+					"id": "aa7b7330-8062-43a7-a1f7-c58aec4d68e0",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "PATCH",
+						"header": []
+					},
+					"response": []
+				},
+				{
+					"name": "DELETE BRAND",
+					"id": "d2b4142a-0426-4ac6-a4d7-6281abced888",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "DELETE",
+						"header": []
+					},
+					"response": []
+				}
+			],
+			"id": "b0fc3194-87d2-443a-8f30-04e77f4cc618"
 		}
 	],
 	"event": [
 		{
 			"listen": "prerequest",
 			"script": {
-				"id": "01e6d22e-87a3-4f61-9c66-8b43aa5fb1dc",
+				"id": "3bc64920-7c46-4cb3-9fc5-551429fd6721",
 				"type": "text/javascript",
 				"exec": [
 					""
@@ -2410,7 +2500,7 @@
 		{
 			"listen": "test",
 			"script": {
-				"id": "65dd9589-4c77-44a8-a9b2-a2f715c520a7",
+				"id": "22011c54-be38-45b8-8645-20f1e38a3d3b",
 				"type": "text/javascript",
 				"exec": [
 					""
@@ -2421,7 +2511,7 @@
 	"variable": [
 		{
 			"key": "Bearer",
-			"value": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJVc2VySW5mbyI6eyJlbWFpbCI6ImFkbWluZ2FiQGdtYWlsLmNvbSIsInJvbGVzIjpbIkFkbWluIl19LCJpYXQiOjE3MDUyNDA4OTQsImV4cCI6MTcwNTg0NTY5NH0.K4KA2LdLI9PubprLyExvbFRQsPVBCo5QTDrqMTURDEw",
+			"value": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJVc2VySW5mbyI6eyJlbWFpbCI6ImFkbWluZ2FiQGdtYWlsLmNvbSIsInJvbGVzIjpbIkFkbWluIl19LCJpYXQiOjE3MDU1OTMwNzQsImV4cCI6MTcwNjE5Nzg3NH0.RReuG6sIbYdX5xxX_WXR4ka1EBqzeg31RR_ETuT4Weg",
 			"type": "string"
 		}
 	]
