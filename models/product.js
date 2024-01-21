@@ -8,20 +8,11 @@ const productSchema = new mongoose.Schema({
     maxLength: [60, "Product Name Field must not exceed 60 characters"],
   },
   brand: {
-    type: String,
-    enum: [
-      "Dove",
-      "Palmolive",
-      "Head & Shoulders",
-      "Sunsilk",
-      "Pantene",
-      "Mary Kay",
-      "Avon",
-      "Nivea",
-      "Olay",
-      "Others",
-    ],
+    type: mongoose.Schema.Types.ObjectId,
+    required: [true, "Brand field required"],
+    ref: "brand"
   },
+
   type: {
     type: String,
     enum: ["Hands", "Hair", "Feet", "Nails", "Face", "Body"],
