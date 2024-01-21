@@ -22,6 +22,7 @@ const comments = require("./routes/comment");
 const appointments = require("./routes/appointment");
 const transactions = require("./routes/transaction");
 const feedbacks = require("./routes/feedback");
+const brands = require("./routes/brand");
 const { STATUSCODE } = require("./constants/index");
 const connectDB = require("./config/connectDB");
 const PORT = process.env.PORT || 4000;
@@ -40,6 +41,7 @@ app.use(
   "/api/v1",
   test,
   feedbacks,
+  brands, 
   auth,
   users,
   products,
@@ -48,7 +50,7 @@ app.use(
   delivery,
   appointments,
   comments,
-  transactions
+  transactions,
 );
 
 app.all("*", (req, res) => {
