@@ -17,7 +17,7 @@ const userSchema = new mongoose.Schema({
   age: {
     type: Number,
     required: [true, "Please enter your age"],
-    min: [18, "You must be at least 18 years old"],
+    min: [14, "You must be at least 14 years old"],
     max: [100, "You must be at most 100 years old"],
   },
   password: {
