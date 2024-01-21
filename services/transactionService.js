@@ -198,7 +198,7 @@ exports.updateTransactionData = async (req, res, id) => {
     // }, 2 * 60 * 1000); // 2minutes
 
     const delayInMilliseconds = 2 * 30 * 24 * 60 * 60 * 1000;
-    const timeoutInterval = 10 * 60 * 1000;
+    const timeoutInterval = 2 * 60 * 60 * 1000;
 
     const sendSmsAfterDelay = async () => {
       const additionalSmsMessage = `Dear ${existingTransaction.appointment.customer.name}, it's been a while since your last visit. We miss you! Come and visit us again. Thank you for choosing Lhanlee Salon.`;
