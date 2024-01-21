@@ -39,4 +39,7 @@ module.exports = {
   EDIT_FEEDBACK_ID: "/feedback/edit/:id",
   BEAUTICIAN_APPOINTMENT: "/appointment/beautician/:id",
   BEAUTICIAN_HISTORY: "/appointment/history/:id",
+  BRANDS:"/brands",
+  BRAND_ID:"/brand/:id",
+  BRAND_EDIT_ID:"/brand/edit/:id"
 };
