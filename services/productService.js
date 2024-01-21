@@ -11,8 +11,10 @@ exports.getAllProductData = async () => {
     .sort({
       createdAt: -1,
     })
+    .populate({path:"brand", select:"brand_name"})
     .lean()
     .exec();
+
   return products;
 };
 
