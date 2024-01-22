@@ -235,46 +235,6 @@ exports.updateTransactionData = async (req, res, id) => {
   return { existingTransaction, updatedTransaction, updateVerification };
 };
 
-exports.updateCustomerTransactionData = async (req, res, id) => {
-  if (!mongoose.Types.ObjectId.isValid(id)) {
-    throw new ErrorHandler(`Invalid transaction ID: ${id}`);
-  }
-
-  const existingTransaction = await Transaction.findById(id)
-    .populate({
-      path: "appointment",
-      populate: [
-        { path: "beautician customer", select: "name contact_number roles" },
-        {
-          path: "service",
-          select: "service_name price image",
-          populate: {
-            path: "product",
-            select: "product_name type brand isNew",
-          },
-        },
-      ],
-      select: "date time price extraFee note",
-    })
-    .lean()
-    .exec();
-
-  if (!existingTransaction) {
-    throw new ErrorHandler(`Transaction not found with ID: ${id}`);
-  }
-
-  const updatedTransaction = await Transaction.findOneAndUpdate(
-    { _id: id },
-    {
-      status: req.body.status,
-      cancelReason: req.body.cancelReason,
-    },
-    { new: true, runValidators: true }
-  ).exec();
-
-  return { existingTransaction, updatedTransaction };
-};
-
 exports.deleteTransactionData = async (id) => {
   if (!mongoose.Types.ObjectId.isValid(id))
     throw new ErrorHandler(`Invalid transaction ID: ${id}`);

@@ -158,7 +158,7 @@ exports.createAppointmentData = async (req, res) => {
       appointment: appointment._id,
       status: req.body.status,
       payment: req.body.payment,
-      cancelReason: req.body.cancelReason,
+      rebookReason: req.body.rebookReason,
       image: image,
     });
 
@@ -172,7 +172,7 @@ exports.createAppointmentData = async (req, res) => {
       appointment: appointment._id,
       status: req.body.status,
       payment: req.body.payment,
-      cancelReason: req.body.cancelReason,
+      rebookReason: req.body.rebookReason,
     });
 
     appointment.transaction = transaction._id;

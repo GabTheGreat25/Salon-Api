@@ -47,7 +47,7 @@ const transactionSchema = new mongoose.Schema({
     type: String,
     required: false,
   },
-  cancelReason: {
+  rebookReason: {
     type: String,
     enum: {
       values: [
