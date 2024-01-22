@@ -59,9 +59,7 @@ const transactionSchema = new mongoose.Schema({
         "Others",
       ],
     },
-    required: function () {
-      return this.status === "cancelled";
-    },
+    required: false,
   },
 });
 
