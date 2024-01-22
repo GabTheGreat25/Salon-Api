@@ -47,6 +47,20 @@ const appointmentSchema = new mongoose.Schema({
     type: String,
     required: false,
   },
+  rebookReason: {
+    type: String,
+    enum: {
+      values: [
+        "Schedule Conflict",
+        "Change Of Plans",
+        "Emergency",
+        "Travel Conflict",
+        "Personal Reasons",
+        "Others",
+      ],
+    },
+    required: false,
+  },
 });
 
 module.exports = mongoose.model(RESOURCE.APPOINTMENT, appointmentSchema);

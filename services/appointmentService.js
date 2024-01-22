@@ -158,7 +158,6 @@ exports.createAppointmentData = async (req, res) => {
       appointment: appointment._id,
       status: req.body.status,
       payment: req.body.payment,
-      rebookReason: req.body.rebookReason,
       image: image,
     });
 
@@ -172,7 +171,6 @@ exports.createAppointmentData = async (req, res) => {
       appointment: appointment._id,
       status: req.body.status,
       payment: req.body.payment,
-      rebookReason: req.body.rebookReason,
     });
 
     appointment.transaction = transaction._id;
@@ -276,8 +274,7 @@ exports.updateScheduleAppointmentData = async (req, res, id) => {
   const updatedScheduleAppointment = await Appointment.findByIdAndUpdate(
     id,
     {
-      date: req.body.date,
-      time: req.body.time,
+      ...req.body,
     },
     {
       new: true,
