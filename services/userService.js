@@ -439,7 +439,6 @@ exports.createUserData = async (req, res) => {
     });
 
     const currentDate = new Date();
-    let nextMessageDate = new Date(currentDate.getTime());
 
     information = await Information.create({
       customer: user?._id,
@@ -451,7 +450,6 @@ exports.createUserData = async (req, res) => {
     });
 
     let delay;
-
     if (information.messageDate === "1 minute") {
       delay = 1 * 60 * 1000;
     } else if (information.messageDate === "1 month") {
@@ -469,36 +467,30 @@ exports.createUserData = async (req, res) => {
     } else {
       throw new ErrorHandler("Invalid messageDate");
     }
-
     if (delay !== undefined) {
       setTimeout(async () => {
         const existingInformation = await Information.findOne({
           customer: user?._id,
           messageDate: { $ne: "stop" },
         });
-
         if (
           !existingInformation ||
           existingInformation.messageDate === "stop"
         ) {
-          return { user, requirement, information };
+          return;
         }
-
         const monthDifference =
           (nextMessageDate.getFullYear() - currentDate.getFullYear()) * 12 +
           (nextMessageDate.getMonth() - currentDate.getMonth());
         await sendMonthlyUpdate(user, monthDifference);
-
         const sendInterval = setInterval(async () => {
           const currentDate = new Date();
           nextMessageDate = new Date(currentDate.getTime() + delay);
-
           const existingUser = await User.findById(user?._id);
-          if (!existingUser || existingInformation.messageDate === "stop") {
+          if (!existingUser || information.messageDate === "stop") {
             clearInterval(sendInterval);
             return;
           }
-
           const monthDifference =
             (nextMessageDate.getFullYear() - currentDate.getFullYear()) * 12 +
             (nextMessageDate.getMonth() - currentDate.getMonth());
@@ -507,18 +499,14 @@ exports.createUserData = async (req, res) => {
       }, delay);
     }
   }
-
   return { user, requirement, information };
 };
 
 exports.updateUserData = async (req, res, id) => {
   if (!mongoose.Types.ObjectId.isValid(id))
     throw new ErrorHandler(`Invalid user ID: ${id}`);
-
   const existingUser = await User.findById(id).lean().exec();
-
   if (!existingUser) throw new ErrorHandler(`User not found with ID: ${id}`);
-
   let images = existingUser.image || [];
   if (req.files && Array.isArray(req.files) && req.files.length > 0) {
     images = await Promise.all(
@@ -534,21 +522,17 @@ exports.updateUserData = async (req, res, id) => {
       })
     );
   }
-
   if (existingUser.image && existingUser.image.length > 0) {
     await cloudinary.api.delete_resources(
       existingUser.image.map((image) => image.public_id)
     );
   }
-
   let roles = existingUser.roles;
-
   if (req.body.roles) {
     roles = Array.isArray(req.body.roles)
       ? req.body.roles
       : req.body.roles.split(", ");
   }
-
   const user = await User.findByIdAndUpdate(
     id,
     {
@@ -563,12 +547,9 @@ exports.updateUserData = async (req, res, id) => {
   )
     .lean()
     .exec();
-
   if (!user) throw new ErrorHandler(`User not found with ID: ${id}`);
-
   let requirement;
   let information;
-
   if (roles.includes(ROLE.BEAUTICIAN)) {
     requirement = await Requirement.findOneAndUpdate(
       { beautician: id },
@@ -597,65 +578,58 @@ exports.updateUserData = async (req, res, id) => {
       .exec();
 
     let delay;
-
     if (information.messageDate === "1 minute") {
       delay = 1 * 60 * 1000;
     } else if (information.messageDate === "1 month") {
-      delay = 30n * 24n * 60n * 60n * 1000n;
+      delay = 30 * 24 * 60 * 60 * 1000;
     } else if (information.messageDate === "2 months") {
-      delay = 2n * 30n * 24n * 60n * 60n * 1000n;
+      delay = 2 * 30 * 24 * 60 * 60 * 1000;
     } else if (information.messageDate === "4 months") {
-      delay = 4n * 30n * 24n * 60n * 60n * 1000n;
+      delay = 4 * 30 * 24 * 60 * 60 * 1000;
     } else if (information.messageDate === "6 months") {
-      delay = 6n * 30n * 24n * 60n * 60n * 1000n;
+      delay = 6 * 30 * 24 * 60 * 60 * 1000;
     } else if (information.messageDate === "1 year") {
-      delay = 12n * 30n * 24n * 60n * 60n * 1000n;
+      delay = 12 * 30 * 24 * 60 * 60 * 1000;
     } else if (information.messageDate === "stop") {
+      console.log(`SMS sending stopped for ${user.name}`);
       return { user, requirement, information };
     } else {
       throw new ErrorHandler("Invalid messageDate");
     }
-
     if (delay !== undefined) {
       setTimeout(async () => {
         const existingInformation = await Information.findOne({
           customer: id,
           messageDate: { $ne: "stop" },
         });
-
         if (
           !existingInformation ||
           existingInformation.messageDate === "stop"
         ) {
-          return { user, requirement, information };
+          return;
         }
-
         const currentDate = new Date();
-        let nextMessageDate = new Date(BigInt(currentDate.getTime()) + delay);
+        let nextMessageDate = new Date(currentDate.getTime() + delay);
         const monthDifference =
           (nextMessageDate.getFullYear() - currentDate.getFullYear()) * 12 +
           (nextMessageDate.getMonth() - currentDate.getMonth());
         await sendMonthlyUpdate(user, monthDifference);
-
         const sendInterval = setInterval(async () => {
           const currentDate = new Date();
-          nextMessageDate = new Date(BigInt(currentDate.getTime()) + delay);
-
+          nextMessageDate = new Date(currentDate.getTime() + delay);
           const existingUser = await User.findById(id);
-          if (!existingUser || existingInformation.messageDate === "stop") {
+          if (!existingUser || information.messageDate === "stop") {
             clearInterval(sendInterval);
             return;
           }
-
           const monthDifference =
             (nextMessageDate.getFullYear() - currentDate.getFullYear()) * 12 +
             (nextMessageDate.getMonth() - currentDate.getMonth());
           await sendMonthlyUpdate(user, monthDifference);
-        }, Number(delay));
-      }, Number(delay));
+        }, delay);
+      }, delay);
     }
   }
-
   return { user, requirement, information };
 };
 
