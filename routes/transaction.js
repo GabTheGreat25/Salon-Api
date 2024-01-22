@@ -41,17 +41,6 @@ const transactionRoutes = [
     handler: transactionController.updateTransaction,
   },
   {
-    method: METHOD.PATCH,
-    path: PATH.CANCEL_TRANSACTION_ID,
-    roles: [
-      ROLE.ADMIN,
-      ROLE.BEAUTICIAN,
-      ROLE.ONLINE_CUSTOMER,
-      ROLE.WALK_IN_CUSTOMER,
-    ],
-    handler: transactionController.updateCustomerTransaction,
-  },
-  {
     method: METHOD.DELETE,
     path: PATH.TRANSACTION_ID,
     roles: [ROLE.ADMIN],
