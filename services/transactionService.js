@@ -142,6 +142,8 @@ exports.updateTransactionData = async (req, res, id) => {
       existingTransaction.appointment.price +
       existingTransaction.appointment.extraFee;
 
+    const adjustedTotalFee = totalFee - 150;
+
     const formattedReceipt =
       `========================================\n` +
       `         APPOINTMENT RECEIPT           \n` +
