@@ -5,7 +5,6 @@ const brandServices = require("../services/brandService");
 const checkRequiredFields = require("../helpers/checkRequiredFields");
 const { STATUSCODE } = require("../constants/index");
 
-
 exports.getAllBrands = asyncHandler(async (req, res, next) => {
   const brands = await brandServices.getAllBrandsData();
 
@@ -31,6 +30,7 @@ exports.getOneBrand = asyncHandler(async (req, res, next) => {
 });
 
 exports.createBrand = [
+  checkRequiredFields(["brand_name"]),
   asyncHandler(async (req, res, next) => {
     const brand = await brandServices.createBrandData(req);
 

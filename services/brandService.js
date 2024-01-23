@@ -61,7 +61,7 @@ exports.updateBrandData = async (req, res, id) => {
     .lean()
     .exec();
 
-    if(duplicateBrand) throw new ErrorHandler("Duplicate Brand");
+  if (duplicateBrand) throw new ErrorHandler("Duplicate Brand");
 
   const updatedBrand = await Brand.findByIdAndUpdate(
     id,
@@ -82,22 +82,21 @@ exports.updateBrandData = async (req, res, id) => {
 };
 
 exports.deleteBrandData = async (id) => {
-    if (!mongoose.Types.ObjectId.isValid(id))
-      throw new ErrorHandler(`Invalid brand ID ${id}`);
-  
-    const brand = await Brand.findOne({
+  if (!mongoose.Types.ObjectId.isValid(id))
+    throw new ErrorHandler(`Invalid brand ID ${id}`);
+
+  const brand = await Brand.findOne({
+    _id: id,
+  });
+  if (!brand) throw new ErrorHandler(`Brand not found with ID: ${id}`);
+
+  await Promise.all([
+    Brand.deleteOne({
       _id: id,
-    });
-    if (!brand) throw new ErrorHandler(`Brand not found with ID: ${id}`);
-    
-    await Promise.all([
-      Brand.deleteOne({
-        _id: id,
-      })
-        .lean()
-        .exec(),
-    ]);
-  
-    return brand;
-  };
-  
+    })
+      .lean()
+      .exec(),
+  ]);
+
+  return brand;
+};
