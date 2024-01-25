@@ -23,6 +23,7 @@ const appointments = require("./routes/appointment");
 const transactions = require("./routes/transaction");
 const feedbacks = require("./routes/feedback");
 const brands = require("./routes/brand");
+const times = require("./routes/time");
 const { STATUSCODE } = require("./constants/index");
 const connectDB = require("./config/connectDB");
 const PORT = process.env.PORT || 4000;
@@ -40,6 +41,7 @@ app.use("/", require("./routes/root"));
 app.use(
   "/api/v1",
   test,
+  times,
   feedbacks,
   brands, 
   auth,

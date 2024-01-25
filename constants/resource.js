@@ -18,5 +18,6 @@ module.exports = {
   VERIFICATION: "verification",
   STATUS: "status",
   FEEDBACK: "feedback",
-  BRAND:"brand"
+  BRAND:"brand",
+  TIME:"time"
 };

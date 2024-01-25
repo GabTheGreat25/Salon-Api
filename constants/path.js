@@ -41,5 +41,8 @@ module.exports = {
   BEAUTICIAN_HISTORY: "/appointment/history/:id",
   BRANDS:"/brands",
   BRAND_ID:"/brand/:id",
-  BRAND_EDIT_ID:"/brand/edit/:id"
+  BRAND_EDIT_ID:"/brand/edit/:id",
+  TIMES:"/times",
+  TIME_ID:"/time/:id",
+  TIME_EDIT_ID:"/time/edit/:id"
 };
