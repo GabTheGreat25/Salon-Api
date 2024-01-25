@@ -11,13 +11,11 @@ const feedbackSchema = new mongoose.Schema({
   email: {
     type: String,
     required: [true, "Feedback Email Field Required"],
-    unique: true,
     validate: [validator.isEmail, "Please enter valid email address"],
   },
   contact_number: {
     type: String,
     required: [true, "Contact number Field Required"],
-    unique: true,
     validate: [
       {
         validator: function (value) {
@@ -36,7 +34,6 @@ const feedbackSchema = new mongoose.Schema({
   description: {
     type: String,
     required: [true, "Description Field Required"],
-    maxLength: [60, "Description Field must not exceed to 60 characters"],
   },
 });
 
