@@ -23,15 +23,10 @@ const appointmentSchema = new mongoose.Schema({
     type: Date,
     required: [true, "Please enter a date"],
   },
-  time: {
-    type: String,
-    required: [true, "Please enter a time"],
-    validate: {
-      validator: (value) => {
-        return /^(0?[1-9]|1[0-2]):[0-5][0-9] (AM|PM)$/i.test(value);
-      },
-      message: "Invalid time format. Please use 'HH:MM AM/PM'.",
-    },
+  time:{  
+      type: mongoose.Schema.Types.ObjectId,
+      required: [true, "Please enter a time"],
+      ref: RESOURCE.TIME,
   },
   price: {
     type: Number,
