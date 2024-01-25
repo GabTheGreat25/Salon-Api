@@ -337,7 +337,7 @@
 								"header": [],
 								"body": {
 									"mode": "raw",
-									"raw": "{\r\n    \"email\": \"adminjay@gmail.com\",\r\n    \"password\": \"12345678\"\r\n}",
+									"raw": "{\r\n    \"email\": \"adminrenyel@gmail.com\",\r\n    \"password\": \"12345678\"\r\n}",
 									"options": {
 										"raw": {
 											"language": "json"
@@ -2091,8 +2091,15 @@
 						"disableBodyPruning": true
 					},
 					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": {
+								"token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJVc2VySW5mbyI6eyJlbWFpbCI6ImpheWJlYXV0aWNpYW5AZ21haWwuY29tIiwicm9sZXMiOlsiQmVhdXRpY2lhbiJdfSwiaWF0IjoxNzA1Mjk0NDYyLCJleHAiOjE3MDU4OTkyNjJ9.14lmXroBm_NWuWapdjpHUHhVP_EUEOmKyKeKJbJhGwo"
+							}
+						},
 						"method": "GET",
-						"header": []
+						"header": [],
+						"url": "{{URI}}{{V1}}appointment/history/65a4db1d238da805bd9100a7"
 					},
 					"response": []
 				}
@@ -2109,6 +2116,12 @@
 						"disableBodyPruning": true
 					},
 					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": {
+								"token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJVc2VySW5mbyI6eyJlbWFpbCI6ImpheWJlYXV0aWNpYW5AZ21haWwuY29tIiwicm9sZXMiOlsiQmVhdXRpY2lhbiJdfSwiaWF0IjoxNzA1Mjk0NDYyLCJleHAiOjE3MDU4OTkyNjJ9.14lmXroBm_NWuWapdjpHUHhVP_EUEOmKyKeKJbJhGwo"
+							}
+						},
 						"method": "GET",
 						"header": [
 							{
@@ -2442,19 +2455,16 @@
 						},
 						"method": "POST",
 						"header": [],
-						"url": {
-							"raw": "{{URI}}{{V1}}brands?brand_name=Palmolive",
-							"host": [
-								"{{URI}}{{V1}}brands"
-							],
-							"query": [
-								{
-									"key": "brand_name",
-									"value": "Palmolive",
-									"type": "text"
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"brand_name\": \"Others\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
 								}
-							]
-						}
+							}
+						},
+						"url": "{{URI}}{{V1}}brands"
 					},
 					"response": []
 				},
@@ -2484,6 +2494,112 @@
 				}
 			],
 			"id": "b0fc3194-87d2-443a-8f30-04e77f4cc618"
+		},
+		{
+			"name": "TIME",
+			"item": [
+				{
+					"name": "GET ALL TIMES",
+					"id": "dad7c31d-1555-4288-a8c0-e685f49ad6cc",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": "{{URI}}{{V1}}times"
+					},
+					"response": []
+				},
+				{
+					"name": "GET ONE TIME",
+					"id": "213a244d-9b68-4b3a-a54b-fdef6c4c4da6",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": {
+								"token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJVc2VySW5mbyI6eyJlbWFpbCI6ImpheWJlYXV0aWNpYW5AZ21haWwuY29tIiwicm9sZXMiOlsiQmVhdXRpY2lhbiJdfSwiaWF0IjoxNzA1Mjk0NDYyLCJleHAiOjE3MDU4OTkyNjJ9.14lmXroBm_NWuWapdjpHUHhVP_EUEOmKyKeKJbJhGwo"
+							}
+						},
+						"method": "GET",
+						"header": [],
+						"url": "{{URI}}{{V1}}time/65b1187c3eebe44f1da6999f"
+					},
+					"response": []
+				},
+				{
+					"name": "CREATE TIME",
+					"id": "23062943-c664-4589-aa09-a2d6778b60a1",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"time\":\"08:00 AM\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{URI}}{{V1}}times?time=9:00",
+							"host": [
+								"{{URI}}{{V1}}times"
+							],
+							"query": [
+								{
+									"key": "time",
+									"value": "9:00"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "UPDATE TIME",
+					"id": "979bfa45-c9dc-4a00-a38e-fe94ae123e31",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "PATCH",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"time\":\"08:45 AM\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": "{{URI}}{{V1}}time/edit/65b1187c3eebe44f1da6999f"
+					},
+					"response": []
+				},
+				{
+					"name": "DELETE TIME",
+					"id": "ec7ce36e-c36d-4d4b-82b4-30939129f9f1",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": "{{URI}}{{V1}}time/65b1187c3eebe44f1da6999f"
+					},
+					"response": []
+				}
+			],
+			"id": "ca00b283-ac6a-4d3e-a591-0b44ffdbb7f1"
 		}
 	],
 	"event": [
