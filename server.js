@@ -43,7 +43,7 @@ app.use(
   test,
   times,
   feedbacks,
-  brands, 
+  brands,
   auth,
   users,
   products,
@@ -52,16 +52,14 @@ app.use(
   delivery,
   appointments,
   comments,
-  transactions,
+  transactions
 );
 
 app.all("*", (req, res) => {
   const filePath = req.accepts("html")
     ? path.join(__dirname, "views", "404.html")
     : req.accepts("json")
-    ? {
-        message: "404 Not Found",
-      }
+    ? { message: "404 Not Found" }
     : "404 Not Found";
 
   res.status(STATUSCODE.NOT_FOUND).sendFile(filePath);
