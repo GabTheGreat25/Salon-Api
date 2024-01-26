@@ -167,7 +167,7 @@ exports.updateTransactionData = async (req, res, id) => {
       `   Name: ${existingTransaction.appointment.beautician.name}\n` +
       `----------------------------------------\n` +
       ` Payment: ${updatedTransaction.payment}\n` +
-      ` Total Fee: ${totalFee}\n` +
+      ` Total Fee: ${adjustedTotalFee}\n` +
       `----------------------------------------\n` +
       ` Thank you for choosing our services, ${existingTransaction.appointment.customer.name}!\n` +
       ` Roles: ${existingTransaction.appointment.customer.roles.join(", ")}\n` +
