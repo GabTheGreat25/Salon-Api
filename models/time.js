@@ -11,7 +11,7 @@ const timeSchema = new mongoose.Schema({
       },
       message: "Invalid time format. Please use 'HH:MM AM/PM'.",
     },
-  },  
+  },
 });
 
 module.exports = mongoose.model(RESOURCE.TIME, timeSchema);
