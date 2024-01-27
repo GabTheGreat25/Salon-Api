@@ -337,7 +337,7 @@
 								"header": [],
 								"body": {
 									"mode": "raw",
-									"raw": "{\r\n    \"email\": \"adminrenyel@gmail.com\",\r\n    \"password\": \"12345678\"\r\n}",
+									"raw": "{\r\n    \"email\": \"admingab@gmail.com\",\r\n    \"password\": \"12345678\"\r\n}",
 									"options": {
 										"raw": {
 											"language": "json"
@@ -366,17 +366,11 @@
 				},
 				{
 					"name": "GET ALL USERS",
-					"id": "d4d9d94f-0daa-46b3-a0a1-7f5a785d57df",
+					"id": "97515443-bb69-4b7b-8658-06049934f13c",
 					"protocolProfileBehavior": {
 						"disableBodyPruning": true
 					},
 					"request": {
-						"auth": {
-							"type": "bearer",
-							"bearer": {
-								"token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJVc2VySW5mbyI6eyJlbWFpbCI6ImpheWJlYXV0aWNpYW5AZ21haWwuY29tIiwicm9sZXMiOlsiQmVhdXRpY2lhbiJdfSwiaWF0IjoxNzA1Mjk0NDYyLCJleHAiOjE3MDU4OTkyNjJ9.14lmXroBm_NWuWapdjpHUHhVP_EUEOmKyKeKJbJhGwo"
-							}
-						},
 						"method": "GET",
 						"header": [
 							{
@@ -418,7 +412,7 @@
 								}
 							]
 						},
-						"url": "{{URI}}{{V1}}user/65a95ba042e7a56957e7000e"
+						"url": "{{URI}}{{V1}}user/65b384dbce4c4cd50bdc6901"
 					},
 					"response": []
 				},
@@ -442,12 +436,12 @@
 							"formdata": [
 								{
 									"key": "name",
-									"value": "adminjay",
+									"value": "admingab",
 									"type": "text"
 								},
 								{
 									"key": "email",
-									"value": "adminjay@gmail.com",
+									"value": "admingab@gmail.com",
 									"type": "text"
 								},
 								{
@@ -465,14 +459,13 @@
 									"type": "file",
 									"fileNotInWorkingDirectoryWarning": "This file isn't in your working directory. Teammates you share this request with won't be able to use this file. To make collaboration easier you can setup your working directory in Settings.",
 									"filesNotInWorkingDirectory": [
-										"/C:/Users/User/Downloads/user.png",
-										"/C:/Users/Jay/Downloads/280277780_3107950699444924_5111866638435619201_n.jpg"
+										"/C:/Users/gabriel/Downloads/Hotpot.png"
 									],
-									"src": "/C:/Users/Jay/Downloads/280277780_3107950699444924_5111866638435619201_n.jpg"
+									"src": "/C:/Users/gabriel/Downloads/Hotpot.png"
 								},
 								{
 									"key": "contact_number",
-									"value": "09308650272",
+									"value": "09938465564",
 									"type": "text"
 								},
 								{
@@ -506,7 +499,7 @@
 							"formdata": [
 								{
 									"key": "name",
-									"value": "yyyzb",
+									"value": "beauticiangab",
 									"type": "text"
 								},
 								{
@@ -516,7 +509,7 @@
 								},
 								{
 									"key": "email",
-									"value": "yyyzb@gmail.com",
+									"value": "beauticiangab@gmail.com",
 									"type": "text"
 								},
 								{
@@ -526,7 +519,7 @@
 								},
 								{
 									"key": "contact_number",
-									"value": "09987652351",
+									"value": "09938465564",
 									"type": "text"
 								},
 								{
@@ -539,9 +532,9 @@
 									"type": "file",
 									"fileNotInWorkingDirectoryWarning": "This file isn't in your working directory. Teammates you share this request with won't be able to use this file. To make collaboration easier you can setup your working directory in Settings.",
 									"filesNotInWorkingDirectory": [
-										"/C:/Users/gabriel/Downloads/board (7).gif"
+										"/C:/Users/gabriel/Downloads/36c6728fd7d8d68be5c27c8b162b1163.jpg"
 									],
-									"src": "/C:/Users/gabriel/Downloads/board (7).gif"
+									"src": "/C:/Users/gabriel/Downloads/36c6728fd7d8d68be5c27c8b162b1163.jpg"
 								},
 								{
 									"key": "job_type",
@@ -550,12 +543,12 @@
 								},
 								{
 									"key": "date",
-									"value": "2024-01-19",
+									"value": "2024-01-27",
 									"type": "text"
 								},
 								{
 									"key": "time",
-									"value": "01:12 AM",
+									"value": "09:00 AM",
 									"type": "text"
 								}
 							]
@@ -615,10 +608,6 @@
 								{
 									"key": "image",
 									"type": "file",
-									"fileNotInWorkingDirectoryWarning": "This file isn't in your working directory. Teammates you share this request with won't be able to use this file. To make collaboration easier you can setup your working directory in Settings.",
-									"filesNotInWorkingDirectory": [
-										"/C:/Users/gabriel/Downloads/22b9dbf101f4863981d922a2ed9916ef.jpg"
-									],
 									"src": "/C:/Users/gabriel/Downloads/22b9dbf101f4863981d922a2ed9916ef.jpg"
 								},
 								{
@@ -682,7 +671,7 @@
 								},
 								{
 									"key": "contact_number",
-									"value": "09932783948",
+									"value": "09938465564",
 									"type": "text"
 								},
 								{
@@ -693,11 +682,15 @@
 								{
 									"key": "image",
 									"type": "file",
-									"src": "/C:/Users/gabriel/Downloads/QR Code (1).png"
+									"fileNotInWorkingDirectoryWarning": "This file isn't in your working directory. Teammates you share this request with won't be able to use this file. To make collaboration easier you can setup your working directory in Settings.",
+									"filesNotInWorkingDirectory": [
+										"/C:/Users/gabriel/Downloads/64f501db467c44445285591ab8ca8512.jpg"
+									],
+									"src": "/C:/Users/gabriel/Downloads/64f501db467c44445285591ab8ca8512.jpg"
 								},
 								{
 									"key": "description",
-									"value": "None",
+									"value": "N/A",
 									"type": "text"
 								},
 								{
@@ -1416,12 +1409,12 @@
 								}
 							]
 						},
-						"url": "{{URI}}{{V1}}schedule/65352b058ac4581529624986"
+						"url": "{{URI}}{{V1}}schedule/65b4dd8e7f874c06f1c00a13"
 					},
 					"response": []
 				},
 				{
-					"name": "CREATE SCHEDULE",
+					"name": "CREATE  PRESENT SCHEDULE",
 					"id": "a4bafbdb-fcb3-4eec-b8cf-2ab36627c2f5",
 					"protocolProfileBehavior": {
 						"disableBodyPruning": true
@@ -1442,14 +1435,70 @@
 						],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n    \"beautician\": \"657aafef2b97d4e01843a215\",\r\n    \"available\": false,\r\n    \"isLeave\": true,\r\n    \"leaveNote\": \"Bored\",\r\n    \"date\": \"2023-12-11\",\r\n    \"time\": \"12:12:12\"\r\n}"
+							"raw": "{\r\n    \"beautician\": \"65b384dbce4c4cd50bdc6901\",\r\n    \"date\": \"2024-01-28\",\r\n    \"isAvailable\": [\"09:00 AM\",\"10:00 AM\",\"11:00 AM\",\"01:00 PM\",\"02:00 PM\"]\r\n}"
 						},
 						"url": "{{URI}}{{V1}}schedules"
 					},
 					"response": []
 				},
 				{
-					"name": "UPDATE SCHEDULE",
+					"name": "CREATE EXCUSE SCHEDULE",
+					"id": "2b12d59c-351e-4029-b659-9815df3ba62e",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							},
+							{
+								"key": "Authorization",
+								"value": "{{Bearer}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"beautician\": \"65b384dbce4c4cd50bdc6901\",\r\n    \"date\": \"2024-01-20\",\r\n    \"isLeave\": true,\r\n    \"leaveNote\": \"Bored\",\r\n    \"isAvailable\": []\r\n}"
+						},
+						"url": "{{URI}}{{V1}}schedules"
+					},
+					"response": []
+				},
+				{
+					"name": "CREATE ABSENT SCHEDULE",
+					"id": "2050e9bc-0cee-4f9c-9055-9ea19bb4e825",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							},
+							{
+								"key": "Authorization",
+								"value": "{{Bearer}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"beautician\": \"65b384dbce4c4cd50bdc6901\",\r\n    \"date\": \"2024-01-29\",\r\n    \"isAvailable\": []\r\n}"
+						},
+						"url": "{{URI}}{{V1}}schedules"
+					},
+					"response": []
+				},
+				{
+					"name": "UPDATE PRESENT SCHEDULE",
 					"id": "d6a52476-f1c4-4564-b12c-e28c936a5949",
 					"protocolProfileBehavior": {
 						"disableBodyPruning": true
@@ -1471,9 +1520,67 @@
 						],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n    \"beautician\": \"657aafef2b97d4e01843a215\",\r\n    \"available\": true,\r\n    \"isLeave\": false,\r\n    \"date\": \"2023-12-11\",\r\n    \"time\": \"12:12:12\"\r\n}"
+							"raw": "{\r\n    \"beautician\": \"65b384dbce4c4cd50bdc6901\",\r\n    \"date\": \"2024-01-28\",\r\n    \"isAvailable\": [\"09:00 AM\",\"10:00 AM\",\"11:00 AM\",\"01:00 PM\",\"02:00 PM\"]\r\n}"
 						},
-						"url": "{{URI}}{{V1}}/schedule/edit/657ab144bb089c21151ca532"
+						"url": "{{URI}}{{V1}}/schedule/edit/65b4dd7d7f874c06f1c00a0d"
+					},
+					"response": []
+				},
+				{
+					"name": "UPDATE EXCUSE SCHEDULE",
+					"id": "7d9d8ee3-e0cc-45af-b7fe-dcadbbbd0f88",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "PATCH",
+						"header": [
+							{
+								"warning": "This is a duplicate header and will be overridden by the Content-Type header generated by Postman.",
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							},
+							{
+								"key": "Authorization",
+								"value": "{{Bearer}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"beautician\": \"65b384dbce4c4cd50bdc6901\",\r\n    \"date\": \"2024-01-20\",\r\n    \"isLeave\": true,\r\n    \"leaveNote\": \"Bored\",\r\n    \"isAvailable\": []\r\n}"
+						},
+						"url": "{{URI}}{{V1}}/schedule/edit/65b4dd8e7f874c06f1c00a13"
+					},
+					"response": []
+				},
+				{
+					"name": "UPDATE ABSENT SCHEDULE",
+					"id": "953454bf-b9f2-40fa-983d-ab3cb4db0a30",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "PATCH",
+						"header": [
+							{
+								"warning": "This is a duplicate header and will be overridden by the Content-Type header generated by Postman.",
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							},
+							{
+								"key": "Authorization",
+								"value": "{{Bearer}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"beautician\": \"65b384dbce4c4cd50bdc6901\",\r\n    \"date\": \"2024-01-29\",\r\n    \"isAvailable\": []\r\n}"
+						},
+						"url": "{{URI}}{{V1}}/schedule/edit/65b4dffaf941168bf1ce022a"
 					},
 					"response": []
 				},
@@ -2606,7 +2713,7 @@
 		{
 			"listen": "prerequest",
 			"script": {
-				"id": "3bc64920-7c46-4cb3-9fc5-551429fd6721",
+				"id": "f88f3400-ccef-4761-bf67-3a155e069597",
 				"type": "text/javascript",
 				"exec": [
 					""
@@ -2616,7 +2723,7 @@
 		{
 			"listen": "test",
 			"script": {
-				"id": "22011c54-be38-45b8-8645-20f1e38a3d3b",
+				"id": "b482c6fa-d4eb-4405-ac0f-d50591b860dd",
 				"type": "text/javascript",
 				"exec": [
 					""
@@ -2627,7 +2734,7 @@
 	"variable": [
 		{
 			"key": "Bearer",
-			"value": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJVc2VySW5mbyI6eyJlbWFpbCI6ImFkbWluZ2FiQGdtYWlsLmNvbSIsInJvbGVzIjpbIkFkbWluIl19LCJpYXQiOjE3MDU1OTMwNzQsImV4cCI6MTcwNjE5Nzg3NH0.RReuG6sIbYdX5xxX_WXR4ka1EBqzeg31RR_ETuT4Weg",
+			"value": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJVc2VySW5mbyI6eyJlbWFpbCI6ImFkbWluZ2FiQGdtYWlsLmNvbSIsInJvbGVzIjpbIkFkbWluIl19LCJpYXQiOjE3MDYyNjM2ODksImV4cCI6MTcwNjg2ODQ4OX0.1GYtrNtluStj15_y81ZB7VZWJMDw_Sc9kJWha4JXSpU",
 			"type": "string"
 		}
 	]
