@@ -16,8 +16,7 @@ module.exports = {
   REQUIREMENT: "requirement",
   INFORMATION: "information",
   VERIFICATION: "verification",
-  STATUS: "status",
   FEEDBACK: "feedback",
-  BRAND:"brand",
-  TIME:"time"
+  BRAND: "brand",
+  TIME: "time",
 };
