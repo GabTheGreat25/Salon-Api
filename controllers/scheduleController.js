@@ -34,29 +34,31 @@ exports.getSingleSchedule = asyncHandler(async (req, res, next) => {
 });
 
 exports.createNewSchedule = [
-  checkRequiredFields(["beautician", "date", "time"]),
+  checkRequiredFields(["beautician", "date"]),
   asyncHandler(async (req, res, next) => {
-    const { schedule, createStatus } =
-      await schedulesService.createScheduleData(req);
+    const { schedule } = await schedulesService.createScheduleData(req);
 
     return SuccessHandler(
       res,
       `New schedule of ${schedule?.beautician?.name} created with an ID ${schedule?._id}`,
-      { schedule, createStatus }
+      schedule
     );
   }),
 ];
 
 exports.updateSchedule = [
-  checkRequiredFields(["beautician", "date", "time"]),
+  checkRequiredFields(["beautician", "date"]),
   asyncHandler(async (req, res, next) => {
-    const { updatedSchedule, updateStatus } =
-      await schedulesService.updateScheduleData(req, res, req.params.id);
+    const { updatedSchedule } = await schedulesService.updateScheduleData(
+      req,
+      res,
+      req.params.id
+    );
 
     return SuccessHandler(
       res,
       `Schedule of ${updatedSchedule?.beautician?.name} with ID ${updatedSchedule?._id} is updated`,
-      { updatedSchedule, updateStatus }
+      { updatedSchedule }
     );
   }),
 ];

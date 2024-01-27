@@ -1,5 +1,4 @@
 const Schedule = require("../models/schedule");
-const Status = require("../models/status");
 const ErrorHandler = require("../utils/errorHandler");
 const mongoose = require("mongoose");
 const { STATUSCODE } = require("../constants/index");
@@ -31,55 +30,95 @@ exports.getSingleScheduleData = async (id) => {
 };
 
 exports.createScheduleData = async (req, res) => {
-  const schedule = await Schedule.create(req.body);
+  const { isLeave, leaveNote, date, isAvailable } = req.body;
 
-  await Schedule.populate(schedule, { path: "beautician", select: "name" });
+  let attendance = "absent";
 
-  const attendance = schedule.isLeave
-    ? "leave"
-    : schedule.available
-    ? "present"
-    : "absent";
+  if (isLeave && leaveNote) {
+    const existingSchedule = await Schedule.findOne({ date: date });
 
-  const createStatus = await Status.create({
-    schedule: schedule?._id,
+    if (existingSchedule) {
+      throw new ErrorHandler("Leave date has already been scheduled");
+    }
+
+    attendance = "leave";
+  } else {
+    const existingSchedule = await Schedule.findOne({ date: date });
+
+    if (existingSchedule) {
+      throw new ErrorHandler("Date has already been scheduled");
+    }
+
+    attendance =
+      isAvailable && Array.isArray(isAvailable)
+        ? isAvailable.length === 0
+          ? "absent"
+          : isAvailable.length >= 5
+          ? "present"
+          : (() => {
+              throw new ErrorHandler("You must have a minimum of 5 pick times");
+            })()
+        : "absent";
+  }
+
+  const schedule = await Schedule.create({
+    ...req.body,
     attendance: attendance,
   });
 
-  return { schedule, createStatus };
+  const populatedSchedule = await Schedule.findOne({
+    _id: schedule._id,
+  }).populate("beautician", "name");
+
+  return { schedule: populatedSchedule };
 };
 
 exports.updateScheduleData = async (req, res, id) => {
-  if (!mongoose.Types.ObjectId.isValid(id))
+  if (!mongoose.Types.ObjectId.isValid(id)) {
     throw new ErrorHandler(`Invalid schedule ID: ${id}`);
+  }
 
-  const updatedSchedule = await Schedule.findByIdAndUpdate(id, req.body, {
-    new: true,
-    runValidators: true,
-  })
-    .populate({ path: "beautician", select: "name" })
-    .lean()
-    .exec();
+  const { attendance, isLeave, leaveNote, ...updateFields } = req.body;
 
-  if (!updatedSchedule)
-    throw new ErrorHandler(`Schedule not found with ID: ${id}`);
+  let newAttendance = "absent";
 
-  const attendance = updatedSchedule.isLeave
-    ? "leave"
-    : updatedSchedule.available
-    ? "present"
-    : "absent";
+  if (isLeave !== undefined) {
+    newAttendance = isLeave ? "leave" : "absent";
+  } else if (updateFields.isAvailable && updateFields.isAvailable.length >= 5) {
+    newAttendance = "present";
+  } else if (
+    updateFields.isAvailable &&
+    updateFields.isAvailable.length === 0
+  ) {
+    newAttendance = "absent";
+  } else throw new ErrorHandler("You must have a minimum of 5 pick times");
 
-  const updateStatus = await Status.findOneAndUpdate(
-    { schedule: id },
-    { attendance: attendance },
+  await Schedule.findByIdAndUpdate(
+    id,
+    {
+      $set: {
+        ...updateFields,
+        attendance: newAttendance,
+        isLeave: isLeave !== undefined ? isLeave : newAttendance === "leave",
+        leaveNote: isLeave !== undefined ? leaveNote : "",
+      },
+    },
     {
       new: true,
       runValidators: true,
     }
   );
 
-  return { updatedSchedule, updateStatus };
+  const updatedSchedule = await Schedule.findById(id)
+    .populate({ path: "beautician", select: "name" })
+    .lean()
+    .exec();
+
+  if (!updatedSchedule) {
+    throw new ErrorHandler(`Schedule not found with ID: ${id}`);
+  }
+
+  return { updatedSchedule };
 };
 
 exports.deleteScheduleData = async (id) => {
@@ -99,7 +138,6 @@ exports.deleteScheduleData = async (id) => {
       .populate({ path: "beautician", select: "name" })
       .lean()
       .exec(),
-    Status.deleteMany({ schedule: id }).lean().exec(),
   ]);
 
   return schedule;
