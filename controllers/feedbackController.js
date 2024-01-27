@@ -34,7 +34,7 @@ exports.getSingleFeedback = asyncHandler(async (req, res, next) => {
 });
 
 exports.createNewFeedback = [
-  checkRequiredFields(["name", "email", "contact_number", "description"]),
+  checkRequiredFields(["name", "email", "contact_number", "description", "isAnonymous"]),
   asyncHandler(async (req, res, next) => {
     const feedback = await feedbacksService.createFeedbackData(req);
 
