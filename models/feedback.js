@@ -35,6 +35,11 @@ const feedbackSchema = new mongoose.Schema({
     type: String,
     required: [true, "Description Field Required"],
   },
+  isAnonymous:{
+    type: Boolean,
+    required:[true, "IsAnonymous field required"],
+    default: false,
+  },
 });
 
 module.exports = mongoose.model(RESOURCE.FEEDBACK, feedbackSchema);
