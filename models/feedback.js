@@ -35,9 +35,8 @@ const feedbackSchema = new mongoose.Schema({
     type: String,
     required: [true, "Description Field Required"],
   },
-  isAnonymous:{
+  isAnonymous: {
     type: Boolean,
-    required:[true, "IsAnonymous field required"],
     default: false,
   },
 });
