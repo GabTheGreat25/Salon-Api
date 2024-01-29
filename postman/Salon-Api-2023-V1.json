@@ -1463,7 +1463,7 @@
 						],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n    \"beautician\": \"65b384dbce4c4cd50bdc6901\",\r\n    \"date\": \"2024-01-20\",\r\n    \"isLeave\": true,\r\n    \"leaveNote\": \"Bored\",\r\n    \"isAvailable\": []\r\n}"
+							"raw": "{\r\n    \"beautician\": \"65b384dbce4c4cd50bdc6901\",\r\n    \"date\": \"2024-02-6\",\r\n    \"isLeave\": true,\r\n    \"leaveNote\": \"Bored\",\r\n    \"isAvailable\": []\r\n}"
 						},
 						"url": "{{URI}}{{V1}}schedules"
 					},
@@ -1604,6 +1604,48 @@
 							"formdata": []
 						},
 						"url": "{{URI}}{{V1}}schedule/65238242b42a623176fac788"
+					},
+					"response": []
+				},
+				{
+					"name": "DELETE SCHEDULE CONFIRM",
+					"id": "bf2a22ad-6c40-4644-916c-ee08b618c15b",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "DELETE",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "{{Bearer}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "formdata",
+							"formdata": []
+						},
+						"url": "{{URI}}{{V1}}confirm/schedule/65b75f6695fc304b46c1b1c6"
+					},
+					"response": []
+				},
+				{
+					"name": "CONFIRM LEAVE",
+					"id": "626b814d-ac52-4b7e-a314-be6d4742ce5a",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "PATCH",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "{{Bearer}}",
+								"type": "text"
+							}
+						],
+						"url": "{{URI}}{{V1}}/schedule/activate/65b75f6695fc304b46c1b1c6"
 					},
 					"response": []
 				}
