@@ -479,6 +479,7 @@ exports.createUserData = async (req, res) => {
         ) {
           return;
         }
+        let nextMessageDate = new Date(currentDate.getTime() + delay);
         const monthDifference =
           (nextMessageDate.getFullYear() - currentDate.getFullYear()) * 12 +
           (nextMessageDate.getMonth() - currentDate.getMonth());
