@@ -2,6 +2,7 @@ const Schedule = require("../models/schedule");
 const ErrorHandler = require("../utils/errorHandler");
 const mongoose = require("mongoose");
 const { STATUSCODE } = require("../constants/index");
+const moment = require("moment");
 
 exports.getAllSchedulesData = async () => {
   const schedules = await Schedule.find()
@@ -30,21 +31,35 @@ exports.getSingleScheduleData = async (id) => {
 };
 
 exports.createScheduleData = async (req, res) => {
-  const { isLeave, leaveNote, date, isAvailable } = req.body;
+  const { isLeave, leaveNote, date, isAvailable, beautician } = req.body;
 
   let attendance = "absent";
 
-  if (isLeave && leaveNote) {
-    const existingSchedule = await Schedule.findOne({ date: date });
+  const existingSchedule = await Schedule.findOne({
+    date: date,
+    beautician: beautician,
+  });
+  if (existingSchedule) {
+    if (existingSchedule.beautician.toString() === beautician.toString()) {
+      throw new ErrorHandler("You have already scheduled this date");
+    }
+  }
 
-    if (existingSchedule) {
+  if (isLeave && leaveNote) {
+    const leaveSchedule = await Schedule.findOne({
+      date: date,
+      beautician: beautician,
+      attendance: "leave",
+    });
+    if (leaveSchedule) {
       throw new ErrorHandler("Leave date has already been scheduled");
     }
-
     attendance = "leave";
   } else {
-    const existingSchedule = await Schedule.findOne({ date: date });
-
+    const existingSchedule = await Schedule.findOne({
+      date: date,
+      beautician: beautician,
+    });
     if (existingSchedule) {
       throw new ErrorHandler("Date has already been scheduled");
     }
@@ -65,6 +80,23 @@ exports.createScheduleData = async (req, res) => {
     ...req.body,
     attendance: attendance,
   });
+
+  const today = moment().startOf("day");
+  const beauticianSchedules = await Schedule.find({
+    beautician: beautician,
+    date: {
+      $gte: today.toDate(),
+      $lt: moment(today).endOf("day").toDate(),
+    },
+  });
+
+  if (beauticianSchedules.length === 0) {
+    await Schedule.updateOne(
+      { beautician: beautician, date: today },
+      { $set: { attendance: "absent" } },
+      { upsert: true }
+    );
+  }
 
   const populatedSchedule = await Schedule.findOne({
     _id: schedule._id,
