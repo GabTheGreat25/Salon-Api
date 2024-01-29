@@ -32,6 +32,10 @@ const scheduleSchema = new mongoose.Schema({
     },
     maxLength: [60, "Leave note must not exceed 60 characters"],
   },
+  leaveNoteConfirmed: {
+    type: Boolean,
+    default: false,
+  },
 });
 
 module.exports = mongoose.model(RESOURCE.SCHEDULE, scheduleSchema);

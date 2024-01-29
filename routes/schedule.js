@@ -14,6 +14,13 @@ const scheduleRoutes = [
     handler: scheduleController.getAllSchedules,
   },
   {
+    method: METHOD.PATCH,
+    path: PATH.ACTIVATE_SCHEDULE_ID,
+    roles: [ROLE.ADMIN],
+    middleware: [verifyJWT],
+    handler: scheduleController.confirmLeave,
+  },
+  {
     method: METHOD.POST,
     path: PATH.SCHEDULES,
     roles: [ROLE.ADMIN, ROLE.BEAUTICIAN],
@@ -36,6 +43,12 @@ const scheduleRoutes = [
     path: PATH.SCHEDULE_ID,
     roles: [ROLE.ADMIN],
     handler: scheduleController.deleteSchedule,
+  },
+  {
+    method: METHOD.DELETE,
+    path: PATH.CONFIRM_SCHEDULE_ID,
+    roles: [ROLE.ADMIN],
+    handler: scheduleController.deleteConfirm,
   },
 ];
 

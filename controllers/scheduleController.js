@@ -33,6 +33,18 @@ exports.getSingleSchedule = asyncHandler(async (req, res, next) => {
       );
 });
 
+exports.confirmLeave = asyncHandler(async (req, res, next) => {
+  const scheduleId = req.params.id;
+
+  await schedulesService.confirmLeaveNote(scheduleId);
+
+  SuccessHandler(
+    res,
+    `Beautician Leave has been approved by the admin.`,
+    scheduleId
+  );
+});
+
 exports.createNewSchedule = [
   checkRequiredFields(["beautician", "date"]),
   asyncHandler(async (req, res, next) => {
@@ -61,6 +73,22 @@ exports.updateSchedule = [
     );
   }),
 ];
+
+exports.deleteConfirm = asyncHandler(async (req, res, next) => {
+  const schedule = await schedulesService.getSingleScheduleData(req.params.id);
+
+  const beauticianName = schedule?.beautician?.name || "Unknown";
+
+  await schedulesService.deleteConfirmData(req.params.id);
+
+  return !schedule
+    ? next(new ErrorHandler("No schedule found"))
+    : SuccessHandler(
+        res,
+        `Schedule of ${beauticianName} with ID ${schedule?._id} is deleted`,
+        schedule
+      );
+});
 
 exports.deleteSchedule = asyncHandler(async (req, res, next) => {
   const schedule = await schedulesService.getSingleScheduleData(req.params.id);
