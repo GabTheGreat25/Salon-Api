@@ -60,21 +60,24 @@ exports.confirmLeaveNote = async (scheduleId) => {
 };
 
 exports.createScheduleData = async (req, res) => {
-  const { isLeave, leaveNote, date, beautician } = req.body;
+  const { isLeave, leaveNote, date, beautician, isAvailable } = req.body;
 
   let attendance = "absent";
   let schedule;
 
-  const existingSchedule = await Schedule.findOne({
-    date: date,
-    beautician: beautician,
-  });
-
-  if (existingSchedule) {
-    if (existingSchedule.beautician.toString() === beautician.toString()) {
-      throw new ErrorHandler("You have already scheduled this date");
-    }
-  }
+  const existingSchedule = await Schedule.findOne({ date: date });
+  if (existingSchedule)
+    throw new ErrorHandler("Date has already been scheduled");
+  attendance =
+    isAvailable && Array.isArray(isAvailable)
+      ? isAvailable.length === 0
+        ? "absent"
+        : isAvailable.length >= 5
+        ? "present"
+        : (() => {
+            throw new ErrorHandler("You must have a minimum of 5 pick times");
+          })()
+      : "absent";
 
   if (isLeave && leaveNote) {
     schedule = await Schedule.create({
@@ -110,8 +113,8 @@ exports.createScheduleData = async (req, res) => {
 
         await Schedule.findByIdAndDelete(schedule._id);
       }
-      // }, 2 * 24 * 60 * 60 * 1000);
-    }, 60 * 1000);
+    }, 2 * 24 * 60 * 60 * 1000);
+    // }, 60 * 1000);
   } else {
     const today = moment().startOf("day");
     const beauticianSchedules = await Schedule.find({
