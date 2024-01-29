@@ -47,7 +47,6 @@ exports.createNewSchedule = [
 ];
 
 exports.updateSchedule = [
-  checkRequiredFields(["beautician", "date"]),
   asyncHandler(async (req, res, next) => {
     const { updatedSchedule } = await schedulesService.updateScheduleData(
       req,
