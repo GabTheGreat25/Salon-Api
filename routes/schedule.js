@@ -10,7 +10,12 @@ const scheduleRoutes = [
   {
     method: METHOD.GET,
     path: PATH.SCHEDULES,
-    roles: [ROLE.ADMIN, ROLE.BEAUTICIAN],
+    roles: [
+      ROLE.ADMIN,
+      ROLE.BEAUTICIAN,
+      ROLE.ONLINE_CUSTOMER,
+      ROLE.WALK_IN_CUSTOMER,
+    ],
     handler: scheduleController.getAllSchedules,
   },
   {
@@ -29,7 +34,12 @@ const scheduleRoutes = [
   {
     method: METHOD.GET,
     path: PATH.SCHEDULE_ID,
-    roles: [ROLE.ADMIN, ROLE.BEAUTICIAN],
+    roles: [
+      ROLE.ADMIN,
+      ROLE.BEAUTICIAN,
+      ROLE.ONLINE_CUSTOMER,
+      ROLE.WALK_IN_CUSTOMER,
+    ],
     handler: scheduleController.getSingleSchedule,
   },
   {

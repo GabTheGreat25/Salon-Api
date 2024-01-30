@@ -7,19 +7,9 @@ const scheduleSchema = new mongoose.Schema({
     required: [true, "Please enter a beautician"],
     ref: RESOURCE.USER,
   },
-  isAvailable: [
-    {
-      type: String,
-      required: [true, "Please add availability"],
-    },
-  ],
   date: {
     type: Date,
     required: [true, "Please enter a date"],
-  },
-  attendance: {
-    type: String,
-    enum: ["present", "absent", "leave"],
   },
   isLeave: {
     type: Boolean,
