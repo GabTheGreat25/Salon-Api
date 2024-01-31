@@ -51,13 +51,13 @@ const scheduleRoutes = [
   {
     method: METHOD.DELETE,
     path: PATH.SCHEDULE_ID,
-    roles: [ROLE.ADMIN],
+    roles: [ROLE.ADMIN, ROLE.BEAUTICIAN],
     handler: scheduleController.deleteSchedule,
   },
   {
     method: METHOD.DELETE,
     path: PATH.CONFIRM_SCHEDULE_ID,
-    roles: [ROLE.ADMIN],
+    roles: [ROLE.ADMIN, ROLE.BEAUTICIAN],
     handler: scheduleController.deleteConfirm,
   },
 ];
