@@ -34,6 +34,18 @@ const serviceSchema = new mongoose.Schema({
       "Wedding",
     ],
   },
+
+  duration: {
+    type: String,
+    required: [true, "Please enter service duration"],
+    validate: {
+      validator: (value) => {
+        return /^(0?[1-9]|1[0-2]):[0-5][0-9]$/i.test(value);
+      },
+      message: "Invalid time format. Please use 'HH:MM'.",
+    },
+  },
+
   image: [
     {
       public_id: {
