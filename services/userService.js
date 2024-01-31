@@ -449,55 +449,91 @@ exports.createUserData = async (req, res) => {
       messageDate: req.body.messageDate || "1 minute",
     });
 
-    let delay;
-    if (information.messageDate === "1 minute") {
-      delay = 1 * 60 * 1000;
-    } else if (information.messageDate === "1 month") {
-      delay = 30 * 24 * 60 * 60 * 1000;
-    } else if (information.messageDate === "2 months") {
-      delay = 2 * 30 * 24 * 60 * 60 * 1000;
-    } else if (information.messageDate === "4 months") {
-      delay = 4 * 30 * 24 * 60 * 60 * 1000;
-    } else if (information.messageDate === "6 months") {
-      delay = 6 * 30 * 24 * 60 * 60 * 1000;
-    } else if (information.messageDate === "1 year") {
-      delay = 12 * 30 * 24 * 60 * 60 * 1000;
-    } else if (information.messageDate === "stop") {
+    let delayTimeout;
+    let sendInterval;
+
+    if (req.body?.messageDate === "stop") {
+      clearTimeout(delayTimeout);
+      clearInterval(sendInterval);
       return { user, requirement, information };
     } else {
-      throw new ErrorHandler("Invalid messageDate");
-    }
-    if (delay !== undefined) {
-      setTimeout(async () => {
-        const existingInformation = await Information.findOne({
-          customer: user?._id,
-          messageDate: { $ne: "stop" },
-        });
-        if (
-          !existingInformation ||
-          existingInformation.messageDate === "stop"
-        ) {
-          return;
-        }
-        let nextMessageDate = new Date(currentDate.getTime() + delay);
-        const monthDifference =
-          (nextMessageDate.getFullYear() - currentDate.getFullYear()) * 12 +
-          (nextMessageDate.getMonth() - currentDate.getMonth());
-        await sendMonthlyUpdate(user, monthDifference);
-        const sendInterval = setInterval(async () => {
-          const currentDate = new Date();
-          nextMessageDate = new Date(currentDate.getTime() + delay);
-          const existingUser = await User.findById(user?._id);
-          if (!existingUser || information.messageDate === "stop") {
-            clearInterval(sendInterval);
-            return;
-          }
+      let delay;
+
+      if (information.messageDate === "1 minute") {
+        delay = BigInt(1) * BigInt(60) * BigInt(1000);
+      } else if (information.messageDate === "1 month") {
+        delay =
+          BigInt(30) * BigInt(24) * BigInt(60) * BigInt(60) * BigInt(1000);
+      } else if (information.messageDate === "2 months") {
+        delay =
+          BigInt(2) *
+          BigInt(30) *
+          BigInt(24) *
+          BigInt(60) *
+          BigInt(60) *
+          BigInt(1000);
+      } else if (information.messageDate === "4 months") {
+        delay =
+          BigInt(4) *
+          BigInt(30) *
+          BigInt(24) *
+          BigInt(60) *
+          BigInt(60) *
+          BigInt(1000);
+      } else if (information.messageDate === "6 months") {
+        delay =
+          BigInt(6) *
+          BigInt(30) *
+          BigInt(24) *
+          BigInt(60) *
+          BigInt(60) *
+          BigInt(1000);
+      } else if (information.messageDate === "1 year") {
+        delay =
+          BigInt(12) *
+          BigInt(30) *
+          BigInt(24) *
+          BigInt(60) *
+          BigInt(60) *
+          BigInt(1000);
+      } else {
+        throw new ErrorHandler("Invalid messageDate");
+      }
+
+      if (delay !== undefined) {
+        delayTimeout = setTimeout(async () => {
+          let nextMessageDate = new Date(
+            Number(BigInt(currentDate.getTime()) + delay)
+          );
           const monthDifference =
             (nextMessageDate.getFullYear() - currentDate.getFullYear()) * 12 +
             (nextMessageDate.getMonth() - currentDate.getMonth());
           await sendMonthlyUpdate(user, monthDifference);
-        }, delay);
-      }, delay);
+          sendInterval = setInterval(async () => {
+            const currentDate = new Date();
+            nextMessageDate = new Date(
+              Number(BigInt(currentDate.getTime()) + delay)
+            );
+
+            information = await Information.findOne({
+              customer: id,
+              messageDate: { $ne: "stop" },
+            })
+              .lean()
+              .exec();
+
+            if (!information || information.messageDate === "stop") {
+              clearInterval(sendInterval);
+              return;
+            }
+
+            const monthDifference =
+              (nextMessageDate.getFullYear() - currentDate.getFullYear()) * 12 +
+              (nextMessageDate.getMonth() - currentDate.getMonth());
+            await sendMonthlyUpdate(user, monthDifference);
+          }, Number(delay));
+        }, Number(delay));
+      }
     }
   }
   return { user, requirement, information };
@@ -549,6 +585,7 @@ exports.updateUserData = async (req, res, id) => {
     .lean()
     .exec();
   if (!user) throw new ErrorHandler(`User not found with ID: ${id}`);
+
   let requirement;
   let information;
   if (roles.includes(ROLE.BEAUTICIAN)) {
@@ -578,57 +615,94 @@ exports.updateUserData = async (req, res, id) => {
       .lean()
       .exec();
 
-    let delay;
-    if (information.messageDate === "1 minute") {
-      delay = 1 * 60 * 1000;
-    } else if (information.messageDate === "1 month") {
-      delay = 30 * 24 * 60 * 60 * 1000;
-    } else if (information.messageDate === "2 months") {
-      delay = 2 * 30 * 24 * 60 * 60 * 1000;
-    } else if (information.messageDate === "4 months") {
-      delay = 4 * 30 * 24 * 60 * 60 * 1000;
-    } else if (information.messageDate === "6 months") {
-      delay = 6 * 30 * 24 * 60 * 60 * 1000;
-    } else if (information.messageDate === "1 year") {
-      delay = 12 * 30 * 24 * 60 * 60 * 1000;
-    } else if (information.messageDate === "stop") {
-      console.log(`SMS sending stopped for ${user.name}`);
+    let delayTimeout;
+    let sendInterval;
+
+    if (req.body.messageDate === "stop") {
+      clearTimeout(delayTimeout);
+      clearInterval(sendInterval);
       return { user, requirement, information };
     } else {
-      throw new ErrorHandler("Invalid messageDate");
-    }
-    if (delay !== undefined) {
-      setTimeout(async () => {
-        const existingInformation = await Information.findOne({
-          customer: id,
-          messageDate: { $ne: "stop" },
-        });
-        if (
-          !existingInformation ||
-          existingInformation.messageDate === "stop"
-        ) {
-          return;
-        }
-        const currentDate = new Date();
-        let nextMessageDate = new Date(currentDate.getTime() + delay);
-        const monthDifference =
-          (nextMessageDate.getFullYear() - currentDate.getFullYear()) * 12 +
-          (nextMessageDate.getMonth() - currentDate.getMonth());
-        await sendMonthlyUpdate(user, monthDifference);
-        const sendInterval = setInterval(async () => {
+      let delay;
+
+      if (information.messageDate === "1 minute") {
+        delay = BigInt(1) * BigInt(60) * BigInt(1000);
+      } else if (information.messageDate === "1 month") {
+        delay =
+          BigInt(30) * BigInt(24) * BigInt(60) * BigInt(60) * BigInt(1000);
+      } else if (information.messageDate === "2 months") {
+        delay =
+          BigInt(2) *
+          BigInt(30) *
+          BigInt(24) *
+          BigInt(60) *
+          BigInt(60) *
+          BigInt(1000);
+      } else if (information.messageDate === "4 months") {
+        delay =
+          BigInt(4) *
+          BigInt(30) *
+          BigInt(24) *
+          BigInt(60) *
+          BigInt(60) *
+          BigInt(1000);
+      } else if (information.messageDate === "6 months") {
+        delay =
+          BigInt(6) *
+          BigInt(30) *
+          BigInt(24) *
+          BigInt(60) *
+          BigInt(60) *
+          BigInt(1000);
+      } else if (information.messageDate === "1 year") {
+        delay =
+          BigInt(12) *
+          BigInt(30) *
+          BigInt(24) *
+          BigInt(60) *
+          BigInt(60) *
+          BigInt(1000);
+      } else {
+        throw new ErrorHandler("Invalid messageDate");
+      }
+
+      if (delay !== undefined) {
+        delayTimeout = setTimeout(async () => {
           const currentDate = new Date();
-          nextMessageDate = new Date(currentDate.getTime() + delay);
-          const existingUser = await User.findById(id);
-          if (!existingUser || information.messageDate === "stop") {
-            clearInterval(sendInterval);
-            return;
-          }
+          let nextMessageDate = new Date(
+            Number(BigInt(currentDate.getTime()) + delay)
+          );
           const monthDifference =
             (nextMessageDate.getFullYear() - currentDate.getFullYear()) * 12 +
             (nextMessageDate.getMonth() - currentDate.getMonth());
+
           await sendMonthlyUpdate(user, monthDifference);
-        }, delay);
-      }, delay);
+
+          sendInterval = setInterval(async () => {
+            const currentDate = new Date();
+            nextMessageDate = new Date(
+              Number(BigInt(currentDate.getTime()) + delay)
+            );
+
+            information = await Information.findOne({
+              customer: id,
+              messageDate: { $ne: "stop" },
+            })
+              .lean()
+              .exec();
+
+            if (!information || information.messageDate === "stop") {
+              clearInterval(sendInterval);
+              return;
+            }
+
+            const monthDifference =
+              (nextMessageDate.getFullYear() - currentDate.getFullYear()) * 12 +
+              (nextMessageDate.getMonth() - currentDate.getMonth());
+            await sendMonthlyUpdate(user, monthDifference);
+          }, Number(delay));
+        }, Number(delay));
+      }
     }
   }
   return { user, requirement, information };
