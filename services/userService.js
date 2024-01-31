@@ -39,39 +39,43 @@ const deleteUserAfterTimeout = async (userId) => {
   }
 };
 
-const sendMonthlyUpdate = async (user, monthDifference) => {
+const sendMonthlyUpdate = async (user) => {
   let customMessage;
-  monthDifference %= 12;
-  if (monthDifference === 0) {
+  const currentDate = new Date();
+  const currentMonth = currentDate.getMonth();
+
+  console.log("Current Month:", currentMonth);
+
+  if (currentMonth === 0) {
     customMessage = "Happy New Year! Check out our new products this month!";
-  } else if (monthDifference === 1) {
+  } else if (currentMonth === 1) {
     customMessage = "Special discounts available this February!";
-  } else if (monthDifference === 2) {
+  } else if (currentMonth === 2) {
     customMessage = "Spring is here! Enjoy our seasonal offerings.";
-  } else if (monthDifference === 3) {
+  } else if (currentMonth === 3) {
     customMessage = "Summer is in full swing! Stay cool with our products.";
-  } else if (monthDifference === 4) {
+  } else if (currentMonth === 4) {
     customMessage = "May brings hot deals! Don't miss out!";
-  } else if (monthDifference === 5) {
+  } else if (currentMonth === 5) {
     customMessage = "Celebrate June with exclusive promotions!";
-  } else if (monthDifference === 6) {
+  } else if (currentMonth === 6) {
     customMessage = "Fall into savings this July!";
-  } else if (monthDifference === 7) {
+  } else if (currentMonth === 7) {
     customMessage = "Thankful August! Enjoy discounts on us.";
-  } else if (monthDifference === 8) {
+  } else if (currentMonth === 8) {
     customMessage = "Thankful September! Enjoy discounts on us.";
-  } else if (monthDifference === 9) {
-    customMessage =
-      "Festive October! Celebrate Halloween with our spooky specials.";
-  } else if (monthDifference === 10) {
+  } else if (currentMonth === 9) {
+    customMessage = "Celebrate October with our festive specials!";
+  } else if (currentMonth === 10) {
     customMessage =
       "Happy Halloween! Check out our spooky specials this November.";
-  } else if (monthDifference === 11) {
+  } else if (currentMonth === 11) {
     customMessage =
       "Merry Christmas! Check out our holiday specials this December!";
-  } else {
-    customMessage = "Thank you for being our valued customer!";
-  }
+  } else customMessage = "Thank you for being our valued customer!";
+
+  console.log("Selected Message:", customMessage);
+
   const smsMessage = `Dear ${user.name}, ${customMessage}`;
 
   await sendSMS(`+63${user.contact_number.substring(1)}`, smsMessage);
@@ -505,10 +509,7 @@ exports.createUserData = async (req, res) => {
           let nextMessageDate = new Date(
             Number(BigInt(currentDate.getTime()) + delay)
           );
-          const monthDifference =
-            (nextMessageDate.getFullYear() - currentDate.getFullYear()) * 12 +
-            (nextMessageDate.getMonth() - currentDate.getMonth());
-          await sendMonthlyUpdate(user, monthDifference);
+          await sendMonthlyUpdate(user);
           sendInterval = setInterval(async () => {
             const currentDate = new Date();
             nextMessageDate = new Date(
@@ -527,10 +528,7 @@ exports.createUserData = async (req, res) => {
               return;
             }
 
-            const monthDifference =
-              (nextMessageDate.getFullYear() - currentDate.getFullYear()) * 12 +
-              (nextMessageDate.getMonth() - currentDate.getMonth());
-            await sendMonthlyUpdate(user, monthDifference);
+            await sendMonthlyUpdate(user);
           }, Number(delay));
         }, Number(delay));
       }
@@ -672,11 +670,8 @@ exports.updateUserData = async (req, res, id) => {
           let nextMessageDate = new Date(
             Number(BigInt(currentDate.getTime()) + delay)
           );
-          const monthDifference =
-            (nextMessageDate.getFullYear() - currentDate.getFullYear()) * 12 +
-            (nextMessageDate.getMonth() - currentDate.getMonth());
 
-          await sendMonthlyUpdate(user, monthDifference);
+          await sendMonthlyUpdate(user);
 
           sendInterval = setInterval(async () => {
             const currentDate = new Date();
@@ -696,10 +691,7 @@ exports.updateUserData = async (req, res, id) => {
               return;
             }
 
-            const monthDifference =
-              (nextMessageDate.getFullYear() - currentDate.getFullYear()) * 12 +
-              (nextMessageDate.getMonth() - currentDate.getMonth());
-            await sendMonthlyUpdate(user, monthDifference);
+            await sendMonthlyUpdate(user);
           }, Number(delay));
         }, Number(delay));
       }
