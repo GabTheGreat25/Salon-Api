@@ -38,12 +38,10 @@ const serviceSchema = new mongoose.Schema({
       "Wedding",
     ],
   },
-
   duration: {
     type: String,
     required: [true, "Please enter service duration"],
   },
-
   image: [
     {
       public_id: {
