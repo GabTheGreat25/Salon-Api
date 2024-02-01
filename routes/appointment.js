@@ -54,7 +54,7 @@ const appointmentRoutes = [
   {
     method: METHOD.PATCH,
     path: PATH.SCHEDULE_EDIT_APPOINTMENT_ID,
-    roles: [ROLE.ONLINE_CUSTOMER, ROLE.WALK_IN_CUSTOMER],
+    roles: [ROLE.ADMIN, ROLE.ONLINE_CUSTOMER, ROLE.WALK_IN_CUSTOMER],
     handler: appointmentController.updateScheduleAppointment,
   },
   {
@@ -66,13 +66,13 @@ const appointmentRoutes = [
   {
     method: METHOD.GET,
     path: PATH.BEAUTICIAN_APPOINTMENT,
-    roles: [ROLE.BEAUTICIAN],
+    roles: [ROLE.ADMIN, ROLE.BEAUTICIAN],
     handler: appointmentController.getBeauticianAppointment,
   },
   {
     method: METHOD.GET,
     path: PATH.BEAUTICIAN_HISTORY,
-    roles: [ROLE.BEAUTICIAN],
+    roles: [ROLE.ADMIN, ROLE.BEAUTICIAN],
     handler: appointmentController.getAppointmentHistory,
   },
 ];

@@ -54,77 +54,20 @@ exports.getSingleAppointmentData = async (id) => {
 };
 
 exports.createAppointmentData = async (req, res) => {
-  const currentDate = new Date();
-
-  const serviceValues = Array.isArray(req.body.service)
-    ? req.body.service
-    : req.body.service.split(", ");
+  let appointment;
 
   const existingAppointments = await Appointment.find({
     date: req.body.date,
-    time: req.body.time,
+    time: { $in: req.body.time },
   });
 
-  if (existingAppointments.length > 0) {
-    const existingCancelledTransaction = await Transaction.findOne({
-      appointment: {
-        $in: existingAppointments.map((appointment) => appointment._id),
-      },
-      status: "cancelled",
-    });
-
-    const existingPendingTransaction = await Transaction.findOne({
-      appointment: {
-        $in: existingAppointments.map((appointment) => appointment._id),
-      },
-      status: "pending",
-    });
-
-    const existingCompletedTransaction = await Transaction.findOne({
-      appointment: {
-        $in: existingAppointments.map((appointment) => appointment._id),
-      },
-      status: "completed",
-    });
-
-    const existingTransaction = await Transaction.findOne({
-      appointment: existingAppointments[0]._id,
-    });
-
-    if (
-      existingTransaction &&
-      ["pending", "completed"].includes(existingTransaction.status)
-    ) {
-      throw new ErrorHandler(
-        "Appointment slot is already booked by another customer."
-      );
-    }
-
-    if (existingCancelledTransaction && existingPendingTransaction) {
-      throw new ErrorHandler(
-        "Appointment slot is already booked by another customer."
-      );
-    }
-
-    if (existingCancelledTransaction && existingCompletedTransaction) {
-      throw new ErrorHandler(
-        "Appointment slot is already booked by another customer."
-      );
-    }
-  }
-
-  const appointmentDateTime = new Date(`${req.body.date} ${req.body.time}`);
-  const deletionTimeForOnlineCustomer =
-    // appointmentDateTime.getTime() - 1 * 60 * 1000;
-    appointmentDateTime.getTime() - 60 * 60 * 1000;
-  const deletionTimeForWalkInCustomer =
-    appointmentDateTime.getTime() - 30 * 60 * 1000;
-
-  let appointment;
+  if (existingAppointments.length > 0)
+    throw new ErrorHandler(
+      "Appointment slot is already booked by another customer."
+    );
 
   appointment = await Appointment.create({
     ...req.body,
-    service: serviceValues,
   });
 
   await Appointment.populate(appointment, [
@@ -132,50 +75,30 @@ exports.createAppointmentData = async (req, res) => {
     { path: "service", select: "service_name image" },
   ]);
 
-  let image = [];
+  const currentDate = new Date();
+  const appointmentDateTime = new Date(
+    `${req.body.date} ${currentDate.toLocaleTimeString("en-Ph", {
+      hour12: true,
+    })}`
+  );
+
+  const deletionTimeForOnlineCustomer =
+    // appointmentDateTime.getTime() - 1 * 60 * 1000;
+    appointmentDateTime.getTime() - 60 * 60 * 1000;
+  const deletionTimeForWalkInCustomer =
+    appointmentDateTime.getTime() - 30 * 60 * 1000;
+
   let transaction;
 
-  if (req.body.payment === "Gcash") {
-    if (req.files && Array.isArray(req.files)) {
-      image = await Promise.all(
-        req.files.map(async (file) => {
-          const result = await cloudinary.uploader.upload(file.path, {
-            public_id: file.filename,
-          });
-          return {
-            public_id: result.public_id,
-            url: result.secure_url,
-            originalname: file.originalname,
-          };
-        })
-      );
-    }
-
-    if (image.length === STATUSCODE.ZERO)
-      throw new ErrorHandler("At least one image is required");
-
-    transaction = await Transaction.create({
-      appointment: appointment._id,
-      status: req.body.status,
-      payment: req.body.payment,
-      image: image,
-    });
-
-    appointment.transaction = transaction._id;
-    await appointment.save();
-
-    transaction.image = image;
-    await transaction.save();
-  } else if (req.body.payment === "Cash") {
+  if (req.body.payment === "Cash")
     transaction = await Transaction.create({
       appointment: appointment._id,
       status: req.body.status,
       payment: req.body.payment,
     });
-
-    appointment.transaction = transaction._id;
-    await appointment.save();
-  } else throw new Error("Invalid payment method");
+  await appointment.save();
+  appointment.transaction = transaction._id;
+  await transaction.save();
 
   const verification = await Verification.create({
     transaction: appointment.transaction,
@@ -210,15 +133,13 @@ exports.updateAppointmentData = async (req, res, id) => {
   if (!mongoose.Types.ObjectId.isValid(id))
     throw new ErrorHandler(`Invalid appointment ID: ${id}`);
 
-  const serviceValues = Array.isArray(req.body.service)
-    ? req.body.service
-    : req.body.service.split(", ");
-
   const updatedAppointment = await Appointment.findByIdAndUpdate(
     id,
     {
       ...req.body,
       service: serviceValues,
+      beautician: beauticianValues,
+      time: timeValues,
     },
     {
       new: true,
@@ -245,7 +166,7 @@ exports.updateScheduleAppointmentData = async (req, res, id) => {
 
   const existingAppointmentsWithSameDateTime = await Appointment.find({
     date: req.body.date,
-    time: req.body.time,
+    time: { $in: req.body.time },
     _id: { $ne: id },
   });
 
