@@ -9,11 +9,13 @@ const appointmentSchema = new mongoose.Schema({
       ref: RESOURCE.SERVICE,
     },
   ],
-  beautician: {
-    type: mongoose.Schema.Types.ObjectId,
-    required: [true, "Please enter a beautician"],
-    ref: RESOURCE.USER,
-  },
+  beautician: [
+    {
+      type: mongoose.Schema.Types.ObjectId,
+      required: [true, "Please enter a beautician"],
+      ref: RESOURCE.USER,
+    },
+  ],
   customer: {
     type: mongoose.Schema.Types.ObjectId,
     required: [true, "Please enter a customer"],
@@ -23,16 +25,12 @@ const appointmentSchema = new mongoose.Schema({
     type: Date,
     required: [true, "Please enter a date"],
   },
-  time: {
-    type: String,
-    required: [true, "Please enter a time"],
-    validate: {
-      validator: (value) => {
-        return /^(0?[1-9]|1[0-2]):[0-5][0-9] (AM|PM)$/i.test(value);
-      },
-      message: "Invalid time format. Please use 'HH:MM AM/PM'.",
+  time: [
+    {
+      type: String,
+      required: [true, "Please enter a time"],
     },
-  },
+  ],
   price: {
     type: Number,
     required: [true, "Please enter a total price"],

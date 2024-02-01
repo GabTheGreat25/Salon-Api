@@ -42,9 +42,9 @@ const commentSchema = new mongoose.Schema({
       message: "Comments cannot contain profanity.",
     },
   },
-  isAnonymous:{
+  isAnonymous: {
     type: Boolean,
-    default:false
+    default: false,
   },
   image: [
     {
