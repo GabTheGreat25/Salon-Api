@@ -51,10 +51,10 @@ exports.confirmLeaveNote = async (scheduleId) => {
 
   console.log(smsMessage);
 
-  // await sendSMS(
-  //   `+63${schedule.beautician.contact_number.substring(1)}`,
-  //   smsMessage
-  // );
+  await sendSMS(
+    `+63${schedule.beautician.contact_number.substring(1)}`,
+    smsMessage
+  );
 
   return schedule;
 };
@@ -88,10 +88,10 @@ exports.createScheduleData = async (req, res) => {
 
   const smsMessage = `Dear ${populatedSchedule.beautician.name}, Leave schedule created. Please wait for the admin to confirm.`;
   console.log(smsMessage);
-  // await sendSMS(
-  //   `+63${populatedSchedule.beautician.contact_number.substring(1)}`,
-  //   smsMessage
-  // );
+  await sendSMS(
+    `+63${populatedSchedule.beautician.contact_number.substring(1)}`,
+    smsMessage
+  );
 
   setTimeout(async () => {
     const updatedSchedule = await Schedule.findById(schedule._id).populate(
@@ -102,10 +102,10 @@ exports.createScheduleData = async (req, res) => {
     if (updatedSchedule && !updatedSchedule.leaveNoteConfirmed) {
       const denialMessage = `Dear ${updatedSchedule.beautician.name}, your leave request has been denied. Sorry, you can't have a leave.`;
       console.log(denialMessage);
-      // await sendSMS(
-      //   `+63${updatedSchedule.beautician.contact_number.substring(1)}`,
-      //   denialMessage
-      // );
+      await sendSMS(
+        `+63${updatedSchedule.beautician.contact_number.substring(1)}`,
+        denialMessage
+      );
 
       await Schedule.findByIdAndDelete(schedule._id);
     }
@@ -171,10 +171,10 @@ exports.deleteConfirmData = async (id) => {
   if (!schedule.leaveNoteConfirmed) {
     const smsMessage = `Dear ${schedule.beautician.name}, your leave request has been denied. Sorry, you can't have a leave.`;
     console.log(smsMessage);
-    // await sendSMS(
-    //   `+63${schedule.beautician.contact_number.substring(1)}`,
-    //   smsMessage
-    // );
+    await sendSMS(
+      `+63${schedule.beautician.contact_number.substring(1)}`,
+      smsMessage
+    );
   }
 
   await Schedule.deleteOne({
