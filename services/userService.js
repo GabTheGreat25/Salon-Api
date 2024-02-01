@@ -467,39 +467,19 @@ exports.createUserData = async (req, res) => {
         delay = BigInt(1) * BigInt(60) * BigInt(1000);
       } else if (information.messageDate === "1 month") {
         delay =
-          BigInt(30) * BigInt(24) * BigInt(60) * BigInt(60) * BigInt(1000);
+          BigInt(20) * BigInt(24) * BigInt(60) * BigInt(60) * BigInt(1000);
       } else if (information.messageDate === "2 months") {
         delay =
-          BigInt(2) *
-          BigInt(30) *
-          BigInt(24) *
-          BigInt(60) *
-          BigInt(60) *
-          BigInt(1000);
+          BigInt(20) * BigInt(24) * BigInt(60) * BigInt(60) * BigInt(1000);
       } else if (information.messageDate === "4 months") {
         delay =
-          BigInt(4) *
-          BigInt(30) *
-          BigInt(24) *
-          BigInt(60) *
-          BigInt(60) *
-          BigInt(1000);
+          BigInt(20) * BigInt(24) * BigInt(60) * BigInt(60) * BigInt(1000);
       } else if (information.messageDate === "6 months") {
         delay =
-          BigInt(6) *
-          BigInt(30) *
-          BigInt(24) *
-          BigInt(60) *
-          BigInt(60) *
-          BigInt(1000);
+          BigInt(20) * BigInt(24) * BigInt(60) * BigInt(60) * BigInt(1000);
       } else if (information.messageDate === "1 year") {
         delay =
-          BigInt(12) *
-          BigInt(30) *
-          BigInt(24) *
-          BigInt(60) *
-          BigInt(60) *
-          BigInt(1000);
+          BigInt(20) * BigInt(24) * BigInt(60) * BigInt(60) * BigInt(1000);
       } else {
         throw new ErrorHandler("Invalid messageDate");
       }
@@ -517,7 +497,7 @@ exports.createUserData = async (req, res) => {
             );
 
             information = await Information.findOne({
-              customer: id,
+              customer: user?._id,
               messageDate: { $ne: "stop" },
             })
               .lean()
@@ -627,39 +607,19 @@ exports.updateUserData = async (req, res, id) => {
         delay = BigInt(1) * BigInt(60) * BigInt(1000);
       } else if (information.messageDate === "1 month") {
         delay =
-          BigInt(30) * BigInt(24) * BigInt(60) * BigInt(60) * BigInt(1000);
+          BigInt(20) * BigInt(24) * BigInt(60) * BigInt(60) * BigInt(1000);
       } else if (information.messageDate === "2 months") {
         delay =
-          BigInt(2) *
-          BigInt(30) *
-          BigInt(24) *
-          BigInt(60) *
-          BigInt(60) *
-          BigInt(1000);
+          BigInt(20) * BigInt(24) * BigInt(60) * BigInt(60) * BigInt(1000);
       } else if (information.messageDate === "4 months") {
         delay =
-          BigInt(4) *
-          BigInt(30) *
-          BigInt(24) *
-          BigInt(60) *
-          BigInt(60) *
-          BigInt(1000);
+          BigInt(20) * BigInt(24) * BigInt(60) * BigInt(60) * BigInt(1000);
       } else if (information.messageDate === "6 months") {
         delay =
-          BigInt(6) *
-          BigInt(30) *
-          BigInt(24) *
-          BigInt(60) *
-          BigInt(60) *
-          BigInt(1000);
+          BigInt(20) * BigInt(24) * BigInt(60) * BigInt(60) * BigInt(1000);
       } else if (information.messageDate === "1 year") {
         delay =
-          BigInt(12) *
-          BigInt(30) *
-          BigInt(24) *
-          BigInt(60) *
-          BigInt(60) *
-          BigInt(1000);
+          BigInt(20) * BigInt(24) * BigInt(60) * BigInt(60) * BigInt(1000);
       } else {
         throw new ErrorHandler("Invalid messageDate");
       }
