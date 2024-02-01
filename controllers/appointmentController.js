@@ -34,7 +34,6 @@ exports.getSingleAppointment = asyncHandler(async (req, res, next) => {
 });
 
 exports.createNewAppointment = [
-  upload.array("image"),
   checkRequiredFields([
     "service",
     "beautician",
@@ -44,10 +43,8 @@ exports.createNewAppointment = [
     "price",
   ]),
   asyncHandler(async (req, res, next) => {
-    const service = req.body.service || [];
-
     const { appointment, transaction, verification } =
-      await appointmentsService.createAppointmentData(req, service);
+      await appointmentsService.createAppointmentData(req);
 
     return SuccessHandler(
       res,
@@ -60,13 +57,10 @@ exports.createNewAppointment = [
 exports.updateAppointment = [
   checkRequiredFields(["service", "price"]),
   asyncHandler(async (req, res, next) => {
-    const service = req.body.service || [];
-
     const appointment = await appointmentsService.updateAppointmentData(
       req,
       res,
-      req.params.id,
-      service
+      req.params.id
     );
 
     return SuccessHandler(
