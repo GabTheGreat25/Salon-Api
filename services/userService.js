@@ -383,16 +383,6 @@ exports.createUserData = async (req, res) => {
         "Invalid date. Date must be within the next 7 days and not in the past."
       );
 
-    const existingRequirement = await Requirement.findOne({
-      date: req.body.date,
-      time: req.body.time,
-    });
-
-    if (existingRequirement)
-      throw new ErrorHandler(
-        "Someone already has an appointment at this date and time."
-      );
-
     user = await User.create({
       name: req.body.name,
       age: req.body.age,
