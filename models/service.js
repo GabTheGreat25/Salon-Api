@@ -23,6 +23,10 @@ const serviceSchema = new mongoose.Schema({
     required: [true, "Please enter a price"],
     min: 0,
   },
+  type: {
+    type: String,
+    enum: ["Hands", "Hair", "Feet", "Nails", "Face", "Body"],
+  },
   occassion: {
     type: String,
     enum: [

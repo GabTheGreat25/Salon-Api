@@ -32,10 +32,10 @@ exports.getAllTransactionData = async () => {
         { path: "beautician customer", select: "name contact_number" },
         {
           path: "service",
-          select: "service_name price image",
+          select: "service_name type occassion description price image",
           populate: {
             path: "product",
-            select: "product_name type brand isNew",
+            select: "product_name brand isNew",
           },
         },
       ],
@@ -57,10 +57,10 @@ exports.getSingleTransactionData = async (id) => {
         { path: "beautician customer", select: "name contact_number" },
         {
           path: "service",
-          select: "service_name price image",
+          select: "service_name type occassion description price image",
           populate: {
             path: "product",
-            select: "product_name type brand isNew",
+            select: "product_name brand isNew",
           },
         },
       ],
@@ -87,10 +87,10 @@ exports.updateTransactionData = async (req, res, id) => {
         { path: "beautician customer", select: "name contact_number roles" },
         {
           path: "service",
-          select: "service_name price image",
+          select: "service_name type occassion description price image",
           populate: {
             path: "product",
-            select: "product_name type brand isNew",
+            select: "product_name brand isNew",
           },
         },
       ],
@@ -260,7 +260,7 @@ exports.deleteTransactionData = async (id) => {
         },
         populate: {
           path: "service",
-          select: "service_name price image",
+          select: "service_name type occassion description price image",
         },
         select: "date time price extraFee note",
       })

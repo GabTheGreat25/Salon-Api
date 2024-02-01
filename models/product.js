@@ -10,12 +10,7 @@ const productSchema = new mongoose.Schema({
   brand: {
     type: mongoose.Schema.Types.ObjectId,
     required: [true, "Brand field required"],
-    ref: "brand"
-  },
-
-  type: {
-    type: String,
-    enum: ["Hands", "Hair", "Feet", "Nails", "Face", "Body"],
+    ref: "brand",
   },
   // measurement: {
   //   quantity: {

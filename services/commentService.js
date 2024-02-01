@@ -21,10 +21,10 @@ exports.getAllCommentData = async () => {
             },
             {
               path: "service",
-              select: "service_name occassion description price image",
+              select: "service_name type occassion description price image",
               populate: {
                 path: "product",
-                select: "product_name type brand isNew",
+                select: "product_name brand isNew",
               },
             },
           ],
@@ -56,10 +56,10 @@ exports.getSingleCommentData = async (id) => {
             },
             {
               path: "service",
-              select: "service_name occassion description price image",
+              select: "service_name type occassion description price image",
               populate: {
                 path: "product",
-                select: "product_name type brand isNew",
+                select: "product_name brand isNew",
               },
             },
           ],
@@ -198,10 +198,10 @@ exports.deleteCommentData = async (id) => {
               },
               {
                 path: "service",
-                select: "service_name occassion description price image",
+                select: "service_name type occassion description price image",
                 populate: {
                   path: "product",
-                  select: "product_name type brand isNew",
+                  select: "product_name brand isNew",
                 },
               },
             ],
