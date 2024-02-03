@@ -59,6 +59,10 @@ const appointmentSchema = new mongoose.Schema({
     },
     required: false,
   },
+  messageReason: {
+    type: String,
+    default: false,
+  }
 });
 
 module.exports = mongoose.model(RESOURCE.APPOINTMENT, appointmentSchema);
