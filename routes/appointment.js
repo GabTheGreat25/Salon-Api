@@ -53,9 +53,26 @@ const appointmentRoutes = [
   },
   {
     method: METHOD.PATCH,
+    path: PATH.ACTIVATE_APPOINTMENT_ID,
+    roles: [ROLE.ADMIN],
+    handler: appointmentController.confirmRebook,
+  },
+  {
+    method: METHOD.PATCH,
     path: PATH.SCHEDULE_EDIT_APPOINTMENT_ID,
-    roles: [ROLE.ADMIN, ROLE.ONLINE_CUSTOMER, ROLE.WALK_IN_CUSTOMER],
+    roles: [
+      ROLE.ADMIN,
+      ROLE.BEAUTICIAN,
+      ROLE.ONLINE_CUSTOMER,
+      ROLE.WALK_IN_CUSTOMER,
+    ],
     handler: appointmentController.updateScheduleAppointment,
+  },
+  {
+    method: METHOD.PATCH,
+    path: PATH.CANCEL_RESCHEDULE_APPOINTMENT_ID,
+    roles: [ROLE.ADMIN, ROLE.ONLINE_CUSTOMER, ROLE.WALK_IN_CUSTOMER],
+    handler: appointmentController.cancelRebook,
   },
   {
     method: METHOD.DELETE,
