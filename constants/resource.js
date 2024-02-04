@@ -19,4 +19,5 @@ module.exports = {
   FEEDBACK: "feedback",
   BRAND: "brand",
   TIME: "time",
+  MONTH: "month",
 };
