@@ -6,6 +6,8 @@ const Requirement = require("../models/requirement");
 const Information = require("../models/information");
 const Verification = require("../models/verification");
 const Comment = require("../models/comment");
+const Month = require("../models/month");
+const Service = require("../models/service");
 const mongoose = require("mongoose");
 const ErrorHandler = require("../utils/errorHandler");
 const bcrypt = require("bcrypt");
@@ -40,39 +42,17 @@ const deleteUserAfterTimeout = async (userId) => {
 };
 
 const sendMonthlyUpdate = async (user) => {
-  let customMessage;
-  const currentDate = new Date();
-  const currentMonth = currentDate.getMonth();
+  const currentMonth = new Date().getMonth();
+  const monthlyMessage = await Month.findOne({ month: currentMonth });
 
-  console.log("Current Month:", currentMonth);
+  const latestService = await Service.findOne()
+    .sort({ created_at: -1 })
+    .lean()
+    .exec();
 
-  if (currentMonth === 0) {
-    customMessage = "Happy New Year! Check out our new products this month!";
-  } else if (currentMonth === 1) {
-    customMessage = "Special discounts available this February!";
-  } else if (currentMonth === 2) {
-    customMessage = "Spring is here! Enjoy our seasonal offerings.";
-  } else if (currentMonth === 3) {
-    customMessage = "Summer is in full swing! Stay cool with our products.";
-  } else if (currentMonth === 4) {
-    customMessage = "May brings hot deals! Don't miss out!";
-  } else if (currentMonth === 5) {
-    customMessage = "Celebrate June with exclusive promotions!";
-  } else if (currentMonth === 6) {
-    customMessage = "Fall into savings this July!";
-  } else if (currentMonth === 7) {
-    customMessage = "Thankful August! Enjoy discounts on us.";
-  } else if (currentMonth === 8) {
-    customMessage = "Thankful September! Enjoy discounts on us.";
-  } else if (currentMonth === 9) {
-    customMessage = "Celebrate October with our festive specials!";
-  } else if (currentMonth === 10) {
-    customMessage =
-      "Happy Halloween! Check out our spooky specials this November.";
-  } else if (currentMonth === 11) {
-    customMessage =
-      "Merry Christmas! Check out our holiday specials this December!";
-  } else customMessage = "Thank you for being our valued customer!";
+  const customMessage = monthlyMessage
+    ? `${monthlyMessage.message} Which is ${latestService?.service_name}`
+    : "Thank you for being our valued customer!";
 
   console.log("Selected Message:", customMessage);
 
