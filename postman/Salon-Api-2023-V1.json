@@ -412,7 +412,7 @@
 								}
 							]
 						},
-						"url": "{{URI}}{{V1}}user/65b65b822924c4eebe1835e4"
+						"url": "{{URI}}{{V1}}user/65b38501ce4c4cd50bdc6909"
 					},
 					"response": []
 				},
@@ -1092,7 +1092,7 @@
 							"mode": "formdata",
 							"formdata": []
 						},
-						"url": "{{URI}}{{V1}}user/6589838958af5aa5c1bf6df7"
+						"url": "{{URI}}{{V1}}user/65bc17f157a5b5f2c978160b"
 					},
 					"response": []
 				},
@@ -1409,7 +1409,7 @@
 								}
 							]
 						},
-						"url": "{{URI}}{{V1}}schedule/65b8810a22e44af1840aeeba"
+						"url": "{{URI}}{{V1}}schedule/65b8e6380341ffd63a4ea47f"
 					},
 					"response": []
 				},
@@ -1543,17 +1543,11 @@
 			"item": [
 				{
 					"name": "GET ALL SERVICE",
-					"id": "a7a66270-9b7b-4d6c-90bc-40af335e6fc0",
+					"id": "0792c748-4eb1-42be-b4f8-c6db21536f76",
 					"protocolProfileBehavior": {
 						"disableBodyPruning": true
 					},
 					"request": {
-						"auth": {
-							"type": "bearer",
-							"bearer": {
-								"token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJVc2VySW5mbyI6eyJlbWFpbCI6InJlbnllbDEyM0BnbWFpbC5jb20iLCJyb2xlcyI6WyJBZG1pbiJdfSwiaWF0IjoxNzA1MTE3MDg2LCJleHAiOjE3MDU3MjE4ODZ9.IR2ynBwMSh9_CzzKyR-I7Re1luQf9xS_kLnXGmkbUWg"
-							}
-						},
 						"method": "GET",
 						"header": [
 							{
@@ -1870,17 +1864,11 @@
 			"item": [
 				{
 					"name": "GET ALL APPOINTMENTS",
-					"id": "1d9ab361-4494-4be8-92c1-3f6a17beb0f1",
+					"id": "6ae2d034-5463-49d6-9bd8-6fd59670613b",
 					"protocolProfileBehavior": {
 						"disableBodyPruning": true
 					},
 					"request": {
-						"auth": {
-							"type": "bearer",
-							"bearer": {
-								"token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJVc2VySW5mbyI6eyJlbWFpbCI6ImpheWJlYXV0aWNpYW5AZ21haWwuY29tIiwicm9sZXMiOlsiQmVhdXRpY2lhbiJdfSwiaWF0IjoxNzA1Mjk0NDYyLCJleHAiOjE3MDU4OTkyNjJ9.14lmXroBm_NWuWapdjpHUHhVP_EUEOmKyKeKJbJhGwo"
-							}
-						},
 						"method": "GET",
 						"header": [
 							{
@@ -1922,7 +1910,7 @@
 								}
 							]
 						},
-						"url": "{{URI}}{{V1}}appointment/65a9578e0670a02c7af34804"
+						"url": "{{URI}}{{V1}}appointment/65bf05a1ed2b2744fa2c1f83"
 					},
 					"response": []
 				},
@@ -1948,95 +1936,7 @@
 						],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n    \"beautician\": \"65a4cddfaaca7a45bc074d60\",\r\n    \"customer\": \"65a55ceb3b8a4c60869fabbd\",\r\n    \"service\": [\"65a77704bd2fe98833caf2ba\", \"65a776cebd2fe98833caf2b2\"],\r\n    \"date\": \"2024-01-19\",\r\n    \"time\": \"12:55 AM\",\r\n    \"price\": 6000,\r\n    \"extraFee\": 500,\r\n    \"note\": \"Just make it simple\",\r\n    \"status\": \"pending\",\r\n    \"payment\": \"Cash\"\r\n}"
-						},
-						"url": "{{URI}}{{V1}}appointments"
-					},
-					"response": []
-				},
-				{
-					"name": "CREATE APPOINTMENT GCASH",
-					"id": "b3cccc0c-cce0-4156-91ce-74ea22bfd260",
-					"protocolProfileBehavior": {
-						"disableBodyPruning": true
-					},
-					"request": {
-						"method": "POST",
-						"header": [
-							{
-								"key": "Content-Type",
-								"value": "application/json",
-								"type": "text"
-							},
-							{
-								"key": "Authorization",
-								"value": "{{Bearer}}",
-								"type": "text"
-							}
-						],
-						"body": {
-							"mode": "formdata",
-							"formdata": [
-								{
-									"key": "beautician",
-									"value": "657aafef2b97d4e01843a215",
-									"type": "text"
-								},
-								{
-									"key": "customer",
-									"value": "657c5b0858bbe7f79d54187a",
-									"type": "text"
-								},
-								{
-									"key": "service",
-									"value": "657ad43c284b15421ec0c643, 657af0aa3e7ece017501d980",
-									"type": "text"
-								},
-								{
-									"key": "date",
-									"value": "2023-12-27",
-									"type": "text"
-								},
-								{
-									"key": "time",
-									"value": "05:30 PM",
-									"type": "text"
-								},
-								{
-									"key": "price",
-									"value": "6000",
-									"type": "text"
-								},
-								{
-									"key": "extraFee",
-									"value": "500",
-									"type": "text"
-								},
-								{
-									"key": "note",
-									"value": "Just make it simple",
-									"type": "text"
-								},
-								{
-									"key": "status",
-									"value": "pending",
-									"type": "text"
-								},
-								{
-									"key": "payment",
-									"value": "Gcash",
-									"type": "text"
-								},
-								{
-									"key": "image",
-									"type": "file",
-									"fileNotInWorkingDirectoryWarning": "This file isn't in your working directory. Teammates you share this request with won't be able to use this file. To make collaboration easier you can setup your working directory in Settings.",
-									"filesNotInWorkingDirectory": [
-										"/C:/Users/gabriel/Downloads/bwahahaha.png"
-									],
-									"src": "/C:/Users/gabriel/Downloads/bwahahaha.png"
-								}
-							]
+							"raw": "{\r\n    \"beautician\": [\"65b384dbce4c4cd50bdc6901\", \"65b65b822924c4eebe1835e4\"],\r\n    \"customer\": \"65b38501ce4c4cd50bdc6909\",\r\n    \"service\": [\"65baed8b90f7a1abb147e421\"],\r\n    \"date\": \"2024-02-20\",\r\n    \"time\": [\"01:00 PM\", \"02:00 PM\"],\r\n    \"price\": 6000,\r\n    \"extraFee\": 500,\r\n    \"note\": \"Just make it simple\",\r\n    \"status\": \"pending\",\r\n    \"payment\": \"Cash\"\r\n}"
 						},
 						"url": "{{URI}}{{V1}}appointments"
 					},
@@ -2078,6 +1978,73 @@
 					"response": []
 				},
 				{
+					"name": "UPDATE  SCHEDULE APPOINTMENT",
+					"id": "df258cbf-b1ae-4473-ad79-66aa000f7749",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "PATCH",
+						"header": [
+							{
+								"warning": "This is a duplicate header and will be overridden by the Content-Type header generated by Postman.",
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							},
+							{
+								"key": "Authorization",
+								"value": "{{Bearer}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"beautician\": [\"65b384dbce4c4cd50bdc6901\", \"65b65b822924c4eebe1835e4\"],\r\n    \"customer\": \"65b38501ce4c4cd50bdc6909\",\r\n    \"service\": [\"65baed8b90f7a1abb147e421\"],\r\n    \"date\": \"2024-02-22\",\r\n    \"time\": [\"01:00 PM\", \"02:00 PM\"],\r\n    \"price\": 6000,\r\n    \"extraFee\": 500,\r\n    \"note\": \"Just make it simple\",\r\n    \"status\": \"pending\",\r\n    \"payment\": \"Cash\",\r\n    \"isRebooked\": false\r\n}"
+						},
+						"url": "{{URI}}{{V1}}/appointment/schedule/edit/65bf5540d7e308f82dd0ed2d"
+					},
+					"response": []
+				},
+				{
+					"name": "CONFIRM REBOOK",
+					"id": "521e9962-10b0-45bc-89d8-aeeaa23a4af9",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "PATCH",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "{{Bearer}}",
+								"type": "text"
+							}
+						],
+						"url": "{{URI}}{{V1}}/appointment/activate/65bf3852df7d4a9fb7c94b32"
+					},
+					"response": []
+				},
+				{
+					"name": "CANCEL REBOOK",
+					"id": "ff199815-fb5e-4a76-ba92-41d70a984e90",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "PATCH",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "{{Bearer}}",
+								"type": "text"
+							}
+						],
+						"url": "{{URI}}{{V1}}/appointment/cancel/65bf3852df7d4a9fb7c94b32"
+					},
+					"response": []
+				},
+				{
 					"name": "DELETE APPOINTMENT",
 					"id": "9dfbbc39-1fef-40af-bc19-bf46be8034dc",
 					"protocolProfileBehavior": {
@@ -2096,7 +2063,7 @@
 							"mode": "formdata",
 							"formdata": []
 						},
-						"url": "{{URI}}{{V1}}appointment/657af37c17361748299bffa9"
+						"url": "{{URI}}{{V1}}appointment/65bf3cde7e973f4356975780"
 					},
 					"response": []
 				},
