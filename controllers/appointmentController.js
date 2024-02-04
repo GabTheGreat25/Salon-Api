@@ -54,6 +54,18 @@ exports.createNewAppointment = [
   }),
 ];
 
+exports.confirmRebook = asyncHandler(async (req, res, next) => {
+  const appointmentId = req.params.id;
+
+  await appointmentsService.confirmRebooked(appointmentId);
+
+  SuccessHandler(
+    res,
+    `Customer's Rebook has been approved by the admin.`,
+    appointmentId
+  );
+});
+
 exports.updateAppointment = [
   checkRequiredFields(["service", "price"]),
   asyncHandler(async (req, res, next) => {
@@ -71,8 +83,20 @@ exports.updateAppointment = [
   }),
 ];
 
+exports.cancelRebook = asyncHandler(async (req, res, next) => {
+  const appointmentId = req.params.id;
+
+  await appointmentsService.cancelRebooked(appointmentId);
+
+  SuccessHandler(
+    res,
+    `Customer's Rebook has been denied by the admin.`,
+    appointmentId
+  );
+});
+
 exports.updateScheduleAppointment = [
-  checkRequiredFields(["date", "time"]),
+  checkRequiredFields(["date"]),
   asyncHandler(async (req, res, next) => {
     const appointment = await appointmentsService.updateScheduleAppointmentData(
       req,
