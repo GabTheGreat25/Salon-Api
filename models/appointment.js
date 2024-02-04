@@ -62,7 +62,26 @@ const appointmentSchema = new mongoose.Schema({
   messageReason: {
     type: String,
     default: false,
-  }
+  },
+  isRebooked: {
+    type: Boolean,
+    default: true,
+  },
+  originalData: {
+    beautician: [
+      {
+        type: mongoose.Schema.Types.ObjectId,
+      },
+    ],
+    date: {
+      type: Date,
+    },
+    time: [
+      {
+        type: String,
+      },
+    ],
+  },
 });
 
 module.exports = mongoose.model(RESOURCE.APPOINTMENT, appointmentSchema);
