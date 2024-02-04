@@ -49,4 +49,7 @@ module.exports = {
   TIMES: "/times",
   TIME_ID: "/time/:id",
   TIME_EDIT_ID: "/time/edit/:id",
+  MONTHS: "/months",
+  MONTH_ID: "/month/:id",
+  EDIT_MONTH_ID: "/month/edit/:id",
 };
