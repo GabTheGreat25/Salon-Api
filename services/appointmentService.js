@@ -53,6 +53,34 @@ exports.getSingleAppointmentData = async (id) => {
   return appointment;
 };
 
+exports.updateAppointmentData = async (req, res, id) => {
+  if (!mongoose.Types.ObjectId.isValid(id))
+    throw new ErrorHandler(`Invalid appointment ID: ${id}`);
+
+  const updatedAppointment = await Appointment.findByIdAndUpdate(
+    id,
+    {
+      ...req.body,
+    },
+    {
+      new: true,
+      runValidators: true,
+    }
+  )
+    .populate({
+      path: "beautician customer",
+      select: "name roles contact_number",
+    })
+    .populate({ path: "service", select: "service_name image" })
+    .lean()
+    .exec();
+
+  if (!updatedAppointment)
+    throw new ErrorHandler(`Appointment not found with ID: ${id}`);
+
+  return updatedAppointment;
+};
+
 exports.createAppointmentData = async (req, res) => {
   let appointment;
 
@@ -66,8 +94,15 @@ exports.createAppointmentData = async (req, res) => {
       "Appointment slot is already booked by another customer."
     );
 
+  const originalData = {
+    beautician: req.body.beautician || [],
+    date: req.body.date || null,
+    time: req.body.time || [],
+  };
+
   appointment = await Appointment.create({
     ...req.body,
+    originalData,
   });
 
   await Appointment.populate(appointment, [
@@ -83,7 +118,6 @@ exports.createAppointmentData = async (req, res) => {
   );
 
   const deletionTimeForOnlineCustomer =
-    // appointmentDateTime.getTime() - 1 * 60 * 1000;
     appointmentDateTime.getTime() - 60 * 60 * 1000;
   const deletionTimeForWalkInCustomer =
     appointmentDateTime.getTime() - 30 * 60 * 1000;
@@ -119,50 +153,56 @@ exports.createAppointmentData = async (req, res) => {
     }, Math.max(0, deletionTimeForWalkInCustomer - currentDate.getTime()));
   }
 
-  const smsMessage = `Dear ${appointment.customer.name}, your appointment was successfully booked. Please wait for the admin to review and confirm. Thank you for choosing Lhanlee Salon.`;
-
-  await sendSMS(
-    `+63${appointment.customer.contact_number.substring(1)}`,
-    smsMessage
-  );
+  const smsMessage = `Dear ${appointment.customer.name}, your appointment was successfully booked. Thank you for choosing Lhanlee Salon.`;
+  console.log(smsMessage);
+  // await sendSMS(
+  //   `+63${appointment.customer.contact_number.substring(1)}`,
+  //   smsMessage
+  // );
 
   return { appointment, transaction, verification };
 };
 
-exports.updateAppointmentData = async (req, res, id) => {
-  if (!mongoose.Types.ObjectId.isValid(id))
-    throw new ErrorHandler(`Invalid appointment ID: ${id}`);
+exports.confirmRebooked = async (appointmentId) => {
+  const appointment = await Appointment.findById(appointmentId).populate(
+    "customer",
+    "name contact_number"
+  );
 
-  const updatedAppointment = await Appointment.findByIdAndUpdate(
-    id,
-    {
-      ...req.body,
-      service: serviceValues,
-      beautician: beauticianValues,
-      time: timeValues,
-    },
-    {
-      new: true,
-      runValidators: true,
-    }
-  )
-    .populate({
-      path: "beautician customer",
-      select: "name roles contact_number",
-    })
-    .populate({ path: "service", select: "service_name image" })
-    .lean()
-    .exec();
+  if (!appointment)
+    throw new ErrorHandler(`Appointment not found with ID: ${appointmentId}`);
 
-  if (!updatedAppointment)
-    throw new ErrorHandler(`Appointment not found with ID: ${id}`);
+  if (!appointment.isRebooked) {
+    appointment.isRebooked = true;
+    await appointment.save();
 
-  return updatedAppointment;
+    const smsMessage = `Dear ${appointment.customer.name}, Your rebooked has been confirmed. Thank you for choosing Lhanlee Salon!`;
+
+    console.log(smsMessage);
+
+    // await sendSMS(
+    //   `+63${appointment.customer.contact_number.substring(1)}`,
+    //   smsMessage
+    // );
+  } else throw new ErrorHandler(`Appointment is not marked for rebooking`);
+
+  return appointment;
 };
 
 exports.updateScheduleAppointmentData = async (req, res, id) => {
   if (!mongoose.Types.ObjectId.isValid(id))
     throw new ErrorHandler(`Invalid appointment ID: ${id}`);
+
+  const appointment = await Appointment.findById(id);
+
+  if (!appointment)
+    throw new ErrorHandler(`Appointment not found with ID: ${id}`);
+
+  appointment.originalData = {
+    beautician: appointment.beautician,
+    date: appointment.date,
+    time: appointment.time,
+  };
 
   const existingAppointmentsWithSameDateTime = await Appointment.find({
     date: req.body.date,
@@ -186,34 +226,69 @@ exports.updateScheduleAppointmentData = async (req, res, id) => {
     );
   });
 
-  if (isSlotBooked) {
+  if (isSlotBooked)
     throw new ErrorHandler(
       "Appointment slot is already booked by another customer."
     );
-  }
 
   const updatedScheduleAppointment = await Appointment.findByIdAndUpdate(
     id,
-    {
-      ...req.body,
-    },
+    { ...req.body, isRebooked: false },
     {
       new: true,
       runValidators: true,
     }
-  )
-    .populate({
-      path: "beautician customer",
-      select: "name roles contact_number",
-    })
-    .populate({ path: "service", select: "service_name image" })
-    .lean()
-    .exec();
+  ).populate("customer", "name contact_number");
 
-  if (!updatedScheduleAppointment)
-    throw new ErrorHandler(`Appointment not found with ID: ${id}`);
+  const smsMessage = `Dear ${updatedScheduleAppointment.customer.name}, Your appointment has been updated. Please wait for the admin to review and confirm. Thank you for choosing Lhanlee Salon!`;
+
+  console.log(smsMessage);
+
+  // await sendSMS(
+  //   `+63${updatedScheduleAppointment.customer.contact_number.substring(1)}`,
+  //   smsMessage
+  // );
 
   return updatedScheduleAppointment;
+};
+
+exports.cancelRebooked = async (appointmentId) => {
+  const appointment = await Appointment.findById(appointmentId).populate(
+    "customer",
+    "name contact_number date"
+  );
+
+  if (!appointment)
+    throw new ErrorHandler(`Appointment not found with ID: ${appointmentId}`);
+
+  if (!appointment.isRebooked) {
+    await Appointment.findByIdAndUpdate(
+      appointmentId,
+      {
+        beautician: appointment.originalData.beautician,
+        date: appointment.originalData.date,
+        time: appointment.originalData.time,
+        isRebooked: true,
+      },
+      {
+        new: true,
+        runValidators: true,
+      }
+    );
+
+    const smsMessage = `Dear ${appointment.customer.name}, Your rebooking has been denied. Your appointment has been reverted to its original date and time. Thank you for your understading!`;
+
+    console.log(smsMessage);
+
+    // await sendSMS(
+    //   `+63${appointment.customer.contact_number.substring(1)}`,
+    //   smsMessage
+    // );
+
+    const revertedAppointment = await Appointment.findById(appointmentId);
+
+    return revertedAppointment;
+  } else throw new ErrorHandler(`Appointment is not marked for rebooking`);
 };
 
 exports.deleteAppointmentData = async (id) => {
