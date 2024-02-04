@@ -17,12 +17,15 @@ const informationSchema = new mongoose.Schema({
       default: "None",
     },
   ],
-  product_preference: [
-    {
-      type: String,
-      default: "None",
-    },
-  ],
+  othersMessage: {
+    type: String,
+    required: [
+      function () {
+        return this.allergy === "Others";
+      },
+      "Please specify the type of allergy",
+    ],
+  },
   messageDate: {
     type: String,
     enum: [

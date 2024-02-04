@@ -420,6 +420,7 @@ exports.createUserData = async (req, res) => {
       allergy: req.body.allergy,
       product_preference: req.body.product_preference,
       created_at: currentDate,
+      othersMessage: req.body.othersMessage,
       messageDate: req.body.messageDate || "1 minute",
     });
 
@@ -555,6 +556,7 @@ exports.updateUserData = async (req, res, id) => {
       {
         description: req.body.description,
         allergy: req.body.allergy,
+        othersMessage: req.body.othersMessage,
         product_preference: req.body.product_preference,
         messageDate: req.body.messageDate,
       },
