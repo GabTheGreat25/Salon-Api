@@ -651,7 +651,7 @@
 							"formdata": [
 								{
 									"key": "name",
-									"value": "walkincustomergab",
+									"value": "walkincustomergabz",
 									"type": "text"
 								},
 								{
@@ -661,7 +661,7 @@
 								},
 								{
 									"key": "email",
-									"value": "walkincustomergab@gmail.com",
+									"value": "walkincustomergabz@gmail.com",
 									"type": "text"
 								},
 								{
@@ -684,9 +684,9 @@
 									"type": "file",
 									"fileNotInWorkingDirectoryWarning": "This file isn't in your working directory. Teammates you share this request with won't be able to use this file. To make collaboration easier you can setup your working directory in Settings.",
 									"filesNotInWorkingDirectory": [
-										"/C:/Users/gabriel/Downloads/64f501db467c44445285591ab8ca8512.jpg"
+										"/C:/Users/gabriel/Downloads/Hotpot.png"
 									],
-									"src": "/C:/Users/gabriel/Downloads/64f501db467c44445285591ab8ca8512.jpg"
+									"src": "/C:/Users/gabriel/Downloads/Hotpot.png"
 								},
 								{
 									"key": "description",
@@ -695,12 +695,12 @@
 								},
 								{
 									"key": "allergy",
-									"value": "Dove, Sunsilk, Palmolive",
+									"value": "Others",
 									"type": "text"
 								},
 								{
-									"key": "product_preference",
-									"value": "None",
+									"key": "othersMessage",
+									"value": "Kapogian ko",
 									"type": "text"
 								}
 							]
@@ -1092,7 +1092,7 @@
 							"mode": "formdata",
 							"formdata": []
 						},
-						"url": "{{URI}}{{V1}}user/65bc17f157a5b5f2c978160b"
+						"url": "{{URI}}{{V1}}user/65bfc05b8b203d42e8751359"
 					},
 					"response": []
 				},
