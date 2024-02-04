@@ -24,6 +24,7 @@ const transactions = require("./routes/transaction");
 const feedbacks = require("./routes/feedback");
 const brands = require("./routes/brand");
 const times = require("./routes/time");
+const months = require("./routes/month");
 const { STATUSCODE } = require("./constants/index");
 const connectDB = require("./config/connectDB");
 const PORT = process.env.PORT || 4000;
@@ -52,7 +53,8 @@ app.use(
   delivery,
   appointments,
   comments,
-  transactions
+  transactions,
+  months
 );
 
 app.all("*", (req, res) => {
