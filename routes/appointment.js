@@ -75,6 +75,17 @@ const appointmentRoutes = [
     handler: appointmentController.cancelRebook,
   },
   {
+    method: METHOD.PATCH,
+    path: PATH.BEAUTICIAN_EDIT_APPOINTMENT_ID,
+    roles: [
+      ROLE.ADMIN,
+      ROLE.BEAUTICIAN,
+      ROLE.ONLINE_CUSTOMER,
+      ROLE.WALK_IN_CUSTOMER,
+    ],
+    handler: appointmentController.updateBeauticianAppointment,
+  },
+  {
     method: METHOD.DELETE,
     path: PATH.APPOINTMENT_ID,
     roles: [ROLE.ADMIN],
