@@ -34,6 +34,7 @@ module.exports = {
   ACTIVATE_APPOINTMENT_ID: "/appointment/activate/:id",
   CANCEL_RESCHEDULE_APPOINTMENT_ID: "/appointment/cancel/:id",
   SCHEDULE_EDIT_APPOINTMENT_ID: "/appointment/schedule/edit/:id",
+  BEAUTICIAN_EDIT_APPOINTMENT_ID: "/appointment/beautician/edit/:id",
   TRANSACTIONS: "/transactions",
   TRANSACTION_ID: "/transaction/:id",
   EDIT_TRANSACTION_ID: "/transaction/edit/:id",
