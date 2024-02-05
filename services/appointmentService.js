@@ -116,8 +116,6 @@ exports.createAppointmentData = async (req, res) => {
     );
   }
 
-  console.log(req.files);
-
   if (image.length === STATUSCODE.ZERO)
     throw new ErrorHandler("At least one image is required");
 
