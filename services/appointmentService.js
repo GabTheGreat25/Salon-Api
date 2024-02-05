@@ -118,6 +118,7 @@ exports.createAppointmentData = async (req, res) => {
   );
 
   const deletionTimeForOnlineCustomer =
+    // appointmentDateTime.getTime() - 60 * 1000;
     appointmentDateTime.getTime() - 60 * 60 * 1000;
   const deletionTimeForWalkInCustomer =
     appointmentDateTime.getTime() - 30 * 60 * 1000;
@@ -159,6 +160,17 @@ exports.createAppointmentData = async (req, res) => {
   //   `+63${appointment.customer.contact_number.substring(1)}`,
   //   smsMessage
   // );
+
+  const reminderTime = appointmentDateTime.getTime() + 2 * 60 * 60 * 1000;
+
+  setTimeout(async () => {
+    const smsMessage = `Dear ${appointment.customer.name}, Just to remind you your appointment is in 2 hours.`;
+    console.log(smsMessage);
+    await sendSMS(
+      `+63${appointment.customer.contact_number.substring(1)}`,
+      smsMessage
+    );
+  }, Math.max(0, reminderTime - currentDate.getTime()));
 
   return { appointment, transaction, verification };
 };
@@ -250,6 +262,62 @@ exports.updateScheduleAppointmentData = async (req, res, id) => {
   // );
 
   return updatedScheduleAppointment;
+};
+
+exports.updateBeauticianAppointmentData = async (req, res, id) => {
+  if (!mongoose.Types.ObjectId.isValid(id))
+    throw new ErrorHandler(`Invalid appointment ID: ${id}`);
+
+  const originalAppointment = await Appointment.findById(id).lean().exec();
+
+  if (!originalAppointment)
+    throw new ErrorHandler(`Appointment not found with ID: ${id}`);
+
+  const existingBeauticianCount = originalAppointment.beautician.length;
+
+  if (
+    req.body.beautician &&
+    req.body.beautician.length !== existingBeauticianCount
+  ) {
+    throw new ErrorHandler(
+      `Invalid number of beauticians. Please select exactly ${existingBeauticianCount} beautician(s) for the appointment.`
+    );
+  }
+
+  const updatedAppointment = await Appointment.findByIdAndUpdate(
+    id,
+    { ...req.body },
+    { new: true, runValidators: true }
+  )
+    .populate({
+      path: "beautician customer",
+      select: "name roles contact_number",
+    })
+    .populate({ path: "service", select: "service_name image" })
+    .lean()
+    .exec();
+
+  if (!updatedAppointment)
+    throw new ErrorHandler(`Appointment not found with ID: ${id}`);
+
+  const originalBeauticians = originalAppointment.beautician.map((beautician) =>
+    beautician.toString()
+  );
+  const updatedBeauticians = updatedAppointment.beautician.map((beautician) =>
+    beautician.toString()
+  );
+
+  if (originalBeauticians.join() !== updatedBeauticians.join()) {
+    const newBeauticians = updatedAppointment.beautician
+      .map((beautician) => beautician.name)
+      .join(", ");
+    const smsMessage = `Dear ${updatedAppointment.customer.name}, your beautician(s) have been changed. Your new beautician(s) is/are: ${newBeauticians}. We understand that changes like these might impact your experience, and we sincerely apologize for any inconvenience caused. Our commitment is to ensure you receive the highest level of service, and we believe your new beautician(s) will provide you with an exceptional experience. Thank you for your understanding and continued trust in our salon. Should you have any questions or concerns, please feel free to reach out to us.`;
+
+    console.log(smsMessage);
+    // await sendSMS(`+63${updatedAppointment.customer.contact_number.substring(1)}`, smsMessage);
+  }
+
+  return updatedAppointment;
 };
 
 exports.cancelRebooked = async (appointmentId) => {
