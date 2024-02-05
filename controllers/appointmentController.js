@@ -34,6 +34,7 @@ exports.getSingleAppointment = asyncHandler(async (req, res, next) => {
 });
 
 exports.createNewAppointment = [
+  upload.array("image"),
   checkRequiredFields([
     "service",
     "beautician",

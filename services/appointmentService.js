@@ -100,6 +100,27 @@ exports.createAppointmentData = async (req, res) => {
     time: req.body.time || [],
   };
 
+  let image = [];
+  if (req.files && Array.isArray(req.files)) {
+    image = await Promise.all(
+      req.files.map(async (file) => {
+        const result = await cloudinary.uploader.upload(file.path, {
+          public_id: file.filename,
+        });
+        return {
+          public_id: result.public_id,
+          url: result.secure_url,
+          originalname: file.originalname,
+        };
+      })
+    );
+  }
+
+  console.log(req.files);
+
+  if (image.length === STATUSCODE.ZERO)
+    throw new ErrorHandler("At least one image is required");
+
   appointment = await Appointment.create({
     ...req.body,
     originalData,
@@ -130,6 +151,7 @@ exports.createAppointmentData = async (req, res) => {
       appointment: appointment._id,
       status: req.body.status,
       payment: req.body.payment,
+      image: image,
     });
   await appointment.save();
   appointment.transaction = transaction._id;

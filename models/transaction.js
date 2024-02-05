@@ -18,34 +18,48 @@ const transactionSchema = new mongoose.Schema({
     type: String,
     default: "Cash",
     enum: {
-      values: ["Cash", "Gcash"],
+      values: ["Cash"],
     },
+  },
+  qrCode: {
+    type: String,
+    required: false,
   },
   image: [
     {
       public_id: {
         type: String,
-        required: function () {
-          return this.payment === "Gcash";
-        },
+        required: true,
       },
       url: {
         type: String,
-        required: function () {
-          return this.payment === "Gcash";
-        },
+        required: true,
       },
       originalname: {
         type: String,
-        required: function () {
-          return this.payment === "Gcash";
-        },
+        required: true,
       },
     },
   ],
-  qrCode: {
-    type: String,
-    required: false,
+  image: [
+    {
+      public_id: {
+        type: String,
+        required: true,
+      },
+      url: {
+        type: String,
+        required: true,
+      },
+      originalname: {
+        type: String,
+        required: true,
+      },
+    },
+  ],
+  hasDiscount: {
+    type: Boolean,
+    default: false,
   },
 });
 

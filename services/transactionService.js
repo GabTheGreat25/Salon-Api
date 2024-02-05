@@ -35,11 +35,11 @@ exports.getAllTransactionData = async () => {
           select: "service_name type occassion description price image",
           populate: {
             path: "product",
-            select: "product_name brand isNew",
+            select: "product_name brand isNew image",
           },
         },
       ],
-      select: "date time price extraFee note",
+      select: "date time price extraFee note image",
     })
     .lean()
     .exec();
@@ -60,11 +60,11 @@ exports.getSingleTransactionData = async (id) => {
           select: "service_name type occassion description price image",
           populate: {
             path: "product",
-            select: "product_name brand isNew",
+            select: "product_name brand isNew image",
           },
         },
       ],
-      select: "date time price extraFee note",
+      select: "date time price extraFee note image",
     })
     .lean()
     .exec();
@@ -90,11 +90,11 @@ exports.updateTransactionData = async (req, res, id) => {
           select: "service_name type occassion description price image",
           populate: {
             path: "product",
-            select: "product_name brand isNew",
+            select: "product_name brand isNew image",
           },
         },
       ],
-      select: "date time price extraFee note",
+      select: "date time price extraFee note image",
     })
     .lean()
     .exec();
@@ -107,7 +107,10 @@ exports.updateTransactionData = async (req, res, id) => {
 
   const updatedTransaction = await Transaction.findOneAndUpdate(
     { _id: id },
-    req.body,
+    {
+      ...req.body,
+      hasDiscount: true,
+    },
     {
       new: true,
       runValidators: true,
@@ -138,11 +141,19 @@ exports.updateTransactionData = async (req, res, id) => {
   }
 
   if (confirm) {
-    const totalFee =
-      existingTransaction.appointment.price +
-      existingTransaction.appointment.extraFee;
+    const discountAmount = updatedTransaction.hasDiscount === true ? 0.2 : 0;
+    const adjustedTotalPrice =
+      existingTransaction.appointment.price -
+      existingTransaction.appointment.price * discountAmount;
 
-    const adjustedTotalFee = totalFee - 150;
+    await Appointment.findByIdAndUpdate(
+      existingTransaction.appointment._id,
+      { price: adjustedTotalPrice },
+      { new: true, runValidators: true }
+    );
+
+    const totalFee =
+      adjustedTotalPrice + existingTransaction.appointment.extraFee;
 
     const formattedReceipt =
       `========================================\n` +
@@ -167,7 +178,7 @@ exports.updateTransactionData = async (req, res, id) => {
       `   Name: ${existingTransaction.appointment.beautician.name}\n` +
       `----------------------------------------\n` +
       ` Payment: ${updatedTransaction.payment}\n` +
-      ` Total Fee: ${adjustedTotalFee}\n` +
+      ` Total Fee: ${totalFee}\n` +
       `----------------------------------------\n` +
       ` Thank you for choosing our services, ${existingTransaction.appointment.customer.name}!\n` +
       ` Roles: ${existingTransaction.appointment.customer.roles.join(", ")}\n` +
@@ -179,54 +190,32 @@ exports.updateTransactionData = async (req, res, id) => {
 
     updatedTransaction.qrCode = await generatePinkQRCode(formattedReceipt);
 
-    const smsMessage = `Dear ${existingTransaction.appointment.customer.name}, your transaction has been approved! You can review your transaction details by checking your history. Thank you for choosing Lhanlee Salon.`;
+    const smsMessage = updatedTransaction.hasDiscount
+      ? `Dear ${existingTransaction.appointment.customer.name}, your transaction has been approved! You received a 20% discount. Thank you for choosing Lhanlee Salon.`
+      : `Dear ${existingTransaction.appointment.customer.name}, your transaction has been approved! You can review your transaction details by checking your history. Thank you for choosing Lhanlee Salon.`;
 
-    await sendSMS(
-      `+63${existingTransaction.appointment.customer.contact_number.substring(
-        1
-      )}`,
-      smsMessage
-    );
+    console.log(smsMessage);
 
-    // setTimeout(async () => {
-    //   const additionalSmsMessage = `Dear ${existingTransaction.appointment.customer.name}, it's been a while since your last visit. We miss you! Come and visit us again. Thank you for choosing Lhanlee Salon.`;
+    // await sendSMS(
+    //   `+63${existingTransaction.appointment.customer.contact_number.substring(
+    //     1
+    //   )}`,
+    //   smsMessage
+    // );
 
-    //   await sendSMS(
-    //     `+63${existingTransaction.appointment.customer.contact_number.substring(
-    //       1
-    //     )}`,
-    //     additionalSmsMessage
-    //   );
-    // }, 2 * 60 * 1000); // 2minutes
-
-    const delayInMilliseconds = 2 * 30 * 24 * 60 * 60 * 1000;
-    const timeoutInterval = 2 * 60 * 60 * 1000;
-
-    const sendSmsAfterDelay = async () => {
+    setTimeout(async () => {
       const additionalSmsMessage = `Dear ${existingTransaction.appointment.customer.name}, it's been a while since your last visit. We miss you! Come and visit us again. Thank you for choosing Lhanlee Salon.`;
 
-      await sendSMS(
-        `+63${existingTransaction.appointment.customer.contact_number.substring(
-          1
-        )}`,
-        additionalSmsMessage
-      );
-    };
+      console.log(additionalSmsMessage);
 
-    const runTimeouts = async () => {
-      let remainingDelay = delayInMilliseconds;
-
-      while (remainingDelay > 0) {
-        const currentDelay = Math.min(remainingDelay, timeoutInterval);
-        await new Promise((resolve) => setTimeout(resolve, currentDelay));
-
-        await sendSmsAfterDelay();
-
-        remainingDelay -= currentDelay;
-      }
-    };
-
-    runTimeouts();
+      // await sendSMS(
+      //   `+63${existingTransaction.appointment.customer.contact_number.substring(
+      //     1
+      //   )}`,
+      //   additionalSmsMessage
+      // );
+    }, 20 * 24 * 60 * 60 * 1000);
+    // }, 2 * 30 * 24 * 60 * 60 * 1000);
 
     await updatedTransaction.save();
   } else {
@@ -262,7 +251,7 @@ exports.deleteTransactionData = async (id) => {
           path: "service",
           select: "service_name type occassion description price image",
         },
-        select: "date time price extraFee note",
+        select: "date time price extraFee note image",
       })
       .lean()
       .exec(),
