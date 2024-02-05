@@ -112,6 +112,24 @@ exports.updateScheduleAppointment = [
   }),
 ];
 
+exports.updateBeauticianAppointment = [
+  checkRequiredFields(["beautician"]),
+  asyncHandler(async (req, res, next) => {
+    const appointment =
+      await appointmentsService.updateBeauticianAppointmentData(
+        req,
+        res,
+        req.params.id
+      );
+
+    return SuccessHandler(
+      res,
+      `Appointment of ${appointment?.customer?.name} with ID ${appointment?._id} is updated`,
+      appointment
+    );
+  }),
+];
+
 exports.deleteAppointment = asyncHandler(async (req, res, next) => {
   const appointment = await appointmentsService.getSingleAppointmentData(
     req.params.id
