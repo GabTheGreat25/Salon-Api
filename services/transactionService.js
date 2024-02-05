@@ -109,7 +109,6 @@ exports.updateTransactionData = async (req, res, id) => {
     { _id: id },
     {
       ...req.body,
-      hasDiscount: true,
     },
     {
       new: true,
