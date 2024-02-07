@@ -43,7 +43,6 @@ exports.createNewService = [
     "price",
     "duration",
     "type",
-    "occassion",
     "image",
   ]),
   asyncHandler(async (req, res) => {
@@ -66,7 +65,6 @@ exports.updateService = [
     "price",
     "duration",
     "type",
-    "occassion",
     "image",
   ]),
   asyncHandler(async (req, res, next) => {
