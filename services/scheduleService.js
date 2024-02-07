@@ -60,10 +60,7 @@ exports.confirmLeaveNote = async (scheduleId) => {
 };
 
 exports.createScheduleData = async (req, res) => {
-  const { isLeave, leaveNote, date, beautician } = req.body;
-
-  if (!isLeave || !leaveNote)
-    throw new ErrorHandler("Leave details are required");
+  const { isLeave, leaveNote, date, beautician, status } = req.body;
 
   const existingSchedule = await Schedule.findOne({
     beautician: beautician,
@@ -76,6 +73,7 @@ exports.createScheduleData = async (req, res) => {
   const schedule = await Schedule.create({
     beautician: beautician,
     date: date,
+    status: status,
     isLeave: isLeave,
     leaveNote: leaveNote,
     leaveNoteConfirmed: false,
@@ -120,9 +118,53 @@ exports.updateScheduleData = async (req, res, id) => {
     throw new ErrorHandler(`Invalid schedule ID: ${id}`);
   }
 
-  const { date, leaveNote } = req.body;
+  const { date, beautician } = req.body;
+
   const existingSchedule = await Schedule.findOne({
-    beautician: req.body.beautician,
+    beautician: beautician,
+    date: date,
+    _id: { $ne: id },
+  });
+
+  if (existingSchedule)
+    throw new ErrorHandler(
+      "Beautician already has a leave schedule on the selected date"
+    );
+
+  await Schedule.findByIdAndUpdate(
+    id,
+    {
+      $set: {
+        beautician: beautician,
+        date: date,
+      },
+    },
+    {
+      new: true,
+      runValidators: true,
+    }
+  );
+
+  const updatedSchedule = await Schedule.findById(id)
+    .populate({ path: "beautician", select: "name" })
+    .lean()
+    .exec();
+
+  if (!updatedSchedule)
+    throw new ErrorHandler(`Schedule not found with ID: ${id}`);
+
+  return { updatedSchedule };
+};
+
+exports.updateScheduleAdminData = async (req, res, id) => {
+  if (!mongoose.Types.ObjectId.isValid(id)) {
+    throw new ErrorHandler(`Invalid schedule ID: ${id}`);
+  }
+
+  const { isLeave, leaveNote, date, beautician, status } = req.body;
+
+  const existingSchedule = await Schedule.findOne({
+    beautician: beautician,
     date: date,
     _id: { $ne: id },
   });
@@ -138,6 +180,10 @@ exports.updateScheduleData = async (req, res, id) => {
       $set: {
         date: date,
         leaveNote: leaveNote,
+        status: status,
+        isLeave: isLeave,
+        leaveNote: leaveNote,
+        leaveNoteConfirmed: true,
       },
     },
     {

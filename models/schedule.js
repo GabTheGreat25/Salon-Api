@@ -11,6 +11,11 @@ const scheduleSchema = new mongoose.Schema({
     type: Date,
     required: [true, "Please enter a date"],
   },
+  status: {
+    type: String,
+    enum: ["leave", "absent"],
+    default: "leave",
+  },
   isLeave: {
     type: Boolean,
     default: false,

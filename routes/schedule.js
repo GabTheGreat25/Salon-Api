@@ -49,6 +49,12 @@ const scheduleRoutes = [
     handler: scheduleController.updateSchedule,
   },
   {
+    method: METHOD.PATCH,
+    path: PATH.EDIT_SCHEDULE_ADMIN_ID,
+    roles: [ROLE.ADMIN],
+    handler: scheduleController.updateScheduleAdmin,
+  },
+  {
     method: METHOD.DELETE,
     path: PATH.SCHEDULE_ID,
     roles: [ROLE.ADMIN, ROLE.BEAUTICIAN],

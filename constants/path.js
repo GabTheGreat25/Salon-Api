@@ -22,6 +22,7 @@ module.exports = {
   CONFIRM_SCHEDULE_ID: "/confirm/schedule/:id",
   ACTIVATE_SCHEDULE_ID: "/schedule/activate/:id",
   EDIT_SCHEDULE_ID: "/schedule/edit/:id",
+  EDIT_SCHEDULE_ADMIN_ID: "/schedule/edit/admin/:id",
   DELIVERY: "/delivery",
   DELIVERY_ID: "/delivery/:id",
   EDIT_DELIVERY_ID: "/delivery/edit/:id",

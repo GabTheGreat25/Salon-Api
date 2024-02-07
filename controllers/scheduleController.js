@@ -74,6 +74,22 @@ exports.updateSchedule = [
   }),
 ];
 
+exports.updateScheduleAdmin = [
+  asyncHandler(async (req, res, next) => {
+    const { updatedSchedule } = await schedulesService.updateScheduleAdminData(
+      req,
+      res,
+      req.params.id
+    );
+
+    return SuccessHandler(
+      res,
+      `Schedule of ${updatedSchedule?.beautician?.name} with ID ${updatedSchedule?._id} is updated`,
+      { updatedSchedule }
+    );
+  }),
+];
+
 exports.deleteConfirm = asyncHandler(async (req, res, next) => {
   const schedule = await schedulesService.getSingleScheduleData(req.params.id);
 
