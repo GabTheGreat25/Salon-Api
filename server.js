@@ -25,6 +25,7 @@ const feedbacks = require("./routes/feedback");
 const brands = require("./routes/brand");
 const times = require("./routes/time");
 const months = require("./routes/month");
+const ingredients = require("./routes/ingredient");
 const { STATUSCODE } = require("./constants/index");
 const connectDB = require("./config/connectDB");
 const PORT = process.env.PORT || 4000;
@@ -54,7 +55,8 @@ app.use(
   appointments,
   comments,
   transactions,
-  months
+  months,
+  ingredients
 );
 
 app.all("*", (req, res) => {
