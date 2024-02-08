@@ -1524,7 +1524,7 @@
 							"mode": "raw",
 							"raw": "{\r\n    \"beautician\": \"65b65b822924c4eebe1835e4\",\r\n    \"date\": \"2024-02-17\",\r\n    \"status\": \"leave\",\r\n    \"isLeave\": true,\r\n    \"leaveNote\": \"Heheha\"\r\n}"
 						},
-						"url": "{{URI}}{{V1}}/schedule/edit/admin/65c367d8ffc361edcc3a6c1d"
+						"url": "{{URI}}{{V1}}/schedule/edit/admin/65c3691ea06b92fd067a172e"
 					},
 					"response": []
 				},
@@ -2895,6 +2895,144 @@
 				}
 			],
 			"id": "ca00b283-ac6a-4d3e-a591-0b44ffdbb7f1"
+		},
+		{
+			"name": "INGREDIENTS",
+			"item": [
+				{
+					"name": "GET ALL INGRIDIENTS",
+					"id": "745a917e-8c63-46c4-b60c-73b0925d645d",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true,
+						"disabledSystemHeaders": {}
+					},
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "{{Bearer}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "formdata",
+							"formdata": []
+						},
+						"url": "{{URI}}{{V1}}ingredients"
+					},
+					"response": []
+				},
+				{
+					"name": "GET SINGLE INGREDIENTS",
+					"id": "d9f2ac24-9977-4261-b919-d14597def174",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "{{Bearer}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "",
+									"value": "",
+									"type": "text"
+								}
+							]
+						},
+						"url": "{{URI}}{{V1}}ingredient/65785a85c4fdd4abc1eb36d3"
+					},
+					"response": []
+				},
+				{
+					"name": "CREATE INGREDIENTS",
+					"id": "d5206e64-34e6-4efc-b898-573bc2f891c0",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							},
+							{
+								"key": "Authorization",
+								"value": "{{Bearer}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"product\": \"65bae96a90f7a1abb147e415\",\r\n    \"ingredient_name\": [\"Test\",\"Again\",\"And\",\"Yeah\"]\r\n}"
+						},
+						"url": "{{URI}}{{V1}}ingredients"
+					},
+					"response": []
+				},
+				{
+					"name": "UPDATE INGREDIENTS",
+					"id": "e21995d1-8993-48de-8ded-d340814d0688",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "PATCH",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							},
+							{
+								"key": "Authorization",
+								"value": "{{Bearer}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"name\": \"gab\",\r\n    \"email\": \"gab@gmail.com\",\r\n    \"contact_number\": \"09954098330\",\r\n    \"description\": \"Good\"\r\n}"
+						},
+						"url": "{{URI}}{{V1}}/ingredient/edit/65785a85c4fdd4abc1eb36d3"
+					},
+					"response": []
+				},
+				{
+					"name": "DELETE INGREDIENTS",
+					"id": "3b3a2e4e-c0c4-4d6e-9dfc-d12c6bdcc28e",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "DELETE",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "{{Bearer}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "formdata",
+							"formdata": []
+						},
+						"url": "{{URI}}{{V1}}feedback/65785af5c4fdd4abc1eb36e7"
+					},
+					"response": []
+				}
+			],
+			"id": "041c809d-5819-445d-9338-4c4a10aca849"
 		}
 	],
 	"event": [
