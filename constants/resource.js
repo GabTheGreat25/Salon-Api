@@ -20,4 +20,5 @@ module.exports = {
   BRAND: "brand",
   TIME: "time",
   MONTH: "month",
+  INGREDIENT: "ingredient",
 };
