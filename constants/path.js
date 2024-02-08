@@ -54,4 +54,7 @@ module.exports = {
   MONTHS: "/months",
   MONTH_ID: "/month/:id",
   EDIT_MONTH_ID: "/month/edit/:id",
+  INGREDIENTS: "/ingredients",
+  INGREDIENT_ID: "/ingredient/:id",
+  EDIT_INGREDIENT_ID: "/ingredient/edit/:id",
 };
