@@ -23,7 +23,7 @@ const informationSchema = new mongoose.Schema({
       function () {
         return this.allergy === "Others";
       },
-      "Please specify the type of allergy",
+      "Please specify the type of ingredients",
     ],
   },
   messageDate: {
