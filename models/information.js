@@ -21,10 +21,19 @@ const informationSchema = new mongoose.Schema({
     type: String,
     required: [
       function () {
-        return this.allergy === "Others";
+        return this.allergy.includes("Others");
       },
       "Please specify the type of ingredients",
     ],
+  },
+  eSignature: {
+    type: String,
+    required: function () {
+      return this.allergy.includes("Others") || this.allergy.includes("None")
+        ? false
+        : true;
+    },
+    message: "Please enter your e-signature",
   },
   messageDate: {
     type: String,

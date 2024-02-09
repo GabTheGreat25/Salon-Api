@@ -418,7 +418,7 @@ exports.createUserData = async (req, res) => {
       customer: user?._id,
       description: req.body.description,
       allergy: req.body.allergy,
-      product_preference: req.body.product_preference,
+      eSignature: req.body.eSignature,
       created_at: currentDate,
       othersMessage: req.body.othersMessage,
       messageDate: req.body.messageDate || "1 minute",
@@ -457,9 +457,6 @@ exports.createUserData = async (req, res) => {
 
       if (delay !== undefined) {
         delayTimeout = setTimeout(async () => {
-          let nextMessageDate = new Date(
-            Number(BigInt(currentDate.getTime()) + delay)
-          );
           await sendMonthlyUpdate(user);
           sendInterval = setInterval(async () => {
             const currentDate = new Date();
@@ -557,7 +554,7 @@ exports.updateUserData = async (req, res, id) => {
         description: req.body.description,
         allergy: req.body.allergy,
         othersMessage: req.body.othersMessage,
-        product_preference: req.body.product_preference,
+        eSignature: req.body.eSignature,
         messageDate: req.body.messageDate,
       },
       { new: true, upsert: true }
@@ -598,11 +595,6 @@ exports.updateUserData = async (req, res, id) => {
 
       if (delay !== undefined) {
         delayTimeout = setTimeout(async () => {
-          const currentDate = new Date();
-          let nextMessageDate = new Date(
-            Number(BigInt(currentDate.getTime()) + delay)
-          );
-
           await sendMonthlyUpdate(user);
 
           sendInterval = setInterval(async () => {
