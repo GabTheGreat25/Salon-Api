@@ -1195,7 +1195,7 @@
 								}
 							]
 						},
-						"url": "{{URI}}{{V1}}product/6523443796ea7bbe254b9f6f"
+						"url": "{{URI}}{{V1}}product/65bae96a90f7a1abb147e415"
 					},
 					"response": []
 				},
@@ -3039,6 +3039,144 @@
 				}
 			],
 			"id": "041c809d-5819-445d-9338-4c4a10aca849"
+		},
+		{
+			"name": "ADDONS",
+			"item": [
+				{
+					"name": "GET ALL ADDONS",
+					"id": "fbebffaf-7b34-455e-9656-18f98615df78",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true,
+						"disabledSystemHeaders": {}
+					},
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "{{Bearer}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "formdata",
+							"formdata": []
+						},
+						"url": "{{URI}}{{V1}}addons"
+					},
+					"response": []
+				},
+				{
+					"name": "GET SINGLE ADDONS",
+					"id": "5635ebda-9bbe-4bde-8bb2-09e102deeb11",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "{{Bearer}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "",
+									"value": "",
+									"type": "text"
+								}
+							]
+						},
+						"url": "{{URI}}{{V1}}addon/65c65fdc02b4c4d2629c929d"
+					},
+					"response": []
+				},
+				{
+					"name": "CREATE ADDONS",
+					"id": "2b59b8a3-2387-4ea4-9100-6a0a2633de51",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							},
+							{
+								"key": "Authorization",
+								"value": "{{Bearer}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"product\": \"65bbcd9c557d5fb243a69613\",\r\n    \"addOns_name\": \"Ewan\",\r\n    \"description\": \"Popogi ka\",\r\n    \"price\": 100\r\n}"
+						},
+						"url": "{{URI}}{{V1}}addons"
+					},
+					"response": []
+				},
+				{
+					"name": "UPDATE INGREDIENTS",
+					"id": "b9829df4-2c0b-465c-b383-fc5d0e697353",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "PATCH",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							},
+							{
+								"key": "Authorization",
+								"value": "{{Bearer}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"product\": \"65bbcd9c557d5fb243a69613\",\r\n    \"addOns_name\": \"Ewan\",\r\n    \"description\": \"Popogi ka\",\r\n    \"price\": 120\r\n}"
+						},
+						"url": "{{URI}}{{V1}}/addon/edit/65c65fdc02b4c4d2629c929d"
+					},
+					"response": []
+				},
+				{
+					"name": "DELETE INGREDIENTS",
+					"id": "753ea273-3def-4414-9f18-fd7d7ec12f87",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "DELETE",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "{{Bearer}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "formdata",
+							"formdata": []
+						},
+						"url": "{{URI}}{{V1}}addon/65c65fdc02b4c4d2629c929d"
+					},
+					"response": []
+				}
+			],
+			"id": "c2e94fa9-2ec2-48d6-9c9d-ee3bf364c7d7"
 		}
 	],
 	"event": [
