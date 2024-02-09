@@ -412,7 +412,7 @@
 								}
 							]
 						},
-						"url": "{{URI}}{{V1}}user/65b384dbce4c4cd50bdc6901"
+						"url": "{{URI}}{{V1}}user/65c50ad04b296ef2097d5431"
 					},
 					"response": []
 				},
@@ -1093,7 +1093,7 @@
 							"mode": "formdata",
 							"formdata": []
 						},
-						"url": "{{URI}}{{V1}}user/65bfc0dff99e364e0bb84dc7"
+						"url": "{{URI}}{{V1}}user/65c503a84b296ef2097d540c"
 					},
 					"response": []
 				},
@@ -1506,6 +1506,12 @@
 						"disableBodyPruning": true
 					},
 					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": {
+								"token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJVc2VySW5mbyI6eyJlbWFpbCI6ImFkbWluamF5QGdtYWlsLmNvbSIsInJvbGVzIjpbIkFkbWluIl19LCJpYXQiOjE3MDczMjY1MDYsImV4cCI6MTcwNzkzMTMwNn0.UmY5SxoqqUGQzpyCEglGFlQ92FXKLY2sTnlQmu4epdc"
+							}
+						},
 						"method": "PATCH",
 						"header": [
 							{
@@ -2948,7 +2954,7 @@
 								}
 							]
 						},
-						"url": "{{URI}}{{V1}}ingredient/65785a85c4fdd4abc1eb36d3"
+						"url": "{{URI}}{{V1}}ingredient/65c47be0a9badab01070ad1c"
 					},
 					"response": []
 				},
@@ -2974,7 +2980,7 @@
 						],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n    \"product\": \"65bae96a90f7a1abb147e415\",\r\n    \"ingredient_name\": [\"Test\",\"Again\",\"And\",\"Yeah\"]\r\n}"
+							"raw": "{\r\n    \"product\": \"65bbcd9c557d5fb243a69613\",\r\n    \"ingredient_name\": [\"Test\",\"Again\"]\r\n}"
 						},
 						"url": "{{URI}}{{V1}}ingredients"
 					},
@@ -3002,9 +3008,9 @@
 						],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n    \"name\": \"gab\",\r\n    \"email\": \"gab@gmail.com\",\r\n    \"contact_number\": \"09954098330\",\r\n    \"description\": \"Good\"\r\n}"
+							"raw": "{\r\n    \"product\": \"65bae96a90f7a1abb147e415\",\r\n    \"ingredient_name\": [\"Test\",\"Again\",\"And\",\"Yeah\"]\r\n}"
 						},
-						"url": "{{URI}}{{V1}}/ingredient/edit/65785a85c4fdd4abc1eb36d3"
+						"url": "{{URI}}{{V1}}/ingredient/edit/65c47be0a9badab01070ad1c"
 					},
 					"response": []
 				},
@@ -3027,7 +3033,7 @@
 							"mode": "formdata",
 							"formdata": []
 						},
-						"url": "{{URI}}{{V1}}feedback/65785af5c4fdd4abc1eb36e7"
+						"url": "{{URI}}{{V1}}ingredient/65c47be0a9badab01070ad1c"
 					},
 					"response": []
 				}
