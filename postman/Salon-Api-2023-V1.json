@@ -412,7 +412,7 @@
 								}
 							]
 						},
-						"url": "{{URI}}{{V1}}user/65c50ad04b296ef2097d5431"
+						"url": "{{URI}}{{V1}}user/65c60c17f93f118f2a78099a"
 					},
 					"response": []
 				},
@@ -1093,7 +1093,7 @@
 							"mode": "formdata",
 							"formdata": []
 						},
-						"url": "{{URI}}{{V1}}user/65c503a84b296ef2097d540c"
+						"url": "{{URI}}{{V1}}user/65c60b8af93f118f2a78095e"
 					},
 					"response": []
 				},
