@@ -11,7 +11,7 @@ exports.getAllIngredientData = async () => {
     })
     .populate({
       path: RESOURCE.PRODUCT,
-      select: "product_name brand",
+      select: "product_name brand type",
     })
     .lean()
     .exec();
@@ -26,7 +26,7 @@ exports.getSingleIngredientData = async (id) => {
   const ingredient = await Ingredient.findById(id)
     .populate({
       path: RESOURCE.PRODUCT,
-      select: "product_name brand",
+      select: "product_name brand type",
     })
     .lean()
     .exec();
@@ -53,7 +53,7 @@ exports.createIngredientData = async (req, res) => {
 
   await Ingredient.populate(ingredient, {
     path: RESOURCE.PRODUCT,
-    select: "product_name brand",
+    select: "product_name brand type",
   });
 
   return ingredient;
@@ -85,7 +85,7 @@ exports.updateIngredientData = async (req, res, id) => {
   )
     .populate({
       path: RESOURCE.PRODUCT,
-      select: "product_name brand",
+      select: "product_name brand type",
     })
     .lean()
     .exec();
