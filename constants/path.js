@@ -57,4 +57,7 @@ module.exports = {
   INGREDIENTS: "/ingredients",
   INGREDIENT_ID: "/ingredient/:id",
   EDIT_INGREDIENT_ID: "/ingredient/edit/:id",
+  ADDONS: "/addons",
+  ADDON_ID: "/addon/:id",
+  EDIT_ADDON_ID: "/addon/edit/:id",
 };
