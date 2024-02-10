@@ -3041,10 +3041,10 @@
 			"id": "041c809d-5819-445d-9338-4c4a10aca849"
 		},
 		{
-			"name": "ADDONS",
+			"name": "OPTIONS",
 			"item": [
 				{
-					"name": "GET ALL ADDONS",
+					"name": "GET ALL OPTIONS",
 					"id": "fbebffaf-7b34-455e-9656-18f98615df78",
 					"protocolProfileBehavior": {
 						"disableBodyPruning": true,
@@ -3063,12 +3063,12 @@
 							"mode": "formdata",
 							"formdata": []
 						},
-						"url": "{{URI}}{{V1}}addons"
+						"url": "{{URI}}{{V1}}options"
 					},
 					"response": []
 				},
 				{
-					"name": "GET SINGLE ADDONS",
+					"name": "GET SINGLE OPTIONS",
 					"id": "5635ebda-9bbe-4bde-8bb2-09e102deeb11",
 					"protocolProfileBehavior": {
 						"disableBodyPruning": true
@@ -3092,12 +3092,12 @@
 								}
 							]
 						},
-						"url": "{{URI}}{{V1}}addon/65c6603202b4c4d2629c92ac"
+						"url": "{{URI}}{{V1}}option/65c6603202b4c4d2629c92ac"
 					},
 					"response": []
 				},
 				{
-					"name": "CREATE ADDONS",
+					"name": "CREATE OPTIONS",
 					"id": "2b59b8a3-2387-4ea4-9100-6a0a2633de51",
 					"protocolProfileBehavior": {
 						"disableBodyPruning": true
@@ -3120,12 +3120,12 @@
 							"mode": "formdata",
 							"formdata": [
 								{
-									"key": "product",
-									"value": "65bbcd9c557d5fb243a69613",
+									"key": "service",
+									"value": "65c3716fb59e0009cdf18c56",
 									"type": "text"
 								},
 								{
-									"key": "addOns_name",
+									"key": "option_name",
 									"value": "Ewan",
 									"type": "text"
 								},
@@ -3142,16 +3142,20 @@
 								{
 									"key": "image",
 									"type": "file",
+									"fileNotInWorkingDirectoryWarning": "This file isn't in your working directory. Teammates you share this request with won't be able to use this file. To make collaboration easier you can setup your working directory in Settings.",
+									"filesNotInWorkingDirectory": [
+										"/C:/Users/gabriel/Downloads/giphy.gif"
+									],
 									"src": "/C:/Users/gabriel/Downloads/giphy.gif"
 								}
 							]
 						},
-						"url": "{{URI}}{{V1}}addons"
+						"url": "{{URI}}{{V1}}options"
 					},
 					"response": []
 				},
 				{
-					"name": "UPDATE INGREDIENTS",
+					"name": "UPDATE OPTIONS",
 					"id": "b9829df4-2c0b-465c-b383-fc5d0e697353",
 					"protocolProfileBehavior": {
 						"disableBodyPruning": true
@@ -3171,15 +3175,49 @@
 							}
 						],
 						"body": {
-							"mode": "raw",
-							"raw": "{\r\n    \"product\": \"65bbcd9c557d5fb243a69613\",\r\n    \"addOns_name\": \"Ewan\",\r\n    \"description\": \"Popogi ka\",\r\n    \"price\": 120\r\n}"
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "service",
+									"value": "65c3716fb59e0009cdf18c56",
+									"type": "text"
+								},
+								{
+									"key": "option_name",
+									"value": "Ewan",
+									"type": "text"
+								},
+								{
+									"key": "description",
+									"value": "Popogi ka talaga",
+									"type": "text"
+								},
+								{
+									"key": "price",
+									"value": "120",
+									"type": "text"
+								},
+								{
+									"key": "image",
+									"type": "file",
+									"fileNotInWorkingDirectoryWarning": "This file isn't in your working directory. Teammates you share this request with won't be able to use this file. To make collaboration easier you can setup your working directory in Settings.",
+									"filesNotInWorkingDirectory": [
+										"/C:/Users/gabriel/Downloads/giphy (1).gif",
+										"/C:/Users/gabriel/Downloads/giphy.gif"
+									],
+									"src": [
+										"/C:/Users/gabriel/Downloads/giphy (1).gif",
+										"/C:/Users/gabriel/Downloads/giphy.gif"
+									]
+								}
+							]
 						},
-						"url": "{{URI}}{{V1}}/addon/edit/65c6603202b4c4d2629c92ac"
+						"url": "{{URI}}{{V1}}/option/edit/65c712c988f7a39f73ad8298"
 					},
 					"response": []
 				},
 				{
-					"name": "DELETE INGREDIENTS",
+					"name": "DELETE OPTIONS",
 					"id": "753ea273-3def-4414-9f18-fd7d7ec12f87",
 					"protocolProfileBehavior": {
 						"disableBodyPruning": true
@@ -3197,7 +3235,7 @@
 							"mode": "formdata",
 							"formdata": []
 						},
-						"url": "{{URI}}{{V1}}addon/65c65fdc02b4c4d2629c929d"
+						"url": "{{URI}}{{V1}}option/65c710afee82633ed75216dd"
 					},
 					"response": []
 				}
