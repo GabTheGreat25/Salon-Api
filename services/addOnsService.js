@@ -2,6 +2,7 @@ const AddOns = require("../models/addOns");
 const mongoose = require("mongoose");
 const ErrorHandler = require("../utils/errorHandler");
 const { STATUSCODE, RESOURCE } = require("../constants/index");
+const { cloudinary } = require("../utils/cloudinary");
 
 exports.getAllAddOnsData = async () => {
   const addOnss = await AddOns.find()
@@ -77,7 +78,7 @@ exports.updateAddOnsData = async (req, res, id) => {
   if (!existingAddOns)
     throw new ErrorHandler(`AddOns not found with ID: ${id}`);
 
-  let image = existingTest.image || [];
+  let image = existingAddOns.image || [];
   if (req.files && Array.isArray(req.files) && req.files.length > 0) {
     image = await Promise.all(
       req.files.map(async (file) => {
@@ -92,9 +93,9 @@ exports.updateAddOnsData = async (req, res, id) => {
       })
     );
 
-    if (existingTest.image && existingTest.image.length > 0) {
+    if (existingAddOns.image && existingAddOns.image.length > 0) {
       await cloudinary.api.delete_resources(
-        existingTest.image.map((image) => image.public_id)
+        existingAddOns.image.map((image) => image.public_id)
       );
     }
   }
