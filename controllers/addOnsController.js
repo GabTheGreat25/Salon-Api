@@ -3,6 +3,7 @@ const ErrorHandler = require("../utils/errorHandler");
 const SuccessHandler = require("../utils/successHandler");
 const asyncHandler = require("express-async-handler");
 const { STATUSCODE } = require("../constants/index");
+const { upload } = require("../utils/cloudinary");
 const checkRequiredFields = require("../helpers/checkRequiredFields");
 
 exports.getAllAddOns = asyncHandler(async (req, res, next) => {
@@ -34,7 +35,14 @@ exports.getSingleAddOn = asyncHandler(async (req, res, next) => {
 });
 
 exports.createNewAddOn = [
-  checkRequiredFields(["product", "addOns_name", "description", "price"]),
+  upload.array("image"),
+  checkRequiredFields([
+    "product",
+    "addOns_name",
+    "description",
+    "price",
+    "image",
+  ]),
   asyncHandler(async (req, res) => {
     const addOn = await addOnsService.createAddOnsData(req);
 
@@ -47,7 +55,14 @@ exports.createNewAddOn = [
 ];
 
 exports.updateAddOn = [
-  checkRequiredFields(["product", "addOns_name", "description", "price"]),
+  upload.array("image"),
+  checkRequiredFields([
+    "product",
+    "addOns_name",
+    "description",
+    "price",
+    "image",
+  ]),
   asyncHandler(async (req, res, next) => {
     const addOn = await addOnsService.updateAddOnsData(req, res, req.params.id);
 

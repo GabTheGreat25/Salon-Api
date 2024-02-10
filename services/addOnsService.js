@@ -36,8 +36,28 @@ exports.getSingleAddOnsData = async (id) => {
 };
 
 exports.createAddOnsData = async (req, res) => {
+  let image = [];
+  if (req.files && Array.isArray(req.files)) {
+    image = await Promise.all(
+      req.files.map(async (file) => {
+        const result = await cloudinary.uploader.upload(file.path, {
+          public_id: file.filename,
+        });
+        return {
+          public_id: result.public_id,
+          url: result.secure_url,
+          originalname: file.originalname,
+        };
+      })
+    );
+  }
+
+  if (image.length === STATUSCODE.ZERO)
+    throw new ErrorHandler("At least one image is required");
+
   const addOns = await AddOns.create({
     ...req.body,
+    image: image,
   });
 
   await AddOns.populate(addOns, {
@@ -57,10 +77,33 @@ exports.updateAddOnsData = async (req, res, id) => {
   if (!existingAddOns)
     throw new ErrorHandler(`AddOns not found with ID: ${id}`);
 
+  let image = existingTest.image || [];
+  if (req.files && Array.isArray(req.files) && req.files.length > 0) {
+    image = await Promise.all(
+      req.files.map(async (file) => {
+        const result = await cloudinary.uploader.upload(file.path, {
+          public_id: file.filename,
+        });
+        return {
+          public_id: result.public_id,
+          url: result.secure_url,
+          originalname: file.originalname,
+        };
+      })
+    );
+
+    if (existingTest.image && existingTest.image.length > 0) {
+      await cloudinary.api.delete_resources(
+        existingTest.image.map((image) => image.public_id)
+      );
+    }
+  }
+
   const updatedAddOns = await AddOns.findByIdAndUpdate(
     id,
     {
       ...req.body,
+      image: image,
     },
     {
       new: true,
