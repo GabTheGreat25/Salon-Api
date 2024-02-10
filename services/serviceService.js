@@ -3,6 +3,7 @@ const Appointment = require("../models/appointment");
 const Transaction = require("../models/transaction");
 const Verification = require("../models/verification");
 const Comment = require("../models/comment");
+const Option = require("../models/option");
 const mongoose = require("mongoose");
 const ErrorHandler = require("../utils/errorHandler");
 const { cloudinary } = require("../utils/cloudinary");
@@ -197,6 +198,11 @@ exports.deleteServiceData = async (id) => {
       .exec(),
     Comment.deleteMany({
       transaction: transactionId,
+    })
+      .lean()
+      .exec(),
+    Option.deleteMany({
+      service: id,
     })
       .lean()
       .exec(),

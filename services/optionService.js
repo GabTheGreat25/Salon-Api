@@ -1,11 +1,11 @@
-const AddOns = require("../models/addOns");
+const Option = require("../models/option");
 const mongoose = require("mongoose");
 const ErrorHandler = require("../utils/errorHandler");
 const { STATUSCODE, RESOURCE } = require("../constants/index");
 const { cloudinary } = require("../utils/cloudinary");
 
-exports.getAllAddOnsData = async () => {
-  const addOnss = await AddOns.find()
+exports.getAllOptionData = async () => {
+  const options = await Option.find()
     .sort({
       createdAt: STATUSCODE.NEGATIVE_ONE,
     })
@@ -16,14 +16,14 @@ exports.getAllAddOnsData = async () => {
     .lean()
     .exec();
 
-  return addOnss;
+  return options;
 };
 
-exports.getSingleAddOnsData = async (id) => {
+exports.getSingleOptionData = async (id) => {
   if (!mongoose.Types.ObjectId)
-    throw new ErrorHandler(`Invalid AddOns ID ${id}`);
+    throw new ErrorHandler(`Invalid Option ID ${id}`);
 
-  const addOns = await AddOns.findById(id)
+  const option = await Option.findById(id)
     .populate({
       path: RESOURCE.SERVICE,
       select: "service_name",
@@ -31,12 +31,12 @@ exports.getSingleAddOnsData = async (id) => {
     .lean()
     .exec();
 
-  if (!addOns) throw new ErrorHandler(`AddOns not found with ID: ${id}`);
+  if (!option) throw new ErrorHandler(`Option not found with ID: ${id}`);
 
-  return addOns;
+  return option;
 };
 
-exports.createAddOnsData = async (req, res) => {
+exports.createOptionData = async (req, res) => {
   let image = [];
   if (req.files && Array.isArray(req.files)) {
     image = await Promise.all(
@@ -56,29 +56,29 @@ exports.createAddOnsData = async (req, res) => {
   if (image.length === STATUSCODE.ZERO)
     throw new ErrorHandler("At least one image is required");
 
-  const addOns = await AddOns.create({
+  const option = await Option.create({
     ...req.body,
     image: image,
   });
 
-  await AddOns.populate(addOns, {
+  await Option.populate(option, {
     path: RESOURCE.SERVICE,
     select: "service_name",
   });
 
-  return addOns;
+  return option;
 };
 
-exports.updateAddOnsData = async (req, res, id) => {
+exports.updateOptionData = async (req, res, id) => {
   if (!mongoose.Types.ObjectId.isValid(id))
-    throw new ErrorHandler(`Invalid addOns ID: ${id}`);
+    throw new ErrorHandler(`Invalid option ID: ${id}`);
 
-  const existingAddOns = await AddOns.findById(id).lean().exec();
+  const existingOption = await Option.findById(id).lean().exec();
 
-  if (!existingAddOns)
-    throw new ErrorHandler(`AddOns not found with ID: ${id}`);
+  if (!existingOption)
+    throw new ErrorHandler(`Option not found with ID: ${id}`);
 
-  let image = existingAddOns.image || [];
+  let image = existingOption.image || [];
   if (req.files && Array.isArray(req.files) && req.files.length > 0) {
     image = await Promise.all(
       req.files.map(async (file) => {
@@ -93,14 +93,14 @@ exports.updateAddOnsData = async (req, res, id) => {
       })
     );
 
-    if (existingAddOns.image && existingAddOns.image.length > 0) {
+    if (existingOption.image && existingOption.image.length > 0) {
       await cloudinary.api.delete_resources(
-        existingAddOns.image.map((image) => image.public_id)
+        existingOption.image.map((image) => image.public_id)
       );
     }
   }
 
-  const updatedAddOns = await AddOns.findByIdAndUpdate(
+  const updatedOption = await Option.findByIdAndUpdate(
     id,
     {
       ...req.body,
@@ -118,26 +118,26 @@ exports.updateAddOnsData = async (req, res, id) => {
     .lean()
     .exec();
 
-  return updatedAddOns;
+  return updatedOption;
 };
 
-exports.deleteAddOnsData = async (id) => {
+exports.deleteOptionData = async (id) => {
   if (!mongoose.Types.ObjectId.isValid(id))
-    throw new ErrorHandler(`Invalid addOns ID ${id}`);
+    throw new ErrorHandler(`Invalid option ID ${id}`);
 
-  const addOns = await AddOns.findOne({
+  const option = await Option.findOne({
     _id: id,
   });
 
-  if (!addOns) throw new ErrorHandler(`AddOns not found with ID: ${id}`);
+  if (!option) throw new ErrorHandler(`Option not found with ID: ${id}`);
 
   await Promise.all([
-    AddOns.deleteOne({
+    Option.deleteOne({
       _id: id,
     })
       .lean()
       .exec(),
   ]);
 
-  return addOns;
+  return option;
 };

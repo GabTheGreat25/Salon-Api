@@ -21,5 +21,5 @@ module.exports = {
   TIME: "time",
   MONTH: "month",
   INGREDIENT: "ingredient",
-  ADDONS: "addOns",
+  OPTION: "option",
 };

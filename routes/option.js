@@ -1,50 +1,50 @@
 const express = require("express");
 const router = express.Router();
-const addOnsController = require("../controllers/addOnsController");
+const optionController = require("../controllers/optionController");
 const { verifyJWT, authorizeRoles } = require("../middleware/verifyJWT");
 const { METHOD, PATH, ROLE } = require("../constants/index");
 
 router.use(verifyJWT);
 
-const addOnsRoutes = [
+const optionRoutes = [
   {
     method: METHOD.GET,
-    path: PATH.ADDONS,
+    path: PATH.OPTIONS,
     roles: [
       ROLE.ADMIN,
       ROLE.BEAUTICIAN,
       ROLE.ONLINE_CUSTOMER,
       ROLE.WALK_IN_CUSTOMER,
     ],
-    handler: addOnsController.getAllAddOns,
+    handler: optionController.getAllOption,
   },
   {
     method: METHOD.GET,
-    path: PATH.ADDON_ID,
+    path: PATH.OPTION_ID,
     roles: [ROLE.ADMIN, ROLE.BEAUTICIAN],
-    handler: addOnsController.getSingleAddOn,
+    handler: optionController.getSingleOption,
   },
   {
     method: METHOD.POST,
-    path: PATH.ADDONS,
+    path: PATH.OPTIONS,
     roles: [ROLE.ADMIN],
-    handler: addOnsController.createNewAddOn,
+    handler: optionController.createNewOption,
   },
   {
     method: METHOD.PATCH,
-    path: PATH.EDIT_ADDON_ID,
+    path: PATH.EDIT_OPTION_ID,
     roles: [ROLE.ADMIN],
-    handler: addOnsController.updateAddOn,
+    handler: optionController.updateOption,
   },
   {
     method: METHOD.DELETE,
-    path: PATH.ADDON_ID,
+    path: PATH.OPTION_ID,
     roles: [ROLE.ADMIN],
-    handler: addOnsController.deleteAddOn,
+    handler: optionController.deleteOption,
   },
 ];
 
-addOnsRoutes.forEach((route) => {
+optionRoutes.forEach((route) => {
   const { method, path, roles, handler } = route;
   router[method](path, authorizeRoles(...roles), handler);
 });
