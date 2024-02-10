@@ -10,8 +10,8 @@ exports.getAllAddOnsData = async () => {
       createdAt: STATUSCODE.NEGATIVE_ONE,
     })
     .populate({
-      path: RESOURCE.PRODUCT,
-      select: "product_name brand isNew type",
+      path: RESOURCE.SERVICE,
+      select: "service_name",
     })
     .lean()
     .exec();
@@ -25,8 +25,8 @@ exports.getSingleAddOnsData = async (id) => {
 
   const addOns = await AddOns.findById(id)
     .populate({
-      path: RESOURCE.PRODUCT,
-      select: "product_name brand isNew type",
+      path: RESOURCE.SERVICE,
+      select: "service_name",
     })
     .lean()
     .exec();
@@ -62,8 +62,8 @@ exports.createAddOnsData = async (req, res) => {
   });
 
   await AddOns.populate(addOns, {
-    path: RESOURCE.PRODUCT,
-    select: "product_name brand isNew type",
+    path: RESOURCE.SERVICE,
+    select: "service_name",
   });
 
   return addOns;
@@ -112,8 +112,8 @@ exports.updateAddOnsData = async (req, res, id) => {
     }
   )
     .populate({
-      path: RESOURCE.PRODUCT,
-      select: "product_name brand isNew type",
+      path: RESOURCE.SERVICE,
+      select: "service_name",
     })
     .lean()
     .exec();

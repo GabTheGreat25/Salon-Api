@@ -2,11 +2,11 @@ const mongoose = require("mongoose");
 const { RESOURCE } = require("../constants/index");
 
 const addOnsSchema = new mongoose.Schema({
-  product: [
+  service: [
     {
       type: mongoose.Schema.Types.ObjectId,
-      required: [true, "Please enter a product"],
-      ref: "product",
+      required: [true, "Please enter a service"],
+      ref: "service",
     },
   ],
   addOns_name: {

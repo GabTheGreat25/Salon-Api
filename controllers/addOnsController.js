@@ -37,7 +37,7 @@ exports.getSingleAddOn = asyncHandler(async (req, res, next) => {
 exports.createNewAddOn = [
   upload.array("image"),
   checkRequiredFields([
-    "product",
+    "service",
     "addOns_name",
     "description",
     "price",
@@ -57,7 +57,7 @@ exports.createNewAddOn = [
 exports.updateAddOn = [
   upload.array("image"),
   checkRequiredFields([
-    "product",
+    "service",
     "addOns_name",
     "description",
     "price",
