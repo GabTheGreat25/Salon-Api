@@ -3092,7 +3092,7 @@
 								}
 							]
 						},
-						"url": "{{URI}}{{V1}}addon/65c65fdc02b4c4d2629c929d"
+						"url": "{{URI}}{{V1}}addon/65c6603202b4c4d2629c92ac"
 					},
 					"response": []
 				},
@@ -3117,8 +3117,34 @@
 							}
 						],
 						"body": {
-							"mode": "raw",
-							"raw": "{\r\n    \"product\": \"65bbcd9c557d5fb243a69613\",\r\n    \"addOns_name\": \"Ewan\",\r\n    \"description\": \"Popogi ka\",\r\n    \"price\": 100\r\n}"
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "product",
+									"value": "65bbcd9c557d5fb243a69613",
+									"type": "text"
+								},
+								{
+									"key": "addOns_name",
+									"value": "Ewan",
+									"type": "text"
+								},
+								{
+									"key": "description",
+									"value": "Popogi ka",
+									"type": "text"
+								},
+								{
+									"key": "price",
+									"value": "100",
+									"type": "text"
+								},
+								{
+									"key": "image",
+									"type": "file",
+									"src": "/C:/Users/gabriel/Downloads/giphy.gif"
+								}
+							]
 						},
 						"url": "{{URI}}{{V1}}addons"
 					},
@@ -3148,7 +3174,7 @@
 							"mode": "raw",
 							"raw": "{\r\n    \"product\": \"65bbcd9c557d5fb243a69613\",\r\n    \"addOns_name\": \"Ewan\",\r\n    \"description\": \"Popogi ka\",\r\n    \"price\": 120\r\n}"
 						},
-						"url": "{{URI}}{{V1}}/addon/edit/65c65fdc02b4c4d2629c929d"
+						"url": "{{URI}}{{V1}}/addon/edit/65c6603202b4c4d2629c92ac"
 					},
 					"response": []
 				},
