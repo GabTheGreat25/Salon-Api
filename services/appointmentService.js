@@ -28,16 +28,15 @@ exports.getAllAppointmentsData = async () => {
       path: "beautician customer",
       select: "name roles contact_number",
     })
-    .populate(
-      {
-        path: "service",
-        select: "service_name description price type occassion duration image ",
-      },
-      {
+    .populate({
+      path: "service",
+      select:
+        "service_name description price type occassion duration image product",
+      populate: {
         path: "product",
         select: "product_name brand",
-      }
-    )
+      },
+    })
     .populate({ path: "option", select: "option_name extraFee" })
     .lean()
     .exec();
@@ -53,17 +52,15 @@ exports.getSingleAppointmentData = async (id) => {
       path: "beautician customer",
       select: "name roles contact_number",
     })
-    .populate(
-      {
-        path: "service",
-        select: "service_name description price type occassion duration image ",
-      },
-      {
+    .populate({
+      path: "service",
+      select:
+        "service_name description price type occassion duration image product",
+      populate: {
         path: "product",
         select: "product_name brand",
-      }
-    )
-    .populate({ path: "option", select: "option_name extraFee" })
+      },
+    })
     .lean()
     .exec();
 
