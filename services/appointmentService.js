@@ -29,6 +29,7 @@ exports.getAllAppointmentsData = async () => {
       select: "name roles contact_number",
     })
     .populate({ path: "service", select: "service_name image" })
+    .populate({ path: "option", select: "option_name extraFee" })
     .lean()
     .exec();
   return appointments;
@@ -44,6 +45,7 @@ exports.getSingleAppointmentData = async (id) => {
       select: "name roles contact_number",
     })
     .populate({ path: "service", select: "service_name image" })
+    .populate({ path: "option", select: "option_name extraFee" })
     .lean()
     .exec();
 
@@ -72,6 +74,7 @@ exports.updateAppointmentData = async (req, res, id) => {
       select: "name roles contact_number",
     })
     .populate({ path: "service", select: "service_name image" })
+    .populate({ path: "option", select: "option_name extraFee" })
     .lean()
     .exec();
 
@@ -116,9 +119,6 @@ exports.createAppointmentData = async (req, res) => {
     );
   }
 
-  if (image.length === STATUSCODE.ZERO)
-    throw new ErrorHandler("At least one image is required");
-
   appointment = await Appointment.create({
     ...req.body,
     originalData,
@@ -127,6 +127,7 @@ exports.createAppointmentData = async (req, res) => {
   await Appointment.populate(appointment, [
     { path: "beautician customer", select: "name roles contact_number" },
     { path: "service", select: "service_name image" },
+    { path: "option", select: "option_name extraFee" },
   ]);
 
   const currentDate = new Date();
