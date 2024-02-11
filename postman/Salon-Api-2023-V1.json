@@ -412,7 +412,7 @@
 								}
 							]
 						},
-						"url": "{{URI}}{{V1}}user/65c60c17f93f118f2a78099a"
+						"url": "{{URI}}{{V1}}user/65bae96a90f7a1abb147e415"
 					},
 					"response": []
 				},
@@ -1643,7 +1643,7 @@
 								"type": "text"
 							}
 						],
-						"url": "{{URI}}{{V1}}service/65294eed1b9e20a2afe5c0de"
+						"url": "{{URI}}{{V1}}service/65c3716fb59e0009cdf18c56"
 					},
 					"response": []
 				},
@@ -2003,22 +2003,27 @@
 							"formdata": [
 								{
 									"key": "beautician",
-									"value": "65b384dbce4c4cd50bdc6901",
+									"value": "65b65b822924c4eebe1835e4",
 									"type": "text"
 								},
 								{
 									"key": "customer",
-									"value": "65b38501ce4c4cd50bdc6909",
+									"value": "65c5f430f93f118f2a7808e2",
 									"type": "text"
 								},
 								{
 									"key": "service",
-									"value": "65bf763e873f373311a89b7a",
+									"value": "65c3716fb59e0009cdf18c56",
+									"type": "text"
+								},
+								{
+									"key": "option",
+									"value": "65c712c988f7a39f73ad8298",
 									"type": "text"
 								},
 								{
 									"key": "date",
-									"value": "2024-02-22",
+									"value": "2024-02-12",
 									"type": "text"
 								},
 								{
@@ -2029,16 +2034,6 @@
 								{
 									"key": "price",
 									"value": "6000",
-									"type": "text"
-								},
-								{
-									"key": "extraFee",
-									"value": "500",
-									"type": "text"
-								},
-								{
-									"key": "note",
-									"value": "Just make it simple",
 									"type": "text"
 								},
 								{
@@ -2054,7 +2049,11 @@
 								{
 									"key": "image",
 									"type": "file",
-									"src": "/C:/Users/gabriel/Downloads/giphy.gif"
+									"fileNotInWorkingDirectoryWarning": "This file isn't in your working directory. Teammates you share this request with won't be able to use this file. To make collaboration easier you can setup your working directory in Settings.",
+									"filesNotInWorkingDirectory": [
+										"/C:/Users/gabriel/Downloads/Toothless/toothlessdance-toothless.gif"
+									],
+									"src": "/C:/Users/gabriel/Downloads/Toothless/toothlessdance-toothless.gif"
 								}
 							]
 						},
@@ -2091,7 +2090,7 @@
 						],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n    \"beautician\": \"657aafef2b97d4e01843a215\",\r\n    \"customer\": \"657ab0382b97d4e01843a21f\",\r\n    \"service\": [\"657ad43c284b15421ec0c643\", \"657af0aa3e7ece017501d980\"],\r\n    \"date\": \"2023-12-16\",\r\n    \"time\": \"09:30 AM\",\r\n    \"price\": 6000,\r\n    \"extraFee\": 500,\r\n    \"note\": \"Just make it simple bro\"\r\n}"
+							"raw": "{\r\n    \"beautician\": \"657aafef2b97d4e01843a215\",\r\n    \"customer\": \"657ab0382b97d4e01843a21f\",\r\n    \"service\": [\"657ad43c284b15421ec0c643\", \"657af0aa3e7ece017501d980\"],\r\n    \"date\": \"2023-12-16\",\r\n    \"time\": \"09:30 AM\",\r\n    \"price\": 6000\r\n}"
 						},
 						"url": "{{URI}}{{V1}}/appointment/edit/657af3c217361748299bffbd"
 					},
@@ -2155,7 +2154,7 @@
 						],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n    \"beautician\": [\"65b384dbce4c4cd50bdc6901\", \"65b65b822924c4eebe1835e4\"],\r\n    \"customer\": \"65b38501ce4c4cd50bdc6909\",\r\n    \"service\": [\"65baed8b90f7a1abb147e421\"],\r\n    \"date\": \"2024-02-22\",\r\n    \"time\": [\"01:00 PM\", \"02:00 PM\"],\r\n    \"price\": 6000,\r\n    \"extraFee\": 500,\r\n    \"note\": \"Just make it simple\",\r\n    \"status\": \"pending\",\r\n    \"payment\": \"Cash\",\r\n    \"isRebooked\": false\r\n}"
+							"raw": "{\r\n    \"beautician\": [\"65b384dbce4c4cd50bdc6901\", \"65b65b822924c4eebe1835e4\"],\r\n    \"customer\": \"65b38501ce4c4cd50bdc6909\",\r\n    \"service\": [\"65baed8b90f7a1abb147e421\"],\r\n    \"date\": \"2024-02-22\",\r\n    \"time\": [\"01:00 PM\", \"02:00 PM\"],\r\n    \"price\": 6000,\r\n    \"status\": \"pending\",\r\n    \"payment\": \"Cash\",\r\n    \"isRebooked\": false\r\n}"
 						},
 						"url": "{{URI}}{{V1}}/appointment/schedule/edit/65bf5540d7e308f82dd0ed2d"
 					},
@@ -2218,7 +2217,7 @@
 							"mode": "formdata",
 							"formdata": []
 						},
-						"url": "{{URI}}{{V1}}appointment/65c0e3816986480bde2d25c0"
+						"url": "{{URI}}{{V1}}appointment/65c7af928f9527ecd46d6112"
 					},
 					"response": []
 				},
@@ -3092,7 +3091,7 @@
 								}
 							]
 						},
-						"url": "{{URI}}{{V1}}option/65c6603202b4c4d2629c92ac"
+						"url": "{{URI}}{{V1}}option/65c712c988f7a39f73ad8298"
 					},
 					"response": []
 				},
@@ -3121,32 +3120,28 @@
 							"formdata": [
 								{
 									"key": "service",
-									"value": "65c3716fb59e0009cdf18c56",
+									"value": "65c2fc40d0ffe3f1b788335d",
 									"type": "text"
 								},
 								{
 									"key": "option_name",
-									"value": "Ewan",
+									"value": "please",
 									"type": "text"
 								},
 								{
 									"key": "description",
-									"value": "Popogi ka",
+									"value": "work",
 									"type": "text"
 								},
 								{
-									"key": "price",
-									"value": "100",
+									"key": "extraFee",
+									"value": "120",
 									"type": "text"
 								},
 								{
 									"key": "image",
 									"type": "file",
-									"fileNotInWorkingDirectoryWarning": "This file isn't in your working directory. Teammates you share this request with won't be able to use this file. To make collaboration easier you can setup your working directory in Settings.",
-									"filesNotInWorkingDirectory": [
-										"/C:/Users/gabriel/Downloads/giphy.gif"
-									],
-									"src": "/C:/Users/gabriel/Downloads/giphy.gif"
+									"src": "/C:/Users/gabriel/Downloads/Toothless/toothless-dancing (2).gif"
 								}
 							]
 						},
@@ -3193,7 +3188,7 @@
 									"type": "text"
 								},
 								{
-									"key": "price",
+									"key": "extraFee",
 									"value": "120",
 									"type": "text"
 								},
