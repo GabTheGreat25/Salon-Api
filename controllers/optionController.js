@@ -40,7 +40,7 @@ exports.createNewOption = [
     "service",
     "option_name",
     "description",
-    "price",
+    "extraFee",
     "image",
   ]),
   asyncHandler(async (req, res) => {
@@ -60,7 +60,7 @@ exports.updateOption = [
     "service",
     "option_name",
     "description",
-    "price",
+    "extraFee",
     "image",
   ]),
   asyncHandler(async (req, res, next) => {
