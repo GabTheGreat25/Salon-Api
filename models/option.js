@@ -18,9 +18,9 @@ const optionSchema = new mongoose.Schema({
     type: String,
     required: [true, "Please enter a description of your option"],
   },
-  price: {
+  extraFee: {
     type: Number,
-    required: [true, "Please enter a price"],
+    required: [true, "Please enter a extraFee"],
     min: 0,
   },
   image: [
