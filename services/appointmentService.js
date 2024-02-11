@@ -202,10 +202,10 @@ exports.createAppointmentData = async (req, res) => {
   setTimeout(async () => {
     const smsMessage = `Dear ${appointment.customer.name}, Just to remind you your appointment is in 2 hours.`;
     console.log(smsMessage);
-    await sendSMS(
-      `+63${appointment.customer.contact_number.substring(1)}`,
-      smsMessage
-    );
+    // await sendSMS(
+    //   `+63${appointment.customer.contact_number.substring(1)}`,
+    //   smsMessage
+    // );
   }, Math.max(0, reminderTime - currentDate.getTime()));
 
   return { appointment, transaction, verification };

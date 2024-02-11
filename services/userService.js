@@ -58,7 +58,9 @@ const sendMonthlyUpdate = async (user) => {
 
   const smsMessage = `Dear ${user.name}, ${customMessage}`;
 
-  await sendSMS(`+63${user.contact_number.substring(1)}`, smsMessage);
+  console.log(smsMessage);
+
+  // await sendSMS(`+63${user.contact_number.substring(1)}`, smsMessage);
 };
 
 exports.sendPasswordResetSMS = async (req, email) => {
@@ -84,8 +86,8 @@ exports.sendPasswordResetSMS = async (req, email) => {
   await user.save();
 
   const smsMessage = `Your verification code is: ${verificationCode}. Use this code to reset your password. Ignore if you didn't request a password reset.`;
-
-  await sendSMS(`+63${user.contact_number.substring(1)}`, smsMessage);
+  console.log(smsMessage);
+  // await sendSMS(`+63${user.contact_number.substring(1)}`, smsMessage);
 
   return `Verification code SMS sent successfully to ${user.contact_number}`;
 };
@@ -123,8 +125,8 @@ exports.sendResetPassword = async (
   await user.save();
 
   const successMessage = `Your password has been successfully reset. If you did not perform this action, please contact support immediately.`;
-
-  await sendSMS(`+63${user.contact_number.substring(1)}`, successMessage);
+  console.log(successMessage);
+  // await sendSMS(`+63${user.contact_number.substring(1)}`, successMessage);
 
   return `Password updated successfully for user with email ${user.email}`;
 };
@@ -168,8 +170,8 @@ exports.confirmUserRole = async (userId) => {
   user.active = true;
 
   const smsMessage = `Dear ${user.name}, your account has been successfully activated. Thank you for choosing Lhanlee Salon.`;
-
-  await sendSMS(`+63${user.contact_number.substring(1)}`, smsMessage);
+  console.log(smsMessage);
+  // await sendSMS(`+63${user.contact_number.substring(1)}`, smsMessage);
 
   await user.save();
 
@@ -385,8 +387,8 @@ exports.createUserData = async (req, res) => {
     });
 
     const smsMessage = `Dear ${user.name}, your account has been successfully created. Please attend the meeting at the salon.`;
-
-    await sendSMS(`+63${user.contact_number.substring(1)}`, smsMessage);
+    console.log(smsMessage);
+    // await sendSMS(`+63${user.contact_number.substring(1)}`, smsMessage);
 
     const deletionTime =
       selectedDate.getTime() + 7 * 24 * 60 * 60 * 1000 - currentDate.getTime();
