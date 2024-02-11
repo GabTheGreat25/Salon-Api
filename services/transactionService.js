@@ -32,14 +32,22 @@ exports.getAllTransactionData = async () => {
         { path: "beautician customer", select: "name contact_number" },
         {
           path: "service",
-          select: "service_name type occassion description price image",
+          select: "_id service_name type occassion description price image",
           populate: {
             path: "product",
             select: "product_name brand isNew image",
           },
         },
+        {
+          path: "option",
+          select: "option_name extraFee",
+          populate: {
+            path: "service",
+            select: "_id service_name type occassion description price image",
+          },
+        },
       ],
-      select: "date time price extraFee note image",
+      select: "date time price image",
     })
     .lean()
     .exec();
@@ -57,14 +65,22 @@ exports.getSingleTransactionData = async (id) => {
         { path: "beautician customer", select: "name contact_number" },
         {
           path: "service",
-          select: "service_name type occassion description price image",
+          select: "_id service_name type occassion description price image",
           populate: {
             path: "product",
             select: "product_name brand isNew image",
           },
         },
+        {
+          path: "option",
+          select: "option_name extraFee",
+          populate: {
+            path: "service",
+            select: "_id service_name type occassion description price image",
+          },
+        },
       ],
-      select: "date time price extraFee note image",
+      select: "date time price image",
     })
     .lean()
     .exec();
@@ -84,17 +100,14 @@ exports.updateTransactionData = async (req, res, id) => {
     .populate({
       path: "appointment",
       populate: [
-        { path: "beautician customer", select: "name contact_number roles" },
+        { path: "beautician customer", select: "name contact_number" },
         {
           path: "service",
           select: "service_name type occassion description price image",
-          populate: {
-            path: "product",
-            select: "product_name brand isNew image",
-          },
         },
+        { path: "option", select: "option_name extraFee" },
       ],
-      select: "date time price extraFee note image",
+      select: "date time price image",
     })
     .lean()
     .exec();
@@ -143,16 +156,27 @@ exports.updateTransactionData = async (req, res, id) => {
     const discountAmount = updatedTransaction.hasDiscount === true ? 0.2 : 0;
     const adjustedTotalPrice =
       existingTransaction.appointment.price -
-      existingTransaction.appointment.price * discountAmount;
+      existingTransaction.appointment.price * discountAmount -
+      150;
+
+    const adjustedPriceWithoutDecimals = adjustedTotalPrice.toFixed(0);
 
     await Appointment.findByIdAndUpdate(
       existingTransaction.appointment._id,
-      { price: adjustedTotalPrice },
+      { price: adjustedPriceWithoutDecimals },
       { new: true, runValidators: true }
     );
 
-    const totalFee =
-      adjustedTotalPrice + existingTransaction.appointment.extraFee;
+    const firstTime = existingTransaction.appointment.time[0];
+    const lastTime =
+      existingTransaction.appointment.time[
+        existingTransaction.appointment.time.length - 1
+      ];
+    const formattedTime = `${firstTime} to ${lastTime}`;
+
+    const beauticianNames = existingTransaction.appointment.beautician.map(
+      (b) => b.name
+    );
 
     const formattedReceipt =
       `========================================\n` +
@@ -161,7 +185,7 @@ exports.updateTransactionData = async (req, res, id) => {
       ` Date: ${
         existingTransaction.appointment.date.toISOString().split("T")[0]
       }\n` +
-      ` Time: ${existingTransaction.appointment.time}\n` +
+      ` Time: ${formattedTime}\n` +
       `----------------------------------------\n` +
       `           Service Details              \n` +
       `----------------------------------------\n` +
@@ -172,15 +196,21 @@ exports.updateTransactionData = async (req, res, id) => {
               .join(", ")
           : existingTransaction.appointment.service[0]?.service_name
       }\n` +
+      ` Add Ons: ${
+        existingTransaction.appointment.option.length > 1
+          ? existingTransaction.appointment.option
+              .map((s) => s.option_name)
+              .join(", ")
+          : existingTransaction.appointment.option[0]?.option_name
+      }\n` +
       `----------------------------------------\n` +
       ` Beautician:\n` +
-      `   Name: ${existingTransaction.appointment.beautician.name}\n` +
+      `   Name: ${beauticianNames.join(", ")}\n` +
       `----------------------------------------\n` +
       ` Payment: ${updatedTransaction.payment}\n` +
-      ` Total Fee: ${totalFee}\n` +
+      ` Total Fee: ₱ ${adjustedPriceWithoutDecimals}\n` +
       `----------------------------------------\n` +
       ` Thank you for choosing our services, ${existingTransaction.appointment.customer.name}!\n` +
-      ` Roles: ${existingTransaction.appointment.customer.roles.join(", ")}\n` +
       `----------------------------------------\n` +
       ` This receipt is an official proof of payment.\n` +
       ` Please keep it for your reference (Reference ID: ${existingTransaction._id})\n` +
@@ -250,7 +280,11 @@ exports.deleteTransactionData = async (id) => {
           path: "service",
           select: "service_name type occassion description price image",
         },
-        select: "date time price extraFee note image",
+        populate: {
+          path: "option",
+          select: "option_name extraFee",
+        },
+        select: "date time price image",
       })
       .lean()
       .exec(),
