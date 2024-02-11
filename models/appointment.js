@@ -9,6 +9,13 @@ const appointmentSchema = new mongoose.Schema({
       ref: RESOURCE.SERVICE,
     },
   ],
+  option: [
+    {
+      type: mongoose.Schema.Types.ObjectId,
+      required: [true, "Please enter a option"],
+      ref: RESOURCE.OPTION,
+    },
+  ],
   beautician: [
     {
       type: mongoose.Schema.Types.ObjectId,
@@ -35,15 +42,6 @@ const appointmentSchema = new mongoose.Schema({
     type: Number,
     required: [true, "Please enter a total price"],
     min: 0,
-  },
-  extraFee: {
-    type: Number,
-    required: false,
-    min: 0,
-  },
-  note: {
-    type: String,
-    required: false,
   },
   rebookReason: {
     type: String,
