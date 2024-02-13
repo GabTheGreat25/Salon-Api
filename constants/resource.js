@@ -22,4 +22,5 @@ module.exports = {
   MONTH: "month",
   INGREDIENT: "ingredient",
   OPTION: "option",
+  EXCLUSION:"exclusions"
 };
