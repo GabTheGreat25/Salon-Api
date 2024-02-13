@@ -41,22 +41,6 @@ const transactionSchema = new mongoose.Schema({
       },
     },
   ],
-  image: [
-    {
-      public_id: {
-        type: String,
-        required: true,
-      },
-      url: {
-        type: String,
-        required: true,
-      },
-      originalname: {
-        type: String,
-        required: true,
-      },
-    },
-  ],
   hasDiscount: {
     type: Boolean,
     default: false,

@@ -59,7 +59,7 @@ const appointmentSchema = new mongoose.Schema({
   },
   messageReason: {
     type: String,
-    default: false,
+    required: false,
   },
   isRebooked: {
     type: Boolean,
