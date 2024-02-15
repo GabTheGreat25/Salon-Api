@@ -35,6 +35,12 @@ const deliverySchema = new mongoose.Schema({
     required: [true, "Quantity field required"],
     min: [1, "Quantity field must be at least 1"],
   },
+  type: [
+    {
+      type: String,
+      enum: ["Hands", "Hair", "Feet", "Face", "Body"],
+    },
+  ],
 });
 
 module.exports = mongoose.model(RESOURCE.DELIVERY, deliverySchema);
