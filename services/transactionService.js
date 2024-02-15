@@ -47,7 +47,7 @@ exports.getAllTransactionData = async () => {
           },
         },
       ],
-      select: "date time price image",
+      select: "_id date time price image",
     })
     .lean()
     .exec();
@@ -80,7 +80,7 @@ exports.getSingleTransactionData = async (id) => {
           },
         },
       ],
-      select: "date time price image",
+      select: "_id date time price image",
     })
     .lean()
     .exec();
