@@ -1933,6 +1933,12 @@
 						"disableBodyPruning": true
 					},
 					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": {
+								"token": ""
+							}
+						},
 						"method": "GET",
 						"header": [
 							{
@@ -1956,6 +1962,12 @@
 						"disableBodyPruning": true
 					},
 					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": {
+								"token": ""
+							}
+						},
 						"method": "GET",
 						"header": [
 							{
@@ -1974,7 +1986,7 @@
 								}
 							]
 						},
-						"url": "{{URI}}{{V1}}appointment/65bf05a1ed2b2744fa2c1f83"
+						"url": "{{URI}}{{V1}}appointment/65cdb2031b87ead431b4ea1a"
 					},
 					"response": []
 				},
@@ -2023,7 +2035,7 @@
 								},
 								{
 									"key": "date",
-									"value": "2024-02-12",
+									"value": "2024-02-15",
 									"type": "text"
 								},
 								{
@@ -2071,7 +2083,7 @@
 						"auth": {
 							"type": "bearer",
 							"bearer": {
-								"token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJVc2VySW5mbyI6eyJlbWFpbCI6InJlbnllbDEyM0BnbWFpbC5jb20iLCJyb2xlcyI6WyJBZG1pbiJdfSwiaWF0IjoxNzA0Mzc2MTc4LCJleHAiOjE3MDQ5ODA5Nzh9.hAhZ_TZwwyAyhKVxOgHM7bGyz0_3SOztlMAH_0MrtfU"
+								"token": ""
 							}
 						},
 						"method": "PATCH",
@@ -2154,9 +2166,9 @@
 						],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n    \"beautician\": [\"65b384dbce4c4cd50bdc6901\", \"65b65b822924c4eebe1835e4\"],\r\n    \"customer\": \"65b38501ce4c4cd50bdc6909\",\r\n    \"service\": [\"65baed8b90f7a1abb147e421\"],\r\n    \"date\": \"2024-02-22\",\r\n    \"time\": [\"01:00 PM\", \"02:00 PM\"],\r\n    \"price\": 6000,\r\n    \"status\": \"pending\",\r\n    \"payment\": \"Cash\",\r\n    \"isRebooked\": false\r\n}"
+							"raw": "{\r\n    \"beautician\": [\"65b65b822924c4eebe1835e4\"],\r\n    \"customer\": \"65c5f430f93f118f2a7808e2\",\r\n    \"service\": [\"65c3716fb59e0009cdf18c56\"],\r\n    \"option\": [\"65c712c988f7a39f73ad8298\"],\r\n    \"date\": \"2024-02-15\",\r\n    \"time\": [\"01:00 PM\", \"02:00 PM\"],\r\n    \"price\": 6000,\r\n    \"status\": \"pending\",\r\n    \"payment\": \"Cash\",\r\n    \"isRebooked\": false\r\n}"
 						},
-						"url": "{{URI}}{{V1}}/appointment/schedule/edit/65bf5540d7e308f82dd0ed2d"
+						"url": "{{URI}}{{V1}}/appointment/schedule/edit/65c9d6b9653a0aaf07e547e7"
 					},
 					"response": []
 				},
@@ -2275,7 +2287,7 @@
 						"auth": {
 							"type": "bearer",
 							"bearer": {
-								"token": ""
+								"token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJVc2VySW5mbyI6eyJlbWFpbCI6ImFkbWluamF5QGdtYWlsLmNvbSIsInJvbGVzIjpbIkFkbWluIl19LCJpYXQiOjE3MDczMjY1MDYsImV4cCI6MTcwNzkzMTMwNn0.UmY5SxoqqUGQzpyCEglGFlQ92FXKLY2sTnlQmu4epdc"
 							}
 						},
 						"method": "GET",
@@ -2301,6 +2313,12 @@
 						"disableBodyPruning": true
 					},
 					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": {
+								"token": ""
+							}
+						},
 						"method": "GET",
 						"header": [
 							{
@@ -2319,7 +2337,7 @@
 								}
 							]
 						},
-						"url": "{{URI}}{{V1}}transaction/657af3c217361748299bffc4"
+						"url": "{{URI}}{{V1}}transaction/65cdb2031b87ead431b4ea21"
 					},
 					"response": []
 				},
@@ -3050,6 +3068,12 @@
 						"disabledSystemHeaders": {}
 					},
 					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": {
+								"token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJVc2VySW5mbyI6eyJlbWFpbCI6ImFkbWluamF5QGdtYWlsLmNvbSIsInJvbGVzIjpbIkFkbWluIl19LCJpYXQiOjE3MDczMjY1MDYsImV4cCI6MTcwNzkzMTMwNn0.UmY5SxoqqUGQzpyCEglGFlQ92FXKLY2sTnlQmu4epdc"
+							}
+						},
 						"method": "GET",
 						"header": [
 							{
@@ -3236,13 +3260,132 @@
 				}
 			],
 			"id": "c2e94fa9-2ec2-48d6-9c9d-ee3bf364c7d7"
+		},
+		{
+			"name": "EXCLUSION",
+			"item": [
+				{
+					"name": "GET ALL EXCLUSIONS",
+					"id": "b475a495-e369-4c95-9ec2-44bfbee504d5",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": {
+								"token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJVc2VySW5mbyI6eyJlbWFpbCI6ImFkbWluamF5QGdtYWlsLmNvbSIsInJvbGVzIjpbIkFkbWluIl19LCJpYXQiOjE3MDczMjY1MDYsImV4cCI6MTcwNzkzMTMwNn0.UmY5SxoqqUGQzpyCEglGFlQ92FXKLY2sTnlQmu4epdc"
+							}
+						},
+						"method": "GET",
+						"header": [],
+						"url": "{{URI}}{{V1}}exclusions"
+					},
+					"response": []
+				},
+				{
+					"name": "GET SINGLE EXCLUSION",
+					"id": "bfcf2a14-4b82-48e8-a724-859f9397504a",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": {
+								"token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJVc2VySW5mbyI6eyJlbWFpbCI6ImFkbWluamF5QGdtYWlsLmNvbSIsInJvbGVzIjpbIkFkbWluIl19LCJpYXQiOjE3MDczMjY1MDYsImV4cCI6MTcwNzkzMTMwNn0.UmY5SxoqqUGQzpyCEglGFlQ92FXKLY2sTnlQmu4epdc"
+							}
+						},
+						"method": "GET",
+						"header": [],
+						"url": "{{URI}}{{V1}}exclusion/65c9b729af4586858a91dc8c"
+					},
+					"response": []
+				},
+				{
+					"name": "CREATE EXCLUSION",
+					"id": "1b149189-f7a6-4588-bdf4-158d170f0830",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": {
+								"token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJVc2VySW5mbyI6eyJlbWFpbCI6ImFkbWluamF5QGdtYWlsLmNvbSIsInJvbGVzIjpbIkFkbWluIl19LCJpYXQiOjE3MDczMjY1MDYsImV4cCI6MTcwNzkzMTMwNn0.UmY5SxoqqUGQzpyCEglGFlQ92FXKLY2sTnlQmu4epdc"
+							}
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"ingredient_name\":\"Propylene Glycol \",\r\n    \"type\":\"Feet\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": "{{URI}}{{V1}}exclusions"
+					},
+					"response": []
+				},
+				{
+					"name": "UPDATE EXCLUSION",
+					"id": "fab6d94d-58f8-46fc-82b8-3eb617004e63",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": {
+								"token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJVc2VySW5mbyI6eyJlbWFpbCI6ImFkbWluamF5QGdtYWlsLmNvbSIsInJvbGVzIjpbIkFkbWluIl19LCJpYXQiOjE3MDczMjY1MDYsImV4cCI6MTcwNzkzMTMwNn0.UmY5SxoqqUGQzpyCEglGFlQ92FXKLY2sTnlQmu4epdc"
+							}
+						},
+						"method": "PATCH",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"ingredient_name\": \"Fragrance (Parfum) \",\r\n    \"type\": \"Feet\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": "{{URI}}{{V1}}exclusion/edit/65c9b729af4586858a91dc8c"
+					},
+					"response": []
+				},
+				{
+					"name": "DELETE EXCLUSION",
+					"id": "0932f4c6-e492-482e-bdf5-652558165fe7",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": {
+								"token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJVc2VySW5mbyI6eyJlbWFpbCI6ImFkbWluamF5QGdtYWlsLmNvbSIsInJvbGVzIjpbIkFkbWluIl19LCJpYXQiOjE3MDczMjY1MDYsImV4cCI6MTcwNzkzMTMwNn0.UmY5SxoqqUGQzpyCEglGFlQ92FXKLY2sTnlQmu4epdc"
+							}
+						},
+						"method": "DELETE",
+						"header": [],
+						"url": "{{URI}}{{V1}}exclusion/65c9b729af4586858a91dc8c"
+					},
+					"response": []
+				}
+			],
+			"id": "7700d3bb-3347-4945-9419-db08bd6b4205"
 		}
 	],
 	"event": [
 		{
 			"listen": "prerequest",
 			"script": {
-				"id": "93f2a8c8-66a7-4828-9b8e-2e7307f8d57d",
+				"id": "a0add731-4688-47eb-8a5c-8b5637ee63be",
 				"type": "text/javascript",
 				"exec": [
 					""
@@ -3252,7 +3395,7 @@
 		{
 			"listen": "test",
 			"script": {
-				"id": "4b42b1ff-6079-4145-b335-00119ae5b908",
+				"id": "cdb49113-1707-47a5-85b5-87d064f11047",
 				"type": "text/javascript",
 				"exec": [
 					""
@@ -3263,7 +3406,7 @@
 	"variable": [
 		{
 			"key": "Bearer",
-			"value": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJVc2VySW5mbyI6eyJlbWFpbCI6ImFkbWluZ2FiQGdtYWlsLmNvbSIsInJvbGVzIjpbIkFkbWluIl19LCJpYXQiOjE3MDcyNzI3MTAsImV4cCI6MTcwNzg3NzUxMH0.h4QOc2itlCNn6iHmdpRCTET2n86ebFkuSb3TD9B99TA",
+			"value": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJVc2VySW5mbyI6eyJlbWFpbCI6ImFkbWluZ2FiQGdtYWlsLmNvbSIsInJvbGVzIjpbIkFkbWluIl19LCJpYXQiOjE3MDc5Nzk0MTYsImV4cCI6MTcwODU4NDIxNn0.S0uWPif6543Tpwo_Pm0qFMo6YclyEsf_y_Ln5d0ve1Y",
 			"type": "string"
 		}
 	]
