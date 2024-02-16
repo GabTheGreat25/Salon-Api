@@ -14,7 +14,7 @@ const productSchema = new mongoose.Schema({
   },
   type: {
     type: String,
-    enum: ["Hands", "Hair", "Feet", "Face", "Body"],
+    enum: ["Hands", "Hair", "Feet", "Face", "Body", "Nails"],
   },
   // measurement: {
   //   quantity: {
