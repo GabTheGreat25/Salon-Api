@@ -23,7 +23,7 @@ const informationSchema = new mongoose.Schema({
       function () {
         return this.allergy.includes("Others");
       },
-      "Please specify the type of ingredients",
+      "Please specify the type of chemical you are allergic to",
     ],
   },
   eSignature: {
