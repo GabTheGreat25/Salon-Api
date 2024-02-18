@@ -20,7 +20,6 @@ module.exports = {
   BRAND: "brand",
   TIME: "time",
   MONTH: "month",
-  INGREDIENT: "ingredient",
   OPTION: "option",
-  EXCLUSION:"exclusions"
+  EXCLUSION: "exclusions",
 };

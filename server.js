@@ -25,7 +25,6 @@ const feedbacks = require("./routes/feedback");
 const brands = require("./routes/brand");
 const times = require("./routes/time");
 const months = require("./routes/month");
-const ingredients = require("./routes/ingredient");
 const options = require("./routes/option");
 const exclusions = require("./routes/exclusion");
 const { STATUSCODE } = require("./constants/index");
@@ -59,8 +58,7 @@ app.use(
   comments,
   transactions,
   months,
-  ingredients,
-  options,
+  options
 );
 
 app.all("*", (req, res) => {
