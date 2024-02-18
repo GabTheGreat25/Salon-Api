@@ -1643,7 +1643,7 @@
 								"type": "text"
 							}
 						],
-						"url": "{{URI}}{{V1}}service/65c3716fb59e0009cdf18c56"
+						"url": "{{URI}}{{V1}}service/65d074fce82bc37728022984"
 					},
 					"response": []
 				},
@@ -1986,7 +1986,7 @@
 								}
 							]
 						},
-						"url": "{{URI}}{{V1}}appointment/65cdb2031b87ead431b4ea1a"
+						"url": "{{URI}}{{V1}}appointment/65d074fce82bc37728022984"
 					},
 					"response": []
 				},
@@ -2287,7 +2287,7 @@
 						"auth": {
 							"type": "bearer",
 							"bearer": {
-								"token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJVc2VySW5mbyI6eyJlbWFpbCI6ImFkbWluamF5QGdtYWlsLmNvbSIsInJvbGVzIjpbIkFkbWluIl19LCJpYXQiOjE3MDczMjY1MDYsImV4cCI6MTcwNzkzMTMwNn0.UmY5SxoqqUGQzpyCEglGFlQ92FXKLY2sTnlQmu4epdc"
+								"token": ""
 							}
 						},
 						"method": "GET",
@@ -3298,7 +3298,7 @@
 						},
 						"method": "GET",
 						"header": [],
-						"url": "{{URI}}{{V1}}exclusion/65c9b729af4586858a91dc8c"
+						"url": "{{URI}}{{V1}}exclusion/65cf9b6521d27931f9064e33"
 					},
 					"response": []
 				},
