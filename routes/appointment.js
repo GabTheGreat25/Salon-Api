@@ -103,6 +103,17 @@ const appointmentRoutes = [
     roles: [ROLE.ADMIN, ROLE.BEAUTICIAN],
     handler: appointmentController.getAppointmentHistory,
   },
+  {
+    method: METHOD.GET,
+    path: PATH.RESCHEDULE_APPOINTMENT_ID,
+    roles: [
+      ROLE.ADMIN,
+      ROLE.BEAUTICIAN,
+      ROLE.ONLINE_CUSTOMER,
+      ROLE.WALK_IN_CUSTOMER,
+    ],
+    handler: appointmentController.getSingleRescheduleAppointment,
+  },
 ];
 
 appointmentRoutes.forEach((route) => {

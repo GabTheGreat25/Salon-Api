@@ -505,3 +505,34 @@ exports.appointmentHistoryData = async (id) => {
 
   return history;
 };
+
+exports.getSingleRescheduleAppointmentData = async (id) => {
+  if (!mongoose.Types.ObjectId.isValid(id))
+    throw new ErrorHandler(`Invalid appointment ID: ${id}`);
+
+  const appointment = await Appointment.findById(id)
+    .populate({
+      path: "customer",
+      select: "name contact_number",
+    })
+    .populate({
+      path: "service",
+      select:
+        "service_name description price type occassion duration image product",
+      populate: {
+        path: "product",
+        select: "product_name brand",
+      },
+    })
+    .populate({
+      path: "option",
+      select: "option_name extraFee",
+    })
+    .lean()
+    .exec();
+
+  if (!appointment)
+    throw new ErrorHandler(`Appointment not found with ID: ${id}`);
+
+  return appointment;
+};
