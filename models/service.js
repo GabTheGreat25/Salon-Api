@@ -49,6 +49,10 @@ const serviceSchema = new mongoose.Schema({
     type: String,
     required: [true, "Please enter service duration"],
   },
+  warranty: {
+    type: String,
+    required: [true, "Please enter warranty"],
+  },
   image: [
     {
       public_id: {
