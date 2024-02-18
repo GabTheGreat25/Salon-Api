@@ -45,6 +45,13 @@ const transactionSchema = new mongoose.Schema({
     type: Boolean,
     default: false,
   },
+  customer_type: {
+    type: String,
+    default: "customer",
+    enum: {
+      values: ["customer", "pwd", "senior"],
+    },
+  },
 });
 
 module.exports = mongoose.model(RESOURCE.TRANSACTION, transactionSchema);
