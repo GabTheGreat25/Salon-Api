@@ -37,7 +37,6 @@ exports.createNewAppointment = [
   upload.array("image"),
   checkRequiredFields([
     "service",
-    "option",
     "beautician",
     "customer",
     "date",
