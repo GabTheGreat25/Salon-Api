@@ -1,14 +1,15 @@
 const express = require("express");
 const router = express.Router();
 const exclusionController = require("../controllers/exclusionController");
+const { METHOD, PATH, ROLE } = require("../constants/index");
 const { authorizeRoles } = require("../middleware/verifyJWT");
-const { METHOD, PATH } = require("../constants/index");
 
 const exclusionRoutes = [
   {
     method: METHOD.GET,
     path: PATH.EXCLUSIONS,
     roles: [],
+    middleware: [],
     handler: exclusionController.getAllExclusions,
   },
   {

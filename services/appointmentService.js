@@ -61,6 +61,10 @@ exports.getSingleAppointmentData = async (id) => {
         select: "product_name brand",
       },
     })
+    .populate({
+      path: "option",
+      select: "option_name extraFee",
+    })
     .lean()
     .exec();
 
