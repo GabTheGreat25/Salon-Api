@@ -34,7 +34,7 @@ exports.getAllAppointmentsData = async () => {
         "service_name description price type occassion duration image product",
       populate: {
         path: "product",
-        select: "product_name brand",
+        select: "product_name brand ingredients",
       },
     })
     .populate({ path: "option", select: "option_name extraFee" })
@@ -58,7 +58,7 @@ exports.getSingleAppointmentData = async (id) => {
         "service_name description price type occassion duration image product",
       populate: {
         path: "product",
-        select: "product_name brand",
+        select: "product_name brand ingredients",
       },
     })
     .populate({
@@ -521,7 +521,7 @@ exports.getSingleRescheduleAppointmentData = async (id) => {
         "service_name description price type occassion duration image product",
       populate: {
         path: "product",
-        select: "product_name brand",
+        select: "product_name brand ingredients",
       },
     })
     .populate({
