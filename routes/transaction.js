@@ -10,34 +10,19 @@ const transactionRoutes = [
   {
     method: METHOD.GET,
     path: PATH.TRANSACTIONS,
-    roles: [
-      ROLE.ADMIN,
-      ROLE.BEAUTICIAN,
-      ROLE.ONLINE_CUSTOMER,
-      ROLE.WALK_IN_CUSTOMER,
-    ],
+    roles: [ROLE.ADMIN, ROLE.BEAUTICIAN, ROLE.CUSTOMER],
     handler: transactionController.getAllTransactions,
   },
   {
     method: METHOD.GET,
     path: PATH.TRANSACTION_ID,
-    roles: [
-      ROLE.ADMIN,
-      ROLE.BEAUTICIAN,
-      ROLE.ONLINE_CUSTOMER,
-      ROLE.WALK_IN_CUSTOMER,
-    ],
+    roles: [ROLE.ADMIN, ROLE.BEAUTICIAN, ROLE.CUSTOMER],
     handler: transactionController.getSingleTransaction,
   },
   {
     method: METHOD.PATCH,
     path: PATH.EDIT_TRANSACTION_ID,
-    roles: [
-      ROLE.ADMIN,
-      ROLE.BEAUTICIAN,
-      ROLE.ONLINE_CUSTOMER,
-      ROLE.WALK_IN_CUSTOMER,
-    ],
+    roles: [ROLE.ADMIN, ROLE.BEAUTICIAN, ROLE.CUSTOMER],
     handler: transactionController.updateTransaction,
   },
   {

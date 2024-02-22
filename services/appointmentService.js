@@ -180,15 +180,15 @@ exports.createAppointmentData = async (req, res) => {
     confirm: false,
   });
 
-  const customerRoles = appointment.customer.roles;
+  const hasAppointmentFee = appointment.hasAppointmentFee;
 
-  if (customerRoles.includes(ROLE.ONLINE_CUSTOMER)) {
+  if (hasAppointmentFee === true) {
     setTimeout(async () => {
       await deleteAppointmentAfterTimeout(appointment._id, verification);
     }, Math.max(0, deletionTimeForOnlineCustomer - currentDate.getTime()));
   }
 
-  if (customerRoles.includes(ROLE.WALK_IN_CUSTOMER)) {
+  if (hasAppointmentFee === false) {
     setTimeout(async () => {
       await deleteAppointmentAfterTimeout(appointment._id, verification);
     }, Math.max(0, deletionTimeForWalkInCustomer - currentDate.getTime()));

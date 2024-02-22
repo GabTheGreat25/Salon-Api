@@ -10,12 +10,7 @@ const optionRoutes = [
   {
     method: METHOD.GET,
     path: PATH.OPTIONS,
-    roles: [
-      ROLE.ADMIN,
-      ROLE.BEAUTICIAN,
-      ROLE.ONLINE_CUSTOMER,
-      ROLE.WALK_IN_CUSTOMER,
-    ],
+    roles: [ROLE.ADMIN, ROLE.BEAUTICIAN, ROLE.CUSTOMER],
     handler: optionController.getAllOption,
   },
   {

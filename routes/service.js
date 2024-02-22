@@ -10,23 +10,13 @@ const serviceRoutes = [
   {
     method: METHOD.GET,
     path: PATH.SERVICES,
-    roles: [
-      ROLE.ADMIN,
-      ROLE.BEAUTICIAN,
-      ROLE.ONLINE_CUSTOMER,
-      ROLE.WALK_IN_CUSTOMER,
-    ],
+    roles: [ROLE.ADMIN, ROLE.BEAUTICIAN, ROLE.CUSTOMER],
     handler: serviceController.getAllServices,
   },
   {
     method: METHOD.GET,
     path: PATH.SERVICE_ID,
-    roles: [
-      ROLE.ADMIN,
-      ROLE.BEAUTICIAN,
-      ROLE.ONLINE_CUSTOMER,
-      ROLE.WALK_IN_CUSTOMER,
-    ],
+    roles: [ROLE.ADMIN, ROLE.BEAUTICIAN, ROLE.CUSTOMER],
     handler: serviceController.getSingleService,
   },
   {

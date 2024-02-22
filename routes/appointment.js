@@ -10,45 +10,25 @@ const appointmentRoutes = [
   {
     method: METHOD.GET,
     path: PATH.APPOINTMENTS,
-    roles: [
-      ROLE.ADMIN,
-      ROLE.BEAUTICIAN,
-      ROLE.ONLINE_CUSTOMER,
-      ROLE.WALK_IN_CUSTOMER,
-    ],
+    roles: [ROLE.ADMIN, ROLE.BEAUTICIAN, ROLE.CUSTOMER],
     handler: appointmentController.getAllAppointments,
   },
   {
     method: METHOD.POST,
     path: PATH.APPOINTMENTS,
-    roles: [
-      ROLE.ADMIN,
-      ROLE.BEAUTICIAN,
-      ROLE.ONLINE_CUSTOMER,
-      ROLE.WALK_IN_CUSTOMER,
-    ],
+    roles: [ROLE.ADMIN, ROLE.BEAUTICIAN, ROLE.CUSTOMER],
     handler: appointmentController.createNewAppointment,
   },
   {
     method: METHOD.GET,
     path: PATH.APPOINTMENT_ID,
-    roles: [
-      ROLE.ADMIN,
-      ROLE.BEAUTICIAN,
-      ROLE.ONLINE_CUSTOMER,
-      ROLE.WALK_IN_CUSTOMER,
-    ],
+    roles: [ROLE.ADMIN, ROLE.BEAUTICIAN, ROLE.CUSTOMER],
     handler: appointmentController.getSingleAppointment,
   },
   {
     method: METHOD.PATCH,
     path: PATH.EDIT_APPOINTMENT_ID,
-    roles: [
-      ROLE.ADMIN,
-      ROLE.BEAUTICIAN,
-      ROLE.ONLINE_CUSTOMER,
-      ROLE.WALK_IN_CUSTOMER,
-    ],
+    roles: [ROLE.ADMIN, ROLE.BEAUTICIAN, ROLE.CUSTOMER],
     handler: appointmentController.updateAppointment,
   },
   {
@@ -60,29 +40,19 @@ const appointmentRoutes = [
   {
     method: METHOD.PATCH,
     path: PATH.SCHEDULE_EDIT_APPOINTMENT_ID,
-    roles: [
-      ROLE.ADMIN,
-      ROLE.BEAUTICIAN,
-      ROLE.ONLINE_CUSTOMER,
-      ROLE.WALK_IN_CUSTOMER,
-    ],
+    roles: [ROLE.ADMIN, ROLE.BEAUTICIAN, ROLE.CUSTOMER],
     handler: appointmentController.updateScheduleAppointment,
   },
   {
     method: METHOD.PATCH,
     path: PATH.CANCEL_RESCHEDULE_APPOINTMENT_ID,
-    roles: [ROLE.ADMIN, ROLE.ONLINE_CUSTOMER, ROLE.WALK_IN_CUSTOMER],
+    roles: [ROLE.ADMIN, ROLE.CUSTOMER],
     handler: appointmentController.cancelRebook,
   },
   {
     method: METHOD.PATCH,
     path: PATH.BEAUTICIAN_EDIT_APPOINTMENT_ID,
-    roles: [
-      ROLE.ADMIN,
-      ROLE.BEAUTICIAN,
-      ROLE.ONLINE_CUSTOMER,
-      ROLE.WALK_IN_CUSTOMER,
-    ],
+    roles: [ROLE.ADMIN, ROLE.BEAUTICIAN, ROLE.CUSTOMER],
     handler: appointmentController.updateBeauticianAppointment,
   },
   {
@@ -106,12 +76,7 @@ const appointmentRoutes = [
   {
     method: METHOD.GET,
     path: PATH.RESCHEDULE_APPOINTMENT_ID,
-    roles: [
-      ROLE.ADMIN,
-      ROLE.BEAUTICIAN,
-      ROLE.ONLINE_CUSTOMER,
-      ROLE.WALK_IN_CUSTOMER,
-    ],
+    roles: [ROLE.ADMIN, ROLE.BEAUTICIAN, ROLE.CUSTOMER],
     handler: appointmentController.getSingleRescheduleAppointment,
   },
 ];

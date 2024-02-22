@@ -48,8 +48,8 @@ const userSchema = new mongoose.Schema({
   roles: [
     {
       type: String,
-      enum: ["Admin", "Beautician", "Online Customer", "Walk-in Customer"],
-      default: "Online Customer",
+      enum: ["Admin", "Beautician", "Customer"],
+      default: "Customer",
     },
   ],
   image: [

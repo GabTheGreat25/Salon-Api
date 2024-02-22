@@ -65,6 +65,10 @@ const appointmentSchema = new mongoose.Schema({
     type: Boolean,
     default: true,
   },
+  hasAppointmentFee: {
+    type: Boolean,
+    default: false,
+  },
   originalData: {
     beautician: [
       {

@@ -209,10 +209,7 @@ exports.loginToken = async (email, password) => {
     })
       .lean()
       .exec();
-  } else if (
-    foundUser.roles.includes(ROLE.ONLINE_CUSTOMER) ||
-    foundUser.roles.includes(ROLE.WALK_IN_CUSTOMER)
-  ) {
+  } else if (foundUser.roles.includes(ROLE.CUSTOMER)) {
     foundUser.information = await Information.findOne({
       customer: foundUser._id,
     })
@@ -256,10 +253,7 @@ exports.getAllUsersData = async () => {
         })
           .lean()
           .exec();
-      } else if (
-        user.roles.includes(ROLE.ONLINE_CUSTOMER) ||
-        user.roles.includes(ROLE.WALK_IN_CUSTOMER)
-      ) {
+      } else if (user.roles.includes(ROLE.CUSTOMER)) {
         user.information = await Information.findOne({
           customer: user?._id,
         })
@@ -288,10 +282,7 @@ exports.getSingleUserData = async (id) => {
     })
       .lean()
       .exec();
-  } else if (
-    user.roles.includes(ROLE.ONLINE_CUSTOMER) ||
-    user.roles.includes(ROLE.WALK_IN_CUSTOMER)
-  ) {
+  } else if (user.roles.includes(ROLE.CUSTOMER)) {
     user.information = await Information.findOne({
       customer: id,
     })
@@ -326,12 +317,9 @@ exports.createUserData = async (req, res) => {
     ? Array.isArray(req.body.roles)
       ? req.body.roles
       : req.body.roles.split(", ")
-    : [ROLE.ONLINE_CUSTOMER];
+    : [ROLE.CUSTOMER];
 
-  const active =
-    roles.includes(ROLE.ADMIN) ||
-    roles.includes(ROLE.ONLINE_CUSTOMER) ||
-    roles.includes(ROLE.WALK_IN_CUSTOMER);
+  const active = roles.includes(ROLE.ADMIN) || roles.includes(ROLE.CUSTOMER);
 
   let user;
   let requirement;
@@ -546,10 +534,7 @@ exports.updateUserData = async (req, res, id) => {
     )
       .lean()
       .exec();
-  } else if (
-    roles.includes(ROLE.ONLINE_CUSTOMER) ||
-    roles.includes(ROLE.WALK_IN_CUSTOMER)
-  ) {
+  } else if (roles.includes(ROLE.CUSTOMER)) {
     information = await Information.findOneAndUpdate(
       { customer: id },
       {

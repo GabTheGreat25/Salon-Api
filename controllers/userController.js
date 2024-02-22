@@ -125,9 +125,7 @@ exports.createNewUser = [
       await usersService.createUserData(req);
 
     const successMessage =
-      user && user.roles.includes(ROLE.ONLINE_CUSTOMER)
-        ? `New customer ${user?.name} created with an ID ${user?._id}`
-        : user.roles.includes(ROLE.WALK_IN_CUSTOMER)
+      user && user.roles.includes(ROLE.CUSTOMER)
         ? `New customer ${user?.name} created with an ID ${user?._id}`
         : user && user.roles.includes(ROLE.ADMIN)
         ? `New admin ${user?.name} created with an ID ${user?._id}`
