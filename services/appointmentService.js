@@ -4,9 +4,8 @@ const Verification = require("../models/verification");
 const Comment = require("../models/comment");
 const ErrorHandler = require("../utils/errorHandler");
 const mongoose = require("mongoose");
-const { ROLE } = require("../constants");
 const { cloudinary } = require("../utils/cloudinary");
-const { STATUSCODE } = require("../constants/index");
+const { STATUSCODE } = require("../constants");
 const { sendSMS } = require("../utils/twilio");
 
 const deleteAppointmentAfterTimeout = async (appointmentId, verification) => {
@@ -149,18 +148,27 @@ exports.createAppointmentData = async (req, res) => {
     { path: "option", select: "option_name extraFee" },
   ]);
 
-  const currentDate = new Date();
-  const appointmentDateTime = new Date(
-    `${req.body.date} ${currentDate.toLocaleTimeString("en-Ph", {
-      hour12: true,
-    })}`
-  );
+  await appointment.save();
 
-  const deletionTimeForOnlineCustomer =
-    // appointmentDateTime.getTime() - 60 * 1000;
-    appointmentDateTime.getTime() - 60 * 60 * 1000;
-  const deletionTimeForWalkInCustomer =
-    appointmentDateTime.getTime() - 30 * 60 * 1000;
+  const retrievedAppointment = await Appointment.findById(appointment._id);
+
+  if (!retrievedAppointment) throw new ErrorHandler("Appointment not found.");
+
+  const firstTime = retrievedAppointment.time[0];
+
+  const [time, period] = firstTime.split(" ");
+  const [hours, minutes] = time.split(":");
+  let formattedHours = parseInt(hours);
+
+  if (period === "PM" && formattedHours !== 12) {
+    formattedHours += 12;
+  }
+
+  const formattedTime = `${formattedHours}:${minutes}:00.000Z`;
+
+  const appointmentDateTime = new Date(`${req.body.date} ${formattedTime}`);
+
+  console.log("Appointment Created At:", appointmentDateTime);
 
   let transaction;
 
@@ -171,7 +179,7 @@ exports.createAppointmentData = async (req, res) => {
       payment: req.body.payment,
       image: image,
     });
-  await appointment.save();
+
   appointment.transaction = transaction._id;
   await transaction.save();
 
@@ -180,20 +188,6 @@ exports.createAppointmentData = async (req, res) => {
     confirm: false,
   });
 
-  const hasAppointmentFee = appointment.hasAppointmentFee;
-
-  if (hasAppointmentFee === true) {
-    setTimeout(async () => {
-      await deleteAppointmentAfterTimeout(appointment._id, verification);
-    }, Math.max(0, deletionTimeForOnlineCustomer - currentDate.getTime()));
-  }
-
-  if (hasAppointmentFee === false) {
-    setTimeout(async () => {
-      await deleteAppointmentAfterTimeout(appointment._id, verification);
-    }, Math.max(0, deletionTimeForWalkInCustomer - currentDate.getTime()));
-  }
-
   const smsMessage = `Dear ${appointment.customer.name}, your appointment was successfully booked. Thank you for choosing Lhanlee Salon.`;
   console.log(smsMessage);
   // await sendSMS(
@@ -201,7 +195,15 @@ exports.createAppointmentData = async (req, res) => {
   //   smsMessage
   // );
 
-  const reminderTime = appointmentDateTime.getTime() + 2 * 60 * 60 * 1000;
+  const reminderTime = new Date(
+    appointmentDateTime.getTime() - 2 * 60 * 60 * 1000
+  );
+  const deletionTimeForOnlineCustomer = new Date(
+    appointmentDateTime.getTime() - 1 * 60 * 60 * 1000
+  );
+  const deletionTimeForWalkInCustomer = new Date(
+    appointmentDateTime.getTime() - 30 * 60 * 1000
+  );
 
   setTimeout(async () => {
     const smsMessage = `Dear ${appointment.customer.name}, Just to remind you your appointment is in 2 hours.`;
@@ -210,7 +212,25 @@ exports.createAppointmentData = async (req, res) => {
     //   `+63${appointment.customer.contact_number.substring(1)}`,
     //   smsMessage
     // );
-  }, Math.max(0, reminderTime - currentDate.getTime()));
+  }, Math.max(0, reminderTime.getTime() - Date.now()));
+
+  const hasAppointmentFee = retrievedAppointment.hasAppointmentFee;
+
+  if (hasAppointmentFee === true) {
+    console.log("I am a online customer");
+    setTimeout(async () => {
+      await deleteAppointmentAfterTimeout(appointment._id, verification);
+    }, Math.max(0, reminderTime.getTime() - Date.now()));
+  } else {
+    console.log("I am a walk-in customer");
+    setTimeout(async () => {
+      await deleteAppointmentAfterTimeout(appointment._id, verification);
+    }, Math.max(0, reminderTime.getTime() - Date.now()));
+  }
+
+  console.log("Reminder Time:", reminderTime);
+  console.log("Online Customer Time:", deletionTimeForOnlineCustomer);
+  console.log("Walkin Customer Time:", deletionTimeForWalkInCustomer);
 
   return { appointment, transaction, verification };
 };

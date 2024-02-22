@@ -169,15 +169,18 @@ exports.getAppointmentHistory = asyncHandler(async (req, res, next) => {
     : SuccessHandler(res, `Finished Appointment Found`, history);
 });
 
-exports.getSingleRescheduleAppointment = asyncHandler(async (req, res, next) => {
-  const appointment = await appointmentsService.getSingleRescheduleAppointmentData(
-    req.params.id
-  );
-  return !appointment
-    ? next(new ErrorHandler("No appointment found"))
-    : SuccessHandler(
-        res,
-        `Appointment of ${appointment?.customer?.name} with ID ${appointment?._id} retrieved`,
-        appointment
+exports.getSingleRescheduleAppointment = asyncHandler(
+  async (req, res, next) => {
+    const appointment =
+      await appointmentsService.getSingleRescheduleAppointmentData(
+        req.params.id
       );
-});
+    return !appointment
+      ? next(new ErrorHandler("No appointment found"))
+      : SuccessHandler(
+          res,
+          `Appointment of ${appointment?.customer?.name} with ID ${appointment?._id} retrieved`,
+          appointment
+        );
+  }
+);
