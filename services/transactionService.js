@@ -47,7 +47,7 @@ exports.getAllTransactionData = async () => {
           },
         },
       ],
-      select: "_id date time price image",
+      select: "_id date time price image hasAppointmentFee",
     })
     .lean()
     .exec();
@@ -80,7 +80,7 @@ exports.getSingleTransactionData = async (id) => {
           },
         },
       ],
-      select: "_id date time price image",
+      select: "_id date time price image hasAppointmentFee",
     })
     .lean()
     .exec();
@@ -107,7 +107,7 @@ exports.updateTransactionData = async (req, res, id) => {
         },
         { path: "option", select: "option_name extraFee" },
       ],
-      select: "date time price image",
+      select: "date time price image hasAppointmentFee",
     })
     .lean()
     .exec();
@@ -154,10 +154,13 @@ exports.updateTransactionData = async (req, res, id) => {
 
   if (confirm) {
     const discountAmount = updatedTransaction.hasDiscount === true ? 0.2 : 0;
+    const appointmentFee =
+      existingTransaction.appointment.hasAppointmentFee === true ? 150 : 0;
+
     const adjustedTotalPrice =
       existingTransaction.appointment.price -
       existingTransaction.appointment.price * discountAmount -
-      150;
+      appointmentFee;
 
     const adjustedPriceWithoutDecimals = adjustedTotalPrice.toFixed(0);
 
@@ -284,7 +287,7 @@ exports.deleteTransactionData = async (id) => {
           path: "option",
           select: "option_name extraFee",
         },
-        select: "date time price image",
+        select: "date time price image hasAppointmentFee",
       })
       .lean()
       .exec(),
