@@ -374,7 +374,7 @@ exports.createUserData = async (req, res) => {
       time: req.body.time,
     });
 
-    const smsMessage = `Dear ${user.name}, your account has been successfully created. Please attend the meeting at the salon.`;
+    const smsMessage = `Dear ${user.fname}, your account has been successfully created. Please attend the meeting at the salon.`;
     console.log(smsMessage);
     // await sendSMS(`+63${user.contact_number.substring(1)}`, smsMessage);
 
@@ -389,7 +389,9 @@ exports.createUserData = async (req, res) => {
     }, deletionTime);
   } else {
     user = await User.create({
-      name: req.body.name,
+      fname: req.body.fname,
+      middle: req.body.middle,
+      lname: req.body.lname,
       age: req.body.age,
       email: req.body.email,
       password: await bcrypt.hash(
