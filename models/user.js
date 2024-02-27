@@ -3,10 +3,20 @@ const validator = require("validator");
 const { RESOURCE } = require("../constants/index");
 
 const userSchema = new mongoose.Schema({
-  name: {
+  fname: {
     type: String,
-    required: [true, "Please enter your name"],
+    required: [true, "Please enter your first name"],
     maxLength: [30, "Your name cannot exceed 30 characters"],
+  },
+  middle: {
+    type: String,
+    required: false,
+    maxLength: [30, "Your middle name cannot exceed 30 characters"],
+  },
+  lname:{
+    type: String,
+    required: [true, "Please enter your last name"],
+    maxLength: [30, "Your last name cannot exceed 30 characters"],
   },
   email: {
     type: String,
