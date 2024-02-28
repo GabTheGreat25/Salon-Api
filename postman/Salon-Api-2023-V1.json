@@ -412,7 +412,7 @@
 								}
 							]
 						},
-						"url": "{{URI}}{{V1}}user/65b65b822924c4eebe1835e4"
+						"url": "{{URI}}{{V1}}user/65d9b146aa5bed4b704ae127"
 					},
 					"response": []
 				},
@@ -1814,7 +1814,7 @@
 								}
 							]
 						},
-						"url": "{{URI}}{{V1}}appointment/65d19a3a342cf10c0d2c62cb"
+						"url": "{{URI}}{{V1}}appointment/65dc05cda63617fa36073d79"
 					},
 					"response": []
 				},
@@ -1848,7 +1848,7 @@
 								},
 								{
 									"key": "customer",
-									"value": "65d6f8f1236aba27ecea7c99",
+									"value": "65d9b146aa5bed4b704ae127",
 									"type": "text"
 								},
 								{
@@ -1863,12 +1863,12 @@
 								},
 								{
 									"key": "date",
-									"value": "2024-02-21",
+									"value": "2024-02-26",
 									"type": "text"
 								},
 								{
 									"key": "time",
-									"value": "06:00 PM",
+									"value": "11:00 PM",
 									"type": "text"
 								},
 								{
@@ -2062,7 +2062,7 @@
 							"mode": "formdata",
 							"formdata": []
 						},
-						"url": "{{URI}}{{V1}}appointment/65d776b868686296f56456c5"
+						"url": "{{URI}}{{V1}}appointment/65dc981a453a9140c8387577"
 					},
 					"response": []
 				},
@@ -3212,6 +3212,68 @@
 				}
 			],
 			"id": "7700d3bb-3347-4945-9419-db08bd6b4205"
+		},
+		{
+			"name": "MAYA",
+			"item": [
+				{
+					"name": "MAYA CHECKOUT LINK NO APPOINTMENT FEE",
+					"id": "87676999-042a-407e-a334-018c35f68e3a",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "{{Bearer}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"hasAppointmentFee\": false,\r\n    \"price\": \"1\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": "{{URI}}{{V1}}maya"
+					},
+					"response": []
+				},
+				{
+					"name": "MAYA CHECKOUT LINK WITH APPOINTMENT FEE",
+					"id": "c6104327-93a2-44e0-b9b4-35206549fc4f",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "{{Bearer}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"hasAppointmentFee\": true\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": "{{URI}}{{V1}}maya"
+					},
+					"response": []
+				}
+			],
+			"id": "4e00773f-8fa1-4bab-9753-458b68a0af61"
 		}
 	],
 	"event": [
