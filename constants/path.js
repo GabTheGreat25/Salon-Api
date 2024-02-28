@@ -57,8 +57,9 @@ module.exports = {
   OPTIONS: "/options",
   OPTION_ID: "/option/:id",
   EDIT_OPTION_ID: "/option/edit/:id",
-  EXCLUSIONS:"/exclusions",
-  EXCLUSION_ID:"/exclusion/:id",
-  EDIT_EXCLUSION_ID:"/exclusion/edit/:id",
-  RESCHEDULE_APPOINTMENT_ID:"appointment/reschedule/:id",
+  EXCLUSIONS: "/exclusions",
+  EXCLUSION_ID: "/exclusion/:id",
+  EDIT_EXCLUSION_ID: "/exclusion/edit/:id",
+  RESCHEDULE_APPOINTMENT_ID: "appointment/reschedule/:id",
+  MAYA: "/maya",
 };
