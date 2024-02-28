@@ -26,6 +26,7 @@ const brands = require("./routes/brand");
 const times = require("./routes/time");
 const months = require("./routes/month");
 const options = require("./routes/option");
+const maya = require("./routes/maya");
 const exclusions = require("./routes/exclusion");
 const { STATUSCODE } = require("./constants/index");
 const connectDB = require("./config/connectDB");
@@ -58,7 +59,8 @@ app.use(
   comments,
   transactions,
   months,
-  options
+  options,
+  maya
 );
 
 app.all("*", (req, res) => {
