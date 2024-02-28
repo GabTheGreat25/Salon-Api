@@ -171,11 +171,17 @@ exports.updateTransactionData = async (req, res, id) => {
     );
 
     const firstTime = existingTransaction.appointment.time[0];
-    const lastTime =
-      existingTransaction.appointment.time[
-        existingTransaction.appointment.time.length - 1
-      ];
-    const formattedTime = `${firstTime} to ${lastTime}`;
+    let formattedTime;
+
+    if (existingTransaction.appointment.time.length === 1) {
+      formattedTime = firstTime;
+    } else {
+      const lastTime =
+        existingTransaction.appointment.time[
+          existingTransaction.appointment.time.length - 1
+        ];
+      formattedTime = `${firstTime} to ${lastTime}`;
+    }
 
     const beauticianNames = existingTransaction.appointment.beautician.map(
       (b) => b.name
