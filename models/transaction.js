@@ -46,9 +46,9 @@ const transactionSchema = new mongoose.Schema({
   },
   customer_type: {
     type: String,
-    default: "customer",
+    default: "Customer",
     enum: {
-      values: ["customer", "pwd", "senior"],
+      values: ["Customer", "Pwd", "Senior"],
     },
   },
 });
