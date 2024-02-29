@@ -187,6 +187,7 @@ exports.createAppointmentData = async (req, res) => {
     appointment: appointment._id,
     status: req.body.status,
     payment: req.body.payment,
+    customer_type: req.body.customer_type,
     image: image,
   });
 
