@@ -16,9 +16,8 @@ const transactionSchema = new mongoose.Schema({
   },
   payment: {
     type: String,
-    default: "Cash",
     enum: {
-      values: ["Cash"],
+      values: ["Cash", "Maya"],
     },
   },
   qrCode: {
