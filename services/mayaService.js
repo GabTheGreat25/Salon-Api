@@ -1,5 +1,6 @@
 const { v4: uuidv4 } = require("uuid");
 const sdk = require("api")("@paymaya/v5.18#1bmd73pl9p4h9zf");
+const { sendSMS } = require("../utils/twilio");
 
 exports.createMayaCheckoutLink = async (req, res) => {
   const uuid = uuidv4();
@@ -49,6 +50,10 @@ exports.createMayaCheckoutLink = async (req, res) => {
             },
           }),
     },
+    buyer: {
+      contact: { phone: req.body.contactNumber },
+      firstName: req.body.name,
+    },
     // redirectUrl: { //? Uncomment this line when deploying to production
     //   success: "https://salon-web.vercel.app",
     //    failure: "", //? Add failure and cancel redirect url
@@ -73,6 +78,18 @@ exports.createMayaCheckoutLink = async (req, res) => {
           })),
     requestReferenceNumber: formattedUuid,
   });
+
+  if (data) {
+    const redirectUrl = data.redirectUrl;
+
+    const smsMessage = `Dear ${req.body.name}, Here is your Maya checkout link: ${redirectUrl}`;
+
+    console.log(smsMessage);
+    // await sendSMS(
+    //   `+63${req.body.contactNumber.substring(1)}`,
+    //   smsMessage
+    // );
+  } else console.log("No data returned from SDK");
 
   return data;
 };
