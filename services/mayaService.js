@@ -8,7 +8,7 @@ exports.createMayaCheckoutLink = async (req, res) => {
     .slice(0, 32)
     .replace(/(\w{8})(\w{4})(\w{4})(\w{4})(\w{12})/, "$1-$2-$3-$4-$5");
 
-  if (process.env.NODE_ENV === "development") {
+  if (process.env.NODE_ENV == "development") {
     sdk.auth(
       process.env.PAYMAYA_SANDBOX_PUBLIC_KEY,
       process.env.PAYMAYA_SANDBOX_SECRET_KEY
@@ -22,13 +22,55 @@ exports.createMayaCheckoutLink = async (req, res) => {
     sdk.server(process.env.PAYMAYA_SERVER || "https://pg.paymaya.com");
   }
 
-  const price = req.body.hasAppointmentFee === true ? 150 : req.body.price || 0;
+  let subtotal = 0;
+
+  if (req.body.items && req.body.items.length > 0) {
+    subtotal = req.body.items.reduce(
+      (acc, item) => acc + (parseFloat(item.totalAmount.value) || 0),
+      0
+    );
+  }
+
+  const discount = req.body.discount || "200";
+  const totalAmountValue = (subtotal - parseFloat(discount)).toFixed(0);
+
+  const price = req.body.hasAppointmentFee === true ? 150 : totalAmountValue;
 
   const { data } = await sdk.createV1Checkout({
     totalAmount: {
       value: price,
       currency: process.env.CURRENCY || "PHP",
+      ...(req.body.hasAppointmentFee === true
+        ? {}
+        : {
+            details: {
+              subtotal: subtotal,
+              discount: discount,
+            },
+          }),
     },
+    // redirectUrl: { //? Uncomment this line when deploying to production
+    //   success: "https://salon-web.vercel.app",
+    //    failure: "", //? Add failure and cancel redirect url
+    //    cancel: "",
+    // },
+    items:
+      req.body.hasAppointmentFee === true
+        ? [
+            {
+              name: "Service Appointment Fee",
+              amount: { value: "150" },
+              totalAmount: { value: "150" },
+            },
+          ]
+        : req.body.items.map((item) => ({
+            name: item.name || "Service",
+            description: item.description || "Service Description",
+            quantity: item.quantity || 1,
+            totalAmount: {
+              value: item.totalAmount.value,
+            },
+          })),
     requestReferenceNumber: formattedUuid,
   });
 
