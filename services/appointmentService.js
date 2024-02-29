@@ -182,13 +182,13 @@ exports.createAppointmentData = async (req, res) => {
   const appointmentDateTime = new Date(`${req.body.date} ${formattedTime}`);
 
   let transaction;
-  if (req.body.payment === "Cash")
-    transaction = await Transaction.create({
-      appointment: appointment._id,
-      status: req.body.status,
-      payment: req.body.payment,
-      image: image,
-    });
+
+  transaction = await Transaction.create({
+    appointment: appointment._id,
+    status: req.body.status,
+    payment: req.body.payment,
+    image: image,
+  });
 
   appointment.transaction = transaction._id;
   await transaction.save();
@@ -200,6 +200,10 @@ exports.createAppointmentData = async (req, res) => {
 
   const smsMessage = `Dear ${appointment.customer.name}, your appointment was successfully booked. Thank you for choosing Lhanlee Salon.`;
   console.log(smsMessage);
+  // await sendSMS(
+  //   `+63${appointment.customer.contact_number.substring(1)}`,
+  //   smsMessage
+  // );
 
   const reminderTime = moment(appointmentDateTime)
     .subtract(2, "hours")
