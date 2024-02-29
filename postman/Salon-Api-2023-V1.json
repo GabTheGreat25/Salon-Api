@@ -1863,12 +1863,12 @@
 								},
 								{
 									"key": "date",
-									"value": "2024-02-26",
+									"value": "2024-02-29",
 									"type": "text"
 								},
 								{
 									"key": "time",
-									"value": "11:00 PM",
+									"value": "12:00 PM",
 									"type": "text"
 								},
 								{
@@ -3233,7 +3233,7 @@
 						],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n    \"hasAppointmentFee\": false,\r\n    \"price\": \"1\"\r\n}",
+							"raw": "{\r\n  \"hasAppointmentFee\": false,\r\n  \"items\": [\r\n    {\r\n      \"name\": \"Service 1\",\r\n      \"description\": \"Description for Service 1\",\r\n      \"quantity\": 1,\r\n      \"totalAmount\": {\r\n        \"value\": 1000\r\n      }\r\n    },\r\n    {\r\n      \"name\": \"Service 2\",\r\n      \"description\": \"Description for Service 2\",\r\n      \"quantity\": 1,\r\n      \"totalAmount\": {\r\n        \"value\": 1000\r\n      }\r\n    }\r\n  ]\r\n}\r\n",
 							"options": {
 								"raw": {
 									"language": "json"
