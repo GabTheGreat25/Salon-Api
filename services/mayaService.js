@@ -32,7 +32,7 @@ exports.createMayaCheckoutLink = async (req, res) => {
     );
   }
 
-  const discount = req.body.discount || "200";
+  const discount = req.body.discount || 0;
   const totalAmountValue = (subtotal - parseFloat(discount)).toFixed(0);
 
   const price = req.body.hasAppointmentFee === true ? 150 : totalAmountValue;
@@ -71,7 +71,6 @@ exports.createMayaCheckoutLink = async (req, res) => {
         : req.body.items.map((item) => ({
             name: item.name || "Service",
             description: item.description || "Service Description",
-            quantity: item.quantity || 1,
             totalAmount: {
               value: item.totalAmount.value,
             },
