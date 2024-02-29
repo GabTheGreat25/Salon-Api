@@ -54,11 +54,11 @@ exports.createMayaCheckoutLink = async (req, res) => {
       contact: { phone: req.body.contactNumber },
       firstName: req.body.name,
     },
-    // redirectUrl: { //? Uncomment this line when deploying to production
-    //   success: "https://salon-web.vercel.app",
-    //    failure: "", //? Add failure and cancel redirect url
-    //    cancel: "",
-    // },
+    redirectUrl: {
+      success: "https://lhanhlee-salon.vercel.app/",
+      failure: "https://lhanhlee-salon.vercel.app/",
+      cancel: "https://lhanhlee-salon.vercel.app/",
+    },
     items:
       req.body.hasAppointmentFee === true
         ? [
