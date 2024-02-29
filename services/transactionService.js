@@ -206,11 +206,13 @@ exports.updateTransactionData = async (req, res, id) => {
           : existingTransaction.appointment.service[0]?.service_name
       }\n` +
       ` Add Ons: ${
-        existingTransaction.appointment.option.length > 1
-          ? existingTransaction.appointment.option
-              .map((s) => s.option_name)
-              .join(", ")
-          : existingTransaction.appointment.option[0]?.option_name
+        existingTransaction.appointment.option
+          ? existingTransaction.appointment.option.length > 1
+            ? existingTransaction.appointment.option
+                .map((s) => s.option_name)
+                .join(", ")
+            : existingTransaction.appointment.option[0]?.option_name
+          : "None"
       }\n` +
       `----------------------------------------\n` +
       ` Beautician:\n` +
