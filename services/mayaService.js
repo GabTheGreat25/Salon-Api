@@ -8,7 +8,7 @@ exports.createMayaCheckoutLink = async (req, res) => {
     .slice(0, 32)
     .replace(/(\w{8})(\w{4})(\w{4})(\w{4})(\w{12})/, "$1-$2-$3-$4-$5");
 
-  if (process.env.NODE_ENV == "development") {
+  if (process.env.NODE_ENV === "development") {
     sdk.auth(
       process.env.PAYMAYA_SANDBOX_PUBLIC_KEY,
       process.env.PAYMAYA_SANDBOX_SECRET_KEY

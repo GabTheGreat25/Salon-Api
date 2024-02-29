@@ -226,10 +226,22 @@ exports.createAppointmentData = async (req, res) => {
 
   if (hasAppointmentFee === true) {
     setTimeout(async () => {
+      const smsMessage = `Dear ${appointment.customer.name}, Your appointment has been deleted due to not paying the fee.`;
+      console.log(smsMessage);
+      // await sendSMS(
+      //   `+63${appointment.customer.contact_number.substring(1)}`,
+      //   smsMessage
+      // );
       await deleteAppointmentAfterTimeout(appointment._id, verification);
     }, Math.max(0, deletionTimeForOnlineCustomer.getTime() - currentTimePH.valueOf()));
   } else {
     setTimeout(async () => {
+      const smsMessage = `Dear ${appointment.customer.name}, Your appointment has been deleted due to not paying the fee.`;
+      console.log(smsMessage);
+      // await sendSMS(
+      //   `+63${appointment.customer.contact_number.substring(1)}`,
+      //   smsMessage
+      // );
       await deleteAppointmentAfterTimeout(appointment._id, verification);
     }, Math.max(0, deletionTimeForWalkInCustomer.getTime() - currentTimePH.valueOf()));
   }
