@@ -2,7 +2,6 @@ const SuccessHandler = require("../utils/successHandler");
 const ErrorHandler = require("../utils/errorHandler");
 const transactionsService = require("../services/transactionService");
 const asyncHandler = require("express-async-handler");
-const checkRequiredFields = require("../helpers/checkRequiredFields");
 const { STATUSCODE } = require("../constants/index");
 
 exports.getAllTransactions = asyncHandler(async (req, res, next) => {
@@ -36,7 +35,6 @@ exports.getSingleTransaction = asyncHandler(async (req, res, next) => {
 });
 
 exports.updateTransaction = [
-  checkRequiredFields(["status"]),
   asyncHandler(async (req, res, next) => {
     const { existingTransaction, updatedTransaction, updateVerification } =
       await transactionsService.updateTransactionData(req, res, req.params.id);
