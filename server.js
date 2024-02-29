@@ -33,6 +33,9 @@ const connectDB = require("./config/connectDB");
 const PORT = process.env.PORT || 4000;
 
 connectDB();
+
+app.set("trust proxy", true);
+
 app.use(logger);
 app.use(compression());
 app.use(cors(corsOptions));
