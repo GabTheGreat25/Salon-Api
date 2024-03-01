@@ -109,16 +109,6 @@ exports.createAppointmentData = async (req, res) => {
 
   const currentTimePH = moment().tz("Asia/Manila").add(8, "hours");
 
-  const existingAppointments = await Appointment.find({
-    date: req.body.date,
-    time: { $in: req.body.time },
-  });
-
-  if (existingAppointments.length > 0)
-    throw new ErrorHandler(
-      "Appointment slot is already booked by another customer."
-    );
-
   const appointmentTime = req.body.time;
 
   const appointmentTimeDate = moment(
