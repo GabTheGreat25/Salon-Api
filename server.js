@@ -34,8 +34,6 @@ const PORT = process.env.PORT || 4000;
 
 connectDB();
 
-app.set("trust proxy", false);
-
 app.use(logger);
 app.use(compression());
 app.use(cors(corsOptions));
