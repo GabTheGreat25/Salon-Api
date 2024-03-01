@@ -22,4 +22,5 @@ module.exports = rateLimit({
   handler: HANDLER,
   standardHeaders: true,
   legacyHeaders: false,
+  skip: () => true,
 });
