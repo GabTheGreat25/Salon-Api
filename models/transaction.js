@@ -51,6 +51,10 @@ const transactionSchema = new mongoose.Schema({
       values: ["Customer", "Pwd", "Senior"],
     },
   },
+  isApproved: {
+    type: Boolean,
+    default: false,
+  },
 });
 
 module.exports = mongoose.model(RESOURCE.TRANSACTION, transactionSchema);
