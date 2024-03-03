@@ -38,7 +38,7 @@ const deliverySchema = new mongoose.Schema({
   type: [
     {
       type: String,
-      enum: ["Hands", "Hair", "Feet", "Face", "Body", "Eyelash"],
+      enum: ["Hands", "Hair", "Feet", "Facial", "Body", "Eyelash"],
     },
   ],
 });
