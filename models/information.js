@@ -1,4 +1,4 @@
-const mongoose = require("mongoose");
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                         const mongoose = require("mongoose");
 const { RESOURCE } = require("../constants/index");
 
 const informationSchema = new mongoose.Schema({
@@ -25,7 +25,7 @@ const informationSchema = new mongoose.Schema({
       },
       "Please specify the type of chemical you are allergic to",
     ],
-  },
+  },                                                                                                            
   eSignature: {
     type: String,
     required: function () {
