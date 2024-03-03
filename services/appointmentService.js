@@ -191,10 +191,7 @@ exports.createAppointmentData = async (req, res) => {
 
   const smsMessage = `Dear ${appointment.customer.name}, your appointment was successfully booked. Thank you for choosing Lhanlee Salon.`;
   console.log(smsMessage);
-  // await sendSMS(
-  //   `+63${appointment.customer.contact_number.substring(1)}`,
-  //   smsMessage
-  // );
+  sendSMS(`+63${appointment.customer.contact_number.substring(1)}`, smsMessage);
 
   const reminderTime = moment(appointmentDateTime)
     .subtract(2, "hours")
@@ -211,10 +208,10 @@ exports.createAppointmentData = async (req, res) => {
   setTimeout(async () => {
     const smsMessage = `Dear ${appointment.customer.name}, Just to remind you your appointment is in 2 hours.`;
     console.log(smsMessage);
-    // await sendSMS(
-    //   `+63${appointment.customer.contact_number.substring(1)}`,
-    //   smsMessage
-    // );
+    sendSMS(
+      `+63${appointment.customer.contact_number.substring(1)}`,
+      smsMessage
+    );
   }, Math.max(0, reminderTime.getTime() - currentTimePH.valueOf()));
 
   const hasAppointmentFee = retrievedAppointment.hasAppointmentFee;
@@ -223,20 +220,20 @@ exports.createAppointmentData = async (req, res) => {
     setTimeout(async () => {
       const smsMessage = `Dear ${appointment.customer.name}, Your appointment has been deleted due to not paying the fee.`;
       console.log(smsMessage);
-      // await sendSMS(
-      //   `+63${appointment.customer.contact_number.substring(1)}`,
-      //   smsMessage
-      // );
+      sendSMS(
+        `+63${appointment.customer.contact_number.substring(1)}`,
+        smsMessage
+      );
       await deleteAppointmentAfterTimeout(appointment._id, verification);
     }, Math.max(0, deletionTimeForOnlineCustomer.getTime() - currentTimePH.valueOf()));
   } else {
     setTimeout(async () => {
       const smsMessage = `Dear ${appointment.customer.name}, Your appointment has been deleted due to not paying the fee.`;
       console.log(smsMessage);
-      // await sendSMS(
-      //   `+63${appointment.customer.contact_number.substring(1)}`,
-      //   smsMessage
-      // );
+      sendSMS(
+        `+63${appointment.customer.contact_number.substring(1)}`,
+        smsMessage
+      );
       await deleteAppointmentAfterTimeout(appointment._id, verification);
     }, Math.max(0, deletionTimeForWalkInCustomer.getTime() - currentTimePH.valueOf()));
   }
@@ -261,10 +258,10 @@ exports.confirmRebooked = async (appointmentId) => {
 
     console.log(smsMessage);
 
-    // await sendSMS(
-    //   `+63${appointment.customer.contact_number.substring(1)}`,
-    //   smsMessage
-    // );
+    sendSMS(
+      `+63${appointment.customer.contact_number.substring(1)}`,
+      smsMessage
+    );
   } else throw new ErrorHandler(`Appointment is not marked for rebooking`);
 
   return appointment;
@@ -325,10 +322,10 @@ exports.updateScheduleAppointmentData = async (req, res, id) => {
 
   console.log(smsMessage);
 
-  // await sendSMS(
-  //   `+63${updatedScheduleAppointment.customer.contact_number.substring(1)}`,
-  //   smsMessage
-  // );
+  sendSMS(
+    `+63${updatedScheduleAppointment.customer.contact_number.substring(1)}`,
+    smsMessage
+  );
 
   return updatedScheduleAppointment;
 };
@@ -383,7 +380,10 @@ exports.updateBeauticianAppointmentData = async (req, res, id) => {
     const smsMessage = `Dear ${updatedAppointment.customer.name}, your beautician(s) have been changed. Your new beautician(s) is/are: ${newBeauticians}. We understand that changes like these might impact your experience, and we sincerely apologize for any inconvenience caused. Our commitment is to ensure you receive the highest level of service, and we believe your new beautician(s) will provide you with an exceptional experience. Thank you for your understanding and continued trust in our salon. Should you have any questions or concerns, please feel free to reach out to us.`;
 
     console.log(smsMessage);
-    // await sendSMS(`+63${updatedAppointment.customer.contact_number.substring(1)}`, smsMessage);
+    sendSMS(
+      `+63${updatedAppointment.customer.contact_number.substring(1)}`,
+      smsMessage
+    );
   }
 
   return updatedAppointment;
@@ -417,10 +417,10 @@ exports.cancelRebooked = async (appointmentId) => {
 
     console.log(smsMessage);
 
-    // await sendSMS(
-    //   `+63${appointment.customer.contact_number.substring(1)}`,
-    //   smsMessage
-    // );
+    sendSMS(
+      `+63${appointment.customer.contact_number.substring(1)}`,
+      smsMessage
+    );
 
     const revertedAppointment = await Appointment.findById(appointmentId);
 

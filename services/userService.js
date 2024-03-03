@@ -60,7 +60,7 @@ const sendMonthlyUpdate = async (user) => {
 
   console.log(smsMessage);
 
-  // await sendSMS(`+63${user.contact_number.substring(1)}`, smsMessage);
+  sendSMS(`+63${user.contact_number.substring(1)}`, smsMessage);
 };
 
 exports.sendPasswordResetSMS = async (req, email) => {
@@ -73,12 +73,12 @@ exports.sendPasswordResetSMS = async (req, email) => {
   const currentTime = new Date();
   const lastCodeSentTime = user.verificationCode.createdAt;
 
-  const timeDifferenceMilliseconds = currentTime - lastCodeSentTime;
-  if (timeDifferenceMilliseconds < 5 * 60 * 1000) {
-    throw new ErrorHandler(
-      "Please wait 5 minutes before requesting a new verification code"
-    );
-  }
+  // const timeDifferenceMilliseconds = currentTime - lastCodeSentTime;
+  // if (timeDifferenceMilliseconds < 5 * 60 * 1000) {
+  //   throw new ErrorHandler(
+  //     "Please wait 5 minutes before requesting a new verification code"
+  //   );
+  // }
 
   const verificationCode = generateRandomCode();
   user.verificationCode.code = verificationCode;
@@ -87,7 +87,7 @@ exports.sendPasswordResetSMS = async (req, email) => {
 
   const smsMessage = `Your verification code is: ${verificationCode}. Use this code to reset your password. Ignore if you didn't request a password reset.`;
   console.log(smsMessage);
-  // await sendSMS(`+63${user.contact_number.substring(1)}`, smsMessage);
+  sendSMS(`+63${user.contact_number.substring(1)}`, smsMessage);
 
   return `Verification code SMS sent successfully to ${user.contact_number}`;
 };
@@ -126,7 +126,7 @@ exports.sendResetPassword = async (
 
   const successMessage = `Your password has been successfully reset. If you did not perform this action, please contact support immediately.`;
   console.log(successMessage);
-  // await sendSMS(`+63${user.contact_number.substring(1)}`, successMessage);
+  sendSMS(`+63${user.contact_number.substring(1)}`, successMessage);
 
   return `Password updated successfully for user with email ${user.email}`;
 };
@@ -171,7 +171,7 @@ exports.confirmUserRole = async (userId) => {
 
   const smsMessage = `Dear ${user.name}, your account has been successfully activated. Thank you for choosing Lhanlee Salon.`;
   console.log(smsMessage);
-  // await sendSMS(`+63${user.contact_number.substring(1)}`, smsMessage);
+  sendSMS(`+63${user.contact_number.substring(1)}`, smsMessage);
 
   await user.save();
 
@@ -376,7 +376,7 @@ exports.createUserData = async (req, res) => {
 
     const smsMessage = `Dear ${user.name}, your account has been successfully created. Please attend the meeting at the salon.`;
     console.log(smsMessage);
-    // await sendSMS(`+63${user.contact_number.substring(1)}`, smsMessage);
+    sendSMS(`+63${user.contact_number.substring(1)}`, smsMessage);
 
     const deletionTime =
       selectedDate.getTime() + 7 * 24 * 60 * 60 * 1000 - currentDate.getTime();

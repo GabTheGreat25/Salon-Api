@@ -84,10 +84,7 @@ exports.createMayaCheckoutLink = async (req, res) => {
     const smsMessage = `Dear ${req.body.name}, Here is your Maya checkout link: ${redirectUrl}`;
 
     console.log(smsMessage);
-    // await sendSMS(
-    //   `+63${req.body.contactNumber.substring(1)}`,
-    //   smsMessage
-    // );
+    sendSMS(`+63${req.body.contactNumber.substring(1)}`, smsMessage);
   } else console.log("No data returned from SDK");
 
   return data;
