@@ -73,12 +73,12 @@ exports.sendPasswordResetSMS = async (req, email) => {
   const currentTime = new Date();
   const lastCodeSentTime = user.verificationCode.createdAt;
 
-  // const timeDifferenceMilliseconds = currentTime - lastCodeSentTime;
-  // if (timeDifferenceMilliseconds < 5 * 60 * 1000) {
-  //   throw new ErrorHandler(
-  //     "Please wait 5 minutes before requesting a new verification code"
-  //   );
-  // }
+  const timeDifferenceMilliseconds = currentTime - lastCodeSentTime;
+  if (timeDifferenceMilliseconds < 5 * 60 * 1000) {
+    throw new ErrorHandler(
+      "Please wait 5 minutes before requesting a new verification code"
+    );
+  }
 
   const verificationCode = generateRandomCode();
   user.verificationCode.code = verificationCode;
