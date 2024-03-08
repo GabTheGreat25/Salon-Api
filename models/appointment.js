@@ -65,6 +65,10 @@ const appointmentSchema = new mongoose.Schema({
     type: Boolean,
     default: true,
   },
+  isRescheduled: {
+    type: Boolean,
+    default: false,
+  },
   hasAppointmentFee: {
     type: Boolean,
     default: false,
