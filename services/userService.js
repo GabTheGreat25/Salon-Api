@@ -339,7 +339,10 @@ exports.createUserData = async (req, res) => {
       image: userImages,
       active: active,
     });
-  } else if (roles.includes(ROLE.BEAUTICIAN)) {
+  } else if (
+    roles.includes(ROLE.BEAUTICIAN) ||
+    roles.includes(ROLE.RECEPTIONIST)
+  ) {
     const currentDate = new Date();
     const selectedDate = new Date(`${req.body.date} ${req.body.time}`);
     if (
@@ -524,7 +527,7 @@ exports.updateUserData = async (req, res, id) => {
 
   let requirement;
   let information;
-  if (roles.includes(ROLE.BEAUTICIAN)) {
+  if (roles.includes(ROLE.BEAUTICIAN) || roles.includes(ROLE.RECEPTIONIST)) {
     requirement = await Requirement.findOneAndUpdate(
       { beautician: id },
       {

@@ -125,7 +125,7 @@ exports.updateScheduleData = async (req, res, id) => {
 
   if (existingSchedule)
     throw new ErrorHandler(
-      "Beautician already has a leave schedule on the selected date"
+      "Employee already has a leave schedule on the selected date"
     );
 
   await Schedule.findByIdAndUpdate(
@@ -169,7 +169,7 @@ exports.updateScheduleAdminData = async (req, res, id) => {
 
   if (existingSchedule)
     throw new ErrorHandler(
-      "Beautician already has a leave schedule on the selected date"
+      "Employee already has a leave schedule on the selected date"
     );
 
   await Schedule.findByIdAndUpdate(

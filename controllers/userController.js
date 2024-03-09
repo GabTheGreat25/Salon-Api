@@ -126,11 +126,12 @@ exports.createNewUser = [
 
     const successMessage =
       user && user.roles.includes(ROLE.CUSTOMER)
-        ? `New customer ${user?.name} created with an ID ${user?._id}`
+        ? `New Customer ${user?.name} created with an ID ${user?._id}`
         : user && user.roles.includes(ROLE.ADMIN)
-        ? `New admin ${user?.name} created with an ID ${user?._id}`
-        : user && user.roles.includes(ROLE.BEAUTICIAN)
-        ? `New beautician ${user?.name} created with an ID ${user?._id}. Please wait for the admin to confirm your account. Thank you!`
+        ? `New Admin ${user?.name} created with an ID ${user?._id}`
+        : (user && user.roles.includes(ROLE.BEAUTICIAN)) ||
+          user.roles.includes(ROLE.RECEPTIONIST)
+        ? `New ${user?.roles} ${user?.name} created with an ID ${user?._id}. Please wait for the admin to confirm your account. Thank you!`
         : null;
 
     return SuccessHandler(res, successMessage, {
