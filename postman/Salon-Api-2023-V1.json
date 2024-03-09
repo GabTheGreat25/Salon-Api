@@ -412,7 +412,7 @@
 								}
 							]
 						},
-						"url": "{{URI}}{{V1}}user/65d9b146aa5bed4b704ae127"
+						"url": "{{URI}}{{V1}}user/65e9e20281a40e6e99f6c073"
 					},
 					"response": []
 				},
@@ -1417,7 +1417,7 @@
 						],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n    \"beautician\": \"65ec146d0af615e49b876dc2\",\r\n    \"date\": \"2024-02-16\",\r\n    \"isLeave\": true,\r\n    \"leaveNote\": \"Bored\"\r\n}"
+							"raw": "{\r\n    \"beautician\": \"65ec146d0af615e49b876dc2\",\r\n    \"date\": \"2024-03-16\",\r\n    \"isLeave\": true,\r\n    \"leaveNote\": \"Bored\"\r\n}"
 						},
 						"url": "{{URI}}{{V1}}schedules"
 					},
@@ -1576,7 +1576,7 @@
 								"type": "text"
 							}
 						],
-						"url": "{{URI}}{{V1}}/schedule/activate/65c36906a06b92fd067a1724"
+						"url": "{{URI}}{{V1}}/schedule/activate/65ec16c74e0d16a477a68485"
 					},
 					"response": []
 				}
@@ -1967,7 +1967,7 @@
 								}
 							]
 						},
-						"url": "{{URI}}{{V1}}appointment/65dc05cda63617fa36073d79"
+						"url": "{{URI}}{{V1}}appointment/65e9e20281a40e6e99f6c073"
 					},
 					"response": []
 				},
@@ -2229,12 +2229,18 @@
 						"auth": {
 							"type": "bearer",
 							"bearer": {
-								"token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJVc2VySW5mbyI6eyJlbWFpbCI6ImpheWJlYXV0aWNpYW5AZ21haWwuY29tIiwicm9sZXMiOlsiQmVhdXRpY2lhbiJdfSwiaWF0IjoxNzA1Mjk0NDYyLCJleHAiOjE3MDU4OTkyNjJ9.14lmXroBm_NWuWapdjpHUHhVP_EUEOmKyKeKJbJhGwo"
+								"token": ""
 							}
 						},
 						"method": "GET",
-						"header": [],
-						"url": "{{URI}}{{V1}}appointment/beautician/65a4db1d238da805bd9100a7"
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "{{Bearer}}",
+								"type": "text"
+							}
+						],
+						"url": "{{URI}}{{V1}}appointment/beautician/65e9e20281a40e6e99f6c073"
 					},
 					"response": []
 				},
@@ -2248,12 +2254,18 @@
 						"auth": {
 							"type": "bearer",
 							"bearer": {
-								"token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJVc2VySW5mbyI6eyJlbWFpbCI6ImpheWJlYXV0aWNpYW5AZ21haWwuY29tIiwicm9sZXMiOlsiQmVhdXRpY2lhbiJdfSwiaWF0IjoxNzA1Mjk0NDYyLCJleHAiOjE3MDU4OTkyNjJ9.14lmXroBm_NWuWapdjpHUHhVP_EUEOmKyKeKJbJhGwo"
+								"token": ""
 							}
 						},
 						"method": "GET",
-						"header": [],
-						"url": "{{URI}}{{V1}}appointment/history/65a4db1d238da805bd9100a7"
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "{{Bearer}}",
+								"type": "text"
+							}
+						],
+						"url": "{{URI}}{{V1}}appointment/history/65e9e20281a40e6e99f6c073"
 					},
 					"response": []
 				}
