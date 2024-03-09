@@ -463,9 +463,8 @@ exports.getBeauticianAppointmentsData = async (id) => {
     .lean()
     .exec();
 
-  if (!beauticianAppointments || beauticianAppointments.length === 0) {
-    return next(new ErrorHandler("No Appointments Found for Beautician"));
-  }
+  if (!beauticianAppointments || beauticianAppointments.length === 0)
+    throw new ErrorHandler("No Appointments Found for Beautician");
 
   const appointmentIds = beauticianAppointments.map(
     (appointment) => appointment._id
@@ -502,9 +501,8 @@ exports.appointmentHistoryData = async (id) => {
     .lean()
     .exec();
 
-  if (!beauticianAppointments || beauticianAppointments.length === 0) {
-    return next(new ErrorHandler("No Appointments Found for Beautician"));
-  }
+  if (!beauticianAppointments || beauticianAppointments.length === 0)
+    throw new ErrorHandler("No Appointments Found for Beautician");
 
   const appointmentIds = beauticianAppointments.map(
     (appointment) => appointment._id
