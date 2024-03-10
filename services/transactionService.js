@@ -12,7 +12,7 @@ const generatePinkQRCode = async (data) => {
   const qrOptions = {
     color: {
       dark: "#000",
-      light: "#FDA7DF",
+      light: "#FFB6C1",
     },
   };
 
