@@ -196,6 +196,12 @@ exports.loginToken = async (email, password) => {
     })
       .lean()
       .exec();
+  } else if (foundUser.roles.includes(ROLE.RECEPTIONIST)) {
+    foundUser.requirement = await Requirement.findOne({
+      beautician: foundUser._id,
+    })
+      .lean()
+      .exec();
   } else if (foundUser.roles.includes(ROLE.CUSTOMER)) {
     foundUser.information = await Information.findOne({
       customer: foundUser._id,
@@ -240,6 +246,12 @@ exports.getAllUsersData = async () => {
         })
           .lean()
           .exec();
+      } else if (user.roles.includes(ROLE.RECEPTIONIST)) {
+        user.requirement = await Requirement.findOne({
+          beautician: user._id,
+        })
+          .lean()
+          .exec();
       } else if (user.roles.includes(ROLE.CUSTOMER)) {
         user.information = await Information.findOne({
           customer: user?._id,
@@ -266,6 +278,12 @@ exports.getSingleUserData = async (id) => {
   if (user.roles.includes(ROLE.BEAUTICIAN)) {
     user.requirement = await Requirement.findOne({
       beautician: id,
+    })
+      .lean()
+      .exec();
+  } else if (user.roles.includes(ROLE.RECEPTIONIST)) {
+    user.requirement = await Requirement.findOne({
+      beautician: user._id,
     })
       .lean()
       .exec();
@@ -326,13 +344,32 @@ exports.createUserData = async (req, res) => {
       image: userImages,
       active: active,
     });
-  } else if (
-    roles.includes(ROLE.BEAUTICIAN) ||
-    roles.includes(ROLE.RECEPTIONIST)
-  ) {
-    const currentDate = new Date();
-    const selectedDate = new Date(`${req.body.date} ${req.body.time}`);
+  } else if (roles.includes(ROLE.BEAUTICIAN)) {
+    user = await User.create({
+      name: req.body.name,
+      age: req.body.age,
+      email: req.body.email,
+      password: await bcrypt.hash(
+        req.body.password,
+        Number(process.env.SALT_NUMBER)
+      ),
+      contact_number: req.body.contact_number,
+      roles: roles,
+      image: userImages,
+      active: active,
+    });
 
+    requirement = await Requirement.create({
+      beautician: user?._id,
+      job_type: req.body.job_type,
+      date: req.body.date,
+      time: req.body.time,
+    });
+
+    const smsMessage = `Dear ${user.name}, your account has been successfully created. Please attend the meeting at the salon.`;
+    console.log(smsMessage);
+    sendSMS(`+63${user.contact_number.substring(1)}`, smsMessage);
+  } else if (roles.includes(ROLE.RECEPTIONIST)) {
     user = await User.create({
       name: req.body.name,
       age: req.body.age,
@@ -494,7 +531,17 @@ exports.updateUserData = async (req, res, id) => {
 
   let requirement;
   let information;
-  if (roles.includes(ROLE.BEAUTICIAN) || roles.includes(ROLE.RECEPTIONIST)) {
+  if (roles.includes(ROLE.BEAUTICIAN)) {
+    requirement = await Requirement.findOneAndUpdate(
+      { beautician: id },
+      {
+        job_type: req.body.job_type,
+      },
+      { new: true, upsert: true }
+    )
+      .lean()
+      .exec();
+  } else if (roles.includes(ROLE.RECEPTIONIST)) {
     requirement = await Requirement.findOneAndUpdate(
       { beautician: id },
       {
