@@ -28,19 +28,6 @@ const generateRandomCode = () => {
   return code;
 };
 
-const deleteUserAfterTimeout = async (userId) => {
-  const user = await User.findById(userId);
-  if (user && !user.active) {
-    const publicIds = user.image.map((image) => image.public_id);
-
-    await Promise.all([
-      User.findByIdAndDelete(userId).lean().exec(),
-      Requirement.deleteMany({ beautician: userId }).lean().exec(),
-      cloudinary.api.delete_resources(publicIds),
-    ]);
-  }
-};
-
 const sendMonthlyUpdate = async (user) => {
   const currentMonth = new Date().getMonth();
   const monthlyMessage = await Month.findOne({ month: currentMonth });
@@ -345,16 +332,6 @@ exports.createUserData = async (req, res) => {
   ) {
     const currentDate = new Date();
     const selectedDate = new Date(`${req.body.date} ${req.body.time}`);
-    if (
-      !(
-        selectedDate >= currentDate &&
-        selectedDate <=
-          new Date(currentDate.getTime() + 7 * 24 * 60 * 60 * 1000)
-      )
-    )
-      throw new ErrorHandler(
-        "Invalid date. Date must be within the next 7 days and not in the past."
-      );
 
     user = await User.create({
       name: req.body.name,
@@ -380,16 +357,6 @@ exports.createUserData = async (req, res) => {
     const smsMessage = `Dear ${user.name}, your account has been successfully created. Please attend the meeting at the salon.`;
     console.log(smsMessage);
     sendSMS(`+63${user.contact_number.substring(1)}`, smsMessage);
-
-    const deletionTime =
-      selectedDate.getTime() + 7 * 24 * 60 * 60 * 1000 - currentDate.getTime();
-
-    // const deletionTime =
-    //   selectedDate.getTime() + 1 * 60 * 1000 - currentDate.getTime();
-
-    setTimeout(async () => {
-      await deleteUserAfterTimeout(user?._id);
-    }, deletionTime);
   } else {
     user = await User.create({
       name: req.body.name,
