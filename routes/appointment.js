@@ -10,7 +10,7 @@ const appointmentRoutes = [
   {
     method: METHOD.GET,
     path: PATH.APPOINTMENTS,
-    roles: [ROLE.ADMIN, ROLE.BEAUTICIAN, ROLE.CUSTOMER],
+    roles: [ROLE.ADMIN, ROLE.BEAUTICIAN, ROLE.CUSTOMER, ROLE.RECEPTIONIST],
     handler: appointmentController.getAllAppointments,
   },
   {
