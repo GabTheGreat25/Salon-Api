@@ -26,12 +26,14 @@ exports.getSingleHiringData = async (id) => {
 };
 
 exports.createHiringData = async (req, res) => {
+  await Hiring.deleteOne({}, { sort: { createdAt: -1 } });
 
-  const hiring = await Hiring.create({
+  const newHiring = await Hiring.create({
     ...req.body,
+    createdAt: new Date(),
   });
 
-  return hiring;
+  return newHiring;
 };
 
 exports.updateHiringData = async (req, res, id) => {
@@ -40,7 +42,8 @@ exports.updateHiringData = async (req, res, id) => {
 
   const existingHiring = await Hiring.findById(id).lean().exec();
 
-  if (!existingHiring) throw new ErrorHandler(`Hiring not found with ID: ${id}`);
+  if (!existingHiring)
+    throw new ErrorHandler(`Hiring not found with ID: ${id}`);
 
   const updatedHiring = await Hiring.findByIdAndUpdate(
     id,
@@ -68,7 +71,6 @@ exports.deleteHiringData = async (id) => {
     _id: id,
   });
   if (!hiring) throw new ErrorHandler(`Hiring not found with ID: ${id}`);
-
 
   await Promise.all([
     Hiring.deleteOne({

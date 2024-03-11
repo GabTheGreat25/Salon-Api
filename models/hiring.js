@@ -4,11 +4,9 @@ const { RESOURCE } = require("../constants/index");
 const hiringSchema = new mongoose.Schema({
   date: {
     type: Date,
-    required: [true, "Date field required"],
   },
   time: {
     type: String,
-    required: [true, "Please enter a time"],
     validate: {
       validator: (value) => {
         return /^(0?[1-9]|1[0-2]):[0-5][0-9] (AM|PM)$/i.test(value);
@@ -23,6 +21,10 @@ const hiringSchema = new mongoose.Schema({
   isHiring: {
     type: Boolean,
     default: false,
+  },
+  createdAt: {
+    type: Date,
+    default: Date.now,
   },
 });
 

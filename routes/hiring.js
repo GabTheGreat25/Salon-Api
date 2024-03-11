@@ -32,7 +32,7 @@ const testRoutes = [
     handler: hiringController.updateHiring,
   },
   {
-    method: METHOD.DELETE,  
+    method: METHOD.DELETE,
     path: PATH.HIRING_ID,
     roles: [ROLE.ADMIN],
     handler: hiringController.deleteHiring,
