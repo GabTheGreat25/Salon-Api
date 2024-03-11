@@ -10,7 +10,7 @@ const scheduleRoutes = [
   {
     method: METHOD.GET,
     path: PATH.SCHEDULES,
-    roles: [ROLE.ADMIN, ROLE.BEAUTICIAN, ROLE.CUSTOMER],
+    roles: [ROLE.ADMIN, ROLE.BEAUTICIAN, ROLE.CUSTOMER, ROLE.RECEPTIONIST],
     handler: scheduleController.getAllSchedules,
   },
   {
@@ -23,19 +23,19 @@ const scheduleRoutes = [
   {
     method: METHOD.POST,
     path: PATH.SCHEDULES,
-    roles: [ROLE.ADMIN, ROLE.BEAUTICIAN],
+    roles: [ROLE.ADMIN, ROLE.BEAUTICIAN, ROLE.RECEPTIONIST],
     handler: scheduleController.createNewSchedule,
   },
   {
     method: METHOD.GET,
     path: PATH.SCHEDULE_ID,
-    roles: [ROLE.ADMIN, ROLE.BEAUTICIAN, ROLE.CUSTOMER],
+    roles: [ROLE.ADMIN, ROLE.BEAUTICIAN, ROLE.CUSTOMER, ROLE.RECEPTIONIST],
     handler: scheduleController.getSingleSchedule,
   },
   {
     method: METHOD.PATCH,
     path: PATH.EDIT_SCHEDULE_ID,
-    roles: [ROLE.ADMIN, ROLE.BEAUTICIAN],
+    roles: [ROLE.ADMIN, ROLE.BEAUTICIAN, ROLE.RECEPTIONIST],
     handler: scheduleController.updateSchedule,
   },
   {

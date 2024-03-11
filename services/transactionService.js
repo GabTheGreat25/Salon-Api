@@ -12,7 +12,7 @@ const generatePinkQRCode = async (data) => {
   const qrOptions = {
     color: {
       dark: "#000",
-      light: "#FDA7DF",
+      light: "#FFB6C1",
     },
   };
 
@@ -47,7 +47,7 @@ exports.getAllTransactionData = async () => {
           },
         },
       ],
-      select: "_id date time price image hasAppointmentFee",
+      select: "_id date time price image hasAppointmentFee isRescheduled",
     })
     .lean()
     .exec();
@@ -80,7 +80,7 @@ exports.getSingleTransactionData = async (id) => {
           },
         },
       ],
-      select: "_id date time price image hasAppointmentFee",
+      select: "_id date time price image hasAppointmentFee isRescheduled",
     })
     .lean()
     .exec();

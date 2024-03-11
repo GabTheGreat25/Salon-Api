@@ -2,12 +2,18 @@ const Appointment = require("../models/appointment");
 const Transaction = require("../models/transaction");
 const Verification = require("../models/verification");
 const Comment = require("../models/comment");
+const User = require("../models/user");
 const ErrorHandler = require("../utils/errorHandler");
 const mongoose = require("mongoose");
 const { cloudinary } = require("../utils/cloudinary");
 const { STATUSCODE } = require("../constants");
 const { sendSMS } = require("../utils/twilio");
 const moment = require("moment-timezone");
+
+const getAdminUsers = async () => {
+  const admins = await User.find({ roles: "Admin" });
+  return admins;
+};
 
 const deleteAppointmentAfterTimeout = async (appointmentId, verification) => {
   const appointment = await Appointment.findById(appointmentId);
@@ -238,6 +244,23 @@ exports.createAppointmentData = async (req, res) => {
     }, Math.max(0, deletionTimeForWalkInCustomer.getTime() - currentTimePH.valueOf()));
   }
 
+  const admins = await getAdminUsers();
+  const adminNames = admins.map((admin) => admin.name);
+  const adminNumbers = admins.map((admin) => admin.contact_number);
+
+  const smsAdminMessage = `New appointment created by ${
+    appointment.customer.name
+  } on ${
+    new Date(appointment.date).toISOString().split("T")[0]
+  } at ${firstTime}. Please review and confirm. Thank you!`;
+
+  console.log(smsAdminMessage);
+
+  adminNumbers.forEach((number, index) => {
+    console.log(`Sending SMS to ${adminNames[index]} at ${number}`);
+    sendSMS(`+63${number.substring(1)}`, smsAdminMessage);
+  });
+
   return { appointment, transaction, verification };
 };
 
@@ -463,9 +486,8 @@ exports.getBeauticianAppointmentsData = async (id) => {
     .lean()
     .exec();
 
-  if (!beauticianAppointments || beauticianAppointments.length === 0) {
-    return next(new ErrorHandler("No Appointments Found for Beautician"));
-  }
+  if (!beauticianAppointments || beauticianAppointments.length === 0)
+    throw new ErrorHandler("No Appointments Found for Beautician");
 
   const appointmentIds = beauticianAppointments.map(
     (appointment) => appointment._id
@@ -502,9 +524,8 @@ exports.appointmentHistoryData = async (id) => {
     .lean()
     .exec();
 
-  if (!beauticianAppointments || beauticianAppointments.length === 0) {
-    return next(new ErrorHandler("No Appointments Found for Beautician"));
-  }
+  if (!beauticianAppointments || beauticianAppointments.length === 0)
+    throw new ErrorHandler("No Appointments Found for Beautician");
 
   const appointmentIds = beauticianAppointments.map(
     (appointment) => appointment._id

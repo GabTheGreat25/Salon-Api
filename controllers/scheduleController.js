@@ -38,11 +38,7 @@ exports.confirmLeave = asyncHandler(async (req, res, next) => {
 
   await schedulesService.confirmLeaveNote(scheduleId);
 
-  SuccessHandler(
-    res,
-    `Beautician Leave has been approved by the admin.`,
-    scheduleId
-  );
+  SuccessHandler(res, `Leave has been approved by the admin.`, scheduleId);
 });
 
 exports.createNewSchedule = [
