@@ -19,6 +19,7 @@ const requirementSchema = new mongoose.Schema({
       "Eyelash",
       "Receptionist",
     ],
+    default: "Receptionist",
   },
   date: {
     type: Date,
