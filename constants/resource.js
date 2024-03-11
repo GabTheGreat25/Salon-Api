@@ -22,4 +22,7 @@ module.exports = {
   MONTH: "month",
   OPTION: "option",
   EXCLUSION: "exclusions",
+  EQUIPMENT: "equipments",
+  RESUPPLY:"resupplies",
+  HIRING: "hiring",
 };
