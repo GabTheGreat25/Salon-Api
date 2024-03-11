@@ -27,7 +27,10 @@ const times = require("./routes/time");
 const months = require("./routes/month");
 const options = require("./routes/option");
 const maya = require("./routes/maya");
+const equipment = require('./routes/equipment');
+const resupply = require("./routes/resupply");
 const exclusions = require("./routes/exclusion");
+const hiring = require('./routes/hiring');
 const { STATUSCODE } = require("./constants/index");
 const connectDB = require("./config/connectDB");
 const PORT = process.env.PORT || 4000;
@@ -61,7 +64,10 @@ app.use(
   transactions,
   months,
   options,
-  maya
+  maya,
+  equipment,
+  resupply,
+  hiring,
 );
 
 app.all("*", (req, res) => {

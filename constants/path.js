@@ -62,4 +62,13 @@ module.exports = {
   EDIT_EXCLUSION_ID: "/exclusion/edit/:id",
   RESCHEDULE_APPOINTMENT_ID: "appointment/reschedule/:id",
   MAYA: "/maya",
+  EQUIPMENTS: "/equipments",
+  EQUIPMENT_ID: "/equipment/:id",
+  EDIT_EQUIPMENT_ID: "/equipment/edit/:id",
+  RESUPPLIES: "/resupplies",
+  RESUPPLY_ID: "/resupply/:id",
+  EDIT_RESUPPLY_ID: "/resupply/edit/:id",
+  HIRINGS: "/hirings",
+  HIRING_ID: "/hiring/:id",
+  EDIT_HIRING_ID: "/hiring/edit/:id",
 };

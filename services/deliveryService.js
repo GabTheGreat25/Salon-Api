@@ -1,6 +1,7 @@
 const mongoose = require("mongoose");
 const ErrorHandler = require("../utils/errorHandler");
 const Delivery = require("../models/delivery");
+const Product = require("../models/product");
 const { RESOURCE } = require("../constants/index");
 
 exports.getAllDeliveryData = async () => {
@@ -40,6 +41,10 @@ exports.createDeliveryData = async (req, res) => {
   const delivery = await Delivery.create({
     ...req.body,
   });
+
+    const product = await Product.findById(req.body.product);
+    product.quantity += req.body.quantity;
+    await product.save(); 
 
   await Delivery.populate(delivery, {
     path: RESOURCE.PRODUCT,
