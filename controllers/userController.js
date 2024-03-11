@@ -131,6 +131,8 @@ exports.createNewUser = [
         ? `New admin ${user?.name} created with an ID ${user?._id}`
         : user && user.roles.includes(ROLE.BEAUTICIAN)
         ? `New beautician ${user?.name} created with an ID ${user?._id}. Please wait for the admin to confirm your account. Thank you!`
+        : user && user.roles.includes(ROLE.RECEPTIONIST)
+        ? `New receptionist ${user?.name} created with an ID ${user?._id}. Please wait for the admin to confirm your account. Thank you!`
         : null;
 
     return SuccessHandler(res, successMessage, {
