@@ -62,16 +62,16 @@ const productSchema = new mongoose.Schema({
       },
     },
   ],
-  quantity:{
+  quantity: {
     type: Number,
     required: false,
     default: 0,
   },
-  product_volume:{
+  product_volume: {
     type: Number,
-    required: [true, "Product volume required"],
+    // required: [true, "Product volume required"],
     min: 5,
-  }
+  },
 });
 
 module.exports = mongoose.model(RESOURCE.PRODUCT, productSchema);
