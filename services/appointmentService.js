@@ -33,7 +33,7 @@ exports.getAllAppointmentsData = async () => {
     .sort({ createdAt: -1 })
     .populate({
       path: "beautician customer",
-      select: "name roles contact_number",
+      select: "name roles contact_number image",
     })
     .populate({
       path: "service",
@@ -57,7 +57,7 @@ exports.getSingleAppointmentData = async (id) => {
   const appointment = await Appointment.findById(id)
     .populate({
       path: "beautician customer",
-      select: "name roles contact_number",
+      select: "name roles contact_number image",
     })
     .populate({
       path: "service",
