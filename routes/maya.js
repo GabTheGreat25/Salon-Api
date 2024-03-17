@@ -10,7 +10,7 @@ const mayaRoutes = [
   {
     method: METHOD.POST,
     path: PATH.MAYA,
-    roles: [ROLE.ADMIN, ROLE.EMPLOYEE, ROLE.CUSTOMER],
+    roles: [ROLE.ADMIN, ROLE.EMPLOYEE, ROLE.CUSTOMER, ROLE.RECEPTIONIST],
     handler: mayaController.createNewMayaCheckout,
   },
 ];

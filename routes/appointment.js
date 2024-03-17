@@ -16,19 +16,19 @@ const appointmentRoutes = [
   {
     method: METHOD.POST,
     path: PATH.APPOINTMENTS,
-    roles: [ROLE.ADMIN, ROLE.BEAUTICIAN, ROLE.CUSTOMER],
+    roles: [ROLE.ADMIN, ROLE.BEAUTICIAN, ROLE.CUSTOMER, ROLE.RECEPTIONIST],
     handler: appointmentController.createNewAppointment,
   },
   {
     method: METHOD.GET,
     path: PATH.APPOINTMENT_ID,
-    roles: [ROLE.ADMIN, ROLE.BEAUTICIAN, ROLE.CUSTOMER],
+    roles: [ROLE.ADMIN, ROLE.BEAUTICIAN, ROLE.CUSTOMER, ROLE.RECEPTIONIST],
     handler: appointmentController.getSingleAppointment,
   },
   {
     method: METHOD.PATCH,
     path: PATH.EDIT_APPOINTMENT_ID,
-    roles: [ROLE.ADMIN, ROLE.BEAUTICIAN, ROLE.CUSTOMER],
+    roles: [ROLE.ADMIN, ROLE.BEAUTICIAN, ROLE.CUSTOMER, ROLE.RECEPTIONIST],
     handler: appointmentController.updateAppointment,
   },
   {
@@ -40,7 +40,7 @@ const appointmentRoutes = [
   {
     method: METHOD.PATCH,
     path: PATH.SCHEDULE_EDIT_APPOINTMENT_ID,
-    roles: [ROLE.ADMIN, ROLE.BEAUTICIAN, ROLE.CUSTOMER],
+    roles: [ROLE.ADMIN, ROLE.BEAUTICIAN, ROLE.CUSTOMER, ROLE.RECEPTIONIST],
     handler: appointmentController.updateScheduleAppointment,
   },
   {
@@ -52,7 +52,7 @@ const appointmentRoutes = [
   {
     method: METHOD.PATCH,
     path: PATH.BEAUTICIAN_EDIT_APPOINTMENT_ID,
-    roles: [ROLE.ADMIN, ROLE.BEAUTICIAN, ROLE.CUSTOMER],
+    roles: [ROLE.ADMIN, ROLE.BEAUTICIAN, ROLE.CUSTOMER, ROLE.RECEPTIONIST],
     handler: appointmentController.updateBeauticianAppointment,
   },
   {
@@ -64,19 +64,19 @@ const appointmentRoutes = [
   {
     method: METHOD.GET,
     path: PATH.BEAUTICIAN_APPOINTMENT,
-    roles: [ROLE.ADMIN, ROLE.BEAUTICIAN],
+    roles: [ROLE.ADMIN, ROLE.BEAUTICIAN, ROLE.RECEPTIONIST],
     handler: appointmentController.getBeauticianAppointment,
   },
   {
     method: METHOD.GET,
     path: PATH.BEAUTICIAN_HISTORY,
-    roles: [ROLE.ADMIN, ROLE.BEAUTICIAN],
+    roles: [ROLE.ADMIN, ROLE.BEAUTICIAN, ROLE.RECEPTIONIST],
     handler: appointmentController.getAppointmentHistory,
   },
   {
     method: METHOD.GET,
     path: PATH.RESCHEDULE_APPOINTMENT_ID,
-    roles: [ROLE.ADMIN, ROLE.BEAUTICIAN, ROLE.CUSTOMER],
+    roles: [ROLE.ADMIN, ROLE.BEAUTICIAN, ROLE.CUSTOMER, ROLE.RECEPTIONIST],
     handler: appointmentController.getSingleRescheduleAppointment,
   },
 ];

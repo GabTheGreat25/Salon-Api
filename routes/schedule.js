@@ -47,13 +47,13 @@ const scheduleRoutes = [
   {
     method: METHOD.DELETE,
     path: PATH.SCHEDULE_ID,
-    roles: [ROLE.ADMIN, ROLE.BEAUTICIAN],
+    roles: [ROLE.ADMIN, ROLE.BEAUTICIAN, ROLE.RECEPTIONIST],
     handler: scheduleController.deleteSchedule,
   },
   {
     method: METHOD.DELETE,
     path: PATH.CONFIRM_SCHEDULE_ID,
-    roles: [ROLE.ADMIN, ROLE.BEAUTICIAN],
+    roles: [ROLE.ADMIN, ROLE.BEAUTICIAN, ROLE.RECEPTIONIST],
     handler: scheduleController.deleteConfirm,
   },
 ];
