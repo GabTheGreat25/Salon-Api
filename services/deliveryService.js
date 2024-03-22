@@ -42,10 +42,6 @@ exports.createDeliveryData = async (req, res) => {
     ...req.body,
   });
 
-    const product = await Product.findById(req.body.product);
-    product.quantity += req.body.quantity;
-    await product.save(); 
-
   await Delivery.populate(delivery, {
     path: RESOURCE.PRODUCT,
     select: "product_name",
@@ -79,6 +75,13 @@ exports.updateDeliveryData = async (req, res, id) => {
     })
     .lean()
     .exec();
+
+    if(updatedDelivery.status === "completed"){
+      const product = await Product.findById(req.body.product);
+      product.quantity += req.body.quantity;
+      await product.save(); 
+  
+    }
 
   return updatedDelivery;
 };
