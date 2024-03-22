@@ -1,7 +1,12 @@
 const Transaction = require("../models/transaction");
 const Verification = require("../models/verification");
 const Appointment = require("../models/appointment");
+const Service = require("../models/service");
+const Product = require("../models/product");
+const User = require("../models/user");
+const Inventory = require("../models/inventory");
 const Comment = require("../models/comment");
+const Information = require("../models/information");
 const ErrorHandler = require("../utils/errorHandler");
 const mongoose = require("mongoose");
 const { STATUSCODE, RESOURCE } = require("../constants/index");
@@ -100,14 +105,14 @@ exports.updateTransactionData = async (req, res, id) => {
     .populate({
       path: "appointment",
       populate: [
-        { path: "beautician customer", select: "name contact_number" },
+        { path: "beautician customer", select: "_id name contact_number" },
         {
           path: "service",
           select: "service_name type occassion description price image",
         },
         { path: "option", select: "option_name extraFee" },
       ],
-      select: "date time price image hasAppointmentFee",
+      select: "_id date time price image hasAppointmentFee",
     })
     .lean()
     .exec();
@@ -261,6 +266,112 @@ exports.updateTransactionData = async (req, res, id) => {
   } else {
     updatedTransaction.qrCode = "";
     await updatedTransaction.save();
+  }
+
+  if (confirm) {
+    try {
+      const serviceIds = existingTransaction?.appointment?.service;
+
+      const serviceCount = await Service.find({ _id: { $in: serviceIds } })
+        .lean()
+        .exec();
+
+      if (serviceCount.length !== serviceIds.length) {
+        throw new ErrorHandler(`No services were found`);
+      }
+
+      for (const serviceId of serviceCount) {
+        const services = serviceId?._id;
+
+        const service = await Service.findById(services)
+          .populate({
+            path: "product",
+            select:
+              "_id product_name remaining_volume product_consume product_volume quantity",
+          })
+          .collation({ locale: "en" })
+          .lean()
+          .exec();
+
+        if (!service) {
+          throw new ErrorHandler(`Service not found`);
+        }
+
+        for (const product of service.product) {
+          const userId = existingTransaction?.appointment?.customer?._id;
+          const customer = await Information.findOne({ customer: userId })
+            .collation({ locale: "en" })
+            .lean()
+            .exec();
+
+          const description = customer?.description;
+          let newVolume = product.remaining_volume - product.product_consume;
+          let consumeSession = product?.product_consume;
+
+          let long_vol;
+
+          if (
+            description?.includes("Long Hair") &&
+            service?.type?.includes("Hair")
+          ) {
+            long_vol = product.product_volume * 0.2;
+            consumeSession = long_vol;
+            newVolume = product.remaining_volume - long_vol;
+          } else if (
+            description?.includes("Short Hair") &&
+            service?.type?.includes("Hair")
+          ) {
+            let short_vol = (product.product_volume * 0.5) / 10;
+            consumeSession = short_vol;
+            newVolume = product.remaining_volume - short_vol;
+          }
+
+          const productStock = await Product.findByIdAndUpdate(
+            product._id,
+            {
+              remaining_volume: newVolume,
+            },
+            {
+              new: true,
+            }
+          );
+
+          if (productStock.quantity === 0)
+            throw new ErrorHandler(
+              `${productStock.product_name} is out of stock`
+            );
+
+          if (productStock.remaining_volume < 1000) {
+            productStock.product_measurement = "ml";
+          } else {
+            productStock.product_measurement = "liter";
+          }
+
+          await productStock.save();
+
+          if (
+            productStock.remaining_volume < 0 ||
+            productStock.remaining_volume == 0
+          ) {
+            productStock.remaining_volume = product.product_volume;
+            productStock.quantity -= 1;
+            await productStock.save();
+          }
+
+          const inventory = await Inventory.create({
+            transaction: existingTransaction?._id,
+            appointment: existingTransaction?.appointment?._id,
+            service: service?._id,
+            product: product?._id,
+            product_consume: consumeSession,
+            remained_volume: newVolume,
+            remained_quantity: productStock.quantity,
+          });
+        }
+      }
+    } catch (err) {
+      throw new ErrorHandler(err);
+    }
   }
 
   return { existingTransaction, updatedTransaction, updateVerification };
