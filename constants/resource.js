@@ -25,4 +25,5 @@ module.exports = {
   EQUIPMENT: "equipments",
   RESUPPLY:"resupplies",
   HIRING: "hiring",
+  INVENTORY:"inventory",
 };
