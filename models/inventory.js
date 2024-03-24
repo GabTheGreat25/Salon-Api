@@ -21,14 +21,26 @@ const inventorySchema = new mongoose.Schema({
     type: Number,
     required: [true, "Consumed product volume required"],
   },
+  old_volume:{
+    type: Number,
+    required:[true, "Old product volume required"],
+  },
   remained_volume: {
     type: Number,
     required: [true, "Remaining product volume required"],
+  },
+  old_quantity: {
+    type: Number,
+    required: [true, "Old Quantity required"],
   },
   remained_quantity: {
     type: Number,
     required: [true, "Product Remaining Quantity Required"],
   },
+  deducted_quantity: {
+    type: Number,
+    default: 0,
+  }
 });
 
 module.exports = mongoose.model(RESOURCE.INVENTORY, inventorySchema);
