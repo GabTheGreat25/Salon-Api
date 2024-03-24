@@ -11,11 +11,11 @@ exports.getAllInventoryData = async () => {
     })
     .populate({
       path: "service",
-      select: "service_name",
+      select: "service_name image",
     })
     .populate({
       path: "product",
-      select: "product_name",
+      select: "product_name image",
     })
     .lean()
     .exec();
