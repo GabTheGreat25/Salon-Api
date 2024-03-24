@@ -287,7 +287,7 @@ exports.updateTransactionData = async (req, res, id) => {
           .populate({
             path: "product",
             select:
-              "_id product_name remaining_volume product_consume product_volume quantity",
+              "_id product_name type remaining_volume product_consume product_volume quantity",
           })
           .collation({ locale: "en" })
           .lean()
@@ -298,6 +298,14 @@ exports.updateTransactionData = async (req, res, id) => {
         }
 
         for (const product of service.product) {
+
+          const outStock = product.quantity === 0;
+          if (outStock) {
+            throw new ErrorHandler(
+              `${product.product_name} is out of stock`
+            );
+          }
+
           const userId = existingTransaction?.appointment?.customer?._id;
           const customer = await Information.findOne({ customer: userId })
             .collation({ locale: "en" })
@@ -308,22 +316,16 @@ exports.updateTransactionData = async (req, res, id) => {
           let newVolume = product.remaining_volume - product.product_consume;
           let consumeSession = product?.product_consume;
 
-          let long_vol;
-
-          if (
+          const isLongHair =
             description?.includes("Long Hair") &&
-            service?.type?.includes("Hair")
-          ) {
-            long_vol = product.product_volume * 0.2;
+            service?.type?.includes("Hair") && product?.type?.includes("Hair");
+
+          if (isLongHair) {
+            const long_vol = product.product_volume * 0.2;
             consumeSession = long_vol;
             newVolume = product.remaining_volume - long_vol;
-          } else if (
-            description?.includes("Short Hair") &&
-            service?.type?.includes("Hair")
-          ) {
-            let short_vol = (product.product_volume * 0.5) / 10;
-            consumeSession = short_vol;
-            newVolume = product.remaining_volume - short_vol;
+          } else {
+            newVolume - product.remaining_volume - consumeSession;
           }
 
           const productStock = await Product.findByIdAndUpdate(
@@ -336,27 +338,35 @@ exports.updateTransactionData = async (req, res, id) => {
             }
           );
 
-          if (productStock.quantity === 0)
-            throw new ErrorHandler(
-              `${productStock.product_name} is out of stock`
-            );
+          let restock;
+          let reducedQuantity = product.quantity;
+          let emptyVolume = consumeSession - newVolume; 
+          let usedQty = 0;
+          
+          const isEmpty =  emptyVolume == 0;
+          if (isEmpty) {
+            restock = (productStock.remaining_volume = productStock.product_volume);
+            reducedQuantity = (productStock.quantity -= 1);
+            usedQty = 1;
+          };
 
-          if (productStock.remaining_volume < 1000) {
-            productStock.product_measurement = "ml";
+          const isLeft = consumeSession > newVolume;
+          if (isLeft) {
+            restock = (productStock.remaining_volume = productStock.product_volume);
+            reducedQuantity = (productStock.quantity -= 1);
+            usedQty = 1;
+            const leftVolume = consumeSession * 0.5;
+            newVolume = productStock.current_volume - leftVolume;
+          };
+
+          const isMeasured = productStock.current_volume < 1000;
+          if (isMeasured) {
+            productStock.measurement = "ml";
           } else {
-            productStock.product_measurement = "liter";
-          }
+            productStock.measurement = "Liter";
+          };
 
           await productStock.save();
-
-          if (
-            productStock.remaining_volume < 0 ||
-            productStock.remaining_volume == 0
-          ) {
-            productStock.remaining_volume = product.product_volume;
-            productStock.quantity -= 1;
-            await productStock.save();
-          }
 
           const inventory = await Inventory.create({
             transaction: existingTransaction?._id,
@@ -364,8 +374,11 @@ exports.updateTransactionData = async (req, res, id) => {
             service: service?._id,
             product: product?._id,
             product_consume: consumeSession,
-            remained_volume: newVolume,
-            remained_quantity: productStock.quantity,
+            old_volume: product.remaining_volume,
+            remained_volume: productStock.remaining_volume,
+            old_quantity: productStock.quantity,
+            remained_quantity: reducedQuantity,
+            deducted_quantity: usedQty,
           });
         }
       }
