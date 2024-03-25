@@ -77,9 +77,11 @@ exports.updateDeliveryData = async (req, res, id) => {
     .exec();
 
     if(updatedDelivery.status === "completed"){
-      const product = await Product.findById(req.body.product);
-      product.quantity += req.body.quantity;
-      await product.save(); 
+      for(const productId  of updatedDelivery.product){
+        const product = await Product.findById(productId);
+        product.quantity += req.body.quantity;
+        await product.save(); 
+      }
   
     }
 
