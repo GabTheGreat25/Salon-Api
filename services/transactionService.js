@@ -1,7 +1,12 @@
 const Transaction = require("../models/transaction");
 const Verification = require("../models/verification");
 const Appointment = require("../models/appointment");
+const Service = require("../models/service");
+const Product = require("../models/product");
+const User = require("../models/user");
+const Inventory = require("../models/inventory");
 const Comment = require("../models/comment");
+const Information = require("../models/information");
 const ErrorHandler = require("../utils/errorHandler");
 const mongoose = require("mongoose");
 const { STATUSCODE, RESOURCE } = require("../constants/index");
@@ -100,14 +105,14 @@ exports.updateTransactionData = async (req, res, id) => {
     .populate({
       path: "appointment",
       populate: [
-        { path: "beautician customer", select: "name contact_number" },
+        { path: "beautician customer", select: "_id name contact_number" },
         {
           path: "service",
           select: "service_name type occassion description price image",
         },
         { path: "option", select: "option_name extraFee" },
       ],
-      select: "date time price image hasAppointmentFee",
+      select: "_id date time price image hasAppointmentFee",
     })
     .lean()
     .exec();
@@ -261,6 +266,125 @@ exports.updateTransactionData = async (req, res, id) => {
   } else {
     updatedTransaction.qrCode = "";
     await updatedTransaction.save();
+  }
+
+  if (confirm) {
+    try {
+      const serviceIds = existingTransaction?.appointment?.service;
+
+      const serviceCount = await Service.find({ _id: { $in: serviceIds } })
+        .lean()
+        .exec();
+
+      if (serviceCount.length !== serviceIds.length) {
+        throw new ErrorHandler(`No services were found`);
+      }
+
+      for (const serviceId of serviceCount) {
+        const services = serviceId?._id;
+
+        const service = await Service.findById(services)
+          .populate({
+            path: "product",
+            select:
+              "_id product_name type remaining_volume product_consume product_volume quantity",
+          })
+          .collation({ locale: "en" })
+          .lean()
+          .exec();
+
+        if (!service) {
+          throw new ErrorHandler(`Service not found`);
+        }
+
+        for (const product of service.product) {
+
+          const outStock = product.quantity === 0;
+          if (outStock) {
+            throw new ErrorHandler(
+              `${product.product_name} is out of stock`
+            );
+          }
+
+          const userId = existingTransaction?.appointment?.customer?._id;
+          const customer = await Information.findOne({ customer: userId })
+            .collation({ locale: "en" })
+            .lean()
+            .exec();
+
+          const description = customer?.description;
+          let newVolume = product.remaining_volume - product.product_consume;
+          let consumeSession = product?.product_consume;
+
+          const isLongHair =
+            description?.includes("Long Hair") &&
+            service?.type?.includes("Hair") && product?.type?.includes("Hair");
+
+          if (isLongHair) {
+            const long_vol = product.product_volume * 0.2;
+            consumeSession = long_vol;
+            newVolume = product.remaining_volume - long_vol;
+          } else {
+            newVolume - product.remaining_volume - consumeSession;
+          }
+
+          const productStock = await Product.findByIdAndUpdate(
+            product._id,
+            {
+              remaining_volume: newVolume,
+            },
+            {
+              new: true,
+            }
+          );
+
+          let restock;
+          let reducedQuantity = product.quantity;
+          let emptyVolume = consumeSession - newVolume; 
+          let usedQty = 0;
+          
+          const isEmpty =  emptyVolume == 0;
+          if (isEmpty) {
+            restock = (productStock.remaining_volume = productStock.product_volume);
+            reducedQuantity = (productStock.quantity -= 1);
+            usedQty = 1;
+          };
+
+          const isLeft = consumeSession > newVolume;
+          if (isLeft) {
+            restock = (productStock.remaining_volume = productStock.product_volume);
+            reducedQuantity = (productStock.quantity -= 1);
+            usedQty = 1;
+            const leftVolume = consumeSession * 0.5;
+            newVolume = productStock.current_volume - leftVolume;
+          };
+
+          const isMeasured = productStock.current_volume < 1000;
+          if (isMeasured) {
+            productStock.measurement = "ml";
+          } else {
+            productStock.measurement = "Liter";
+          };
+
+          await productStock.save();
+
+          const inventory = await Inventory.create({
+            transaction: existingTransaction?._id,
+            appointment: existingTransaction?.appointment?._id,
+            service: service?._id,
+            product: product?._id,
+            product_consume: consumeSession,
+            old_volume: product.remaining_volume,
+            remained_volume: productStock.remaining_volume,
+            old_quantity: productStock.quantity,
+            remained_quantity: reducedQuantity,
+            deducted_quantity: usedQty,
+          });
+        }
+      }
+    } catch (err) {
+      throw new ErrorHandler(err);
+    }
   }
 
   return { existingTransaction, updatedTransaction, updateVerification };

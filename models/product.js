@@ -72,6 +72,22 @@ const productSchema = new mongoose.Schema({
     // required: [true, "Product volume required"],
     min: 5,
   },
+  product_consume:{
+    type: Number,
+    required: [true, "Consumed product per service required"],
+    default: 0,
+  },
+  remaining_volume:{
+    type: Number,
+    default: 0,
+  },
+  product_measurement: {
+    type: String,
+    enum: ["ml","liter"],
+    default: "ml",
+  }
 });
+
+
 
 module.exports = mongoose.model(RESOURCE.PRODUCT, productSchema);

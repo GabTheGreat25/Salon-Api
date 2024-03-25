@@ -31,6 +31,7 @@ const equipment = require("./routes/equipment");
 const resupply = require("./routes/resupply");
 const exclusions = require("./routes/exclusion");
 const hiring = require("./routes/hiring");
+const inventory = require("./routes/inventory");
 const { STATUSCODE } = require("./constants/index");
 const connectDB = require("./config/connectDB");
 const PORT = process.env.PORT || 4000;
@@ -67,7 +68,8 @@ app.use(
   options,
   maya,
   equipment,
-  resupply
+  resupply,
+  inventory
 );
 
 app.all("*", (req, res) => {

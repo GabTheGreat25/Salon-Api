@@ -40,6 +40,8 @@ exports.createNewProduct = [
     "brand",
     "isNew",
     "ingredients",
+    "product_volume",
+    "product_consume",
     "image",
   ]),
   asyncHandler(async (req, res, next) => {

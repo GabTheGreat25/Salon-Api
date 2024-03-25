@@ -71,4 +71,7 @@ module.exports = {
   HIRINGS: "/hirings",
   HIRING_ID: "/hiring/:id",
   EDIT_HIRING_ID: "/hiring/edit/:id",
+  INVENTORIES:"/inventories",
+  INVENTORY_ID:"/inventory/:id",
+  INVENTORY_EDIT_ID:"/inventory/edit/:id",
 };

@@ -65,6 +65,15 @@ exports.createProductData = async (req, res) => {
     image: image,
   });
 
+  const productMeasure = req.body.product_volume;
+  if (productMeasure >= 1000) {
+    product.product_measurement = "liter";
+  } else {
+    product.product_measurement = "ml";
+  }
+  (product.remaining_volume = productMeasure),
+  await product.save();
+
   return product;
 };
 
