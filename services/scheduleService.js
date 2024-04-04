@@ -115,7 +115,7 @@ exports.updateScheduleData = async (req, res, id) => {
     throw new ErrorHandler(`Invalid schedule ID: ${id}`);
   }
 
-  const { date, beautician } = req.body;
+  const { date, beautician, leaveNote } = req.body;
 
   const existingSchedule = await Schedule.findOne({
     beautician: beautician,
@@ -134,6 +134,7 @@ exports.updateScheduleData = async (req, res, id) => {
       $set: {
         beautician: beautician,
         date: date,
+        leaveNote: leaveNote,
       },
     },
     {
