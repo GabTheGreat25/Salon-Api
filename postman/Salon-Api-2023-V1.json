@@ -4487,6 +4487,18 @@
 						"header": []
 					},
 					"response": []
+				},
+				{
+					"name": "TRANSACTION CUSTOMER REPORTS",
+					"id": "f207b466-51c4-43af-a72a-3a404191e9a2",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": []
+					},
+					"response": []
 				}
 			],
 			"id": "3a5686f5-733a-44ca-8704-989cdfd3d78b"
