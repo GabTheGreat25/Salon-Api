@@ -4475,6 +4475,18 @@
 						"url": "{{URI}}{{V1}}charts/feedback/anonymous"
 					},
 					"response": []
+				},
+				{
+					"name": "RESERVATION REPORTS",
+					"id": "b4f58ffb-40eb-4588-bb2a-9016a43554ac",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": []
+					},
+					"response": []
 				}
 			],
 			"id": "3a5686f5-733a-44ca-8704-989cdfd3d78b"
