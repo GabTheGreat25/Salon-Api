@@ -5,25 +5,46 @@ const equipmentSchema = new mongoose.Schema({
   equipment_name: {
     type: String,
     required: [true, "Equipment name required"],
-    maxLength: [255, "Equipment name must not exceed 255 characters"],
+    maxLength: [60, "Equipment name must not exceed to 60 characters"],
   },
-  description: {
+  equipment_status: {
     type: String,
-    required: [true, "Please enter the description of the equipment"],
+    enum: ["Found", "Missing", "Lost"],
+    default: "Found",
   },
   equipment_price: {
     type: Number,
-    required: [true, "Please enter equipment price"],
-    min: 0,
+    required: [true, "Equipment price required"],
+    default: 0,
   },
-  purchased_date: {
-    type: Date,
-    required: [true, "Please enter purchased date"],
+  quantity: {
+    type: Number,
+    required: [true, "Equipment quantity required"],
+  },
+  missing_qty: {
+    type: Number,
+    required: false,
+    default: 0,
+  },
+  damage_qty: {
+    type: Number,
+    required: false,
+    default: 0,   
+  },
+  borrow_qty: {
+    type: Number,
+    required: false,
+    default: 0,
+  },
+  found_qty: {
+    type: Number,
+    required: false,
+    default: 0,
   },
   status: {
     type: String,
-    enum: ["Missing", "Lost", "Found"],
-    default: "Found",
+    enum: ["Available", "Not Available"],
+    default: "Available",
   },
   image: [
     {
@@ -41,23 +62,6 @@ const equipmentSchema = new mongoose.Schema({
       },
     },
   ],
-  quantity: {
-    type: Number,
-    required: false,
-    min: [
-      0,
-      "Quantity field must be 0 or more to make the equipment unavailable when quantity is zero",
-    ],
-    max: [
-      1,
-      "Quantity field must be 1 or less to represent the availability of the equipment",
-    ],
-    default: 0,
-  },
-  isAvailable:{
-    type: Boolean,
-    default: false,
-  }
 });
 
 module.exports = mongoose.model(RESOURCE.EQUIPMENT, equipmentSchema);
