@@ -23,7 +23,9 @@ module.exports = {
   OPTION: "option",
   EXCLUSION: "exclusions",
   EQUIPMENT: "equipments",
-  RESUPPLY:"resupplies",
   HIRING: "hiring",
+  REPORT:"report",
+  FOUND: "found",
+  LOGBOOK: "logbook",
   INVENTORY:"inventory",
 };

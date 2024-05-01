@@ -40,10 +40,8 @@ exports.createNewEquipment = [
   upload.array("image"),
   checkRequiredFields([
     "equipment_name",
-    "description",
     "equipment_price",
-    "purchased_date",
-    "status",
+    "quantity",
     "image",
   ]),
   asyncHandler(async (req, res, next) => {
@@ -61,10 +59,8 @@ exports.updateEquipment = [
   upload.array("image"),
   checkRequiredFields([
     "equipment_name",
-    "description",
-    "equipment_price",
-    "purchased_date",
-    "status",
+    "equipment_price",  
+    "quantity",
     "image",
   ]),
   asyncHandler(async (req, res, next) => {

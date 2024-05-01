@@ -60,8 +60,9 @@ exports.getAllEquipmentData = async () => {
     const equipment = await Equipment.create({
       ...req.body,
       image: image,
+      available_quantity: req.body.quantity,
     });
-  
+
     return equipment;
   };
   

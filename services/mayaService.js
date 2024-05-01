@@ -35,7 +35,11 @@ exports.createMayaCheckoutLink = async (req, res) => {
   const discount = req.body.discount || 0;
   const totalAmountValue = (subtotal - parseFloat(discount)).toFixed(0);
 
-  const price = req.body.hasAppointmentFee === true ? 150 : totalAmountValue;
+  const appointmentFee = req.body.items?.map((item) => item.totalAmount.value);
+  const fee = appointmentFee * 0.3;
+  const paymentFee = (fee).toFixed(0);
+
+  const price = req.body.hasAppointmentFee === true ? paymentFee : totalAmountValue;
 
   const { data } = await sdk.createV1Checkout({
     totalAmount: {
@@ -64,8 +68,8 @@ exports.createMayaCheckoutLink = async (req, res) => {
         ? [
             {
               name: "Service Appointment Fee",
-              amount: { value: "150" },
-              totalAmount: { value: "150" },
+              amount: { value: `${paymentFee}` },
+              totalAmount: { value: `${paymentFee}` },
             },
           ]
         : req.body.items.map((item) => ({
