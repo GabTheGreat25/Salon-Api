@@ -3,6 +3,7 @@ const router = express.Router();
 const equipmentController = require("../controllers/equipmentController");
 const { verifyJWT, authorizeRoles } = require("../middleware/verifyJWT");
 const { METHOD, PATH, ROLE } = require("../constants/index");
+
 router.use(verifyJWT);
 
 const equipmentRoutes = [
@@ -39,8 +40,8 @@ const equipmentRoutes = [
 ];
 
 equipmentRoutes.forEach((route) => {
-  const { method, path, roles = [], middleware = [], handler } = route;
-  router[method](path, middleware.concat(authorizeRoles(...roles)), handler);
+  const { method, path, roles, handler } = route;
+  router[method](path, authorizeRoles(...roles), handler);
 });
 
 module.exports = router;
