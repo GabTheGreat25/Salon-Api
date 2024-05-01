@@ -27,10 +27,13 @@ const times = require("./routes/time");
 const months = require("./routes/month");
 const options = require("./routes/option");
 const maya = require("./routes/maya");
-const equipment = require("./routes/equipment");
-const resupply = require("./routes/resupply");
+const equipments = require("./routes/equipment");
 const exclusions = require("./routes/exclusion");
 const hiring = require("./routes/hiring");
+const reports = require("./routes/report");
+const founds = require("./routes/found");
+const logbooks = require("./routes/logbook");
+const charts = require("./routes/charts");
 const { STATUSCODE } = require("./constants/index");
 const connectDB = require("./config/connectDB");
 const PORT = process.env.PORT || 4000;
@@ -54,6 +57,7 @@ app.use(
   brands,
   exclusions,
   hiring,
+  charts,
   auth,
   users,
   appointments,
@@ -66,8 +70,10 @@ app.use(
   months,
   options,
   maya,
-  equipment,
-  resupply
+  reports,
+  equipments,
+  founds,
+  logbooks
 );
 
 app.all("*", (req, res) => {
