@@ -154,15 +154,22 @@ exports.updateTransactionData = async (req, res, id) => {
 
   if (confirm) {
     const discountAmount = updatedTransaction.hasDiscount === true ? 0.2 : 0;
+
+    let reserveFee = existingTransaction.appointment.price * 0.3;
+
     const appointmentFee =
-      existingTransaction.appointment.hasAppointmentFee === true ? 150 : 0;
+      existingTransaction.appointment.hasAppointmentFee === true
+        ? reserveFee
+        : 0;
+
+    const reserveCost = (appointmentFee).toFixed(0);
 
     const adjustedTotalPrice =
       existingTransaction.appointment.price -
       existingTransaction.appointment.price * discountAmount -
-      appointmentFee;
+      reserveCost;
 
-    const adjustedPriceWithoutDecimals = adjustedTotalPrice.toFixed(0);
+    let adjustedPriceWithoutDecimals = adjustedTotalPrice.toFixed(0);
 
     await Appointment.findByIdAndUpdate(
       existingTransaction.appointment._id,
@@ -186,6 +193,8 @@ exports.updateTransactionData = async (req, res, id) => {
     const beauticianNames = existingTransaction.appointment.beautician.map(
       (b) => b.name
     );
+
+    let grandTotalFee = Number(adjustedPriceWithoutDecimals) + reserveCost;
 
     const formattedReceipt =
       `========================================\n` +
@@ -218,8 +227,10 @@ exports.updateTransactionData = async (req, res, id) => {
       ` Beautician:\n` +
       `   Name: ${beauticianNames.join(", ")}\n` +
       `----------------------------------------\n` +
-      ` Payment: ${updatedTransaction.payment}\n` +
-      ` Total Fee: ₱ ${adjustedPriceWithoutDecimals}\n` +
+      `Payment: ${updatedTransaction.payment}\n` +
+      `Service Total Fee: ₱ ${adjustedPriceWithoutDecimals}\n` +
+      `Reservation Fee: ₱ ${Math.round(reserveCost)}\n` +
+      `Total Amount Fee: ₱ ${grandTotalFee}\n` +
       `----------------------------------------\n` +
       ` Thank you for choosing our services, ${existingTransaction.appointment.customer.name}!\n` +
       `----------------------------------------\n` +
@@ -256,7 +267,7 @@ exports.updateTransactionData = async (req, res, id) => {
       );
     }, 20 * 24 * 60 * 60 * 1000);
     // }, 2 * 30 * 24 * 60 * 60 * 1000);
-
+    updatedTransaction.reservationFee = reserveCost;
     await updatedTransaction.save();
   } else {
     updatedTransaction.qrCode = "";
