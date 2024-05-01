@@ -94,5 +94,8 @@ module.exports = {
   ANONYMOUS_FEEDBACK: "/charts/feedback/anonymous",
   RESERVATION_REPORT: "/charts/reservation/reports",
   TRANSACTION_CUSTOMER_REPORT: "/charts/transaction/customer",
+  INVENTORIES:"/inventories",
+  INVENTORY_ID:"/inventory/:id",
+  INVENTORY_EDIT_ID:"/inventory/edit/:id",
 };
   

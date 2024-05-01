@@ -27,4 +27,5 @@ module.exports = {
   REPORT:"report",
   FOUND: "found",
   LOGBOOK: "logbook",
+  INVENTORY:"inventory",
 };

@@ -34,6 +34,7 @@ const reports = require("./routes/report");
 const founds = require("./routes/found");
 const logbooks = require("./routes/logbook");
 const charts = require("./routes/charts");
+const inventory = require("./routes/inventory");
 const { STATUSCODE } = require("./constants/index");
 const connectDB = require("./config/connectDB");
 const PORT = process.env.PORT || 4000;
@@ -74,6 +75,9 @@ app.use(
   equipments,
   founds,
   logbooks
+  equipment,
+  resupply,
+  inventory
 );
 
 app.all("*", (req, res) => {
