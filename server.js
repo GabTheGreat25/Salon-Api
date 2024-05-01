@@ -74,9 +74,8 @@ app.use(
   reports,
   equipments,
   founds,
-  logbooks
-  equipment,
-  resupply,
+  logbooks,
+  equipments,
   inventory
 );
 
