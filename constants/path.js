@@ -68,7 +68,7 @@ module.exports = {
   HIRINGS: "/hirings",
   HIRING_ID: "/hiring/:id",
   EDIT_HIRING_ID: "/hiring/edit/:id",
-  REPORTS:"/reports",
+  REPORTS: "/reports",
   REPORT_ID: "/report/:id",
   REPORT_EDIT_ID: "/report/edit/:id",
   FOUNDS: "/founds",
@@ -94,8 +94,7 @@ module.exports = {
   ANONYMOUS_FEEDBACK: "/charts/feedback/anonymous",
   RESERVATION_REPORT: "/charts/reservation/reports",
   TRANSACTION_CUSTOMER_REPORT: "/charts/transaction/customer",
-  INVENTORIES:"/inventories",
-  INVENTORY_ID:"/inventory/:id",
-  INVENTORY_EDIT_ID:"/inventory/edit/:id",
+  INVENTORIES: "/inventories",
+  INVENTORY_ID: "/inventory/:id",
+  INVENTORY_EDIT_ID: "/inventory/edit/:id",
 };
-  
