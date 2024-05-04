@@ -68,9 +68,6 @@ exports.createLogsData = async (req, res) => {
 
       let newQuantity = quantity - borrowedQty;
       let newBorrowedQuantity = borrow_qty + borrowedQty;
-      console.log("Borrow Equipment pieces:", borrowedQty);
-      console.log("Updated Quantity", newQuantity);
-      console.log("New Borrowed Quantity", newBorrowedQuantity);
 
       const updateBorrowEquipment = await Equipment.findByIdAndUpdate(
         equipmentId,
@@ -83,6 +80,7 @@ exports.createLogsData = async (req, res) => {
           runValidators: true,
         }
       );
+
     }
   } catch (err) {
     throw new ErrorHandler(err);

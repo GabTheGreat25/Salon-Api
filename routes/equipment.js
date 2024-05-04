@@ -10,31 +10,31 @@ const equipmentRoutes = [
   {
     method: METHOD.GET,
     path: PATH.EQUIPMENTS,
-    roles: [ROLE.ADMIN],
+    roles: [ROLE.ADMIN, ROLE.RECEPTIONIST],
     handler: equipmentController.getAllEquipments,
   },
   {
     method: METHOD.GET,
     path: PATH.EQUIPMENT_ID,
-    roles: [ROLE.ADMIN],
+    roles: [ROLE.ADMIN, ROLE.RECEPTIONIST],
     handler: equipmentController.getSingleEquipment,
   },
   {
     method: METHOD.POST,
     path: PATH.EQUIPMENTS,
-    roles: [ROLE.ADMIN],
+    roles: [ROLE.ADMIN, ROLE.RECEPTIONIST],
     handler: equipmentController.createNewEquipment,
   },
   {
     method: METHOD.PATCH,
     path: PATH.EDIT_EQUIPMENT_ID,
-    roles: [ROLE.ADMIN],
+    roles: [ROLE.ADMIN, ROLE.RECEPTIONIST],
     handler: equipmentController.updateEquipment,
   },
   {
     method: METHOD.DELETE,
     path: PATH.EQUIPMENT_ID,
-    roles: [ROLE.ADMIN],
+    roles: [ROLE.ADMIN, ROLE.RECEPTIONIST],
     handler: equipmentController.deleteEquipment,
   },
 ];

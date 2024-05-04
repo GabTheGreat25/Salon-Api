@@ -29,7 +29,7 @@ const equipmentSchema = new mongoose.Schema({
   damage_qty: {
     type: Number,
     required: false,
-    default: 0,   
+    default: 0,
   },
   borrow_qty: {
     type: Number,
@@ -62,6 +62,15 @@ const equipmentSchema = new mongoose.Schema({
       },
     },
   ],
+});
+
+equipmentSchema.pre("save", function (next) {
+  if (this.quantity === 0) {
+    this.status = "Not Available";
+  } else {
+    this.status = "Available";
+  }
+  next();
 });
 
 module.exports = mongoose.model(RESOURCE.EQUIPMENT, equipmentSchema);
