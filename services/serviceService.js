@@ -16,7 +16,7 @@ exports.getAllServiceData = async () => {
     })
     .populate({
       path: RESOURCE.PRODUCT,
-      select: "product_name brand isNew ingredients",
+      select: "product_name brand isNew ingredients quantity",
     })
     .lean()
     .exec();
