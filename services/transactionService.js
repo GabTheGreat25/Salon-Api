@@ -167,7 +167,7 @@ exports.updateTransactionData = async (req, res, id) => {
         ? reserveFee
         : 0;
 
-    const reserveCost = (appointmentFee).toFixed(0);
+    const reserveCost = appointmentFee.toFixed(0);
 
     const adjustedTotalPrice =
       existingTransaction.appointment.price -
@@ -292,6 +292,7 @@ exports.updateTransactionData = async (req, res, id) => {
       }
 
       for (const serviceId of serviceCount) {
+        0;
         const services = serviceId?._id;
 
         const service = await Service.findById(services)
@@ -309,89 +310,93 @@ exports.updateTransactionData = async (req, res, id) => {
         }
 
         for (const product of service.product) {
-
           const outStock = product.quantity === 0;
           if (outStock) {
-            throw new ErrorHandler(
-              `${product.product_name} is out of stock`
-            );
+            updatedTransaction.status = "pending";
+            await updatedTransaction.save();
+            throw new ErrorHandler(`${product.product_name} is out of stock`);
           }
+           else 
+           {
+            const userId = existingTransaction?.appointment?.customer?._id;
+            const customer = await Information.findOne({ customer: userId })
+              .collation({ locale: "en" })
+              .lean()
+              .exec();
 
-          const userId = existingTransaction?.appointment?.customer?._id;
-          const customer = await Information.findOne({ customer: userId })
-            .collation({ locale: "en" })
-            .lean()
-            .exec();
+            const description = customer?.description;
+            let newVolume = product.remaining_volume - product.product_consume;
+            let consumeSession = product?.product_consume;
 
-          const description = customer?.description;
-          let newVolume = product.remaining_volume - product.product_consume;
-          let consumeSession = product?.product_consume;
+            const isLongHair =
+              description?.includes("Long Hair") &&
+              service?.type?.includes("Hair") &&
+              product?.type?.includes("Hair");
 
-          const isLongHair =
-            description?.includes("Long Hair") &&
-            service?.type?.includes("Hair") && product?.type?.includes("Hair");
-
-          if (isLongHair) {
-            const long_vol = product.product_volume * 0.2;
-            consumeSession = long_vol;
-            newVolume = product.remaining_volume - long_vol;
-          } else {
-            newVolume - product.remaining_volume - consumeSession;
-          }
-
-          const productStock = await Product.findByIdAndUpdate(
-            product._id,
-            {
-              remaining_volume: newVolume,
-            },
-            {
-              new: true,
+            if (isLongHair) {
+              const long_vol = product.product_volume * 0.2;
+              consumeSession = long_vol;
+              newVolume = product.remaining_volume - long_vol;
+            } else {
+              newVolume - product.remaining_volume - consumeSession;
             }
-          );
 
-          let restock;
-          let reducedQuantity = product.quantity;
-          let emptyVolume = consumeSession - newVolume; 
-          let usedQty = 0;
-          
-          const isEmpty =  emptyVolume == 0;
-          if (isEmpty) {
-            restock = (productStock.remaining_volume = productStock.product_volume);
-            reducedQuantity = (productStock.quantity -= 1);
-            usedQty = 1;
-          };
+            const productStock = await Product.findByIdAndUpdate(
+              product._id,
+              {
+                remaining_volume: newVolume,
+              },
+              {
+                new: true,
+              }
+            );
 
-          const isLeft = consumeSession > newVolume;
-          if (isLeft) {
-            restock = (productStock.remaining_volume = productStock.product_volume);
-            reducedQuantity = (productStock.quantity -= 1);
-            usedQty = 1;
-            const leftVolume = consumeSession * 0.5;
-            newVolume = productStock.current_volume - leftVolume;
-          };
+            let restock;
+            let reducedQuantity = productStock.quantity;
+            let emptyVolume = productStock.remaining_volume;
+            let usedQty = 0;
 
-          const isMeasured = productStock.current_volume < 1000;
-          if (isMeasured) {
-            productStock.measurement = "ml";
-          } else {
-            productStock.measurement = "Liter";
-          };
+            const isEmpty = emptyVolume == 0;
+            if (isEmpty) {
+              restock = productStock.remaining_volume =
+                productStock.product_volume;
+              reducedQuantity = productStock.quantity - 1;
+              usedQty = 1;
+            }
 
-          await productStock.save();
+            const isLeft = consumeSession > newVolume;
+            if (isLeft) {
+              restock = productStock.remaining_volume =
+                productStock.product_volume;
+              reducedQuantity = productStock.quantity - 1;
+              usedQty = 1;
+              const leftVolume = consumeSession * 0.5;
+              newVolume = productStock.current_volume - leftVolume;
+            }
 
-          const inventory = await Inventory.create({
-            transaction: existingTransaction?._id,
-            appointment: existingTransaction?.appointment?._id,
-            service: service?._id,
-            product: product?._id,
-            product_consume: consumeSession,
-            old_volume: product.remaining_volume,
-            remained_volume: productStock.remaining_volume,
-            old_quantity: productStock.quantity,
-            remained_quantity: reducedQuantity,
-            deducted_quantity: usedQty,
-          });
-        }
+            const isMeasured = productStock.current_volume < 1000;
+            if (isMeasured) {
+              productStock.measurement = "ml";
+            } else {
+              productStock.measurement = "Liter";
+            }
+
+            await productStock.save();
+
+            const inventory = await Inventory.create({
+              transaction: existingTransaction?._id,
+              appointment: existingTransaction?.appointment?._id,
+              service: service?._id,
+              product: product?._id,
+              product_consume: consumeSession,
+              old_volume: product.remaining_volume,
+              remained_volume: emptyVolume,
+              old_quantity: productStock.quantity,
+              remained_quantity: reducedQuantity,
+              deducted_quantity: usedQty,
+            });
+          }
+        } // end product loop
       }
     } catch (err) {
       throw new ErrorHandler(err);
