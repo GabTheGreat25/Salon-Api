@@ -366,7 +366,12 @@ exports.createUserData = async (req, res) => {
       time: req.body.time,
     });
 
-    const smsMessage = `Dear ${user.name}, your account has been successfully created. Please attend the meeting at ${req.body.date} at ${req.body.time} at the salon.`;
+    const smsMessage = `Dear ${
+      user.name
+    }, your account has been successfully created. Please attend the meeting ${
+      new Date(req.body.date).toISOString().split("T")[0]
+    }  ${req.body.time} at the salon.`;
+
     console.log(smsMessage);
     sendSMS(`+63${user.contact_number.substring(1)}`, smsMessage);
   } else if (roles.includes(ROLE.RECEPTIONIST)) {
@@ -391,7 +396,11 @@ exports.createUserData = async (req, res) => {
       time: req.body.time,
     });
 
-    const smsMessage = `Dear ${user.name}, your account has been successfully created. Please attend the meeting at the salon.`;
+    const smsMessage = `Dear ${
+      user.name
+    }, your account has been successfully created. Please attend the meeting ${
+      new Date(req.body.date).toISOString().split("T")[0]
+    }  ${req.body.time} at the salon.`;
     console.log(smsMessage);
     sendSMS(`+63${user.contact_number.substring(1)}`, smsMessage);
   } else {
