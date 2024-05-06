@@ -72,7 +72,7 @@ exports.createProductData = async (req, res) => {
     product.product_measurement = "ml";
   }
   (product.remaining_volume = productMeasure),
-  await product.save();
+   await product.save();
 
   return product;
 };
@@ -132,8 +132,17 @@ exports.updateProductData = async (req, res, id) => {
       runValidators: true,
     }
   )
-    .lean()
     .exec();
+
+  const { product_volume } = updatedProduct;
+
+  if (product_volume >= 1000) {
+    updatedProduct.product_measurement = "liter";
+  } else {
+    updatedProduct.product_measurement = "ml";
+  }
+  (updatedProduct.remaining_volume = product_volume),
+    await updatedProduct.save();
 
   return updatedProduct;
 };
