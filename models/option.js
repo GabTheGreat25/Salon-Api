@@ -39,6 +39,10 @@ const optionSchema = new mongoose.Schema({
       },
     },
   ],
+  type: {
+    type: String,
+    enum: ["Hands", "Hair", "Feet", "Facial", "Body", "Eyelash"],
+  },
 });
 
 module.exports = mongoose.model(RESOURCE.OPTION, optionSchema);
