@@ -64,6 +64,10 @@ exports.createLogsData = async (req, res) => {
 
       const borrowedEquipment = await Equipment.findById(equipmentId);
 
+      if(borrowedEquipment.quantity === 0){
+        throw new ErrorHandler(`${borrowedEquipment.equipment_name} is out of Stock`);
+      };
+
       let { quantity, borrow_qty } = borrowedEquipment;
 
       let newQuantity = quantity - borrowedQty;
