@@ -148,6 +148,75 @@ exports.getAppointmentCustomerData = async () => {
 };
 
 exports.logBookData = async () => {
+  // const logbook = await LogBook.aggregate([
+  //   {
+  //     $match: {
+  //       status: {
+  //         $in: [
+  //           "Borrowed",
+  //           "Returned",
+  //           "Returned With Missing",
+  //           "Returned With Damage",
+  //           "Returned Damage & Missing",
+  //         ],
+  //       },
+  //     },
+  //   },
+  //   {
+  //     $unwind: "$equipment",
+  //   },
+  //   {
+  //     $group: {
+  //       _id: null,
+  //       totalBorrowed: {
+  //         $sum: {
+  //           $cond: [
+  //             { $eq: ["$status", "Borrowed"] },
+  //             "$equipment.borrow_quantity",
+  //             0,
+  //           ],
+  //         },
+  //       },
+  //       totalReturned: {
+  //         $sum: {
+  //           $cond: [
+  //             { $eq: ["$status", "Returned"] },
+  //             "$equipment.borrow_quantity",
+  //             0,
+  //           ],
+  //         },
+  //       },
+  //       totalReturnedWithMissing: {
+  //         $sum: {
+  //           $cond: [
+  //             { $eq: ["$status", "Returned With Missing"] },
+  //             "$equipment.borrow_quantity",
+  //             0,
+  //           ],
+  //         },
+  //       },
+  //       totalReturnedWithDamage: {
+  //         $sum: {
+  //           $cond: [
+  //             { $eq: ["$status", "Returned With Damage"] },
+  //             "$equipment.borrow_quantity",
+  //             0,
+  //           ],
+  //         },
+  //       },
+  //       totalReturnedDamageMissing: {
+  //         $sum: {
+  //           $cond: [
+  //             { $eq: ["$status", "Returned Damage & Missing"] },
+  //             "$equipment.borrow_quantity",
+  //             0,
+  //           ],
+  //         },
+  //       },
+  //     },
+  //   },
+  // ]);
+
   const logbook = await LogBook.aggregate([
     {
       $match: {
@@ -167,23 +236,15 @@ exports.logBookData = async () => {
     },
     {
       $group: {
-        _id: null,
+        _id: "$status",
         totalBorrowed: {
           $sum: {
-            $cond: [
-              { $eq: ["$status", "Borrowed"] },
-              "$equipment.borrow_quantity",
-              0,
-            ],
+            $cond: [{ $eq: ["$status", "Borrowed"] }, "$equipment.borrow_quantity", 0],
           },
         },
         totalReturned: {
           $sum: {
-            $cond: [
-              { $eq: ["$status", "Returned"] },
-              "$equipment.borrow_quantity",
-              0,
-            ],
+            $cond: [{ $eq: ["$status", "Returned"] }, "$equipment.borrow_quantity", 0],
           },
         },
         totalReturnedWithMissing: {
@@ -213,10 +274,12 @@ exports.logBookData = async () => {
             ],
           },
         },
+        equipmentNames: {
+          $push: "$equipment.equipment_name", 
+        },
       },
     },
   ]);
-
   return logbook;
 };
 
@@ -279,6 +342,7 @@ exports.getDeliveryTypeData = async () => {
         _id: {
           type: "$type",
           status: "$status",
+          date: "$date",
         },
         count: { $sum: 1 },
       },

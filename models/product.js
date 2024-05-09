@@ -1,5 +1,8 @@
 const mongoose = require("mongoose");
 const { RESOURCE } = require("../constants/index");
+const User = require("./user");
+const { sendSMS } = require("../utils/twilio");
+
 
 const productSchema = new mongoose.Schema({
   product_name: {
@@ -88,6 +91,29 @@ const productSchema = new mongoose.Schema({
   }
 });
 
-
+productSchema.pre("save", async function (next) {
+  try {
+    if (this.quantity <= 10) {
+      const getAdminUsers = async () => {
+        const admins = await User.find({ roles: "Admin" });
+        return admins;
+      };
+    
+      const admins = await getAdminUsers();
+      const adminNames = admins.map((admin) => admin.name);
+      const adminNumbers = admins.map((admin) => admin.contact_number);
+    
+      const smsAdminMessage = `Product ${this.product_name} has ${this.quantity} quantity left`;
+      adminNumbers.forEach((number, index) => {
+        console.log(`Sending SMS to ${adminNames[index]} at ${number}`);
+        console.log(smsAdminMessage);
+        sendSMS(`+63${number.substring(1)}`, smsAdminMessage);
+      });
+    }
+    next();
+  } catch (error) {
+    next(error); 
+  }
+});
 
 module.exports = mongoose.model(RESOURCE.PRODUCT, productSchema);
