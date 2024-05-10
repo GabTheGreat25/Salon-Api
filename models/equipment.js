@@ -64,13 +64,4 @@ const equipmentSchema = new mongoose.Schema({
   ],
 });
 
-equipmentSchema.pre("save", function (next) {
-  if (this.quantity === 0) {
-    this.status = "Not Available";
-  } else {
-    this.status = "Available";
-  }
-  next();
-});
-
 module.exports = mongoose.model(RESOURCE.EQUIPMENT, equipmentSchema);
