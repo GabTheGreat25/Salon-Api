@@ -86,18 +86,23 @@ const productSchema = new mongoose.Schema({
   },
   product_measurement: {
     type: String,
-    enum: ["ml","liter"],
+    enum: ["ml","liter", "pcs"],
     default: "ml",
+  },
+  volume_description: {
+    type: String,
+    enum: ["Milliliter", "Pieces"],
+    default: "Milliliter",
   }
 });
 
 productSchema.pre("save", async function (next) {
   try {
     if (this.quantity <= 10) {
-      const getAdminUsers = async () => {
-        const admins = await User.find({ roles: "Admin" });
-        return admins;
-      };
+        const getAdminUsers = async () => {
+          const admins = await User.find({ roles: "Admin" });
+          return admins;
+        };
     
       const admins = await getAdminUsers();
       const adminNames = admins.map((admin) => admin.name);
