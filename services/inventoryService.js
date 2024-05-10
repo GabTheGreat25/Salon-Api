@@ -15,7 +15,7 @@ exports.getAllInventoryData = async () => {
     })
     .populate({
       path: "product",
-      select: "product_name image",
+      select: "product_name volume_description image",
     })
     .lean()
     .exec();
@@ -38,7 +38,7 @@ exports.getSingleInventoryData = async (id) => {
     })
     .populate({
       path: "product",
-      select: "product_name",
+      select: "product_name volume_description",
     })
     .lean()
     .exec();

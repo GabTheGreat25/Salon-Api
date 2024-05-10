@@ -199,7 +199,7 @@ exports.updateTransactionData = async (req, res, id) => {
       (b) => b.name
     );
 
-    let grandTotalFee = Number(adjustedPriceWithoutDecimals) + reserveCost;
+    let grandTotalFee = (Number(adjustedPriceWithoutDecimals)) + (Number(reserveCost));
 
     const formattedReceipt =
       `========================================\n` +
@@ -235,7 +235,7 @@ exports.updateTransactionData = async (req, res, id) => {
       `Payment: ${updatedTransaction.payment}\n` +
       `Service Total Fee: ₱ ${adjustedPriceWithoutDecimals}\n` +
       `Reservation Fee: ₱ ${Math.round(reserveCost)}\n` +
-      `Total Amount Fee: ₱ ${grandTotalFee}\n` +
+      `Total Amount Fee: ₱ ${Number(grandTotalFee)}\n` +
       `----------------------------------------\n` +
       ` Thank you for choosing our services, ${existingTransaction.appointment.customer.name}!\n` +
       `----------------------------------------\n` +
@@ -248,7 +248,7 @@ exports.updateTransactionData = async (req, res, id) => {
 
     const smsMessage = updatedTransaction.hasDiscount
       ? `Dear ${existingTransaction.appointment.customer.name}, your transaction has been approved! You received a 20% discount. Thank you for choosing Lhanlee Salon.`
-      : `Dear ${existingTransaction.appointment.customer.name}, your transaction has been approved! You can review your transaction details by checking your history. Thank you for choosing Lhanlee Salon.`;
+      : `Dear ${existingTransaction.appointment.customer.name}, your transaction has been approved! with an payment amount of ₱${adjustedPriceWithoutDecimals}  You can review your transaction details by checking your history. Thank you for choosing Lhanlee Salon.`;
 
     console.log(smsMessage);
 
@@ -299,7 +299,7 @@ exports.updateTransactionData = async (req, res, id) => {
           .populate({
             path: "product",
             select:
-              "_id product_name type remaining_volume product_consume product_volume quantity",
+              "_id product_name type remaining_volume product_consume product_volume quantity volume_description",
           })
           .collation({ locale: "en" })
           .lean()
@@ -311,6 +311,7 @@ exports.updateTransactionData = async (req, res, id) => {
 
         for (const product of service.product) {
           const outStock = product.quantity === 0;
+
           if (outStock) {
             updatedTransaction.status = "pending";
             await updatedTransaction.save();
@@ -356,6 +357,13 @@ exports.updateTransactionData = async (req, res, id) => {
             let emptyVolume = productStock.remaining_volume;
             let usedQty = 0;
 
+            const isPieces = product?.volume_description?.includes("Pieces");
+            
+            if(isPieces){
+              reducedQuantity = productStock.quantity - consumeSession;
+              usedQty = consumeSession;
+            }
+
             const isEmpty = emptyVolume == 0;
             if (isEmpty) {
               restock = productStock.remaining_volume =
@@ -379,6 +387,27 @@ exports.updateTransactionData = async (req, res, id) => {
               productStock.measurement = "ml";
             } else {
               productStock.measurement = "Liter";
+            }
+
+            const isLow = productStock.quantity <= 10;
+
+            if(isLow){
+              const getAdminUsers = async () => {
+                const admins = await User.find({ roles: "Admin" });
+                
+                return admins;                
+              };
+
+              const admins = await getAdminUsers();
+              const adminNames = admins.map((admin) => admin.name);
+              const adminNumbers = admins.map((admin) => admin.contact_number);
+            
+              const smsAdminMessage = `Product ${this.product_name} has ${this.quantity} quantity left`;
+              adminNumbers.forEach((number, index) => {
+                console.log(`Sending SMS to ${adminNames[index]} at ${number}`);
+                console.log(smsAdminMessage);
+                sendSMS(`+63${number.substring(1)}`, smsAdminMessage);
+              });
             }
 
             await productStock.save();

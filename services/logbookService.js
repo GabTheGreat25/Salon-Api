@@ -72,12 +72,17 @@ exports.createLogsData = async (req, res) => {
 
       let newQuantity = quantity - borrowedQty;
       let newBorrowedQuantity = borrow_qty + borrowedQty;
+      const isZero = newQuantity === 0;
+      console.log(isZero);
+
+      const setStatus = isZero ? "Not Available" : "Available";
 
       const updateBorrowEquipment = await Equipment.findByIdAndUpdate(
         equipmentId,
         {
           quantity: newQuantity,
           borrow_qty: newBorrowedQuantity,
+          status: setStatus
         },
         {
           new: true,
@@ -178,6 +183,10 @@ exports.updateLogsData = async (req, res, id) => {
         newBorrow = borrow_qty - borrow_quantity;
       }
 
+      const isZero = newQuantity == 0;
+
+      const setStatus = isZero ? "Not Available" : "Available";
+
       const updateEquipment = await Equipment.findByIdAndUpdate(
         equipmentId,
         {
@@ -185,6 +194,7 @@ exports.updateLogsData = async (req, res, id) => {
           damage_qty: newDamageQty,
           borrow_qty: newBorrow,
           quantity: newQuantity,
+          status: setStatus,
         },
         {
           new: true,

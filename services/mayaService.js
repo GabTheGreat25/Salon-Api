@@ -85,7 +85,7 @@ exports.createMayaCheckoutLink = async (req, res) => {
   if (data) {
     const redirectUrl = data.redirectUrl;
 
-    const smsMessage = `Dear ${req.body.name}, Here is your Maya checkout link: ${redirectUrl}`;
+    const smsMessage = `Dear ${req.body.name}, Here is your Maya checkout payment link: ${redirectUrl}`;
 
     console.log(smsMessage);
     sendSMS(`+63${req.body.contactNumber.substring(1)}`, smsMessage);

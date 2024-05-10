@@ -66,13 +66,20 @@ exports.createProductData = async (req, res) => {
   });
 
   const productMeasure = req.body.product_volume;
-  if (productMeasure >= 1000) {
+  const volDescription = req.body.volume_description;
+
+  if (productMeasure >= 1000 && volDescription === "Milliliter") {
     product.product_measurement = "liter";
-  } else {
+    product.remaining_volume = productMeasure;
+  } else if (productMeasure < 1000 && volDescription === "Milliliter") {
     product.product_measurement = "ml";
+    product.remaining_volume = productMeasure;
+  } else {
+    product.product_measurement = "pcs";
+    product.remaining_volume = 0;
   }
-  (product.remaining_volume = productMeasure),
-   await product.save();
+
+  await product.save();
 
   return product;
 };
@@ -131,18 +138,20 @@ exports.updateProductData = async (req, res, id) => {
       new: true,
       runValidators: true,
     }
-  )
-    .exec();
+  ).exec();
 
-  const { product_volume } = updatedProduct;
+  const { product_volume, volume_description } = updatedProduct;
 
-  if (product_volume >= 1000) {
+  if (product_volume >= 1000 && volume_description === "Milliliter") {
     updatedProduct.product_measurement = "liter";
-  } else {
+    updatedProduct.remaining_volume = product_volume;
+  } else if (product_volume < 1000 && volume_description === "Milliliter") {
     updatedProduct.product_measurement = "ml";
+    updatedProduct.remaining_volume = product_volume;
+  } else {
+    updatedProduct.product_measurement = "pcs";
   }
-  (updatedProduct.remaining_volume = product_volume),
-    await updatedProduct.save();
+  await updatedProduct.save();
 
   return updatedProduct;
 };
