@@ -373,7 +373,7 @@ exports.createUserData = async (req, res) => {
     }  ${req.body.time} at the salon.`;
 
     console.log(smsMessage);
-    // sendSMS(`+63${user.contact_number.substring(1)}`, smsMessage);
+    sendSMS(`+63${user.contact_number.substring(1)}`, smsMessage);
   } else if (roles.includes(ROLE.RECEPTIONIST)) {
     user = await User.create({
       name: req.body.name,
