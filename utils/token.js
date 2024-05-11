@@ -10,7 +10,7 @@ exports.generateAccessToken = (email, roles) => {
       },
     },
     process.env.ACCESS_TOKEN_SECRET,
-    { expiresIn: "7d" }
+    { expiresIn: RESOURCE.ONE_WEEK || "7d" }
   );
   return accessToken;
 };
