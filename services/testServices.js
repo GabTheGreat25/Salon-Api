@@ -88,7 +88,11 @@ exports.updateTestData = async (req, res, id) => {
   if (duplicateTest) throw new ErrorHandler("Duplicate test");
 
   let image = existingTest.image || [];
-  if (req.files && Array.isArray(req.files) && req.files.length > 0) {
+  if (
+    req.files &&
+    Array.isArray(req.files) &&
+    req.files.length > STATUSCODE.ZERO
+  ) {
     image = await Promise.all(
       req.files.map(async (file) => {
         const result = await cloudinary.uploader.upload(file.path, {
@@ -102,7 +106,7 @@ exports.updateTestData = async (req, res, id) => {
       })
     );
 
-    if (existingTest.image && existingTest.image.length > 0) {
+    if (existingTest.image && existingTest.image.length > STATUSCODE.ZERO) {
       await cloudinary.api.delete_resources(
         existingTest.image.map((image) => image.public_id)
       );
