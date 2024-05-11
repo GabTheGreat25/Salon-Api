@@ -4,14 +4,14 @@ const Service = require("../models/service");
 const mongoose = require("mongoose");
 const ErrorHandler = require("../utils/errorHandler");
 const { cloudinary } = require("../utils/cloudinary");
-const { STATUSCODE } = require("../constants/index");
+const { STATUSCODE, RESOURCE } = require("../constants/index");
 
 exports.getAllProductData = async () => {
   const products = await Product.find()
     .sort({
-      createdAt: -1,
+      createdAt: STATUSCODE.NEGATIVE_ONE,
     })
-    .populate({ path: "brand", select: "brand_name" })
+    .populate({ path: RESOURCE.BRAND, select: "brand_name" })
     .lean()
     .exec();
 
@@ -68,15 +68,21 @@ exports.createProductData = async (req, res) => {
   const productMeasure = req.body.product_volume;
   const volDescription = req.body.volume_description;
 
-  if (productMeasure >= 1000 && volDescription === "Milliliter") {
+  if (
+    productMeasure >= STATUSCODE.ONE_THOUSAND &&
+    volDescription === "Milliliter"
+  ) {
     product.product_measurement = "liter";
     product.remaining_volume = productMeasure;
-  } else if (productMeasure < 1000 && volDescription === "Milliliter") {
+  } else if (
+    productMeasure < STATUSCODE.ONE_THOUSAND &&
+    volDescription === "Milliliter"
+  ) {
     product.product_measurement = "ml";
     product.remaining_volume = productMeasure;
   } else {
     product.product_measurement = "pcs";
-    product.remaining_volume = 0;
+    product.remaining_volume = STATUSCODE.ZERO;
   }
 
   await product.save();
@@ -108,7 +114,11 @@ exports.updateProductData = async (req, res, id) => {
   if (duplicateProduct) throw new ErrorHandler("Duplicate Product Name");
 
   let image = existingProduct.image || [];
-  if (req.files && Array.isArray(req.files) && req.files.length > 0) {
+  if (
+    req.files &&
+    Array.isArray(req.files) &&
+    req.files.length > STATUSCODE.ZERO
+  ) {
     image = await Promise.all(
       req.files.map(async (file) => {
         const result = await cloudinary.uploader.upload(file.path, {
@@ -122,7 +132,10 @@ exports.updateProductData = async (req, res, id) => {
       })
     );
 
-    if (existingProduct.image && existingProduct.image.length > 0) {
+    if (
+      existingProduct.image &&
+      existingProduct.image.length > STATUSCODE.ZERO
+    ) {
       await cloudinary.api.delete_resources(
         existingProduct.image.map((image) => image.public_id)
       );
@@ -142,10 +155,16 @@ exports.updateProductData = async (req, res, id) => {
 
   const { product_volume, volume_description } = updatedProduct;
 
-  if (product_volume >= 1000 && volume_description === "Milliliter") {
+  if (
+    product_volume >= STATUSCODE.ONE_THOUSAND &&
+    volume_description === "Milliliter"
+  ) {
     updatedProduct.product_measurement = "liter";
     updatedProduct.remaining_volume = product_volume;
-  } else if (product_volume < 1000 && volume_description === "Milliliter") {
+  } else if (
+    product_volume < STATUSCODE.ONE_THOUSAND &&
+    volume_description === "Milliliter"
+  ) {
     updatedProduct.product_measurement = "ml";
     updatedProduct.remaining_volume = product_volume;
   } else {
