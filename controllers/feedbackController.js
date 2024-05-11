@@ -40,7 +40,7 @@ exports.createNewFeedback = [
 
     return SuccessHandler(
       res,
-      `Created new Feedback by ${feedback?.name} with an ID ${feedback?._id}`,
+      `Created new Feedback by ${feedback?.name}`,
       feedback
     );
   }),
@@ -57,7 +57,7 @@ exports.updateFeedback = [
 
     return SuccessHandler(
       res,
-      `Feedback of ${feedback?.name} with ID ${feedback?._id} is updated`,
+      `Feedback of ${feedback?.name} is updated`,
       feedback
     );
   }),
@@ -68,9 +68,5 @@ exports.deleteFeedback = asyncHandler(async (req, res, next) => {
 
   return !feedback
     ? next(new ErrorHandler("No feedback found"))
-    : SuccessHandler(
-        res,
-        `Feedback ${feedback?.name} with ID ${feedback?._id} is deleted`,
-        feedback
-      );
+    : SuccessHandler(res, `Feedback ${feedback?.name} is deleted`, feedback);
 });
