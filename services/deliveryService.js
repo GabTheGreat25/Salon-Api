@@ -2,12 +2,12 @@ const mongoose = require("mongoose");
 const ErrorHandler = require("../utils/errorHandler");
 const Delivery = require("../models/delivery");
 const Product = require("../models/product");
-const { RESOURCE } = require("../constants/index");
+const { RESOURCE, STATUSCODE } = require("../constants/index");
 
 exports.getAllDeliveryData = async () => {
   const deliveries = await Delivery.find()
     .sort({
-      createdAt: -1,
+      createdAt: STATUSCODE.NEGATIVE_ONE,
     })
     .populate({
       path: RESOURCE.PRODUCT,
