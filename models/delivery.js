@@ -1,5 +1,5 @@
 const mongoose = require("mongoose");
-const { RESOURCE } = require("../constants/index");
+const { RESOURCE, STATUSCODE } = require("../constants/index");
 
 const deliverySchema = new mongoose.Schema({
   product: [
@@ -12,7 +12,6 @@ const deliverySchema = new mongoose.Schema({
   company_name: {
     type: String,
     required: [true, "Please enter company name"],
-    maxLength: [60, "Company Name field must not exceed to 60 characters"],
   },
   date: {
     type: Date,
@@ -21,7 +20,7 @@ const deliverySchema = new mongoose.Schema({
   price: {
     type: Number,
     required: [true, "Please enter a price"],
-    min: 0,
+    min: STATUSCODE.ZERO,
   },
   status: {
     type: String,
@@ -33,7 +32,7 @@ const deliverySchema = new mongoose.Schema({
   quantity: {
     type: Number,
     required: [true, "Quantity field required"],
-    min: [1, "Quantity field must be at least 1"],
+    min: [STATUSCODE.ONE, "Quantity field must be at least 1"],
   },
   type: [
     {
