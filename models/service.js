@@ -1,5 +1,5 @@
 const mongoose = require("mongoose");
-const { RESOURCE } = require("../constants/index");
+const { RESOURCE, STATUSCODE } = require("../constants/index");
 
 const serviceSchema = new mongoose.Schema({
   product: [
@@ -12,7 +12,6 @@ const serviceSchema = new mongoose.Schema({
   service_name: {
     type: String,
     required: [true, "Service name required"],
-    maxLength: [60, "Service Name Field must not exceed to 60 characters"],
   },
   description: {
     type: String,
@@ -21,7 +20,7 @@ const serviceSchema = new mongoose.Schema({
   price: {
     type: Number,
     required: [true, "Please enter a price"],
-    min: 0,
+    min: STATUSCODE.ONE,
   },
   type: [
     {
