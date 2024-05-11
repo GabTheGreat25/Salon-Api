@@ -49,7 +49,7 @@ exports.createNewEquipment = [
 
     return SuccessHandler(
       res,
-      `Created new Equipment ${equipment?.equipment_name} with an ID ${equipment?._id}`,
+      `Created a new Equipment ${equipment?.equipment_name}`,
       equipment
     );
   }),
@@ -59,7 +59,7 @@ exports.updateEquipment = [
   upload.array("image"),
   checkRequiredFields([
     "equipment_name",
-    "equipment_price",  
+    "equipment_price",
     "quantity",
     "image",
   ]),
@@ -72,7 +72,7 @@ exports.updateEquipment = [
 
     return SuccessHandler(
       res,
-      `Equipment ${equipment?.equipment_name} with ID ${equipment?._id} is updated`,
+      `Equipment ${equipment?.equipment_name} is updated`,
       equipment
     );
   }),
@@ -85,7 +85,7 @@ exports.deleteEquipment = asyncHandler(async (req, res, next) => {
     ? next(new ErrorHandler("No equipment found"))
     : SuccessHandler(
         res,
-        `Equipment ${equipment?.equipment_name} with ID ${equipment?._id} is deleted`,
+        `Equipment ${equipment?.equipment_name} is deleted`,
         equipment
       );
 });
