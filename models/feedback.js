@@ -1,12 +1,11 @@
 const mongoose = require("mongoose");
-const { RESOURCE } = require("../constants/index");
+const { RESOURCE, STATUSCODE } = require("../constants/index");
 const validator = require("validator");
 
 const feedbackSchema = new mongoose.Schema({
   name: {
     type: String,
     required: [true, "Name Field Required"],
-    maxLength: [60, "Name Field must not exceed to 60 characters"],
   },
   email: {
     type: String,
@@ -34,6 +33,10 @@ const feedbackSchema = new mongoose.Schema({
   description: {
     type: String,
     required: [true, "Description Field Required"],
+    maxLength: [
+      STATUSCODE.THIRTY,
+      "Description Field must not exceed to 30 characters",
+    ],
   },
   isAnonymous: {
     type: Boolean,
