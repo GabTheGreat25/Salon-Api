@@ -14,7 +14,9 @@ exports.getAllExclusions = asyncHandler(async (req, res, next) => {
         res,
         `Exclusions with ingredients ${exclusions
           .map((e) => e.ingredient_name)
-          .join(", ")} and IDs ${exclusions.map((e) => e._id).join(", ")} retrieved`,
+          .join(", ")} and IDs ${exclusions
+          .map((e) => e._id)
+          .join(", ")} retrieved`,
         exclusions
       );
 });
@@ -40,7 +42,7 @@ exports.createNewExclusion = [
 
     return SuccessHandler(
       res,
-      `Created new Exclusion ${exclusion?.ingredient_name} with an ID ${exclusion?._id}`,
+      `Created new Exclusion ${exclusion?.ingredient_name}`,
       exclusion
     );
   }),
@@ -57,7 +59,7 @@ exports.updateExclusion = [
 
     return SuccessHandler(
       res,
-      `Ingredient ${exclusion?.ingredient_name} with ID ${exclusion?._id} is updated`,
+      `Ingredient ${exclusion?.ingredient_name}s is updated`,
       exclusion
     );
   }),
@@ -70,7 +72,7 @@ exports.deleteExclusion = asyncHandler(async (req, res, next) => {
     ? next(new ErrorHandler("No ingredient found"))
     : SuccessHandler(
         res,
-        `Ingredients ${exclusion?.ingredient_name} with ID ${exclusion?._id} is deleted`,
+        `Ingredients ${exclusion?.ingredient_name} is deleted`,
         exclusion
       );
 });
