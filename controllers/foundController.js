@@ -47,7 +47,7 @@ exports.createNewFound = [
 
     return SuccessHandler(
       res,
-      `Created new Equipment Found with date found ${found?.date_found} with an ID ${found?._id}`,
+      `Created new equipment found with date ${found?.date_found}`,
       found
     );
   }),
@@ -66,7 +66,7 @@ exports.updateFound = [
 
     return SuccessHandler(
       res,
-      `Equipment found records with date found ${found?.date_found} with ID ${found?._id} is updated`,
+      `Equipment found records with date ${found?.date_found} is updated`,
       found
     );
   }),
@@ -79,7 +79,7 @@ exports.deleteFound = asyncHandler(async (req, res, next) => {
     ? next(new ErrorHandler("No records for Equipments found"))
     : SuccessHandler(
         res,
-        `Equipment found date ${found?.date_found} with ID ${found?._id} is deleted`,
+        `Equipment found date ${found?.date_found} is deleted`,
         found
       );
 });
