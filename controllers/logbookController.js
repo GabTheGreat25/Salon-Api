@@ -37,7 +37,7 @@ exports.createLogBook = [
 
     return SuccessHandler(
       res,
-      `Logbook with ${log?.user?.name} with ID ${log?._id} Successfully created `,
+      `Logbook of ${log?.user?.name} successfully created `,
       log
     );
   }),
@@ -49,7 +49,7 @@ exports.updateLogBook = [
 
     return SuccessHandler(
       res,
-      `${log?.user?.name} Logbook with ID ${log?._id} successfully created`,
+      `Logbook of ${log?.user?.name}  successfully created`,
       log
     );
   }),
@@ -62,7 +62,7 @@ exports.deleteLogBook = asyncHandler(async (req, res, next) => {
     ? next(new ErrorHandler(`Logbook not found`))
     : SuccessHandler(
         res,
-        `${log?.user?.name} Logbook with ID ${log?._id} successfully deleted`,
+        `Logbook of ${log?.user?.name} successfully deleted`,
         log
       );
 });
