@@ -29,11 +29,7 @@ exports.createReport = [
   asyncHandler(async (req, res, next) => {
     const report = await reportService.createReportData(req);
 
-    return SuccessHandler(
-      res,
-      `Report Successfully Created with ID ${report?._id}`,
-      report
-    );
+    return SuccessHandler(res, `Report successfully created`, report);
   }),
 ];
 
@@ -45,11 +41,7 @@ exports.updateReport = [
       req.params?.id
     );
 
-    return SuccessHandler(
-      res,
-      `Report with ID ${report?._id} successfully updated`,
-      report
-    );
+    return SuccessHandler(res, `Report successfully updated`, report);
   }),
 ];
 
@@ -58,9 +50,5 @@ exports.deleteReport = asyncHandler(async (req, res, next) => {
 
   return !report
     ? next(new ErrorHandler("Report Not Found"))
-    : SuccessHandler(
-        res,
-        `Report with ID: ${report?._id} successfully deleted`,
-        report
-      );
+    : SuccessHandler(res, `Report successfully deleted`, report);
 });
