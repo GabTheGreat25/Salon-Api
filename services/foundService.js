@@ -2,16 +2,16 @@ const Found = require("../models/found");
 const ErrorHandler = require("../utils/errorHandler");
 const mongoose = require("mongoose");
 const { cloudinary } = require("../utils/cloudinary");
-const { STATUSCODE } = require("../constants/index");
+const { STATUSCODE, RESOURCE } = require("../constants/index");
 
 exports.getAllFoundsData = async () => {
   const founds = await Found.find()
     .sort({
-      createdAt: -1,
+      createdAt: STATUSCODE.NEGATIVE_ONE,
     })
     .populate({
-      path:"equipment",
-      select:"equipment_name image"
+      path: RESOURCE.EQUIPMENT,
+      select: "equipment_name image",
     })
     .lean()
     .exec();
@@ -24,13 +24,15 @@ exports.getSingleFoundData = async (id) => {
     throw new ErrorHandler(`Invalid found ID: ${id}`);
 
   const found = await Found.findById(id)
-  .populate({
-    path:"equipment",
-    select:"equipment_name image"
-  })
-  .lean().exec();
+    .populate({
+      path: RESOURCE.EQUIPMENT,
+      select: "equipment_name image",
+    })
+    .lean()
+    .exec();
 
-  if (!found) throw new ErrorHandler(`Found Equipment records not found with ID: ${id}`);
+  if (!found)
+    throw new ErrorHandler(`Found Equipment records not found with ID: ${id}`);
 
   return found;
 };
@@ -47,10 +49,8 @@ exports.createFoundData = async (req, res) => {
 
   if (duplicateFound) throw new ErrorHandler("Duplicate found");
 
-
   const found = await Found.create({
     ...req.body,
-
   });
 
   return found;
