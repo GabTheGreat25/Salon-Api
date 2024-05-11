@@ -9,7 +9,7 @@ const Comment = require("../models/comment");
 const Information = require("../models/information");
 const ErrorHandler = require("../utils/errorHandler");
 const mongoose = require("mongoose");
-const { STATUSCODE, RESOURCE } = require("../constants/index");
+const { STATUSCODE, RESOURCE, ROLE } = require("../constants/index");
 const QRCode = require("qrcode");
 const { sendSMS } = require("../utils/twilio");
 
@@ -34,20 +34,23 @@ exports.getAllTransactionData = async () => {
     .populate({
       path: RESOURCE.APPOINTMENT,
       populate: [
-        { path: "beautician customer", select: "name contact_number" },
         {
-          path: "service",
+          path: `${RESOURCE.BEAUTICIAN} ${RESOURCE.CUSTOMER}`,
+          select: "name contact_number",
+        },
+        {
+          path: RESOURCE.SERVICE,
           select: "_id service_name type occassion description price image",
           populate: {
-            path: "product",
+            path: RESOURCE.PRODUCT,
             select: "product_name brand isNew image",
           },
         },
         {
-          path: "option",
+          path: RESOURCE.OPTION,
           select: "option_name extraFee",
           populate: {
-            path: "service",
+            path: RESOURCE.SERVICE,
             select: "_id service_name type occassion description price image",
           },
         },
@@ -67,20 +70,23 @@ exports.getSingleTransactionData = async (id) => {
     .populate({
       path: RESOURCE.APPOINTMENT,
       populate: [
-        { path: "beautician customer", select: "name contact_number" },
         {
-          path: "service",
+          path: `${RESOURCE.BEAUTICIAN} ${RESOURCE.CUSTOMER}`,
+          select: "name contact_number",
+        },
+        {
+          path: RESOURCE.SERVICE,
           select: "_id service_name type occassion description price image",
           populate: {
-            path: "product",
+            path: RESOURCE.PRODUCT,
             select: "product_name brand isNew image",
           },
         },
         {
-          path: "option",
+          path: RESOURCE.OPTION,
           select: "option_name extraFee",
           populate: {
-            path: "service",
+            path: RESOURCE.SERVICE,
             select: "_id service_name type occassion description price image",
           },
         },
@@ -103,14 +109,17 @@ exports.updateTransactionData = async (req, res, id) => {
   const newStatus = req.body.status;
   const existingTransaction = await Transaction.findById(id)
     .populate({
-      path: "appointment",
+      path: RESOURCE.APPOINTMENT,
       populate: [
-        { path: "beautician customer", select: "_id name contact_number" },
         {
-          path: "service",
+          path: `${RESOURCE.BEAUTICIAN} ${RESOURCE.CUSTOMER}`,
+          select: "_id name contact_number",
+        },
+        {
+          path: RESOURCE.SERVICE,
           select: "service_name type occassion description price image",
         },
-        { path: "option", select: "option_name extraFee" },
+        { path: RESOURCE.OPTION, select: "option_name extraFee" },
       ],
       select: "_id date time price image hasAppointmentFee",
     })
@@ -158,23 +167,26 @@ exports.updateTransactionData = async (req, res, id) => {
   }
 
   if (confirm) {
-    const discountAmount = updatedTransaction.hasDiscount === true ? 0.2 : 0;
+    const discountAmount =
+      updatedTransaction.hasDiscount === true ? 0.2 : STATUSCODE.ZERO;
 
     let reserveFee = existingTransaction.appointment.price * 0.3;
 
     const appointmentFee =
       existingTransaction.appointment.hasAppointmentFee === true
         ? reserveFee
-        : 0;
+        : STATUSCODE.ZERO;
 
-    const reserveCost = appointmentFee.toFixed(0);
+    const reserveCost = appointmentFee.toFixed(STATUSCODE.ZERO);
 
     const adjustedTotalPrice =
       existingTransaction.appointment.price -
       existingTransaction.appointment.price * discountAmount -
       reserveCost;
 
-    let adjustedPriceWithoutDecimals = adjustedTotalPrice.toFixed(0);
+    let adjustedPriceWithoutDecimals = adjustedTotalPrice.toFixed(
+      STATUSCODE.ZERO
+    );
 
     await Appointment.findByIdAndUpdate(
       existingTransaction.appointment._id,
@@ -182,15 +194,15 @@ exports.updateTransactionData = async (req, res, id) => {
       { new: true, runValidators: true }
     );
 
-    const firstTime = existingTransaction.appointment.time[0];
+    const firstTime = existingTransaction.appointment.time[STATUSCODE.ZERO];
     let formattedTime;
 
-    if (existingTransaction.appointment.time.length === 1) {
+    if (existingTransaction.appointment.time.length === STATUSCODE.ONE) {
       formattedTime = firstTime;
     } else {
       const lastTime =
         existingTransaction.appointment.time[
-          existingTransaction.appointment.time.length - 1
+          existingTransaction.appointment.time.length - STATUSCODE.ONE
         ];
       formattedTime = `${firstTime} to ${lastTime}`;
     }
@@ -199,33 +211,38 @@ exports.updateTransactionData = async (req, res, id) => {
       (b) => b.name
     );
 
-    let grandTotalFee = (Number(adjustedPriceWithoutDecimals)) + (Number(reserveCost));
+    let grandTotalFee =
+      Number(adjustedPriceWithoutDecimals) + Number(reserveCost);
 
     const formattedReceipt =
       `========================================\n` +
       `         APPOINTMENT RECEIPT           \n` +
       `----------------------------------------\n` +
       ` Date: ${
-        existingTransaction.appointment.date.toISOString().split("T")[0]
+        existingTransaction.appointment.date.toISOString().split("T")[
+          STATUSCODE.ZERO
+        ]
       }\n` +
       ` Time: ${formattedTime}\n` +
       `----------------------------------------\n` +
       `           Service Details              \n` +
       `----------------------------------------\n` +
       ` Service: ${
-        existingTransaction.appointment.service.length > 1
+        existingTransaction.appointment.service.length > STATUSCODE.ONE
           ? existingTransaction.appointment.service
               .map((s) => s.service_name)
               .join(", ")
-          : existingTransaction.appointment.service[0]?.service_name
+          : existingTransaction.appointment.service[STATUSCODE.ZERO]
+              ?.service_name
       }\n` +
       ` Add Ons: ${
         existingTransaction.appointment.option
-          ? existingTransaction.appointment.option.length > 1
+          ? existingTransaction.appointment.option.length > STATUSCODE.ONE
             ? existingTransaction.appointment.option
                 .map((s) => s.option_name)
                 .join(", ")
-            : existingTransaction.appointment.option[0]?.option_name
+            : existingTransaction.appointment.option[STATUSCODE.ZERO]
+                ?.option_name
           : "None"
       }\n` +
       `----------------------------------------\n` +
@@ -254,7 +271,7 @@ exports.updateTransactionData = async (req, res, id) => {
 
     sendSMS(
       `+63${existingTransaction.appointment.customer.contact_number.substring(
-        1
+        STATUSCODE.ONE
       )}`,
       smsMessage
     );
@@ -266,7 +283,7 @@ exports.updateTransactionData = async (req, res, id) => {
 
       sendSMS(
         `+63${existingTransaction.appointment.customer.contact_number.substring(
-          1
+          STATUSCODE.ONE
         )}`,
         additionalSmsMessage
       );
@@ -280,155 +297,150 @@ exports.updateTransactionData = async (req, res, id) => {
   }
 
   if (confirm) {
-    try {
-      const serviceIds = existingTransaction?.appointment?.service;
+    const serviceIds = existingTransaction?.appointment?.service;
 
-      const serviceCount = await Service.find({ _id: { $in: serviceIds } })
+    const serviceCount = await Service.find({ _id: { $in: serviceIds } })
+      .lean()
+      .exec();
+
+    if (serviceCount.length !== serviceIds.length) {
+      throw new ErrorHandler(`No services were found`);
+    }
+
+    for (const serviceId of serviceCount) {
+      const services = serviceId?._id;
+
+      const service = await Service.findById(services)
+        .populate({
+          path: RESOURCE.PRODUCT,
+          select:
+            "_id product_name type remaining_volume product_consume product_volume quantity volume_description",
+        })
+        .collation({ locale: "en" })
         .lean()
         .exec();
 
-      if (serviceCount.length !== serviceIds.length) {
-        throw new ErrorHandler(`No services were found`);
+      if (!service) {
+        throw new ErrorHandler(`Service not found`);
       }
 
-      for (const serviceId of serviceCount) {
-        0;
-        const services = serviceId?._id;
+      for (const product of service.product) {
+        const outStock = product.quantity === STATUSCODE.ZERO;
 
-        const service = await Service.findById(services)
-          .populate({
-            path: "product",
-            select:
-              "_id product_name type remaining_volume product_consume product_volume quantity volume_description",
-          })
-          .collation({ locale: "en" })
-          .lean()
-          .exec();
+        if (outStock) {
+          updatedTransaction.status = "pending";
+          await updatedTransaction.save();
+          throw new ErrorHandler(`${product.product_name} is out of stock`);
+        } else {
+          const userId = existingTransaction?.appointment?.customer?._id;
+          const customer = await Information.findOne({ customer: userId })
+            .collation({ locale: "en" })
+            .lean()
+            .exec();
 
-        if (!service) {
-          throw new ErrorHandler(`Service not found`);
-        }
+          const description = customer?.description;
+          let newVolume = product.remaining_volume - product.product_consume;
+          let consumeSession = product?.product_consume;
 
-        for (const product of service.product) {
-          const outStock = product.quantity === 0;
+          const isLongHair =
+            description?.includes("Long Hair") &&
+            service?.type?.includes("Hair") &&
+            product?.type?.includes("Hair");
 
-          if (outStock) {
-            updatedTransaction.status = "pending";
-            await updatedTransaction.save();
-            throw new ErrorHandler(`${product.product_name} is out of stock`);
+          if (isLongHair) {
+            const long_vol = product.product_volume * 0.2;
+            consumeSession = long_vol;
+            newVolume = product.remaining_volume - long_vol;
+          } else {
+            newVolume - product.remaining_volume - consumeSession;
           }
-           else 
-           {
-            const userId = existingTransaction?.appointment?.customer?._id;
-            const customer = await Information.findOne({ customer: userId })
-              .collation({ locale: "en" })
-              .lean()
-              .exec();
 
-            const description = customer?.description;
-            let newVolume = product.remaining_volume - product.product_consume;
-            let consumeSession = product?.product_consume;
-
-            const isLongHair =
-              description?.includes("Long Hair") &&
-              service?.type?.includes("Hair") &&
-              product?.type?.includes("Hair");
-
-            if (isLongHair) {
-              const long_vol = product.product_volume * 0.2;
-              consumeSession = long_vol;
-              newVolume = product.remaining_volume - long_vol;
-            } else {
-              newVolume - product.remaining_volume - consumeSession;
+          const productStock = await Product.findByIdAndUpdate(
+            product._id,
+            {
+              remaining_volume: newVolume,
+            },
+            {
+              new: true,
             }
+          );
 
-            const productStock = await Product.findByIdAndUpdate(
-              product._id,
-              {
-                remaining_volume: newVolume,
-              },
-              {
-                new: true,
-              }
-            );
+          let restock;
+          let reducedQuantity = productStock.quantity;
+          let emptyVolume = productStock.remaining_volume;
+          let usedQty = STATUSCODE.ZERO;
 
-            let restock;
-            let reducedQuantity = productStock.quantity;
-            let emptyVolume = productStock.remaining_volume;
-            let usedQty = 0;
+          const isPieces = product?.volume_description?.includes("Pieces");
 
-            const isPieces = product?.volume_description?.includes("Pieces");
-            
-            if(isPieces){
-              reducedQuantity = productStock.quantity - consumeSession;
-              usedQty = consumeSession;
-            }
+          if (isPieces) {
+            reducedQuantity = productStock.quantity - consumeSession;
+            usedQty = consumeSession;
+          }
 
-            const isEmpty = emptyVolume == 0;
-            if (isEmpty) {
-              restock = productStock.remaining_volume =
-                productStock.product_volume;
-              reducedQuantity = productStock.quantity - 1;
-              usedQty = 1;
-            }
+          const isEmpty = emptyVolume == STATUSCODE.ZERO;
+          if (isEmpty) {
+            restock = productStock.remaining_volume =
+              productStock.product_volume;
+            reducedQuantity = productStock.quantity - STATUSCODE.ONE;
+            usedQty = STATUSCODE.ONE;
+          }
 
-            const isLeft = consumeSession > newVolume;
-            if (isLeft) {
-              restock = productStock.remaining_volume =
-                productStock.product_volume;
-              reducedQuantity = productStock.quantity - 1;
-              usedQty = 1;
-              const leftVolume = consumeSession * 0.5;
-              newVolume = productStock.current_volume - leftVolume;
-            }
+          const isLeft = consumeSession > newVolume;
+          if (isLeft) {
+            restock = productStock.remaining_volume =
+              productStock.product_volume;
+            reducedQuantity = productStock.quantity - STATUSCODE.ONE;
+            usedQty = STATUSCODE.ONE;
+            const leftVolume = consumeSession * 0.5;
+            newVolume = productStock.current_volume - leftVolume;
+          }
 
-            const isMeasured = productStock.current_volume < 1000;
-            if (isMeasured) {
-              productStock.measurement = "ml";
-            } else {
-              productStock.measurement = "Liter";
-            }
+          const isMeasured =
+            productStock.current_volume < STATUSCODE.ONE_THOUSAND;
+          if (isMeasured) {
+            productStock.measurement = "ml";
+          } else {
+            productStock.measurement = "Liter";
+          }
 
-            const isLow = productStock.quantity <= 10;
+          const isLow = productStock.quantity <= STATUSCODE.TEN;
 
-            if(isLow){
-              const getAdminUsers = async () => {
-                const admins = await User.find({ roles: "Admin" });
-                
-                return admins;                
-              };
+          if (isLow) {
+            const getAdminUsers = async () => {
+              const admins = await User.find({ roles: ROLE.ADMIN });
 
-              const admins = await getAdminUsers();
-              const adminNames = admins.map((admin) => admin.name);
-              const adminNumbers = admins.map((admin) => admin.contact_number);
-            
-              const smsAdminMessage = `Product ${this.product_name} has ${this.quantity} quantity left`;
-              adminNumbers.forEach((number, index) => {
-                console.log(`Sending SMS to ${adminNames[index]} at ${number}`);
-                console.log(smsAdminMessage);
-                sendSMS(`+63${number.substring(1)}`, smsAdminMessage);
-              });
-            }
+              return admins;
+            };
 
-            await productStock.save();
+            const admins = await getAdminUsers();
+            const adminNumbers = admins.map((admin) => admin.contact_number);
 
-            const inventory = await Inventory.create({
-              transaction: existingTransaction?._id,
-              appointment: existingTransaction?.appointment?._id,
-              service: service?._id,
-              product: product?._id,
-              product_consume: consumeSession,
-              old_volume: product.remaining_volume,
-              remained_volume: emptyVolume,
-              old_quantity: productStock.quantity,
-              remained_quantity: reducedQuantity,
-              deducted_quantity: usedQty,
+            const smsAdminMessage = `Product ${this.product_name} has ${this.quantity} quantity left`;
+            adminNumbers.forEach((number, index) => {
+              console.log(smsAdminMessage);
+              sendSMS(
+                `+63${number.substring(STATUSCODE.ONE)}`,
+                smsAdminMessage
+              );
             });
           }
-        } // end product loop
+
+          await productStock.save();
+
+          await Inventory.create({
+            transaction: existingTransaction?._id,
+            appointment: existingTransaction?.appointment?._id,
+            service: service?._id,
+            product: product?._id,
+            product_consume: consumeSession,
+            old_volume: product.remaining_volume,
+            remained_volume: emptyVolume,
+            old_quantity: productStock.quantity,
+            remained_quantity: reducedQuantity,
+            deducted_quantity: usedQty,
+          });
+        }
       }
-    } catch (err) {
-      throw new ErrorHandler(err);
     }
   }
 
@@ -453,15 +465,15 @@ exports.deleteTransactionData = async (id) => {
       .populate({
         path: RESOURCE.APPOINTMENT,
         populate: {
-          path: "beautician customer",
+          path: `${RESOURCE.BEAUTICIAN} ${RESOURCE.CUSTOMER}`,
           select: "name contact_number",
         },
         populate: {
-          path: "service",
+          path: RESOURCE.SERVICE,
           select: "service_name type occassion description price image",
         },
         populate: {
-          path: "option",
+          path: RESOURCE.OPTION,
           select: "option_name extraFee",
         },
         select: "date time price image hasAppointmentFee",
