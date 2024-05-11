@@ -1,10 +1,10 @@
 const mongoose = require("mongoose");
-const { RESOURCE } = require("../constants/index");
+const { RESOURCE, STATUSCODE } = require("../constants/index");
 
 const inventorySchema = new mongoose.Schema({
   appointment: {
     type: mongoose.Schema.Types.ObjectId,
-    required:[true, "Appointment field required"],
+    required: [true, "Appointment field required"],
     ref: RESOURCE.APPOINTMENT,
   },
   service: {
@@ -21,9 +21,9 @@ const inventorySchema = new mongoose.Schema({
     type: Number,
     required: [true, "Consumed product volume required"],
   },
-  old_volume:{
+  old_volume: {
     type: Number,
-    required:[true, "Old product volume required"],
+    required: [true, "Old product volume required"],
   },
   remained_volume: {
     type: Number,
@@ -39,8 +39,8 @@ const inventorySchema = new mongoose.Schema({
   },
   deducted_quantity: {
     type: Number,
-    default: 0,
-  }
+    default: STATUSCODE.ZERO,
+  },
 });
 
 module.exports = mongoose.model(RESOURCE.INVENTORY, inventorySchema);
