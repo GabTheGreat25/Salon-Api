@@ -18,11 +18,11 @@ const { sendSMS } = require("../utils/twilio");
 const blacklistedTokens = [];
 
 const generateRandomCode = () => {
-  const length = 6;
+  const length = STATUSCODE.SIX;
   let code = "";
 
-  for (let i = 0; i < length; i++) {
-    code += Math.floor(Math.random() * 10);
+  for (let i = STATUSCODE.ZERO; i < length; i++) {
+    code += Math.floor(Math.random() * STATUSCODE.TEN);
   }
 
   return code;
@@ -33,7 +33,7 @@ const sendMonthlyUpdate = async (user) => {
   const monthlyMessage = await Month.findOne({ month: currentMonth });
 
   const latestService = await Service.findOne()
-    .sort({ created_at: -1 })
+    .sort({ created_at: STATUSCODE.NEGATIVE_ONE })
     .lean()
     .exec();
 
@@ -41,13 +41,11 @@ const sendMonthlyUpdate = async (user) => {
     ? `${monthlyMessage.message} Which is ${latestService?.service_name}`
     : "Thank you for being our valued customer!";
 
-  console.log("Selected Message:", customMessage);
-
   const smsMessage = `Dear ${user.name}, ${customMessage}`;
 
   console.log(smsMessage);
 
-  sendSMS(`+63${user.contact_number.substring(1)}`, smsMessage);
+  sendSMS(`+63${user.contact_number.substring(STATUSCODE.ONE)}`, smsMessage);
 };
 
 exports.sendPasswordResetSMS = async (req, email) => {
@@ -74,7 +72,7 @@ exports.sendPasswordResetSMS = async (req, email) => {
 
   const smsMessage = `Your verification code is: ${verificationCode}. Use this code to reset your password. Ignore if you didn't request a password reset.`;
   console.log(smsMessage);
-  sendSMS(`+63${user.contact_number.substring(1)}`, smsMessage);
+  sendSMS(`+63${user.contact_number.substring(STATUSCODE.ONE)}`, smsMessage);
 
   return `Verification code SMS sent successfully to ${user.contact_number}`;
 };
@@ -113,7 +111,10 @@ exports.sendResetPassword = async (
 
   const successMessage = `Your password has been successfully reset. If you did not perform this action, please contact support immediately.`;
   console.log(successMessage);
-  sendSMS(`+63${user.contact_number.substring(1)}`, successMessage);
+  sendSMS(
+    `+63${user.contact_number.substring(STATUSCODE.ONE)}`,
+    successMessage
+  );
 
   return `Password updated successfully for user with email ${user.email}`;
 };
@@ -158,7 +159,7 @@ exports.confirmUserRole = async (userId) => {
 
   const smsMessage = `Dear ${user.name}, your account has been successfully activated. Thank you for choosing Lhanlee Salon.`;
   console.log(smsMessage);
-  sendSMS(`+63${user.contact_number.substring(1)}`, smsMessage);
+  sendSMS(`+63${user.contact_number.substring(STATUSCODE.ONE)}`, smsMessage);
 
   await user.save();
 
@@ -236,7 +237,10 @@ exports.getBlacklistedTokens = () => {
 };
 
 exports.getAllUsersData = async () => {
-  const users = await User.find().sort({ createdAt: -1 }).lean().exec();
+  const users = await User.find()
+    .sort({ createdAt: STATUSCODE.NEGATIVE_ONE })
+    .lean()
+    .exec();
 
   const allUsers = await Promise.all(
     users?.map(async (user) => {
@@ -369,11 +373,11 @@ exports.createUserData = async (req, res) => {
     const smsMessage = `Dear ${
       user.name
     }, your account has been successfully created. Please attend the meeting ${
-      new Date(req.body.date).toISOString().split("T")[0]
+      new Date(req.body.date).toISOString().split("T")[STATUSCODE.ZERO]
     }  ${req.body.time} at the salon.`;
 
     console.log(smsMessage);
-    sendSMS(`+63${user.contact_number.substring(1)}`, smsMessage);
+    sendSMS(`+63${user.contact_number.substring(STATUSCODE.ONE)}`, smsMessage);
   } else if (roles.includes(ROLE.RECEPTIONIST)) {
     user = await User.create({
       name: req.body.name,
@@ -399,10 +403,10 @@ exports.createUserData = async (req, res) => {
     const smsMessage = `Dear ${
       user.name
     }, your account has been successfully created. Please attend the meeting ${
-      new Date(req.body.date).toISOString().split("T")[0]
+      new Date(req.body.date).toISOString().split("T")[STATUSCODE.ZERO]
     }  ${req.body.time} at the salon.`;
     console.log(smsMessage);
-    sendSMS(`+63${user.contact_number.substring(1)}`, smsMessage);
+    sendSMS(`+63${user.contact_number.substring(STATUSCODE.ONE)}`, smsMessage);
   } else {
     user = await User.create({
       name: req.body.name,
@@ -497,7 +501,11 @@ exports.updateUserData = async (req, res, id) => {
   const existingUser = await User.findById(id).lean().exec();
   if (!existingUser) throw new ErrorHandler(`User not found with ID: ${id}`);
   let images = existingUser.image || [];
-  if (req.files && Array.isArray(req.files) && req.files.length > 0) {
+  if (
+    req.files &&
+    Array.isArray(req.files) &&
+    req.files.length > STATUSCODE.ZERO
+  ) {
     images = await Promise.all(
       req.files.map(async (file) => {
         const result = await cloudinary.uploader.upload(file.path, {
@@ -511,7 +519,7 @@ exports.updateUserData = async (req, res, id) => {
       })
     );
   }
-  if (existingUser.image && existingUser.image.length > 0) {
+  if (existingUser.image && existingUser.image.length > STATUSCODE.ZERO) {
     await cloudinary.api.delete_resources(
       existingUser.image.map((image) => image.public_id)
     );
