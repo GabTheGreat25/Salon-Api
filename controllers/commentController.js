@@ -42,7 +42,7 @@ exports.createNewComment = [
 
     return SuccessHandler(
       res,
-      `New comment of ${comment?.transaction?.status} created with an ID ${comment?._id}`,
+      `New comment of ${comment?.transaction?.status} created`,
       comment
     );
   }),
@@ -60,7 +60,7 @@ exports.updateComment = [
 
     return SuccessHandler(
       res,
-      `Comment of ${comment?.transaction?.status} with ID ${comment?._id} is updated`,
+      `Comment of ${comment?.transaction?.status} is updated`,
       comment
     );
   }),
@@ -76,9 +76,5 @@ exports.deleteComment = asyncHandler(async (req, res, next) => {
 
   return !comment
     ? next(new ErrorHandler("No comment found"))
-    : SuccessHandler(
-        res,
-        `Comment of ${customerName} with ID ${comment?._id} is deleted`,
-        comment
-      );
+    : SuccessHandler(res, `Comment of ${customerName} is deleted`, comment);
 });
