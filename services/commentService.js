@@ -13,17 +13,17 @@ exports.getAllCommentData = async () => {
       path: RESOURCE.TRANSACTION,
       populate: [
         {
-          path: "appointment",
+          path: RESOURCE.APPOINTMENT,
           populate: [
             {
-              path: "beautician customer",
+              path: `${RESOURCE.BEAUTICIAN} ${RESOURCE.CUSTOMER}`,
               select: "name",
             },
             {
-              path: "service",
+              path: RESOURCE.SERVICE,
               select: "service_name type occassion description price image",
               populate: {
-                path: "product",
+                path: RESOURCE.PRODUCT,
                 select: "product_name brand isNew",
               },
             },
@@ -48,17 +48,17 @@ exports.getSingleCommentData = async (id) => {
       path: RESOURCE.TRANSACTION,
       populate: [
         {
-          path: "appointment",
+          path: RESOURCE.APPOINTMENT,
           populate: [
             {
-              path: "beautician customer",
+              path: `${RESOURCE.BEAUTICIAN} ${RESOURCE.CUSTOMER}`,
               select: "name",
             },
             {
-              path: "service",
+              path: RESOURCE.SERVICE,
               select: "service_name type occassion description price image",
               populate: {
-                path: "product",
+                path: RESOURCE.PRODUCT,
                 select: "product_name brand isNew",
               },
             },
@@ -120,7 +120,11 @@ exports.updateCommentData = async (req, res, id) => {
   let images = existingComment.image || [];
 
   try {
-    if (req.files && Array.isArray(req.files) && req.files.length > 0) {
+    if (
+      req.files &&
+      Array.isArray(req.files) &&
+      req.files.length > STATUSCODE.ZERO
+    ) {
       const newImages = await Promise.all(
         req.files.map(async (file) => {
           const result = await cloudinary.uploader.upload(file.path, {
@@ -136,7 +140,10 @@ exports.updateCommentData = async (req, res, id) => {
 
       images = [...images, ...newImages];
 
-      if (existingComment.image && existingComment.image.length > 0) {
+      if (
+        existingComment.image &&
+        existingComment.image.length > STATUSCODE.ZERO
+      ) {
         await cloudinary.api.delete_resources(
           existingComment.image.map((image) => image.public_id)
         );
@@ -190,17 +197,17 @@ exports.deleteCommentData = async (id) => {
         path: RESOURCE.TRANSACTION,
         populate: [
           {
-            path: "appointment",
+            path: RESOURCE.APPOINTMENT,
             populate: [
               {
-                path: "beautician customer",
+                path: `${RESOURCE.BEAUTICIAN} ${RESOURCE.CUSTOMER}`,
                 select: "name",
               },
               {
-                path: "service",
+                path: RESOURCE.SERVICE,
                 select: "service_name type occassion description price image",
                 populate: {
-                  path: "product",
+                  path: RESOURCE.PRODUCT,
                   select: "product_name brand isNew",
                 },
               },
@@ -212,7 +219,8 @@ exports.deleteCommentData = async (id) => {
       })
       .lean()
       .exec(),
-    publicIds.length > 0 && cloudinary.api.delete_resources(publicIds),
+    publicIds.length > STATUSCODE.ZERO &&
+      cloudinary.api.delete_resources(publicIds),
   ]);
 
   return comment;
