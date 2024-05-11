@@ -48,7 +48,7 @@ exports.createNewOption = [
 
     return SuccessHandler(
       res,
-      `New option of ${option.option_name} is created with ID ${option?._id}`,
+      `New option of ${option.option_name} is created`,
       option
     );
   }),
@@ -72,7 +72,7 @@ exports.updateOption = [
 
     return SuccessHandler(
       res,
-      `Option ${option?.option_name} with ID ${option?._id} is updated`,
+      `Option ${option?.option_name} is updated`,
       option
     );
   }),
@@ -83,9 +83,5 @@ exports.deleteOption = asyncHandler(async (req, res, next) => {
 
   return !option
     ? next(new ErrorHandler("No option found"))
-    : SuccessHandler(
-        res,
-        `Option ${option?.option_name} with ID ${option?._id} is deleted`,
-        option
-      );
+    : SuccessHandler(res, `Option ${option?.option_name} is deleted`, option);
 });
