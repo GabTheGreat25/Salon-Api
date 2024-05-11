@@ -6,7 +6,7 @@ const multer = require("multer");
 
 const DEFAULT_WIDTH = 500;
 const DEFAULT_HEIGHT = 500;
-const LIMIT = "limit";
+const LIMIT = RESOURCE.LIMIT || "limit";
 
 cloudinary.config({
   cloud_name: process.env.CLOUDINARY_CLOUD_NAME,
