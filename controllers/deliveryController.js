@@ -34,13 +34,20 @@ exports.getSingleDelivery = asyncHandler(async (req, res, next) => {
 });
 
 exports.createNewDelivery = [
-  checkRequiredFields(["product", "company_name", "date", "price", "quantity", "type"]),
+  checkRequiredFields([
+    "product",
+    "company_name",
+    "date",
+    "price",
+    "quantity",
+    "type",
+  ]),
   asyncHandler(async (req, res, next) => {
     const delivery = await deliveryService.createDeliveryData(req);
 
     return SuccessHandler(
       res,
-      `Created delivery with company name of ${delivery.company_name} and ID ${delivery?._id}`,
+      `Created delivery with company name of ${delivery.company_name}`,
       delivery
     );
   }),
@@ -65,7 +72,7 @@ exports.updateDelivery = [
 
     return SuccessHandler(
       res,
-      `Delivery of ${delivery.company_name} and ID ${delivery?._id} is updated`,
+      `Delivery of ${delivery.company_name} is updated`,
       delivery
     );
   }),
@@ -78,7 +85,7 @@ exports.deleteDelivery = asyncHandler(async (req, res, next) => {
     ? next(new ErrorHandler("No Deliveries Found"))
     : SuccessHandler(
         res,
-        `Delivery of ${delivery.company_name} and ID ${delivery?._id} is deleted`,
+        `Delivery of ${delivery.company_name} is deleted`,
         delivery
       );
 });
