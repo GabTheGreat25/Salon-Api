@@ -1,12 +1,12 @@
 const mongoose = require("mongoose");
 const validator = require("validator");
-const { RESOURCE } = require("../constants/index");
+const { RESOURCE, STATUSCODE } = require("../constants/index");
 
 const userSchema = new mongoose.Schema({
   name: {
     type: String,
     required: [true, "Please enter your name"],
-    maxLength: [30, "Your name cannot exceed 30 characters"],
+    maxLength: [STATUSCODE.TWENTY, "Your name cannot exceed 20 characters"],
   },
   email: {
     type: String,
@@ -17,19 +17,21 @@ const userSchema = new mongoose.Schema({
   age: {
     type: Number,
     required: [true, "Please enter your age"],
-    min: [13, "You must be at least 13 years old"],
-    max: [100, "You must be at most 100 years old"],
+    min: [STATUSCODE.THIRTEEN, "You must be at least 13 years old"],
   },
   password: {
     type: String,
     required: [true, "Please enter your password"],
-    minlength: [6, "Your password must be longer than 6 characters"],
+    minlength: [
+      STATUSCODE.SIX,
+      "Your password must be longer than 6 characters",
+    ],
     select: false,
   },
   contact_number: {
     type: String,
     required: [true, "Contact number Field Required"],
-    // unique: [true, "Contact number is already use by another user."],
+    unique: [true, "Contact number is already use by another user."],
     validate: [
       {
         validator: function (value) {
