@@ -26,7 +26,11 @@ exports.getOneTime = asyncHandler(async (req, res, next) => {
 
   return !time
     ? next(new ErrorHandler("Time not found"))
-    : SuccessHandler(res, `Salon Appointment Time with ${time?._id} retrieved`, time);
+    : SuccessHandler(
+        res,
+        `Salon Appointment Time with ${time?._id} retrieved`,
+        time
+      );
 });
 
 exports.createTime = [
@@ -36,7 +40,7 @@ exports.createTime = [
 
     return SuccessHandler(
       res,
-      `Created new Appointment Time ${time?.time} with ID ${time?._id}`,
+      `Created new Appointment Time ${time?.time}`,
       time
     );
   }),
@@ -49,7 +53,7 @@ exports.updateTime = [
 
     return SuccessHandler(
       res,
-      `Appointment Time ${time?.time} with ID ${time?._id} is updated`,
+      `Appointment Time ${time?.time} is updated`,
       time
     );
   }),
@@ -60,9 +64,5 @@ exports.deleteTime = asyncHandler(async (req, res, next) => {
 
   return !time
     ? next(new ErrorHandler("No time found"))
-    : SuccessHandler(
-        res,
-        `Appointment Time ${time?.time} with ID ${time?._id} is deleted`,
-        time
-      );
+    : SuccessHandler(res, `Appointment Time ${time?.time} is deleted`, time);
 });
