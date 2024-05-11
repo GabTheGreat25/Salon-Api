@@ -41,7 +41,7 @@ exports.updateTransaction = [
 
     return SuccessHandler(
       res,
-      `Transaction of ${existingTransaction?.appointment?.customer?.name} with an ID ${existingTransaction?._id} is updated`,
+      `Transaction of ${existingTransaction?.appointment?.customer?.name} is updated`,
       { transaction: updatedTransaction, updateVerification }
     );
   }),
@@ -60,7 +60,7 @@ exports.deleteTransaction = asyncHandler(async (req, res, next) => {
     ? next(new ErrorHandler("No transaction found"))
     : SuccessHandler(
         res,
-        `transaction of ${customerName} with an ID ${transaction?._id} is deleted`,
+        `transaction of ${customerName} is deleted`,
         transaction
       );
 });
