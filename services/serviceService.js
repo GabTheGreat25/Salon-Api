@@ -109,7 +109,11 @@ exports.updateServiceData = async (req, res, id) => {
   if (duplicateService) throw new ErrorHandler("Duplicate Service Name");
 
   let image = existingService.image || [];
-  if (req.files && Array.isArray(req.files) && req.files.length > 0) {
+  if (
+    req.files &&
+    Array.isArray(req.files) &&
+    req.files.length > STATUSCODE.ZERO
+  ) {
     image = await Promise.all(
       req.files.map(async (file) => {
         const result = await cloudinary.uploader.upload(file.path, {
@@ -123,7 +127,10 @@ exports.updateServiceData = async (req, res, id) => {
       })
     );
 
-    if (existingService.image && existingService.image.length > 0) {
+    if (
+      existingService.image &&
+      existingService.image.length > STATUSCODE.ZERO
+    ) {
       await cloudinary.api.delete_resources(
         existingService.image.map((image) => image.public_id)
       );
