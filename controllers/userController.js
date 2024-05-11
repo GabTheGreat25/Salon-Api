@@ -26,7 +26,7 @@ exports.resetPassword = asyncHandler(async (req, res, next) => {
 exports.forgotPassword = asyncHandler(async (req, res, next) => {
   const { email } = req.body;
   const details = await usersService.sendPasswordResetSMS(req, email);
-  SuccessHandler(res, "Successfully Sent Please Check Your SMS", details);
+  SuccessHandler(res, "Successfully sent please check your SMS", details);
 });
 
 exports.updatePassword = asyncHandler(async (req, res, next) => {
@@ -39,7 +39,7 @@ exports.updatePassword = asyncHandler(async (req, res, next) => {
   );
   SuccessHandler(
     res,
-    `Old Password ${oldPassword} Successfully Updated with ${newPassword}`,
+    `Your old password ${oldPassword} is successfully updated with ${newPassword}`,
     updatedUser
   );
 });
@@ -49,11 +49,7 @@ exports.confirmUser = asyncHandler(async (req, res, next) => {
 
   await usersService.confirmUserRole(userId);
 
-  SuccessHandler(
-    res,
-    `User with ID ${userId} has been activated by the admin.`,
-    userId
-  );
+  SuccessHandler(res, `User has been activated by the admin.`, userId);
 });
 
 exports.login = [
@@ -126,12 +122,12 @@ exports.createNewUser = [
 
     const successMessage =
       user && user.roles.includes(ROLE.CUSTOMER)
-        ? `New Customer ${user?.name} created with an ID ${user?._id}`
+        ? `New Customer ${user?.name} created.`
         : user && user.roles.includes(ROLE.ADMIN)
-        ? `New Admin ${user?.name} created with an ID ${user?._id}`
+        ? `New Admin ${user?.name} created.`
         : (user && user.roles.includes(ROLE.BEAUTICIAN)) ||
           user.roles.includes(ROLE.RECEPTIONIST)
-        ? `New ${user?.roles} ${user?.name} created with an ID ${user?._id}. Please wait for the admin to confirm your account. Thank you!`
+        ? `New ${user?.roles} ${user?.name} created. Please wait for the admin to confirm your account. Thank you!`
         : null;
 
     return SuccessHandler(res, successMessage, {
@@ -149,11 +145,11 @@ exports.updateUser = [
     const { user, requirement, information } =
       await usersService.updateUserData(req, res, req.params.id);
 
-    return SuccessHandler(
-      res,
-      `User ${user?.name} with ID ${user?._id} is updated`,
-      { user, requirement, information }
-    );
+    return SuccessHandler(res, `User ${user?.name} is updated`, {
+      user,
+      requirement,
+      information,
+    });
   }),
 ];
 
@@ -162,9 +158,5 @@ exports.deleteUser = asyncHandler(async (req, res, next) => {
 
   return !user
     ? next(new ErrorHandler("No user found"))
-    : SuccessHandler(
-        res,
-        `User ${user?.name} with ID ${user?._id} is deleted`,
-        user
-      );
+    : SuccessHandler(res, `User ${user?.name} is deleted`, user);
 });
