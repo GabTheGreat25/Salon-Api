@@ -1,11 +1,18 @@
+
 const mongoose = require("mongoose");
-const { RESOURCE, STATUSCODE } = require("../constants/index");
+const { RESOURCE } = require("../constants/index");
 const validator = require("validator");
+const badWords = require("bad-words");
+const customBadWords = require("../helpers/customBadWords");
+
+const filter = new badWords();
+filter.addWords(...customBadWords);
 
 const feedbackSchema = new mongoose.Schema({
   name: {
     type: String,
     required: [true, "Name Field Required"],
+    maxLength: [60, "Name Field must not exceed to 60 characters"],
   },
   email: {
     type: String,
@@ -33,10 +40,12 @@ const feedbackSchema = new mongoose.Schema({
   description: {
     type: String,
     required: [true, "Description Field Required"],
-    maxLength: [
-      STATUSCODE.THIRTY,
-      "Description Field must not exceed to 30 characters",
-    ],
+    validate: {
+      validator: function (value) {
+        return !filter.isProfane(value);
+      },
+      message: "Feedback cannot contain profanity.",
+    },
   },
   isAnonymous: {
     type: Boolean,
