@@ -1,11 +1,12 @@
 const Brand = require("../models/brand");
 const ErrorHandler = require("../utils/errorHandler");
 const mongoose = require("mongoose");
+const { STATUSCODE, ROLE } = require("../constants");
 
 exports.getAllBrandsData = async () => {
   const brands = await Brand.find()
     .sort({
-      createdAt: -1,
+      createdAt: STATUSCODE.NEGATIVE_ONE,
     })
     .lean()
     .exec();
