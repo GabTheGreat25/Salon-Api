@@ -3,7 +3,7 @@ const Equipment = require("../models/equipment");
 const Report = require("../models/report");
 const mongoose = require("mongoose");
 const ErrorHandler = require("../utils/errorHandler");
-const { RESOURCE } = require("../constants/index");
+const { RESOURCE, STATUSCODE } = require("../constants/index");
 
 exports.getAllLogsData = async () => {
   const logs = await LogBook.find()
@@ -12,13 +12,13 @@ exports.getAllLogsData = async () => {
       select: "name",
     })
     .populate({
-      path: "equipment",
+      path: RESOURCE.EQUIPMENT,
       populate: {
         path: "equipment",
         select: "equipment_name",
       },
     })
-    .sort({ createdAt: -1 })
+    .sort({ createdAt: STATUSCODE.NEGATIVE_ONE })
     .lean()
     .exec();
 
@@ -26,9 +26,8 @@ exports.getAllLogsData = async () => {
 };
 
 exports.getOneLogData = async (id) => {
-  if (!mongoose.Types.ObjectId.isValid(id)) {
+  if (!mongoose.Types.ObjectId.isValid(id))
     throw new ErrorHandler(`Invalid Logs ID ${id}`);
-  }
 
   const log = await LogBook.findById(id)
     .populate({
@@ -36,7 +35,7 @@ exports.getOneLogData = async (id) => {
       select: "name",
     })
     .populate({
-      path: "equipment",
+      path: RESOURCE.EQUIPMENT,
       populate: {
         path: "equipment",
         select: "equipment_name",
@@ -53,55 +52,49 @@ exports.createLogsData = async (req, res) => {
     ...req.body,
   });
 
-  try {
-    const newBorrowed = log?.equipment?.map((equipment) => {
-      return equipment;
-    });
+  const newBorrowed = log?.equipment?.map((equipment) => {
+    return equipment;
+  });
 
-    for (const equipment of newBorrowed) {
-      const equipmentId = equipment?.equipment;
-      const borrowedQty = equipment?.borrow_quantity;
+  for (const equipment of newBorrowed) {
+    const equipmentId = equipment?.equipment;
+    const borrowedQty = equipment?.borrow_quantity;
 
-      const borrowedEquipment = await Equipment.findById(equipmentId);
+    const borrowedEquipment = await Equipment.findById(equipmentId);
 
-      if(borrowedEquipment.quantity === 0){
-        throw new ErrorHandler(`${borrowedEquipment.equipment_name} is out of Stock`);
-      };
-
-      let { quantity, borrow_qty } = borrowedEquipment;
-
-      let newQuantity = quantity - borrowedQty;
-      let newBorrowedQuantity = borrow_qty + borrowedQty;
-      const isZero = newQuantity === 0;
-      console.log(isZero);
-
-      const setStatus = isZero ? "Not Available" : "Available";
-
-      const updateBorrowEquipment = await Equipment.findByIdAndUpdate(
-        equipmentId,
-        {
-          quantity: newQuantity,
-          borrow_qty: newBorrowedQuantity,
-          status: setStatus
-        },
-        {
-          new: true,
-          runValidators: true,
-        }
+    if (borrowedEquipment.quantity === STATUSCODE.ZERO)
+      throw new ErrorHandler(
+        `${borrowedEquipment.equipment_name} is out of Stock`
       );
 
-    }
-  } catch (err) {
-    throw new ErrorHandler(err);
+    let { quantity, borrow_qty } = borrowedEquipment;
+
+    let newQuantity = quantity - borrowedQty;
+    let newBorrowedQuantity = borrow_qty + borrowedQty;
+    const isZero = newQuantity === STATUSCODE.ZERO;
+
+    const setStatus = isZero ? "Not Available" : "Available";
+
+    await Equipment.findByIdAndUpdate(
+      equipmentId,
+      {
+        quantity: newQuantity,
+        borrow_qty: newBorrowedQuantity,
+        status: setStatus,
+      },
+      {
+        new: true,
+        runValidators: true,
+      }
+    );
   }
 
   return log;
 };
 
 exports.updateLogsData = async (req, res, id) => {
-  if (!mongoose.Types.ObjectId.isValid(id)) {
+  if (!mongoose.Types.ObjectId.isValid(id))
     throw new ErrorHandler(`Invalid LogBook ID:${id}`);
-  }
 
   const existingLogBook = await LogBook.findById(id)
     .populate({
@@ -111,9 +104,8 @@ exports.updateLogsData = async (req, res, id) => {
     .lean()
     .exec();
 
-  if (!existingLogBook) {
+  if (!existingLogBook)
     throw new ErrorHandler(`Logbook not found with ID ${id}`);
-  }
 
   const dateToday = new Date();
 
@@ -131,118 +123,107 @@ exports.updateLogsData = async (req, res, id) => {
     .lean()
     .exec();
 
-  try {
-    const newEquipment = updateLogBook?.equipment?.map((equipment) => {
-      return equipment;
-    });
+  const newEquipment = updateLogBook?.equipment?.map((equipment) => {
+    return equipment;
+  });
 
-    for (const equipmentBorrowed of newEquipment) {
-      const {
-        equipment,
-        borrow_quantity,
-        missing_quantity,
-        damage_quantity,
-        status,
-      } = equipmentBorrowed;
+  for (const equipmentBorrowed of newEquipment) {
+    const {
+      equipment,
+      borrow_quantity,
+      missing_quantity,
+      damage_quantity,
+      status,
+    } = equipmentBorrowed;
 
-      if (
-        missing_quantity > borrow_quantity ||
-        damage_quantity > borrow_quantity
-      ) {
-        throw new ErrorHandler(
-          "Missing or damage quantity cannot exceed borrow quantity"
-        );
-      }
-
-      const equipmentId = equipment;
-      const newEquipment = await Equipment.findById(equipmentId).lean().exec();
-
-      if (!newEquipment) {
-        throw new ErrorHandler("Equipment not Found");
-      }
-
-      let { missing_qty, damage_qty, quantity, borrow_qty } = newEquipment;
-
-      let newMissingQty = missing_qty + missing_quantity;
-      let newDamageQty = damage_qty + damage_quantity;
-
-      let lossQty;
-      let newQuantity;
-      let newBorrow;
-
-      const isBorrowed = updateLogBook?.status?.includes("Borrowed");
-      const isReturned = updateLogBook?.status?.includes("Returned");
-
-      if (isBorrowed) {
-        newBorrow = borrow_quantity;
-        newQuantity = quantity - newBorrow;
-
-      } else if (isReturned) {
-        lossQty = missing_quantity + damage_quantity;
-        newQuantity = quantity + borrow_quantity - lossQty;
-        newBorrow = borrow_qty - borrow_quantity;
-      }
-
-      const isZero = newQuantity == 0;
-
-      const setStatus = isZero ? "Not Available" : "Available";
-
-      const updateEquipment = await Equipment.findByIdAndUpdate(
-        equipmentId,
-        {
-          missing_qty: newMissingQty,
-          damage_qty: newDamageQty,
-          borrow_qty: newBorrow,
-          quantity: newQuantity,
-          status: setStatus,
-        },
-        {
-          new: true,
-          runValidators: true,
-        }
+    if (missing_quantity > borrow_quantity || damage_quantity > borrow_quantity)
+      throw new ErrorHandler(
+        "Missing or damage quantity cannot exceed borrow quantity"
       );
 
-      const isMissing = status === "Missing" && missing_quantity >= 1;
-      const isDamage = status === "Damage" && damage_quantity >= 1;
-      const isMissingAndDamage =
-        status === "Damage & Missing" &&
-        missing_quantity >= 1 &&
-        damage_quantity >= 1;
+    const equipmentId = equipment;
+    const newEquipment = await Equipment.findById(equipmentId).lean().exec();
 
-      const insertDate = isMissing || isMissingAndDamage ? dateToday : "";
+    if (!newEquipment) throw new ErrorHandler("Equipment not Found");
 
-      let statusReport = "";
+    let { missing_qty, damage_qty, quantity, borrow_qty } = newEquipment;
 
-      if (isMissing) {
-        statusReport = "Missing";
-      } else if (isDamage) {
-        statusReport = "Damage";
-      } else if (isMissingAndDamage) {
-        statusReport = "Missing & Damage";
-      }
+    let newMissingQty = missing_qty + missing_quantity;
+    let newDamageQty = damage_qty + damage_quantity;
 
-      if (isMissing || isDamage || isMissingAndDamage) {
-        console.log("Report Created!")
-        const report = await Report.create({
-          user: updateLogBook?.user,
-          equipment: equipmentId,
-          date_missing: insertDate,
-          quantity_missing: newMissingQty,
-          damage_quantity: newDamageQty,
-          status: statusReport,
-        });
-      }
+    let lossQty;
+    let newQuantity;
+    let newBorrow;
+
+    const isBorrowed = updateLogBook?.status?.includes("Borrowed");
+    const isReturned = updateLogBook?.status?.includes("Returned");
+
+    if (isBorrowed) {
+      newBorrow = borrow_quantity;
+      newQuantity = quantity - newBorrow;
+    } else if (isReturned) {
+      lossQty = missing_quantity + damage_quantity;
+      newQuantity = quantity + borrow_quantity - lossQty;
+      newBorrow = borrow_qty - borrow_quantity;
     }
-  } catch (err) {
-    throw new ErrorHandler(err);
+
+    const isZero = newQuantity == STATUSCODE.ZERO;
+
+    const setStatus = isZero ? "Not Available" : "Available";
+
+    await Equipment.findByIdAndUpdate(
+      equipmentId,
+      {
+        missing_qty: newMissingQty,
+        damage_qty: newDamageQty,
+        borrow_qty: newBorrow,
+        quantity: newQuantity,
+        status: setStatus,
+      },
+      {
+        new: true,
+        runValidators: true,
+      }
+    );
+
+    const isMissing =
+      status === "Missing" && missing_quantity >= STATUSCODE.ONE;
+    const isDamage = status === "Damage" && damage_quantity >= STATUSCODE.ONE;
+    const isMissingAndDamage =
+      status === "Damage & Missing" &&
+      missing_quantity >= STATUSCODE.ONE &&
+      damage_quantity >= STATUSCODE.ONE;
+
+    const insertDate = isMissing || isMissingAndDamage ? dateToday : "";
+
+    let statusReport = "";
+
+    if (isMissing) {
+      statusReport = "Missing";
+    } else if (isDamage) {
+      statusReport = "Damage";
+    } else if (isMissingAndDamage) {
+      statusReport = "Missing & Damage";
+    }
+
+    if (isMissing || isDamage || isMissingAndDamage) {
+      const report = await Report.create({
+        user: updateLogBook?.user,
+        equipment: equipmentId,
+        date_missing: insertDate,
+        quantity_missing: newMissingQty,
+        damage_quantity: newDamageQty,
+        status: statusReport,
+      });
+    }
   }
+
   return updateLogBook;
 };
 
 exports.deleteLogBookData = async (id) => {
-  if (!mongoose.Types.ObjectId.isValid(id)) {
+  if (!mongoose.Types.ObjectId.isValid(id))
     throw new ErrorHandler(`Invalid LogBook ID ${id}`);
-  }
 
   const logbook = await LogBook.findById(id)
     .populate({
@@ -252,9 +233,7 @@ exports.deleteLogBookData = async (id) => {
     .lean()
     .exec();
 
-  if (!logbook) {
-    throw new ErrorHandler(`LogBook not found with ID ${id}`);
-  }
+  if (!logbook) throw new ErrorHandler(`LogBook not found with ID ${id}`);
 
   await Promise.all([
     LogBook.deleteOne({
