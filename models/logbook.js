@@ -1,5 +1,5 @@
 const mongoose = require("mongoose");
-const { RESOURCE } = require("../constants/index");
+const { RESOURCE, STATUSCODE } = require("../constants/index");
 
 const LogbookSchema = new mongoose.Schema({
   user: {
@@ -17,17 +17,17 @@ const LogbookSchema = new mongoose.Schema({
       borrow_quantity: {
         type: Number,
         required: [true, "Borrowed Equipment Quantity required"],
-        default: 0,
-      },  
+        default: STATUSCODE.ZERO,
+      },
       missing_quantity: {
         type: Number,
         required: false,
-        default: 0,
+        default: STATUSCODE.ZERO,
       },
       damage_quantity: {
         type: Number,
         required: false,
-        default: 0,
+        default: STATUSCODE.ZERO,
       },
       status: {
         type: String,
