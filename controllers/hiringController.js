@@ -28,11 +28,7 @@ exports.createNewHiring = [
   asyncHandler(async (req, res, next) => {
     const hiring = await hiringServices.createHiringData(req);
 
-    return SuccessHandler(
-      res,
-      `Created new Hiring with an ID ${hiring?._id}`,
-      hiring
-    );
+    return SuccessHandler(res, `Created new Hiring`, hiring);
   }),
 ];
 
@@ -44,11 +40,7 @@ exports.updateHiring = [
       req.params.id
     );
 
-    return SuccessHandler(
-      res,
-      `Hiring date with ID ${hiring?._id} is updated`,
-      hiring
-    );
+    return SuccessHandler(res, `Hiring date is updated`, hiring);
   }),
 ];
 
@@ -57,5 +49,5 @@ exports.deleteHiring = asyncHandler(async (req, res, next) => {
 
   return !hiring
     ? next(new ErrorHandler("No hiring found"))
-    : SuccessHandler(res, `Hiring with ID ${hiring?._id} is deleted`, hiring);
+    : SuccessHandler(res, `Hiring is deleted`, hiring);
 });
