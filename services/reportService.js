@@ -96,9 +96,9 @@ exports.updateReportData = async (req, res, id) => {
   let { equipment, status, input_qty, quantity_missing, initial_found } =
     updateReport;
 
-  const id = equipment;
+  const idEquipment = equipment;
 
-  const reportEquipment = await Equipment.findById(id).lean().exec();
+  const reportEquipment = await Equipment.findById(idEquipment).lean().exec();
 
   if (!reportEquipment)
     throw new ErrorHandler(`Equipment not Found with ID: ${equipment}`);
@@ -132,7 +132,7 @@ exports.updateReportData = async (req, res, id) => {
   }
 
   await Equipment.findByIdAndUpdate(
-    id,
+    idEquipment,
     {
       quantity: newQuantity,
       missing_qty: newMissingQty,
