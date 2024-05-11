@@ -1,5 +1,5 @@
 const mongoose = require("mongoose");
-const { RESOURCE } = require("../constants/index");
+const { RESOURCE, STATUSCODE } = require("../constants/index");
 
 const optionSchema = new mongoose.Schema({
   service: [
@@ -12,7 +12,6 @@ const optionSchema = new mongoose.Schema({
   option_name: {
     type: String,
     required: [true, "Option name required"],
-    maxLength: [60, "Option Name Field must not exceed to 60 characters"],
   },
   description: {
     type: String,
@@ -21,7 +20,7 @@ const optionSchema = new mongoose.Schema({
   extraFee: {
     type: Number,
     required: [true, "Please enter a extraFee"],
-    min: 0,
+    default: STATUSCODE.ZERO,
   },
   image: [
     {
