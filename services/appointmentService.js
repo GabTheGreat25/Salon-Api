@@ -6,12 +6,12 @@ const User = require("../models/user");
 const ErrorHandler = require("../utils/errorHandler");
 const mongoose = require("mongoose");
 const { cloudinary } = require("../utils/cloudinary");
-const { STATUSCODE } = require("../constants");
+const { STATUSCODE, ROLE, RESOURCE } = require("../constants");
 const { sendSMS } = require("../utils/twilio");
 const moment = require("moment-timezone");
 
 const getAdminUsers = async () => {
-  const admins = await User.find({ roles: "Admin" });
+  const admins = await User.find({ roles: ROLE.ADMIN });
   return admins;
 };
 
@@ -25,26 +25,25 @@ const deleteAppointmentAfterTimeout = async (appointmentId, verification) => {
       Verification.deleteMany({ transaction: verification._id }).lean().exec(),
     ]);
   }
-  console.log("Appointment Deleted:", appointmentId);
 };
 
 exports.getAllAppointmentsData = async () => {
   const appointments = await Appointment.find()
-    .sort({ createdAt: -1 })
+    .sort({ createdAt: STATUSCODE.NEGATIVE_ONE })
     .populate({
-      path: "beautician customer",
+      path: `${RESOURCE.BEAUTICIAN} ${RESOURCE.CUSTOMER}`,
       select: "name roles contact_number image",
     })
     .populate({
-      path: "service",
+      path: RESOURCE.SERVICE,
       select:
         "service_name description price type occassion duration image product",
       populate: {
-        path: "product",
+        path: RESOURCE.PRODUCT,
         select: "product_name brand ingredients",
       },
     })
-    .populate({ path: "option", select: "option_name extraFee" })
+    .populate({ path: RESOURCE.OPTION, select: "option_name extraFee" })
     .lean()
     .exec();
   return appointments;
@@ -56,20 +55,21 @@ exports.getSingleAppointmentData = async (id) => {
 
   const appointment = await Appointment.findById(id)
     .populate({
-      path: "beautician customer",
+      path: `${RESOURCE.BEAUTICIAN} ${RESOURCE.CUSTOMER}`,
       select: "name roles contact_number image",
     })
+
     .populate({
-      path: "service",
+      path: RESOURCE.SERVICE,
       select:
         "service_name description price type occassion duration image product",
       populate: {
-        path: "product",
+        path: RESOURCE.PRODUCT,
         select: "product_name brand ingredients",
       },
     })
     .populate({
-      path: "option",
+      path: RESOURCE.OPTION,
       select: "option_name extraFee",
     })
     .lean()
@@ -96,11 +96,11 @@ exports.updateAppointmentData = async (req, res, id) => {
     }
   )
     .populate({
-      path: "beautician customer",
+      path: `${RESOURCE.BEAUTICIAN} ${RESOURCE.CUSTOMER}`,
       select: "name roles contact_number",
     })
-    .populate({ path: "service", select: "service_name image" })
-    .populate({ path: "option", select: "option_name extraFee" })
+    .populate({ path: RESOURCE.SERVICE, select: "service_name image" })
+    .populate({ path: RESOURCE.OPTION, select: "option_name extraFee" })
     .lean()
     .exec();
 
@@ -113,7 +113,9 @@ exports.updateAppointmentData = async (req, res, id) => {
 exports.createAppointmentData = async (req, res) => {
   let appointment;
 
-  const currentTimePH = moment().tz("Asia/Manila").add(8, "hours");
+  const currentTimePH = moment()
+    .tz("Asia/Manila")
+    .add(STATUSCODE.EIGHT, "hours");
 
   const appointmentTime = req.body.time;
 
@@ -122,10 +124,9 @@ exports.createAppointmentData = async (req, res) => {
     "YYYY-MM-DD HH:mm A"
   )
     .tz("Asia/Manila")
-    .add(8, "hours");
-  if (appointmentTimeDate.isBefore(currentTimePH)) {
+    .add(STATUSCODE.EIGHT, "hours");
+  if (appointmentTimeDate.isBefore(currentTimePH))
     throw new ErrorHandler("Cannot book appointment in the past.");
-  }
 
   const originalData = {
     beautician: req.body.beautician || [],
@@ -155,9 +156,12 @@ exports.createAppointmentData = async (req, res) => {
   });
 
   await Appointment.populate(appointment, [
-    { path: "beautician customer", select: "name roles contact_number" },
-    { path: "service", select: "service_name image" },
-    { path: "option", select: "option_name extraFee" },
+    {
+      path: `${RESOURCE.BEAUTICIAN} ${RESOURCE.CUSTOMER}`,
+      select: "name roles contact_number",
+    },
+    { path: RESOURCE.SERVICE, select: "service_name image" },
+    { path: RESOURCE.OPTION, select: "option_name extraFee" },
   ]);
 
   await appointment.save();
@@ -166,12 +170,12 @@ exports.createAppointmentData = async (req, res) => {
 
   if (!retrievedAppointment) throw new ErrorHandler("Appointment not found.");
 
-  const firstTime = retrievedAppointment.time[0];
+  const firstTime = retrievedAppointment.time[STATUSCODE.ZERO];
   const [time, period] = firstTime.split(" ");
   const [hours, minutes] = time.split(":");
   let formattedHours = parseInt(hours);
-  if (period === "PM" && formattedHours !== 12) {
-    formattedHours += 12;
+  if (period === "PM" && formattedHours !== STATUSCODE.TWELVE) {
+    formattedHours += STATUSCODE.TWELVE;
   }
   const formattedTime = `${formattedHours}:${minutes}:00.000Z`;
 
@@ -197,28 +201,31 @@ exports.createAppointmentData = async (req, res) => {
 
   const smsMessage = `Dear ${appointment.customer.name}, your appointment was successfully booked. Thank you for choosing Lhanlee Salon.`;
   console.log(smsMessage);
-  sendSMS(`+63${appointment.customer.contact_number.substring(1)}`, smsMessage);
+  sendSMS(
+    `+63${appointment.customer.contact_number.substring(STATUSCODE.ONE)}`,
+    smsMessage
+  );
 
   const reminderTime = moment(appointmentDateTime)
-    .subtract(2, "hours")
+    .subtract(STATUSCODE.TWO, "hours")
     .toDate();
 
   const deletionTimeForOnlineCustomer = moment(appointmentDateTime)
-    .subtract(1, "hours")
+    .subtract(STATUSCODE.ONE, "hours")
     .toDate();
 
   const deletionTimeForWalkInCustomer = moment(appointmentDateTime)
-    .subtract(30, "minutes")
+    .subtract(STATUSCODE.THIRTY, "minutes")
     .toDate();
 
   setTimeout(async () => {
     const smsMessage = `Dear ${appointment.customer.name}, Just to remind you your appointment is in 2 hours.`;
     console.log(smsMessage);
     sendSMS(
-      `+63${appointment.customer.contact_number.substring(1)}`,
+      `+63${appointment.customer.contact_number.substring(STATUSCODE.ONE)}`,
       smsMessage
     );
-  }, Math.max(0, reminderTime.getTime() - currentTimePH.valueOf()));
+  }, Math.max(STATUSCODE.ZERO, reminderTime.getTime() - currentTimePH.valueOf()));
 
   const hasAppointmentFee = retrievedAppointment.hasAppointmentFee;
 
@@ -227,21 +234,21 @@ exports.createAppointmentData = async (req, res) => {
       const smsMessage = `Dear ${appointment.customer.name}, Your appointment has been deleted due to not paying the fee.`;
       console.log(smsMessage);
       sendSMS(
-        `+63${appointment.customer.contact_number.substring(1)}`,
+        `+63${appointment.customer.contact_number.substring(STATUSCODE.ONE)}`,
         smsMessage
       );
       await deleteAppointmentAfterTimeout(appointment._id, verification);
-    }, Math.max(0, deletionTimeForOnlineCustomer.getTime() - currentTimePH.valueOf()));
+    }, Math.max(STATUSCODE.ZERO, deletionTimeForOnlineCustomer.getTime() - currentTimePH.valueOf()));
   } else {
     setTimeout(async () => {
       const smsMessage = `Dear ${appointment.customer.name}, Your appointment has been deleted due to not paying the fee.`;
       console.log(smsMessage);
       sendSMS(
-        `+63${appointment.customer.contact_number.substring(1)}`,
+        `+63${appointment.customer.contact_number.substring(STATUSCODE.ONE)}`,
         smsMessage
       );
       await deleteAppointmentAfterTimeout(appointment._id, verification);
-    }, Math.max(0, deletionTimeForWalkInCustomer.getTime() - currentTimePH.valueOf()));
+    }, Math.max(STATUSCODE.ZERO, deletionTimeForWalkInCustomer.getTime() - currentTimePH.valueOf()));
   }
 
   const admins = await getAdminUsers();
@@ -251,14 +258,14 @@ exports.createAppointmentData = async (req, res) => {
   const smsAdminMessage = `New appointment created by ${
     appointment.customer.name
   } on ${
-    new Date(appointment.date).toISOString().split("T")[0]
+    new Date(appointment.date).toISOString().split("T")[STATUSCODE.ZERO]
   } at ${firstTime}. Please review and confirm. Thank you!`;
 
   console.log(smsAdminMessage);
 
   adminNumbers.forEach((number, index) => {
     console.log(`Sending SMS to ${adminNames[index]} at ${number}`);
-    sendSMS(`+63${number.substring(1)}`, smsAdminMessage);
+    sendSMS(`+63${number.substring(STATUSCODE.ONE)}`, smsAdminMessage);
   });
 
   return { appointment, transaction, verification };
@@ -266,7 +273,7 @@ exports.createAppointmentData = async (req, res) => {
 
 exports.confirmRebooked = async (appointmentId) => {
   const appointment = await Appointment.findById(appointmentId).populate(
-    "customer",
+    RESOURCE.CUSTOMER,
     "name contact_number"
   );
 
@@ -282,7 +289,7 @@ exports.confirmRebooked = async (appointmentId) => {
     console.log(smsMessage);
 
     sendSMS(
-      `+63${appointment.customer.contact_number.substring(1)}`,
+      `+63${appointment.customer.contact_number.substring(STATUSCODE.ONE)}`,
       smsMessage
     );
   } else throw new ErrorHandler(`Appointment is not marked for rebooking`);
@@ -339,14 +346,16 @@ exports.updateScheduleAppointmentData = async (req, res, id) => {
       new: true,
       runValidators: true,
     }
-  ).populate("customer", "name contact_number");
+  ).populate(RESOURCE.CUSTOMER, "name contact_number");
 
   const smsMessage = `Dear ${updatedScheduleAppointment.customer.name}, Your appointment has been updated. Please wait for the admin to review and confirm. Thank you for choosing Lhanlee Salon!`;
 
   console.log(smsMessage);
 
   sendSMS(
-    `+63${updatedScheduleAppointment.customer.contact_number.substring(1)}`,
+    `+63${updatedScheduleAppointment.customer.contact_number.substring(
+      STATUSCODE.ONE
+    )}`,
     smsMessage
   );
 
@@ -379,10 +388,10 @@ exports.updateBeauticianAppointmentData = async (req, res, id) => {
     { new: true, runValidators: true }
   )
     .populate({
-      path: "beautician customer",
+      path: `${RESOURCE.BEAUTICIAN} ${RESOURCE.CUSTOMER}`,
       select: "name roles contact_number",
     })
-    .populate({ path: "service", select: "service_name image" })
+    .populate({ path: RESOURCE.SERVICE, select: "service_name image" })
     .lean()
     .exec();
 
@@ -404,7 +413,9 @@ exports.updateBeauticianAppointmentData = async (req, res, id) => {
 
     console.log(smsMessage);
     sendSMS(
-      `+63${updatedAppointment.customer.contact_number.substring(1)}`,
+      `+63${updatedAppointment.customer.contact_number.substring(
+        STATUSCODE.ONE
+      )}`,
       smsMessage
     );
   }
@@ -414,7 +425,7 @@ exports.updateBeauticianAppointmentData = async (req, res, id) => {
 
 exports.cancelRebooked = async (appointmentId) => {
   const appointment = await Appointment.findById(appointmentId).populate(
-    "customer",
+    RESOURCE.CUSTOMER,
     "name contact_number date"
   );
 
@@ -441,7 +452,7 @@ exports.cancelRebooked = async (appointmentId) => {
     console.log(smsMessage);
 
     sendSMS(
-      `+63${appointment.customer.contact_number.substring(1)}`,
+      `+63${appointment.customer.contact_number.substring(STATUSCODE.ONE)}`,
       smsMessage
     );
 
@@ -486,7 +497,10 @@ exports.getBeauticianAppointmentsData = async (id) => {
     .lean()
     .exec();
 
-  if (!beauticianAppointments || beauticianAppointments.length === 0)
+  if (
+    !beauticianAppointments ||
+    beauticianAppointments.length === STATUSCODE.ZERO
+  )
     throw new ErrorHandler("No Appointments Found for Beautician");
 
   const appointmentIds = beauticianAppointments.map(
@@ -499,15 +513,15 @@ exports.getBeauticianAppointmentsData = async (id) => {
   })
     .collation({ locale: "en" })
     .populate({
-      path: "appointment",
+      path: RESOURCE.APPOINTMENT,
       select: "date time price  customer service",
       populate: [
         {
-          path: "customer",
+          path: RESOURCE.CUSTOMER,
           select: "name image",
         },
         {
-          path: "service",
+          path: RESOURCE.SERVICE,
           select: "service_name description price",
         },
       ],
@@ -524,7 +538,10 @@ exports.appointmentHistoryData = async (id) => {
     .lean()
     .exec();
 
-  if (!beauticianAppointments || beauticianAppointments.length === 0)
+  if (
+    !beauticianAppointments ||
+    beauticianAppointments.length === STATUSCODE.ZERO
+  )
     throw new ErrorHandler("No Appointments Found for Beautician");
 
   const appointmentIds = beauticianAppointments.map(
@@ -537,15 +554,15 @@ exports.appointmentHistoryData = async (id) => {
   })
     .collation({ locale: "en" })
     .populate({
-      path: "appointment",
+      path: RESOURCE.APPOINTMENT,
       select: "date time price service customer",
       populate: [
         {
-          path: "customer",
+          path: RESOURCE.CUSTOMER,
           select: "name image",
         },
         {
-          path: "service",
+          path: RESOURCE.SERVICE,
           select: "service_name description price",
         },
       ],
@@ -562,20 +579,20 @@ exports.getSingleRescheduleAppointmentData = async (id) => {
 
   const appointment = await Appointment.findById(id)
     .populate({
-      path: "customer",
+      path: RESOURCE.CUSTOMER,
       select: "name contact_number",
     })
     .populate({
-      path: "service",
+      path: RESOURCE.SERVICE,
       select:
         "service_name description price type occassion duration image product",
       populate: {
-        path: "product",
+        path: RESOURCE.PRODUCT,
         select: "product_name brand ingredients",
       },
     })
     .populate({
-      path: "option",
+      path: RESOURCE.OPTION,
       select: "option_name extraFee",
     })
     .lean()
