@@ -1,8 +1,7 @@
 const Schedule = require("../models/schedule");
 const ErrorHandler = require("../utils/errorHandler");
 const mongoose = require("mongoose");
-const { STATUSCODE } = require("../constants/index");
-const moment = require("moment");
+const { STATUSCODE, RESOURCE } = require("../constants/index");
 const { sendSMS } = require("../utils/twilio");
 
 exports.getAllSchedulesData = async () => {
@@ -10,7 +9,7 @@ exports.getAllSchedulesData = async () => {
     .sort({
       createdAt: STATUSCODE.NEGATIVE_ONE,
     })
-    .populate({ path: "beautician", select: "name" })
+    .populate({ path: RESOURCE.BEAUTICIAN, select: "name" })
     .lean()
     .exec();
 
@@ -22,7 +21,7 @@ exports.getSingleScheduleData = async (id) => {
     throw new ErrorHandler(`Invalid schedule ID: ${id}`);
 
   const schedule = await Schedule.findById(id)
-    .populate({ path: "beautician", select: "name" })
+    .populate({ path: RESOURCE.BEAUTICIAN, select: "name" })
     .lean()
     .exec();
 
@@ -33,7 +32,7 @@ exports.getSingleScheduleData = async (id) => {
 
 exports.confirmLeaveNote = async (scheduleId) => {
   const schedule = await Schedule.findById(scheduleId).populate(
-    "beautician",
+    RESOURCE.BEAUTICIAN,
     "name contact_number"
   );
 
@@ -51,7 +50,10 @@ exports.confirmLeaveNote = async (scheduleId) => {
 
   console.log(smsMessage);
 
-  sendSMS(`+63${schedule.beautician.contact_number.substring(1)}`, smsMessage);
+  sendSMS(
+    `+63${schedule.beautician.contact_number.substring(STATUSCODE.ONE)}`,
+    smsMessage
+  );
 
   return schedule;
 };
@@ -77,20 +79,22 @@ exports.createScheduleData = async (req, res) => {
   });
 
   const populatedSchedule = await Schedule.findById(schedule._id).populate(
-    "beautician",
+    RESOURCE.BEAUTICIAN,
     "name contact_number"
   );
 
   const smsMessage = `Dear ${populatedSchedule.beautician.name}, Leave schedule created. Please wait for the admin to confirm.`;
   console.log(smsMessage);
   sendSMS(
-    `+63${populatedSchedule.beautician.contact_number.substring(1)}`,
+    `+63${populatedSchedule.beautician.contact_number.substring(
+      STATUSCODE.ONE
+    )}`,
     smsMessage
   );
 
   setTimeout(async () => {
     const updatedSchedule = await Schedule.findById(schedule._id).populate(
-      "beautician",
+      RESOURCE.BEAUTICIAN,
       "name contact_number"
     );
 
@@ -98,13 +102,15 @@ exports.createScheduleData = async (req, res) => {
       const denialMessage = `Dear ${updatedSchedule.beautician.name}, your leave request has been denied. Sorry, you can't have a leave.`;
       console.log(denialMessage);
       sendSMS(
-        `+63${updatedSchedule.beautician.contact_number.substring(1)}`,
+        `+63${updatedSchedule.beautician.contact_number.substring(
+          STATUSCODE.ONE
+        )}`,
         denialMessage
       );
 
       await Schedule.findByIdAndDelete(schedule._id);
     }
-  }, 2 * 24 * 60 * 60 * 1000);
+  }, 2 * 24 * 60 * 60 * 1000); // 2 days
   // }, 60 * 1000);
 
   return { schedule: populatedSchedule };
@@ -144,7 +150,7 @@ exports.updateScheduleData = async (req, res, id) => {
   );
 
   const updatedSchedule = await Schedule.findById(id)
-    .populate({ path: "beautician", select: "name" })
+    .populate({ path: RESOURCE.BEAUTICIAN, select: "name" })
     .lean()
     .exec();
 
@@ -192,7 +198,7 @@ exports.updateScheduleAdminData = async (req, res, id) => {
   );
 
   const updatedSchedule = await Schedule.findById(id)
-    .populate({ path: "beautician", select: "name" })
+    .populate({ path: RESOURCE.BEAUTICIAN, select: "name" })
     .lean()
     .exec();
 
@@ -207,7 +213,7 @@ exports.deleteConfirmData = async (id) => {
     throw new ErrorHandler(`Invalid schedule ID: ${id}`);
 
   const schedule = await Schedule.findById(id).populate(
-    "beautician",
+    RESOURCE.BEAUTICIAN,
     "name contact_number"
   );
 
@@ -217,7 +223,7 @@ exports.deleteConfirmData = async (id) => {
     const smsMessage = `Dear ${schedule.beautician.name}, your leave request has been denied. Sorry, you can't have a leave.`;
     console.log(smsMessage);
     sendSMS(
-      `+63${schedule.beautician.contact_number.substring(1)}`,
+      `+63${schedule.beautician.contact_number.substring(STATUSCODE.ONE)}`,
       smsMessage
     );
   }
@@ -243,7 +249,7 @@ exports.deleteScheduleData = async (id) => {
     Schedule.deleteOne({
       _id: id,
     })
-      .populate({ path: "beautician", select: "name" })
+      .populate({ path: RESOURCE.BEAUTICIAN, select: "name" })
       .lean()
       .exec(),
   ]);
