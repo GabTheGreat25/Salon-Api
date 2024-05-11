@@ -1,11 +1,12 @@
 const Time = require("../models/time");
 const ErrorHandler = require("../utils/errorHandler");
 const mongoose = require("mongoose");
+const { STATUSCODE } = require("../constants/index");
 
 exports.getAllTimesData = async () => {
   const times = await Time.find()
     .sort({
-      createdAt: -1,
+      createdAt: STATUSCODE.NEGATIVE_ONE,
     })
     .lean()
     .exec();
@@ -88,6 +89,7 @@ exports.deleteTimeData = async (id) => {
   const time = await Time.findOne({
     _id: id,
   });
+
   if (!time) throw new ErrorHandler(`Time not found with ID: ${id}`);
 
   await Promise.all([
