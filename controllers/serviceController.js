@@ -51,7 +51,7 @@ exports.createNewService = [
 
     return SuccessHandler(
       res,
-      `New service of ${service.service_name} is created with ID ${service?._id}`,
+      `New service of ${service.service_name} is created`,
       service
     );
   }),
@@ -78,7 +78,7 @@ exports.updateService = [
 
     return SuccessHandler(
       res,
-      `Service ${service?.service_name} with ID ${service?._id} is updated`,
+      `Service ${service?.service_name} is updated`,
       service
     );
   }),
@@ -91,7 +91,7 @@ exports.deleteService = asyncHandler(async (req, res, next) => {
     ? next(new ErrorHandler("No service found"))
     : SuccessHandler(
         res,
-        `Service ${service?.service_name} with ID ${service?._id} is deleted`,
+        `Service ${service?.service_name} is deleted`,
         service
       );
 });
