@@ -32,11 +32,7 @@ exports.createNewMonth = [
   asyncHandler(async (req, res, next) => {
     const month = await monthsService.createMonthData(req);
 
-    return SuccessHandler(
-      res,
-      `Created new Month with an ID ${month?._id}`,
-      month
-    );
+    return SuccessHandler(res, `Created new Month`, month);
   }),
 ];
 
@@ -45,7 +41,7 @@ exports.updateMonth = [
   asyncHandler(async (req, res, next) => {
     const month = await monthsService.updateMonthData(req, res, req.params.id);
 
-    return SuccessHandler(res, `Month with ID ${month?._id} is updated`, month);
+    return SuccessHandler(res, `Month is updated`, month);
   }),
 ];
 
@@ -54,9 +50,5 @@ exports.deleteMonth = asyncHandler(async (req, res, next) => {
 
   return !month
     ? next(new ErrorHandler("No month found"))
-    : SuccessHandler(
-        res,
-        `Month ${month?.name} with ID ${month?._id} is deleted`,
-        month
-      );
+    : SuccessHandler(res, `Month ${month?.name} is deleted`, month);
 });
