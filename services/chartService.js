@@ -11,44 +11,15 @@ const { RESOURCE } = require("../constants/index");
 const moment = require("moment");
 
 exports.getAllServiceTypesData = async () => {
-  // const startDate = moment().startOf("week").toDate();
-  // const endDate = moment().endOf("week").toDate();
-
-  // const serviceCounts = await Appointment.aggregate([
-  //   {
-  //     $lookup: {
-  //       from: "services",
-  //       localField: "service",
-  //       foreignField: "_id",
-  //       as: "serviceDetails",
-  //     },
-  //   },
-  //   {
-  //     $unwind: "$serviceDetails",
-  //   },
-  //   {
-  //     $match: {
-  //       "serviceDetails.type": {
-  //         $in: ["Hands", "Hair", "Feet", "Facial", "Body", "Eyelash"],
-  //       },
-  //       date: { $gte: startDate, $lte: endDate },
-  //     },
-  //   },
-  //   {
-  //     $group: {
-  //       _id: { $dateToString: { format: "%Y-%m-%d", date: "$date" } },
-  //       serviceType: { $first: "$serviceDetails.type" },
-  //       count: { $sum: 1 },
-  //     },
-  //   },
-  //   {
-  //     $sort: { _id: 1 },
-  //   },
-  // ]).exec();
-
-  // return serviceCounts;
+  const startDate = moment().startOf("week").toDate();
+  const endDate = moment().endOf("week").toDate();
 
   const serviceCounts = await Appointment.aggregate([
+    {
+      $match: {
+        date: { $gte: startDate, $lte: endDate },
+      },
+    },
     {
       $lookup: {
         from: "services",
@@ -76,48 +47,21 @@ exports.getAllServiceTypesData = async () => {
     {
       $sort: { _id: 1 },
     },
-  ]).exec();
+  ]);
 
   return serviceCounts;
 };
 
 exports.getAppointmentCustomerData = async () => {
-  // const startDate = moment().startOf("week").toDate();
-  // const endDate = moment().endOf("week").toDate();
-
-  // const customerCounts = await Appointment.aggregate([
-  //   {
-  //     $lookup: {
-  //       from: "information",
-  //       localField: "customer",
-  //       foreignField: "_id",
-  //       as: "customerDetails",
-  //     },
-  //   },
-  //   {
-  //     $unwind: "$customerDetails",
-  //   },
-  //   {
-  //     $match: {
-  //       "customerDetails.description": { $in: ["Male", "Female"] },
-  //       date: { $gte: startDate, $lte: endDate },
-  //     },
-  //   },
-  //   {
-  //     $group: {
-  //       _id: { $dateToString: { format: "%Y-%m-%d", date: "$date" } },
-  //       gender: { $first: "$customerDetails.description" },
-  //       count: { $sum: 1 },
-  //     },
-  //   },
-  //   {
-  //     $sort: { _id: 1 },
-  //   },
-  // ]);
-
-  // return customerCounts;
+  const startDate = moment().startOf("week").toDate();
+  const endDate = moment().endOf("week").toDate();
 
   const customerCounts = await Appointment.aggregate([
+    {
+      $match: {
+        date: { $gte: startDate, $lte: endDate },
+      },
+    },
     {
       $lookup: {
         from: RESOURCE.INFORMATION,
@@ -148,75 +92,6 @@ exports.getAppointmentCustomerData = async () => {
 };
 
 exports.logBookData = async () => {
-  // const logbook = await LogBook.aggregate([
-  //   {
-  //     $match: {
-  //       status: {
-  //         $in: [
-  //           "Borrowed",
-  //           "Returned",
-  //           "Returned With Missing",
-  //           "Returned With Damage",
-  //           "Returned Damage & Missing",
-  //         ],
-  //       },
-  //     },
-  //   },
-  //   {
-  //     $unwind: "$equipment",
-  //   },
-  //   {
-  //     $group: {
-  //       _id: null,
-  //       totalBorrowed: {
-  //         $sum: {
-  //           $cond: [
-  //             { $eq: ["$status", "Borrowed"] },
-  //             "$equipment.borrow_quantity",
-  //             0,
-  //           ],
-  //         },
-  //       },
-  //       totalReturned: {
-  //         $sum: {
-  //           $cond: [
-  //             { $eq: ["$status", "Returned"] },
-  //             "$equipment.borrow_quantity",
-  //             0,
-  //           ],
-  //         },
-  //       },
-  //       totalReturnedWithMissing: {
-  //         $sum: {
-  //           $cond: [
-  //             { $eq: ["$status", "Returned With Missing"] },
-  //             "$equipment.borrow_quantity",
-  //             0,
-  //           ],
-  //         },
-  //       },
-  //       totalReturnedWithDamage: {
-  //         $sum: {
-  //           $cond: [
-  //             { $eq: ["$status", "Returned With Damage"] },
-  //             "$equipment.borrow_quantity",
-  //             0,
-  //           ],
-  //         },
-  //       },
-  //       totalReturnedDamageMissing: {
-  //         $sum: {
-  //           $cond: [
-  //             { $eq: ["$status", "Returned Damage & Missing"] },
-  //             "$equipment.borrow_quantity",
-  //             0,
-  //           ],
-  //         },
-  //       },
-  //     },
-  //   },
-  // ]);
-
   const logbook = await LogBook.aggregate([
     {
       $match: {
@@ -239,12 +114,20 @@ exports.logBookData = async () => {
         _id: "$status",
         totalBorrowed: {
           $sum: {
-            $cond: [{ $eq: ["$status", "Borrowed"] }, "$equipment.borrow_quantity", 0],
+            $cond: [
+              { $eq: ["$status", "Borrowed"] },
+              "$equipment.borrow_quantity",
+              0,
+            ],
           },
         },
         totalReturned: {
           $sum: {
-            $cond: [{ $eq: ["$status", "Returned"] }, "$equipment.borrow_quantity", 0],
+            $cond: [
+              { $eq: ["$status", "Returned"] },
+              "$equipment.borrow_quantity",
+              0,
+            ],
           },
         },
         totalReturnedWithMissing: {
@@ -275,7 +158,7 @@ exports.logBookData = async () => {
           },
         },
         equipmentNames: {
-          $push: "$equipment.equipment_name", 
+          $push: "$equipment.equipment_name",
         },
       },
     },
@@ -307,7 +190,26 @@ exports.equipmentReportData = async () => {
 };
 
 exports.getAppointmentReportData = async () => {
+  const startDate = moment().startOf("week").toDate();
+  const endDate = moment().endOf("week").toDate();
+
   const status = await Transaction.aggregate([
+    {
+      $lookup: {
+        from: "appointments",
+        localField: "appointment",
+        foreignField: "_id",
+        as: "appointmentDetails",
+      },
+    },
+    {
+      $unwind: "$appointmentDetails",
+    },
+    {
+      $match: {
+        "appointmentDetails.date": { $gte: startDate, $lte: endDate },
+      },
+    },
     {
       $group: {
         _id: "$status",
@@ -320,7 +222,15 @@ exports.getAppointmentReportData = async () => {
 };
 
 exports.getAppointmentSaleData = async () => {
+  const startDate = moment().startOf("week").toDate();
+  const endDate = moment().endOf("week").toDate();
+
   const totalAppointmentPrice = await Appointment.aggregate([
+    {
+      $match: {
+        date: { $gte: startDate, $lte: endDate },
+      },
+    },
     {
       $group: {
         _id: null,
@@ -333,7 +243,15 @@ exports.getAppointmentSaleData = async () => {
 };
 
 exports.getDeliveryTypeData = async () => {
+  const startDate = moment().startOf("week").toDate();
+  const endDate = moment().endOf("week").toDate();
+
   const productTypeStatusCounts = await Delivery.aggregate([
+    {
+      $match: {
+        date: { $gte: startDate, $lte: endDate },
+      },
+    },
     {
       $unwind: "$type",
     },
@@ -369,7 +287,15 @@ exports.getProductCountData = async () => {
 };
 
 exports.getScheduleCountsData = async () => {
+  const startDate = moment().startOf("week").toDate();
+  const endDate = moment().endOf("week").toDate();
+
   const scheduleCounts = await Schedule.aggregate([
+    {
+      $match: {
+        date: { $gte: startDate, $lte: endDate },
+      },
+    },
     {
       $group: {
         _id: "$status",
@@ -398,9 +324,24 @@ exports.getRatingCountsData = async () => {
 };
 
 exports.getPaymentMethodCountData = async () => {
+  const startDate = moment().startOf("week").toDate();
+  const endDate = moment().endOf("week").toDate();
+
   const paymentCounts = await Transaction.aggregate([
     {
+      $lookup: {
+        from: "appointments",
+        localField: "appointment",
+        foreignField: "_id",
+        as: "appointmentDetails",
+      },
+    },
+    {
+      $unwind: "$appointmentDetails",
+    },
+    {
       $match: {
+        "appointmentDetails.date": { $gte: startDate, $lte: endDate },
         payment: { $in: ["Cash", "Maya"] },
       },
     },
@@ -490,15 +431,30 @@ exports.getReservationReportData = async () => {
 };
 
 exports.transactionCustomerTypeData = async () => {
+  const startDate = moment().startOf('week').toDate();
+  const endDate = moment().endOf('week').toDate();
+
   const customer = await Transaction.aggregate([
     {
+      $lookup: {
+        from: 'appointments',
+        localField: 'appointment',
+        foreignField: '_id',
+        as: 'appointmentDetails',
+      },
+    },
+    {
+      $unwind: '$appointmentDetails',
+    },
+    {
       $match: {
-        customer_type: { $in: ["Customer", "Pwd", "Senior"] },
+        'appointmentDetails.date': { $gte: startDate, $lte: endDate },
+        customer_type: { $in: ['Customer', 'Pwd', 'Senior'] },
       },
     },
     {
       $group: {
-        _id: "$customer_type",
+        _id: '$customer_type',
         count: { $sum: 1 },
       },
     },

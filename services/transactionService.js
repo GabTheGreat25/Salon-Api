@@ -371,24 +371,22 @@ exports.updateTransactionData = async (req, res, id) => {
           let usedQty = STATUSCODE.ZERO;
 
           const isPieces = product?.volume_description?.includes("Pieces");
+          const isEmpty = emptyVolume == STATUSCODE.ZERO;
+          const isLeft = consumeSession > newVolume;
 
           if (isPieces) {
+            restock = productStock.remaining_volume =
+            productStock.remaining_volume;
             reducedQuantity = productStock.quantity - consumeSession;
             usedQty = consumeSession;
-          }
-
-          const isEmpty = emptyVolume == STATUSCODE.ZERO;
-          if (isEmpty) {
+          } else if (isEmpty) {
             restock = productStock.remaining_volume =
-              productStock.product_volume;
+            productStock.product_volume;
             reducedQuantity = productStock.quantity - STATUSCODE.ONE;
             usedQty = STATUSCODE.ONE;
-          }
-
-          const isLeft = consumeSession > newVolume;
-          if (isLeft) {
+          } else if (isLeft) {
             restock = productStock.remaining_volume =
-              productStock.product_volume;
+            productStock.product_volume;
             reducedQuantity = productStock.quantity - STATUSCODE.ONE;
             usedQty = STATUSCODE.ONE;
             const leftVolume = consumeSession * 0.5;
