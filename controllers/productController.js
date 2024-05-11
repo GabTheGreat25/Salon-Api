@@ -49,7 +49,7 @@ exports.createNewProduct = [
 
     return SuccessHandler(
       res,
-      `Created new Product ${product?.product_name} with an ID ${product?._id}`,
+      `Created new Product ${product?.product_name}`,
       product
     );
   }),
@@ -73,7 +73,7 @@ exports.updateProduct = [
 
     return SuccessHandler(
       res,
-      `Product ${product?.product_name} with ID ${product?._id} is updated`,
+      `Product ${product?.product_name} is updated`,
       product
     );
   }),
@@ -86,7 +86,7 @@ exports.deleteProduct = asyncHandler(async (req, res, next) => {
     ? next(new ErrorHandler("No product found"))
     : SuccessHandler(
         res,
-        `Product ${product?.product_name} with ID ${product?._id} is deleted`,
+        `Product ${product?.product_name} is deleted`,
         product
       );
 });
