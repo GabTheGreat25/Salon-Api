@@ -59,7 +59,6 @@ app.use(
   brands,
   exclusions,
   hiring,
-  charts,
   auth,
   users,
   appointments,
@@ -77,7 +76,8 @@ app.use(
   founds,
   logbooks,
   equipments,
-  inventory
+  inventory,
+  charts,
 );
 
 app.all("*", (req, res) => {
