@@ -370,23 +370,27 @@ exports.updateTransactionData = async (req, res, id) => {
           let emptyVolume = productStock.remaining_volume;
           let usedQty = STATUSCODE.ZERO;
 
-          const isPieces = product?.volume_description?.includes("Pieces");
-          const isEmpty = emptyVolume == STATUSCODE.ZERO;
-          const isLeft = consumeSession > newVolume;
 
+          const isPieces = product?.volume_description?.includes("Pieces");
           if (isPieces) {
-            restock = productStock.remaining_volume =
-            productStock.remaining_volume;
-            reducedQuantity = productStock.quantity - consumeSession;
+            productStock.remaining_volume - consumeSession;
+            productStock.quantity = productStock.quantity - consumeSession;
             usedQty = consumeSession;
-          } else if (isEmpty) {
+            reducedQuantity =  productStock.quantity - consumeSession;
+          }
+
+          const isEmpty = emptyVolume == STATUSCODE.ZERO;
+          if (isEmpty) {
             restock = productStock.remaining_volume =
-            productStock.product_volume;
+              productStock.product_volume;
             reducedQuantity = productStock.quantity - STATUSCODE.ONE;
             usedQty = STATUSCODE.ONE;
-          } else if (isLeft) {
+          }
+
+          const isLeft = consumeSession > newVolume;
+          if (isLeft) {
             restock = productStock.remaining_volume =
-            productStock.product_volume;
+              productStock.product_volume;
             reducedQuantity = productStock.quantity - STATUSCODE.ONE;
             usedQty = STATUSCODE.ONE;
             const leftVolume = consumeSession * 0.5;
@@ -433,8 +437,8 @@ exports.updateTransactionData = async (req, res, id) => {
             product_consume: consumeSession,
             old_volume: product.remaining_volume,
             remained_volume: emptyVolume,
-            old_quantity: productStock.quantity,
-            remained_quantity: reducedQuantity,
+            old_quantity: isPieces ? product.remaining_volume : productStock.quantity,
+            remained_quantity: isPieces ? productStock.quantity : reducedQuantity,
             deducted_quantity: usedQty,
           });
         }
