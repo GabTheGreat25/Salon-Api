@@ -34,11 +34,7 @@ exports.createBrand = [
   asyncHandler(async (req, res, next) => {
     const brand = await brandServices.createBrandData(req);
 
-    return SuccessHandler(
-      res,
-      `Created new brand ${brand?.brand_name} with ID ${brand?._id}`,
-      brand
-    );
+    return SuccessHandler(res, `Created new brand ${brand?.brand_name}`, brand);
   }),
 ];
 
@@ -47,11 +43,7 @@ exports.updateBrand = [
   asyncHandler(async (req, res, next) => {
     const brand = await brandServices.updateBrandData(req, res, req.params.id);
 
-    return SuccessHandler(
-      res,
-      `Test ${brand?.brand_name} with ID ${brand?._id} is updated`,
-      brand
-    );
+    return SuccessHandler(res, `Test ${brand?.brand_name} is updated`, brand);
   }),
 ];
 
@@ -60,9 +52,5 @@ exports.deleteBrand = asyncHandler(async (req, res, next) => {
 
   return !brand
     ? next(new ErrorHandler("No brand found"))
-    : SuccessHandler(
-        res,
-        `Brand ${brand?.brand_name} with ID ${brand?._id} is deleted`,
-        brand
-      );
+    : SuccessHandler(res, `Brand ${brand?.brand_name} is deleted`, brand);
 });
