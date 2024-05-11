@@ -79,7 +79,11 @@ exports.updateOptionData = async (req, res, id) => {
     throw new ErrorHandler(`Option not found with ID: ${id}`);
 
   let image = existingOption.image || [];
-  if (req.files && Array.isArray(req.files) && req.files.length > 0) {
+  if (
+    req.files &&
+    Array.isArray(req.files) &&
+    req.files.length > STATUSCODE.ZERO
+  ) {
     image = await Promise.all(
       req.files.map(async (file) => {
         const result = await cloudinary.uploader.upload(file.path, {
@@ -93,7 +97,7 @@ exports.updateOptionData = async (req, res, id) => {
       })
     );
 
-    if (existingOption.image && existingOption.image.length > 0) {
+    if (existingOption.image && existingOption.image.length > STATUSCODE.ZERO) {
       await cloudinary.api.delete_resources(
         existingOption.image.map((image) => image.public_id)
       );
