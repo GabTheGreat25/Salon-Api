@@ -1,5 +1,5 @@
 const mongoose = require("mongoose");
-const { RESOURCE } = require("../constants/index");
+const { RESOURCE, STATUSCODE } = require("../constants/index");
 
 const appointmentSchema = new mongoose.Schema({
   service: [
@@ -41,7 +41,7 @@ const appointmentSchema = new mongoose.Schema({
   price: {
     type: Number,
     required: [true, "Please enter a total price"],
-    min: 0,
+    min: STATUSCODE.ONE,
   },
   rebookReason: {
     type: String,
