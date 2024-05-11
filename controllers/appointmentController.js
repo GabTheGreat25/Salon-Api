@@ -49,7 +49,7 @@ exports.createNewAppointment = [
 
     return SuccessHandler(
       res,
-      `New appointment of ${appointment?.customer?.name} created with an ID ${appointment?._id}`,
+      `New appointment of ${appointment?.customer?.name}`,
       { appointment, transaction, verification }
     );
   }),
@@ -78,7 +78,7 @@ exports.updateAppointment = [
 
     return SuccessHandler(
       res,
-      `Appointment of ${appointment?.customer?.name} with ID ${appointment?._id} is updated`,
+      `Appointment of ${appointment?.customer?.name} is updated`,
       appointment
     );
   }),
@@ -107,7 +107,7 @@ exports.updateScheduleAppointment = [
 
     return SuccessHandler(
       res,
-      `Appointment schedule of ${appointment?.customer?.name} with ID ${appointment?._id} is updated`,
+      `Appointment schedule of ${appointment?.customer?.name} is updated`,
       appointment
     );
   }),
@@ -125,7 +125,7 @@ exports.updateBeauticianAppointment = [
 
     return SuccessHandler(
       res,
-      `Appointment of ${appointment?.customer?.name} with ID ${appointment?._id} is updated`,
+      `Appointment of ${appointment?.customer?.name} is updated`,
       appointment
     );
   }),
@@ -144,7 +144,7 @@ exports.deleteAppointment = asyncHandler(async (req, res, next) => {
     ? next(new ErrorHandler("No appointment found"))
     : SuccessHandler(
         res,
-        `Appointment of ${customerName} with ID ${appointment?._id} is deleted`,
+        `Appointment of ${customerName} is deleted`,
         appointment
       );
 });
@@ -179,7 +179,7 @@ exports.getSingleRescheduleAppointment = asyncHandler(
       ? next(new ErrorHandler("No appointment found"))
       : SuccessHandler(
           res,
-          `Appointment of ${appointment?.customer?.name} with ID ${appointment?._id} retrieved`,
+          `Appointment of ${appointment?.customer?.name} retrieved`,
           appointment
         );
   }
