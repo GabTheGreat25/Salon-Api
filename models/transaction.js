@@ -1,5 +1,5 @@
 const mongoose = require("mongoose");
-const { RESOURCE } = require("../constants/index");
+const { RESOURCE, STATUSCODE } = require("../constants/index");
 
 const transactionSchema = new mongoose.Schema({
   appointment: {
@@ -57,7 +57,7 @@ const transactionSchema = new mongoose.Schema({
   },
   reservationFee: {
     type: Number,
-    default: 0,
+    default: STATUSCODE.ZERO,
   },
 });
 
