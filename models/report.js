@@ -1,5 +1,5 @@
 const mongoose = require("mongoose");
-const { RESOURCE } = require("../constants/index");
+const { RESOURCE, STATUSCODE } = require("../constants/index");
 
 const reportSchema = new mongoose.Schema({
   user: {
@@ -27,26 +27,33 @@ const reportSchema = new mongoose.Schema({
   damage_quantity: {
     type: Number,
     required: false,
-    default: 0,
+    default: STATUSCODE.ZERO,
   },
   quantity_found: {
     type: Number,
     required: false,
-    default: 0,
+    default: STATUSCODE.ZERO,
   },
   status: {
     type: String,
-    enum: ["Missing","Damage","Partially Found", "Found", "Missing & Damage", "Found Damage"],
+    enum: [
+      "Missing",
+      "Damage",
+      "Partially Found",
+      "Found",
+      "Missing & Damage",
+      "Found Damage",
+    ],
   },
   input_qty: {
     type: Number,
     required: false,
-    default: 0,
+    default: STATUSCODE.ZERO,
   },
-  initial_found: {  
+  initial_found: {
     type: Number,
     required: false,
-  }
+  },
 });
 
 module.exports = mongoose.model(RESOURCE.REPORT, reportSchema);
