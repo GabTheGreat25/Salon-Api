@@ -1,11 +1,10 @@
 const mongoose = require("mongoose");
-const { RESOURCE } = require("../constants/index");
+const { RESOURCE, STATUSCODE } = require("../constants/index");
 
 const equipmentSchema = new mongoose.Schema({
   equipment_name: {
     type: String,
     required: [true, "Equipment name required"],
-    maxLength: [60, "Equipment name must not exceed to 60 characters"],
   },
   equipment_status: {
     type: String,
@@ -15,7 +14,7 @@ const equipmentSchema = new mongoose.Schema({
   equipment_price: {
     type: Number,
     required: [true, "Equipment price required"],
-    default: 0,
+    default: STATUSCODE.ZERO,
   },
   quantity: {
     type: Number,
@@ -24,22 +23,22 @@ const equipmentSchema = new mongoose.Schema({
   missing_qty: {
     type: Number,
     required: false,
-    default: 0,
+    default: STATUSCODE.ZERO,
   },
   damage_qty: {
     type: Number,
     required: false,
-    default: 0,
+    default: STATUSCODE.ZERO,
   },
   borrow_qty: {
     type: Number,
     required: false,
-    default: 0,
+    default: STATUSCODE.ZERO,
   },
   found_qty: {
     type: Number,
     required: false,
-    default: 0,
+    default: STATUSCODE.ZERO,
   },
   status: {
     type: String,
