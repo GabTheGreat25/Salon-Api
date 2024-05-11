@@ -1,11 +1,12 @@
 const Exclusion = require("../models/exclusion");
 const ErrorHandler = require("../utils/errorHandler");
 const mongoose = require("mongoose");
+const { STATUSCODE } = require("../constants/index");
 
 exports.getAllExclusionData = async () => {
   const exclusions = await Exclusion.find()
     .sort({
-      createdAt: -1,
+      createdAt: STATUSCODE.NEGATIVE_ONE,
     })
     .lean()
     .exec();
