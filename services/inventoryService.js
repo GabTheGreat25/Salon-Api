@@ -1,20 +1,20 @@
 const Inventory = require("../models/inventory");
 const ErrorHandler = require("../utils/errorHandler");
-const { RESOURCE } = require("../constants/index");
+const { RESOURCE, STATUSCODE } = require("../constants/index");
 
 exports.getAllInventoryData = async () => {
   const inventories = await Inventory.find()
-    .sort({ createdAt: -1 })
+    .sort({ createdAt: STATUSCODE.NEGATIVE_ONE })
     .populate({
       path: RESOURCE.APPOINTMENT,
       select: "_id date time",
     })
     .populate({
-      path: "service",
+      path: RESOURCE.SERVICE,
       select: "service_name image",
     })
     .populate({
-      path: "product",
+      path: RESOURCE.PRODUCT,
       select: "product_name volume_description image",
     })
     .lean()
@@ -33,11 +33,11 @@ exports.getSingleInventoryData = async (id) => {
       select: "_id date time",
     })
     .populate({
-      path: "service",
+      path: RESOURCE.SERVICE,
       select: "service_name",
     })
     .populate({
-      path: "product",
+      path: RESOURCE.PRODUCT,
       select: "product_name volume_description",
     })
     .lean()
