@@ -6,7 +6,7 @@ const { STATUSCODE } = require("../constants/index");
 exports.getAllHiringData = async () => {
   const hiring = await Hiring.find()
     .sort({
-      createdAt: -1,
+      createdAt: STATUSCODE.NEGATIVE_ONE,
     })
     .lean()
     .exec();
@@ -26,7 +26,14 @@ exports.getSingleHiringData = async (id) => {
 };
 
 exports.createHiringData = async (req, res) => {
-  await Hiring.deleteOne({}, { sort: { createdAt: -1 } });
+  await Hiring.deleteOne(
+    {},
+    {
+      sort: {
+        createdAt: STATUSCODE.NEGATIVE_ONE,
+      },
+    }
+  );
 
   const newHiring = await Hiring.create({
     ...req.body,
