@@ -11,7 +11,9 @@ exports.getAllInventories = asyncHandler(async (req, res, next) => {
     ? next(new ErrorHandler("No inventories found"))
     : SuccessHandler(
         res,
-        `Inventory with Appointment ID ${inventories.map((a) => a.appointment?._id).join(", ")} and Inventory ID ${inventories
+        `Inventory with Appointment ID ${inventories
+          .map((a) => a.appointment?._id)
+          .join(", ")} and Inventory ID ${inventories
           .map((i) => i._id)
           .join(", ")} retrieved`,
         inventories
@@ -19,13 +21,15 @@ exports.getAllInventories = asyncHandler(async (req, res, next) => {
 });
 
 exports.getSingleInventory = asyncHandler(async (req, res, next) => {
-    const inventory = await inventoryService.getSingleInventoryData(req.params?.id);
-  
-    return !inventory
-      ? next(new ErrorHandler("No inventory found"))
-      : SuccessHandler(
-          res,
-          `inventory with Appointment ID ${inventory?.appointment?._id} with inventory ID ${inventory?._id} retrieved`,
-          inventory
-        );
-  });
+  const inventory = await inventoryService.getSingleInventoryData(
+    req.params?.id
+  );
+
+  return !inventory
+    ? next(new ErrorHandler("No inventory found"))
+    : SuccessHandler(
+        res,
+        `inventory with Appointment ID ${inventory?.appointment?._id} retrieved`,
+        inventory
+      );
+});
