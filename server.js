@@ -38,6 +38,7 @@ const inventory = require("./routes/inventory");
 const { STATUSCODE } = require("./constants/index");
 const connectDB = require("./config/connectDB");
 const PORT = process.env.PORT || 4000;
+const { RESOURCE } = require("./constants/index");
 
 connectDB();
 
@@ -51,7 +52,7 @@ app.use("/", express.static(path.join(__dirname, "/public")));
 app.use("/", require("./routes/root"));
 
 app.use(
-  "/api/v1",
+  RESOURCE.API || "/api/v1",
   test,
   times,
   feedbacks,
@@ -94,9 +95,6 @@ app.use(errorHandler);
 
 mongoose.connection.once("open", () => {
   app.listen(PORT);
-  console.log(
-    `Connected to MongoDB. Click here to view: http://localhost:${PORT}`
-  );
   logEvents(
     `Connected to MongoDB. Click here to view: http://localhost:${PORT}`,
     "mongoLog.log"
@@ -104,7 +102,6 @@ mongoose.connection.once("open", () => {
 });
 
 mongoose.connection.on("error", (err) => {
-  console.log(`${err.no}: ${err.code}\t${err.syscall}\t${err.hostname}`);
   logEvents(
     `${err.no}: ${err.code}\t${err.syscall}\t${err.hostname}`,
     "mongoLog.log"
