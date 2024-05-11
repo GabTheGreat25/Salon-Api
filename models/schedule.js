@@ -1,5 +1,5 @@
 const mongoose = require("mongoose");
-const { RESOURCE } = require("../constants/index");
+const { RESOURCE, STATUSCODE } = require("../constants/index");
 
 const scheduleSchema = new mongoose.Schema({
   beautician: {
@@ -25,7 +25,7 @@ const scheduleSchema = new mongoose.Schema({
     required: function () {
       return this.isLeave;
     },
-    maxLength: [60, "Leave note must not exceed 60 characters"],
+    maxLength: [STATUSCODE.SIXTY, "Leave note must not exceed 60 characters"],
   },
   leaveNoteConfirmed: {
     type: Boolean,
