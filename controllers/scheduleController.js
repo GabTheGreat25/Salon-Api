@@ -48,7 +48,7 @@ exports.createNewSchedule = [
 
     return SuccessHandler(
       res,
-      `New schedule of ${schedule?.beautician?.name} created with an ID ${schedule?._id}`,
+      `New schedule of ${schedule?.beautician?.name} created`,
       schedule
     );
   }),
@@ -64,7 +64,7 @@ exports.updateSchedule = [
 
     return SuccessHandler(
       res,
-      `Schedule of ${updatedSchedule?.beautician?.name} with ID ${updatedSchedule?._id} is updated`,
+      `Schedule of ${updatedSchedule?.beautician?.name} is updated`,
       { updatedSchedule }
     );
   }),
@@ -80,7 +80,7 @@ exports.updateScheduleAdmin = [
 
     return SuccessHandler(
       res,
-      `Schedule of ${updatedSchedule?.beautician?.name} with ID ${updatedSchedule?._id} is updated`,
+      `Schedule of ${updatedSchedule?.beautician?.name} is updated`,
       { updatedSchedule }
     );
   }),
@@ -95,11 +95,7 @@ exports.deleteConfirm = asyncHandler(async (req, res, next) => {
 
   return !schedule
     ? next(new ErrorHandler("No schedule found"))
-    : SuccessHandler(
-        res,
-        `Schedule of ${beauticianName} with ID ${schedule?._id} is deleted`,
-        schedule
-      );
+    : SuccessHandler(res, `Schedule of ${beauticianName} is deleted`, schedule);
 });
 
 exports.deleteSchedule = asyncHandler(async (req, res, next) => {
@@ -111,9 +107,5 @@ exports.deleteSchedule = asyncHandler(async (req, res, next) => {
 
   return !schedule
     ? next(new ErrorHandler("No schedule found"))
-    : SuccessHandler(
-        res,
-        `Schedule of ${beauticianName} with ID ${schedule?._id} is deleted`,
-        schedule
-      );
+    : SuccessHandler(res, `Schedule of ${beauticianName} is deleted`, schedule);
 });
