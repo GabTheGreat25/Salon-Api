@@ -51,91 +51,90 @@ exports.getAppointmentSale = AsyncHandler(async (req, res, next) => {
     : SuccessHandler(res, "Appointment Sales per week Found", sales);
 });
 
-exports.getDeliveryType = AsyncHandler(async(req, res, next)=>{
+exports.getDeliveryType = AsyncHandler(async (req, res, next) => {
   const delivery = await chartService.getDeliveryTypeData();
 
   return !delivery
-  ? next(new ErrorHandler("Delivery Report Not Found"))
-  : SuccessHandler(res, "Delivery Reports Found", delivery);
+    ? next(new ErrorHandler("Delivery Report Not Found"))
+    : SuccessHandler(res, "Delivery Reports Found", delivery);
 });
 
-exports.getProductType = AsyncHandler(async(req, res, next)=>{
+exports.getProductType = AsyncHandler(async (req, res, next) => {
   const product = await chartService.getProductCountData();
 
   return !product
-  ? next(new ErrorHandler("Product Reports Not Found"))
-  : SuccessHandler(res, "Product Report Found", product);
+    ? next(new ErrorHandler("Product Reports Not Found"))
+    : SuccessHandler(res, "Product Report Found", product);
 });
 
-exports.getScheduleCount = AsyncHandler(async(req, res, next)=>{
+exports.getScheduleCount = AsyncHandler(async (req, res, next) => {
   const schedule = await chartService.getScheduleCountsData();
 
-  return !schedule 
-  ? next(new ErrorHandler("Schedule Report not Found"))
-  : SuccessHandler(res, "Schedule Reports Found", schedule);
+  return !schedule
+    ? next(new ErrorHandler("Schedule Report not Found"))
+    : SuccessHandler(res, "Schedule Reports Found", schedule);
 });
 
-exports.getCommentRating = AsyncHandler(async(req, res, next)=>{
+exports.getCommentRating = AsyncHandler(async (req, res, next) => {
   const comment = await chartService.getRatingCountsData();
 
   return !comment
-  ? next(new ErrorHandler("Comment Ratings not Found"))
-  : SuccessHandler(res, "Comment Rating Found", comment);
+    ? next(new ErrorHandler("Comment Ratings not Found"))
+    : SuccessHandler(res, "Comment Rating Found", comment);
 });
 
-exports.getPaymentMethod = AsyncHandler(async(req, res, next)=>{
+exports.getPaymentMethod = AsyncHandler(async (req, res, next) => {
   const payment = await chartService.getPaymentMethodCountData();
 
   return !payment
-  ? next(new ErrorHandler("Payment Reports Not Found"))
-  : SuccessHandler(res, "Payment Reports Found", payment);
+    ? next(new ErrorHandler("Payment Reports Not Found"))
+    : SuccessHandler(res, "Payment Reports Found", payment);
 });
 
-exports.getFeedbackCount = AsyncHandler(async(req, res, next)=>{
+exports.getFeedbackCount = AsyncHandler(async (req, res, next) => {
   const feedback = await chartService.getFeedbackCountData();
 
   return !feedback
-  ? next(new ErrorHandler("No feedback found"))
-  : SuccessHandler(res, "Feedback Reports Found", feedback);
+    ? next(new ErrorHandler("No feedback found"))
+    : SuccessHandler(res, "Feedback Reports Found", feedback);
 });
 
-exports.getBrandProduct = AsyncHandler(async(req, res, next)=>{
+exports.getBrandProduct = AsyncHandler(async (req, res, next) => {
   const brand = await chartService.getBrandProductData();
 
   return !brand
-  ? next(new ErrorHandler("Brand Product Reports not found"))
-  : SuccessHandler(res, "Brand Product Reports Found", brand)
+    ? next(new ErrorHandler("Brand Product Reports not found"))
+    : SuccessHandler(res, "Brand Product Reports Found", brand);
 });
 
-exports.getAnonymousComment = AsyncHandler(async(req, res, next)=>{
+exports.getAnonymousComment = AsyncHandler(async (req, res, next) => {
   const comment = await chartService.getAnonymousCommentData();
 
   return !comment
-  ? next(new ErrorHandler("Anonymous Comment Reports Not Found"))
-  : SuccessHandler(res, "Anonymous Comment Reports Found", comment)
+    ? next(new ErrorHandler("Anonymous Comment Reports Not Found"))
+    : SuccessHandler(res, "Anonymous Comment Reports Found", comment);
 });
 
-exports.getAnonymousFeedback = AsyncHandler(async(req, res, next)=>{
+exports.getAnonymousFeedback = AsyncHandler(async (req, res, next) => {
   const feedback = await chartService.getFeedbackAnonymousData();
 
   return !feedback
-  ? next(new ErrorHandler("Anonymous feedback Reports Not Found"))
-  : SuccessHandler(res, "Anonymous feedback Reports Found", feedback)
+    ? next(new ErrorHandler("Anonymous feedback Reports Not Found"))
+    : SuccessHandler(res, "Anonymous feedback Reports Found", feedback);
 });
 
-exports.getTransactionReservation = AsyncHandler(async(req, res, next)=>{
+exports.getTransactionReservation = AsyncHandler(async (req, res, next) => {
   const reservation = await chartService.getReservationReportData();
 
   return !reservation
-  ? next(new ErrorHandler("Reservation Reports Not Found"))
-  : SuccessHandler(res, "Reservation Fee Reports Found", reservation)
+    ? next(new ErrorHandler("Reservation Reports Not Found"))
+    : SuccessHandler(res, "Reservation Fee Reports Found", reservation);
 });
 
-exports.getTransactionCustomerType = AsyncHandler(async(req, res, next)=>{
+exports.getTransactionCustomerType = AsyncHandler(async (req, res, next) => {
   const customer = await chartService.transactionCustomerTypeData();
 
   return !customer
-  ? next(new ErrorHandler("Transaction Report Customers not Found"))
-  : SuccessHandler(res, "Transaction Customer type Found", customer)
-
-})
+    ? next(new ErrorHandler("Transaction Report Customers not Found"))
+    : SuccessHandler(res, "Transaction Customer type Found", customer);
+});
