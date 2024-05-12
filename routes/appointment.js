@@ -64,13 +64,13 @@ const appointmentRoutes = [
   {
     method: METHOD.GET,
     path: PATH.BEAUTICIAN_APPOINTMENT,
-    roles: [ROLE.ADMIN, ROLE.BEAUTICIAN, ROLE.RECEPTIONIST],
+    roles: [ROLE.ADMIN, ROLE.BEAUTICIAN, ROLE.CUSTOMER, ROLE.RECEPTIONIST],
     handler: appointmentController.getBeauticianAppointment,
   },
   {
     method: METHOD.GET,
     path: PATH.BEAUTICIAN_HISTORY,
-    roles: [ROLE.ADMIN, ROLE.BEAUTICIAN, ROLE.RECEPTIONIST],
+    roles: [ROLE.ADMIN, ROLE.BEAUTICIAN, ROLE.CUSTOMER, ROLE.RECEPTIONIST],
     handler: appointmentController.getAppointmentHistory,
   },
   {

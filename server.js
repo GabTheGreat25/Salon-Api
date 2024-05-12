@@ -38,7 +38,6 @@ const inventory = require("./routes/inventory");
 const { STATUSCODE } = require("./constants/index");
 const connectDB = require("./config/connectDB");
 const PORT = process.env.PORT || 4000;
-const { RESOURCE } = require("./constants/index");
 
 connectDB();
 
@@ -52,7 +51,7 @@ app.use("/", express.static(path.join(__dirname, "/public")));
 app.use("/", require("./routes/root"));
 
 app.use(
-  RESOURCE.API || "/api/v1",
+  "/api/v1",
   test,
   times,
   feedbacks,
@@ -77,7 +76,7 @@ app.use(
   logbooks,
   equipments,
   inventory,
-  charts,
+  charts
 );
 
 app.all("*", (req, res) => {
