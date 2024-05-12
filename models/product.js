@@ -73,25 +73,4 @@ const productSchema = new mongoose.Schema({
   },
 });
 
-productSchema.pre("save", async function (next) {
-  if (this.quantity <= STATUSCODE.TEN) {
-    const getAdminUsers = async () => {
-      const admins = await User.find({ roles: ROLE.ADMIN });
-      return admins;
-    };
-
-    const admins = await getAdminUsers();
-    const adminNames = admins.map((admin) => admin.name);
-    const adminNumbers = admins.map((admin) => admin.contact_number);
-
-    const smsAdminMessage = `Product ${this.product_name} has ${this.quantity} quantity left`;
-    adminNumbers.forEach((number, index) => {
-      console.log(`Sending SMS to ${adminNames[index]} at ${number}`);
-      console.log(smsAdminMessage);
-      sendSMS(`+63${number.substring(STATUSCODE.ONE)}`, smsAdminMessage);
-    });
-  }
-  next();
-});
-
 module.exports = mongoose.model(RESOURCE.PRODUCT, productSchema);
