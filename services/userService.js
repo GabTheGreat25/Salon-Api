@@ -372,7 +372,7 @@ exports.createUserData = async (req, res) => {
 
     const smsMessage = `Dear ${
       user.name
-    }, your account has been successfully created. Please attend the meeting ${
+    }, your account has been successfully created. Please attend the meeting in ${
       new Date(req.body.date).toISOString().split("T")[STATUSCODE.ZERO]
     }  ${req.body.time} at the salon.`;
 
@@ -402,7 +402,7 @@ exports.createUserData = async (req, res) => {
 
     const smsMessage = `Dear ${
       user.name
-    }, your account has been successfully created. Please attend the meeting ${
+    }, your account has been successfully created. Please attend the meeting in ${
       new Date(req.body.date).toISOString().split("T")[STATUSCODE.ZERO]
     }  ${req.body.time} at the salon.`;
     console.log(smsMessage);

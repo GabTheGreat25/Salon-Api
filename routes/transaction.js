@@ -28,7 +28,7 @@ const transactionRoutes = [
   {
     method: METHOD.DELETE,
     path: PATH.TRANSACTION_ID,
-    roles: [ROLE.ADMIN],
+    roles: [ROLE.ADMIN, ROLE.RECEPTIONIST],
     handler: transactionController.deleteTransaction,
   },
 ];

@@ -225,7 +225,7 @@ exports.createAppointmentData = async (req, res) => {
       `+63${appointment.customer.contact_number.substring(STATUSCODE.ONE)}`,
       smsMessage
     );
-  }, Math.max(STATUSCODE.ZERO, reminderTime.getTime() - currentTimePH.valueOf()));
+  }, Math.max(STATUSCODE.ZERO, reminderTime.getTime() - currentTimePH.valueOf())); // 2hours
 
   const hasAppointmentFee = retrievedAppointment.hasAppointmentFee;
 
@@ -233,11 +233,28 @@ exports.createAppointmentData = async (req, res) => {
     setTimeout(async () => {
       const smsMessage = `Dear ${appointment.customer.name}, Your appointment has been deleted due to not paying the fee.`;
       console.log(smsMessage);
+
       sendSMS(
         `+63${appointment.customer.contact_number.substring(STATUSCODE.ONE)}`,
         smsMessage
       );
-      await deleteAppointmentAfterTimeout(appointment._id, verification);
+
+      const admins = await getAdminUsers();
+      const adminNumbers = admins.map((admin) => admin.contact_number);
+
+      const smsAdminMessage = `Dear Admin ${admins?.name},
+      This is to inform you that ${
+        appointment?.customer?.name
+      } has scheduled an Online Appointment on ${
+        new Date(appointment?.date).toISOString().split("T")[0]
+      } at exactly ${
+        appointment?.time
+      }. Please note that the customer has an appointment reminder 1 hour before their scheduled appointment time. If the customer does not attend their booked appointment, you have the option to delete their appointment. Otherwise, you can disregard this message. `;
+
+      adminNumbers.forEach((number, index) => {
+        console.log(smsAdminMessage);
+        sendSMS(`+63${number.substring(STATUSCODE.ONE)}`, smsAdminMessage);
+      });
     }, Math.max(STATUSCODE.ZERO, deletionTimeForOnlineCustomer.getTime() - currentTimePH.valueOf()));
   } else {
     setTimeout(async () => {
@@ -247,7 +264,24 @@ exports.createAppointmentData = async (req, res) => {
         `+63${appointment.customer.contact_number.substring(STATUSCODE.ONE)}`,
         smsMessage
       );
-      await deleteAppointmentAfterTimeout(appointment._id, verification);
+
+      const receptionist = await getAdminUsers();
+      const receptionistNumbers = receptionist.map((r) => r.contact_number);
+
+      const smsReceptionistMessage = `Dear ${
+        receptionist?.name
+      },This is to inform you that ${
+        appointment?.customer?.name
+      } has scheduled a Walk-In Appointment for ${
+        new Date(appointment?.date).toISOString().split("T")[0]
+      }at ${
+        appointment?.time
+      }. Please note that the appointment is in 30 minutes from now. If the customer does not attend their booked appointment, you have the option to delete their appointment. Otherwise, you can disregard this message.Best regards,`;
+
+      receptionistNumbers.forEach((number, index) => {
+        console.log(smsReceptionistMessage);
+        sendSMS(`+63${number.substring(STATUSCODE.ONE)}`, smsAdminMessage);
+      });
     }, Math.max(STATUSCODE.ZERO, deletionTimeForWalkInCustomer.getTime() - currentTimePH.valueOf()));
   }
 
