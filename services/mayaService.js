@@ -64,9 +64,9 @@ exports.createMayaCheckoutLink = async (req, res) => {
       firstName: req.body.name,
     },
     redirectUrl: {
-      success: "https://lhanhlee-salon.vercel.app/",
-      failure: "https://lhanhlee-salon.vercel.app/",
-      cancel: "https://lhanhlee-salon.vercel.app/",
+      success: "https://www.lhanlee-salon.com/",
+      failure: "https://www.lhanlee-salon.com/",
+      cancel: "https://www.lhanlee-salon.com/",
     },
     items:
       req.body.hasAppointmentFee === true
