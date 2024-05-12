@@ -83,14 +83,17 @@ exports.createScheduleData = async (req, res) => {
     "name contact_number"
   );
 
-  const smsMessage = `Dear ${populatedSchedule.beautician.name}, Leave schedule created. Please wait for the admin to confirm.`;
+  const smsMessage = `Dear ${populatedSchedule.beautician.name},
+  This message is to inform you that you have been marked as Absent by the Admin. If this absence is unexpected or if you need to request leave, please ensure to file a formal leave request with the necessary details.
+  Thank you for your attention to this matter.`;
+
   console.log(smsMessage);
-  sendSMS(
-    `+63${populatedSchedule.beautician.contact_number.substring(
-      STATUSCODE.ONE
-    )}`,
-    smsMessage
-  );
+  // sendSMS(
+  //   `+63${populatedSchedule.beautician.contact_number.substring(
+  //     STATUSCODE.ONE
+  //   )}`,
+  //   smsMessage
+  // );
 
   setTimeout(async () => {
     const updatedSchedule = await Schedule.findById(schedule._id).populate(
