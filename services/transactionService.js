@@ -405,7 +405,7 @@ exports.updateTransactionData = async (req, res, id) => {
             productStock.measurement = "Liter";
           }
 
-          const isLow = productStock.quantity <= STATUSCODE.TEN;
+          const isLow = productStock.quantity === STATUSCODE.TEN;
 
           if (isLow) {
             const getAdminUsers = async () => {
@@ -417,7 +417,7 @@ exports.updateTransactionData = async (req, res, id) => {
             const admins = await getAdminUsers();
             const adminNumbers = admins.map((admin) => admin.contact_number);
 
-            const smsAdminMessage = `Product ${this.product_name} has ${this.quantity} quantity left`;
+            const smsAdminMessage = `Product ${productStock?.product_name} has ${productStock?.quantity} quantity left`;
             adminNumbers.forEach((number, index) => {
               console.log(smsAdminMessage);
               sendSMS(
