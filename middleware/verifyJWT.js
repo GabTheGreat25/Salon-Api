@@ -4,21 +4,25 @@ const { getBlacklistedTokens } = require("../services/userService");
 const { STATUSCODE } = require("../constants/index");
 
 exports.verifyJWT = async (req, res, next) => {
-  const authHeader = req.headers.authorization || req.headers.Authorization;
+  try {
+    const authHeader = req.headers.authorization || req.headers.Authorization;
 
-  if (!authHeader?.match(/^Bearer\s+(.*)$/))
-    throw new ErrorHandler("Please Log In First");
+    if (!authHeader?.match(/^Bearer\s+(.*)$/))
+      throw new ErrorHandler("Please Log In First");
 
-  const token = authHeader?.match(/^Bearer\s+(.*)$/)[1];
+    const token = authHeader?.match(/^Bearer\s+(.*)$/)[1];
 
-  if (getBlacklistedTokens().includes(token))
-    throw new ErrorHandler("Token Already Expired");
+    if (getBlacklistedTokens().includes(token))
+      throw new ErrorHandler("Token Already Expired");
 
-  const decoded = verifyAccessToken(token);
-  req.user = decoded?.UserInfo?.email;
-  req.roles = decoded?.UserInfo?.roles;
+    const decoded = verifyAccessToken(token);
+    req.user = decoded?.UserInfo?.email;
+    req.roles = decoded?.UserInfo?.roles;
 
-  next();
+    next();
+  } catch (error) {
+    next(error);
+  }
 };
 
 exports.authorizeRoles =
