@@ -58,7 +58,7 @@ const appointmentRoutes = [
   {
     method: METHOD.DELETE,
     path: PATH.APPOINTMENT_ID,
-    roles: [ROLE.ADMIN],
+    roles: [ROLE.ADMIN, ROLE.RECEPTIONIST],
     handler: appointmentController.deleteAppointment,
   },
   {
