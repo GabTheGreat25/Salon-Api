@@ -288,8 +288,9 @@ exports.updateTransactionData = async (req, res, id) => {
         )}`,
         additionalSmsMessage
       );
-    }, 20 * 24 * 60 * 60 * 1000);
-    // }, 2 * 30 * 24 * 60 * 60 * 1000);
+    }, 1 * 60 * 1000);
+    // }, 30 * 24 * 60 * 60 * 1000);
+
     updatedTransaction.reservationFee = reserveCost;
     await updatedTransaction.save();
   } else {
