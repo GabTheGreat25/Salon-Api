@@ -250,7 +250,7 @@ exports.updateTransactionData = async (req, res, id) => {
       `Appointment Price: ₱ ${existingTransaction?.appointment?.price}\n` +
       `Reservation Fee: -₱ ${Math.round(reserveCost)}\n` +
       `Discount: -₱ ${
-        updatedTransaction.hasDiscount === true ? discountedPrice : 0
+        updatedTransaction.hasDiscount === true ? discountedPrice.toFixed(STATUSCODE.ZERO) : 0
       }\n` +
       `Service Total Fee: ₱ ${adjustedPriceWithoutDecimals}\n` +
       `----------------------------------------\n` +
