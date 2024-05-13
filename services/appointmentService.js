@@ -210,11 +210,11 @@ exports.createAppointmentData = async (req, res) => {
     .subtract(STATUSCODE.TWO, "hours")
     .toDate();
 
-  const deletionTimeForOnlineCustomer = moment(appointmentDateTime)
+  const oneHourDuration = moment(appointmentDateTime)
     .subtract(STATUSCODE.ONE, "hours")
     .toDate();
 
-  const deletionTimeForWalkInCustomer = moment(appointmentDateTime)
+  const ThirtyMinutesDuration = moment(appointmentDateTime)
     .subtract(STATUSCODE.THIRTY, "minutes")
     .toDate();
 
@@ -231,9 +231,6 @@ exports.createAppointmentData = async (req, res) => {
 
   if (hasAppointmentFee === true) {
     setTimeout(async () => {
-      const smsMessage = `Dear ${appointment.customer.name}, Your appointment has been deleted due to not paying the fee.`;
-      console.log(smsMessage);
-
       sendSMS(
         `+63${appointment.customer.contact_number.substring(STATUSCODE.ONE)}`,
         smsMessage
@@ -249,17 +246,15 @@ exports.createAppointmentData = async (req, res) => {
         new Date(appointment?.date).toISOString().split("T")[0]
       } at exactly ${
         appointment?.time
-      }. Please note that the customer has an appointment reminder 1 hour before their scheduled appointment time. If the customer does not attend their booked appointment, you have the option to delete their appointment. Otherwise, you can disregard this message. `;
+      }. Please note that the customer has an online appointment reminder 30 minutes before their scheduled appointment time. If the customer does not attend their booked appointment, you have the option to delete their appointment. Otherwise, you can disregard this message. `;
 
       adminNumbers.forEach((number, index) => {
         console.log(smsAdminMessage);
         sendSMS(`+63${number.substring(STATUSCODE.ONE)}`, smsAdminMessage);
       });
-    }, Math.max(STATUSCODE.ZERO, deletionTimeForOnlineCustomer.getTime() - currentTimePH.valueOf()));
+    }, Math.max(STATUSCODE.ZERO, ThirtyMinutesDuration.getTime() - currentTimePH.valueOf()));
   } else {
     setTimeout(async () => {
-      const smsMessage = `Dear ${appointment.customer.name}, Your appointment has been deleted due to not paying the fee.`;
-      console.log(smsMessage);
       sendSMS(
         `+63${appointment.customer.contact_number.substring(STATUSCODE.ONE)}`,
         smsMessage
@@ -282,7 +277,7 @@ exports.createAppointmentData = async (req, res) => {
         console.log(smsReceptionistMessage);
         sendSMS(`+63${number.substring(STATUSCODE.ONE)}`, smsAdminMessage);
       });
-    }, Math.max(STATUSCODE.ZERO, deletionTimeForWalkInCustomer.getTime() - currentTimePH.valueOf()));
+    }, Math.max(STATUSCODE.ZERO, ThirtyMinutesDuration.getTime() - currentTimePH.valueOf()));
   }
 
   const admins = await getAdminUsers();
