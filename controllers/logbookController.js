@@ -26,7 +26,7 @@ exports.getOneLog = asyncHandler(async (req, res, next) => {
     ? next(new ErrorHandler("Log Book data not found"))
     : SuccessHandler(
         res,
-        `Logbook data with user ${log?.user?.name} with LogBook ID ${log?._id} retrieved`,
+        `Logbook data with LogBook ID ${log?._id} retrieved`,
         log
       );
 });
@@ -37,7 +37,7 @@ exports.createLogBook = [
 
     return SuccessHandler(
       res,
-      `Logbook of ${log?.user?.name} successfully created `,
+      `Equipment Logbook successfully created `,
       log
     );
   }),
