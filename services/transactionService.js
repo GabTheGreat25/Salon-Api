@@ -211,8 +211,7 @@ exports.updateTransactionData = async (req, res, id) => {
       (b) => b.name
     );
 
-    let grandTotalFee =
-      Number(adjustedPriceWithoutDecimals) + Number(reserveCost);
+    let discountedPrice = Number(existingTransaction.appointment.price * 0.2);
 
     const formattedReceipt =
       `========================================\n` +
@@ -235,14 +234,12 @@ exports.updateTransactionData = async (req, res, id) => {
           : existingTransaction.appointment.service[STATUSCODE.ZERO]
               ?.service_name
       }\n` +
-      ` Add Ons: ${
-        existingTransaction.appointment.option
-          ? existingTransaction.appointment.option.length > STATUSCODE.ONE
-            ? existingTransaction.appointment.option
-                .map((s) => s.option_name)
-                .join(", ")
-            : existingTransaction.appointment.option[STATUSCODE.ZERO]
-                ?.option_name
+      `Add Ons: ${
+        existingTransaction.appointment.option &&
+        existingTransaction.appointment.option.length > 0
+          ? existingTransaction.appointment.option
+              .map((s) => s.option_name)
+              .join(", ")
           : "None"
       }\n` +
       `----------------------------------------\n` +
@@ -250,9 +247,12 @@ exports.updateTransactionData = async (req, res, id) => {
       `   Name: ${beauticianNames.join(", ")}\n` +
       `----------------------------------------\n` +
       `Payment: ${updatedTransaction.payment}\n` +
+      `Appointment Price: ₱ ${existingTransaction?.appointment?.price}\n` +
+      `Reservation Fee: -₱ ${Math.round(reserveCost)}\n` +
+      `Discount: -₱ ${
+        updatedTransaction.hasDiscount === true ? discountedPrice : 0
+      }\n` +
       `Service Total Fee: ₱ ${adjustedPriceWithoutDecimals}\n` +
-      `Reservation Fee: ₱ ${Math.round(reserveCost)}\n` +
-      `Total Amount Fee: ₱ ${Number(grandTotalFee)}\n` +
       `----------------------------------------\n` +
       ` Thank you for choosing our services, ${existingTransaction.appointment.customer.name}!\n` +
       `----------------------------------------\n` +
@@ -263,9 +263,10 @@ exports.updateTransactionData = async (req, res, id) => {
 
     updatedTransaction.qrCode = await generatePinkQRCode(formattedReceipt);
 
-    const smsMessage = updatedTransaction.hasDiscount
-      ? `Dear ${existingTransaction.appointment.customer.name}, your transaction has been approved! You received a 20% discount. Thank you for choosing Lhanlee Salon.`
-      : `Dear ${existingTransaction.appointment.customer.name}, your transaction has been approved! with an payment amount of ₱${adjustedPriceWithoutDecimals}  You can review your transaction details by checking your history. Thank you for choosing Lhanlee Salon.`;
+    const smsMessage =
+      updatedTransaction.hasDiscount === true
+        ? `Dear ${existingTransaction.appointment.customer.name} We are pleased to inform you that your transaction has been approved! You have received a 20% discount from Lhanlee Beauty Lounge, resulting in a discounted price of ₱ ${discountedPrice}. We sincerely thank you for choosing Lhanlee Salon, and we look forward to serving you again.We are pleased to inform you that your transaction has been approved! You have received a 20% discount from Lhanlee Beauty Lounge, resulting in a discounted price of ${discountedPrice}. We sincerely thank you for choosing Lhanlee Salon, and we look forward to serving you again.`
+        : `Dear ${existingTransaction.appointment.customer.name}, your transaction has been approved! with an payment amount of ₱${adjustedPriceWithoutDecimals}  You can review your transaction details by checking your history. Thank you for choosing Lhanlee Salon.`;
 
     console.log(smsMessage);
 
@@ -370,13 +371,12 @@ exports.updateTransactionData = async (req, res, id) => {
           let emptyVolume = productStock.remaining_volume;
           let usedQty = STATUSCODE.ZERO;
 
-
           const isPieces = product?.volume_description?.includes("Pieces");
           if (isPieces) {
             productStock.remaining_volume - consumeSession;
             productStock.quantity = productStock.quantity - consumeSession;
             usedQty = consumeSession;
-            reducedQuantity =  productStock.quantity - consumeSession;
+            reducedQuantity = productStock.quantity - consumeSession;
           }
 
           const isEmpty = emptyVolume == STATUSCODE.ZERO;
@@ -437,8 +437,12 @@ exports.updateTransactionData = async (req, res, id) => {
             product_consume: consumeSession,
             old_volume: product.remaining_volume,
             remained_volume: emptyVolume,
-            old_quantity: isPieces ? product.remaining_volume : productStock.quantity,
-            remained_quantity: isPieces ? productStock.quantity : reducedQuantity,
+            old_quantity: isPieces
+              ? product.remaining_volume
+              : productStock.quantity,
+            remained_quantity: isPieces
+              ? productStock.quantity
+              : reducedQuantity,
             deducted_quantity: usedQty,
           });
         }
