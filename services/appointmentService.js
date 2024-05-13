@@ -227,7 +227,7 @@ exports.createAppointmentData = async (req, res) => {
       const admins = await getAdminUsers();
       const adminNumbers = admins.map((admin) => admin.contact_number);
 
-      const smsAdminMessage = `Dear Admin ${admins?.name},
+      const smsAdminMessage = `Dear Admins,
       This is to inform you that ${
         appointment?.customer?.name
       } has scheduled an Online Appointment on ${
