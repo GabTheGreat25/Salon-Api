@@ -265,7 +265,7 @@ exports.updateTransactionData = async (req, res, id) => {
 
     const smsMessage =
       updatedTransaction.hasDiscount === true
-        ? `Dear ${existingTransaction.appointment.customer.name} We are pleased to inform you that your transaction has been approved! You have received a 20% discount from Lhanlee Beauty Lounge, resulting in a discounted price of ₱ ${discountedPrice}. We sincerely thank you for choosing Lhanlee Salon, and we look forward to serving you again.We are pleased to inform you that your transaction has been approved! You have received a 20% discount from Lhanlee Beauty Lounge, resulting in a discounted price of ${discountedPrice}. We sincerely thank you for choosing Lhanlee Salon, and we look forward to serving you again.`
+        ? `Dear ${existingTransaction.appointment.customer.name} We are pleased to inform you that your transaction has been approved! You have received a 20% discount from Lhanlee Beauty Lounge, resulting in a discounted price of ₱ ${discountedPrice}. We sincerely thank you for choosing Lhanlee Salon, and we look forward to serving you again. We are pleased to inform you that your transaction has been approved! `
         : `Dear ${existingTransaction.appointment.customer.name}, your transaction has been approved! with an payment amount of ₱${adjustedPriceWithoutDecimals}  You can review your transaction details by checking your history. Thank you for choosing Lhanlee Salon.`;
 
     console.log(smsMessage);
