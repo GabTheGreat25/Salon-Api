@@ -16,12 +16,11 @@
 						"disableBodyPruning": true
 					},
 					"request": {
-						"method": "GET",
+						"method": "POST",
 						"header": [
 							{
 								"key": "Authorization",
 								"value": "{{Bearer}}",
-								"type": "text",
 								"disabled": true
 							}
 						],
@@ -337,7 +336,7 @@
 								"header": [],
 								"body": {
 									"mode": "raw",
-									"raw": "{\r\n    \"email\": \"adminjay@gmail.com\",\r\n    \"password\": \"12345678\"\r\n}",
+									"raw": "{\r\n    \"email\": \"admingab@gmail.com\",\r\n    \"password\": \"12345678\"\r\n}",
 									"options": {
 										"raw": {
 											"language": "json"
@@ -374,15 +373,14 @@
 						"auth": {
 							"type": "bearer",
 							"bearer": {
-								"token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJVc2VySW5mbyI6eyJlbWFpbCI6ImFkbWluamF5QGdtYWlsLmNvbSIsInJvbGVzIjpbIkFkbWluIl19LCJpYXQiOjE3MTM2MTQ2NTMsImV4cCI6MTcxNDIxOTQ1M30.jFXNtm8uD_SCpa57OfYcDMn1DIgxzfbt1IjT_zYx95M"
+								"token": ""
 							}
 						},
 						"method": "GET",
 						"header": [
 							{
 								"key": "Authorization",
-								"value": "{{Bearer}}",
-								"type": "text"
+								"value": "{{Bearer}}"
 							}
 						],
 						"body": {
@@ -433,8 +431,7 @@
 						"header": [
 							{
 								"key": "Content-Type",
-								"value": "application/json",
-								"type": "text"
+								"value": "application/json"
 							}
 						],
 						"body": {
@@ -476,7 +473,7 @@
 								},
 								{
 									"key": "contact_number",
-									"value": "09938465564",
+									"value": "09943394563",
 									"type": "text"
 								}
 							]
@@ -496,8 +493,7 @@
 						"header": [
 							{
 								"key": "Content-Type",
-								"value": "application/json",
-								"type": "text"
+								"value": "application/json"
 							}
 						],
 						"body": {
@@ -505,7 +501,7 @@
 							"formdata": [
 								{
 									"key": "name",
-									"value": "beauticianuser123",
+									"value": "beauticiangab",
 									"type": "text"
 								},
 								{
@@ -515,7 +511,7 @@
 								},
 								{
 									"key": "email",
-									"value": "beauticianuser123@gmail.com",
+									"value": "beauticiangab@gmail.com",
 									"type": "text"
 								},
 								{
@@ -525,7 +521,7 @@
 								},
 								{
 									"key": "contact_number",
-									"value": "09938465564",
+									"value": "09943394563",
 									"type": "text"
 								},
 								{
@@ -536,7 +532,11 @@
 								{
 									"key": "image",
 									"type": "file",
-									"src": "/C:/Users/Jay/Downloads/eyelash serum.png"
+									"fileNotInWorkingDirectoryWarning": "This file isn't in your working directory. Teammates you share this request with won't be able to use this file. To make collaboration easier you can setup your working directory in Settings.",
+									"filesNotInWorkingDirectory": [
+										"/C:/Users/gabriel/Downloads/dummy-male.png"
+									],
+									"src": "/C:/Users/gabriel/Downloads/dummy-male.png"
 								},
 								{
 									"key": "job_type",
@@ -545,7 +545,7 @@
 								},
 								{
 									"key": "date",
-									"value": "2024-03-29",
+									"value": "2024-05-10",
 									"type": "text"
 								},
 								{
@@ -570,8 +570,7 @@
 						"header": [
 							{
 								"key": "Content-Type",
-								"value": "application/json",
-								"type": "text"
+								"value": "application/json"
 							}
 						],
 						"body": {
@@ -579,7 +578,7 @@
 							"formdata": [
 								{
 									"key": "name",
-									"value": "receptionistgabz",
+									"value": "receptionistgab",
 									"type": "text"
 								},
 								{
@@ -589,7 +588,7 @@
 								},
 								{
 									"key": "email",
-									"value": "receptionistgabz@gmail.com",
+									"value": "receptionistgab@gmail.com",
 									"type": "text"
 								},
 								{
@@ -599,7 +598,7 @@
 								},
 								{
 									"key": "contact_number",
-									"value": "09938465564",
+									"value": "09943394563",
 									"type": "text"
 								},
 								{
@@ -612,9 +611,10 @@
 									"type": "file",
 									"fileNotInWorkingDirectoryWarning": "This file isn't in your working directory. Teammates you share this request with won't be able to use this file. To make collaboration easier you can setup your working directory in Settings.",
 									"filesNotInWorkingDirectory": [
-										"/C:/Users/gabriel/Downloads/board (21).gif"
+										"/C:/Users/gabriel/Downloads/board (21).gif",
+										"/C:/Users/gabriel/Downloads/dummy-male.png"
 									],
-									"src": "/C:/Users/gabriel/Downloads/board (21).gif"
+									"src": "/C:/Users/gabriel/Downloads/dummy-male.png"
 								},
 								{
 									"key": "job_type",
@@ -623,7 +623,7 @@
 								},
 								{
 									"key": "date",
-									"value": "2024-04-10",
+									"value": "2024-05-10",
 									"type": "text"
 								},
 								{
@@ -648,8 +648,7 @@
 						"header": [
 							{
 								"key": "Content-Type",
-								"value": "application/json",
-								"type": "text"
+								"value": "application/json"
 							}
 						],
 						"body": {
@@ -677,7 +676,7 @@
 								},
 								{
 									"key": "contact_number",
-									"value": "09938465564",
+									"value": "09943394563",
 									"type": "text"
 								},
 								{
@@ -688,11 +687,15 @@
 								{
 									"key": "image",
 									"type": "file",
-									"src": "/C:/Users/gabriel/Downloads/22b9dbf101f4863981d922a2ed9916ef.jpg"
+									"fileNotInWorkingDirectoryWarning": "This file isn't in your working directory. Teammates you share this request with won't be able to use this file. To make collaboration easier you can setup your working directory in Settings.",
+									"filesNotInWorkingDirectory": [
+										"/C:/Users/gabriel/Downloads/dummy-male.png"
+									],
+									"src": "/C:/Users/gabriel/Downloads/dummy-male.png"
 								},
 								{
 									"key": "description",
-									"value": "Tall Dark Handsome Guy",
+									"value": "Male Petite Short Hair Tan Skin",
 									"type": "text"
 								},
 								{
@@ -1072,15 +1075,14 @@
 						"header": [
 							{
 								"key": "Authorization",
-								"value": "{{Bearer}}",
-								"type": "text"
+								"value": "{{Bearer}}"
 							}
 						],
 						"body": {
 							"mode": "formdata",
 							"formdata": []
 						},
-						"url": "{{URI}}{{V1}}user/65ec143350e4e269e863971e"
+						"url": "{{URI}}{{V1}}user/66374293af134b6d20f3d4cd"
 					},
 					"response": []
 				},
@@ -1932,7 +1934,7 @@
 						"auth": {
 							"type": "bearer",
 							"bearer": {
-								"token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJVc2VySW5mbyI6eyJlbWFpbCI6ImFkbWluamF5QGdtYWlsLmNvbSIsInJvbGVzIjpbIkFkbWluIl19LCJpYXQiOjE3MTM2MTE0NzcsImV4cCI6MTcxNDIxNjI3N30.MQwRlNmvQQWcGp9aOysrie9cHtf1cdiGny0aoaQPzao"
+								"token": ""
 							}
 						},
 						"method": "GET",
@@ -1982,7 +1984,7 @@
 								}
 							]
 						},
-						"url": "{{URI}}{{V1}}appointment/65e9e20281a40e6e99f6c073"
+						"url": "{{URI}}{{V1}}appointment/663257bfae8800bdb8336f48"
 					},
 					"response": []
 				},
@@ -2665,20 +2667,17 @@
 						"method": "POST",
 						"header": [
 							{
-								"warning": "This is a duplicate header and will be overridden by the Content-Type header generated by Postman.",
 								"key": "Content-Type",
-								"value": "application/json",
-								"type": "text"
+								"value": "application/json"
 							},
 							{
 								"key": "Authorization",
-								"value": "{{Bearer}}",
-								"type": "text"
+								"value": "{{Bearer}}"
 							}
 						],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n    \"month\": 11,\r\n    \"message\":  \"Merry Christmas! Check out our holiday specials this December!\"\r\n}",
+							"raw": "{\r\n    \"month\": 11,\r\n    \"message\": \"Merry Christmas! Check out our holiday specials this December!\"\r\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -3629,125 +3628,6 @@
 			"id": "b57f6ecd-79be-4980-b5bc-5ef8c39254c4"
 		},
 		{
-			"name": "RESUPPLY",
-			"item": [
-				{
-					"name": "GET ALL RESUPPLY",
-					"id": "5e44109d-d629-4c63-8d26-68845887a246",
-					"protocolProfileBehavior": {
-						"disableBodyPruning": true
-					},
-					"request": {
-						"auth": {
-							"type": "bearer",
-							"bearer": {
-								"token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJVc2VySW5mbyI6eyJlbWFpbCI6ImFkbWluamF5QGdtYWlsLmNvbSIsInJvbGVzIjpbIkFkbWluIl19LCJpYXQiOjE3MDk1NjU2MDIsImV4cCI6MTcxMDE3MDQwMn0.AsXTI8JDYkhM7G3O55M7vkdSVlz0CN1Y3BUSnQB-OzQ"
-							}
-						},
-						"method": "GET",
-						"header": [],
-						"url": "{{URI}}{{V1}}resupplies"
-					},
-					"response": []
-				},
-				{
-					"name": "GET ONE RESUPPLY",
-					"id": "e9ea7447-577f-48ca-9b8f-d15606eb1772",
-					"protocolProfileBehavior": {
-						"disableBodyPruning": true
-					},
-					"request": {
-						"auth": {
-							"type": "bearer",
-							"bearer": {
-								"token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJVc2VySW5mbyI6eyJlbWFpbCI6ImFkbWluamF5QGdtYWlsLmNvbSIsInJvbGVzIjpbIkFkbWluIl19LCJpYXQiOjE3MDk1NjU2MDIsImV4cCI6MTcxMDE3MDQwMn0.AsXTI8JDYkhM7G3O55M7vkdSVlz0CN1Y3BUSnQB-OzQ"
-							}
-						},
-						"method": "GET",
-						"header": [],
-						"url": "{{URI}}{{V1}}resupply/65e9ddb60ec5060ad90c5883"
-					},
-					"response": []
-				},
-				{
-					"name": "CREATE RESUPPLY",
-					"id": "9c3ff64b-40dd-4991-8631-5fb18b6ec091",
-					"protocolProfileBehavior": {
-						"disableBodyPruning": true
-					},
-					"request": {
-						"auth": {
-							"type": "bearer",
-							"bearer": {
-								"token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJVc2VySW5mbyI6eyJlbWFpbCI6ImFkbWluamF5QGdtYWlsLmNvbSIsInJvbGVzIjpbIkFkbWluIl19LCJpYXQiOjE3MDk1NjU2MDIsImV4cCI6MTcxMDE3MDQwMn0.AsXTI8JDYkhM7G3O55M7vkdSVlz0CN1Y3BUSnQB-OzQ"
-							}
-						},
-						"method": "POST",
-						"header": [],
-						"body": {
-							"mode": "raw",
-							"raw": "{\r\n    \"supplier_name\": \"Test Supplier 2\",\r\n    \"equipment\" :\"65e9e137200cea7d8889c2d0\",\r\n    \"equipment_price\":\"1200.00\",\r\n    \"status\": \"pending\"\r\n\r\n}",
-							"options": {
-								"raw": {
-									"language": "json"
-								}
-							}
-						},
-						"url": "{{URI}}{{V1}}resupplies"
-					},
-					"response": []
-				},
-				{
-					"name": "UPDATE RESUPPLY",
-					"id": "9c53ab10-f83a-4e68-b7cf-6ff78d071a6a",
-					"protocolProfileBehavior": {
-						"disableBodyPruning": true
-					},
-					"request": {
-						"auth": {
-							"type": "bearer",
-							"bearer": {
-								"token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJVc2VySW5mbyI6eyJlbWFpbCI6ImFkbWluamF5QGdtYWlsLmNvbSIsInJvbGVzIjpbIkFkbWluIl19LCJpYXQiOjE3MDk1NjU2MDIsImV4cCI6MTcxMDE3MDQwMn0.AsXTI8JDYkhM7G3O55M7vkdSVlz0CN1Y3BUSnQB-OzQ"
-							}
-						},
-						"method": "PATCH",
-						"header": [],
-						"body": {
-							"mode": "raw",
-							"raw": "{\r\n    \"supplier_name\": \"Test Supplier \",\r\n    \"equipment\": \"65e9e137200cea7d8889c2d0\",\r\n    \"equipment_price\": \"1400.00\",\r\n    \"status\": \"completed\"\r\n}",
-							"options": {
-								"raw": {
-									"language": "json"
-								}
-							}
-						},
-						"url": "{{URI}}{{V1}}resupply/edit/65e9df9ec1e28f4f68896dec"
-					},
-					"response": []
-				},
-				{
-					"name": "DELETE RESUPPLY",
-					"id": "16bf034d-5f24-47f2-a871-1c1ac7fd2778",
-					"protocolProfileBehavior": {
-						"disableBodyPruning": true
-					},
-					"request": {
-						"auth": {
-							"type": "bearer",
-							"bearer": {
-								"token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJVc2VySW5mbyI6eyJlbWFpbCI6ImFkbWluamF5QGdtYWlsLmNvbSIsInJvbGVzIjpbIkFkbWluIl19LCJpYXQiOjE3MDk1NjU2MDIsImV4cCI6MTcxMDE3MDQwMn0.AsXTI8JDYkhM7G3O55M7vkdSVlz0CN1Y3BUSnQB-OzQ"
-							}
-						},
-						"method": "DELETE",
-						"header": [],
-						"url": "{{URI}}{{V1}}resupply/65e9ddb60ec5060ad90c5883"
-					},
-					"response": []
-				}
-			],
-			"id": "db45b65c-206f-4775-8f4f-836adc04b931"
-		},
-		{
 			"name": "HIRING",
 			"item": [
 				{
@@ -4048,74 +3928,6 @@
 				}
 			],
 			"id": "ebb8c6e4-1540-4644-ae35-376d6e60ae68"
-		},
-		{
-			"name": "FOUND",
-			"item": [
-				{
-					"name": "GET ALL FOUND",
-					"id": "d76ddf74-0535-4b38-9bc4-31d2397e15ba",
-					"protocolProfileBehavior": {
-						"disableBodyPruning": true
-					},
-					"request": {
-						"auth": {
-							"type": "bearer",
-							"bearer": {
-								"token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJVc2VySW5mbyI6eyJlbWFpbCI6ImFkbWluamF5QGdtYWlsLmNvbSIsInJvbGVzIjpbIkFkbWluIl19LCJpYXQiOjE3MTE2MzA4MjEsImV4cCI6MTcxMjIzNTYyMX0.NfxfT9uXS7cyOiIXQd5tBpRArl3cXjizbLPnvh8u42c"
-							}
-						},
-						"method": "GET",
-						"header": [],
-						"url": "{{URI}}{{V1}}founds"
-					},
-					"response": []
-				},
-				{
-					"name": "GET ONE FOUND",
-					"id": "eedc2262-7403-4df1-9778-2cb715fe5b32",
-					"protocolProfileBehavior": {
-						"disableBodyPruning": true
-					},
-					"request": {
-						"auth": {
-							"type": "bearer",
-							"bearer": {
-								"token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJVc2VySW5mbyI6eyJlbWFpbCI6ImFkbWluamF5QGdtYWlsLmNvbSIsInJvbGVzIjpbIkFkbWluIl19LCJpYXQiOjE3MTE2MzA4MjEsImV4cCI6MTcxMjIzNTYyMX0.NfxfT9uXS7cyOiIXQd5tBpRArl3cXjizbLPnvh8u42c"
-							}
-						},
-						"method": "GET",
-						"header": [],
-						"url": "{{URI}}{{V1}}found/660bd7c2cce0fcd21820e985"
-					},
-					"response": []
-				},
-				{
-					"name": "UPDATE FOUND",
-					"id": "1c0a1a84-f51b-43c6-8875-44a2e919746b",
-					"protocolProfileBehavior": {
-						"disableBodyPruning": true
-					},
-					"request": {
-						"method": "PATCH",
-						"header": []
-					},
-					"response": []
-				},
-				{
-					"name": "New Request",
-					"id": "396581a4-3ba6-4691-9c19-6bec56771c30",
-					"protocolProfileBehavior": {
-						"disableBodyPruning": true
-					},
-					"request": {
-						"method": "GET",
-						"header": []
-					},
-					"response": []
-				}
-			],
-			"id": "d73cc7c1-2bb0-4514-9a3b-0c2b3d277e12"
 		},
 		{
 			"name": "LOGBOOK",
@@ -4508,7 +4320,7 @@
 		{
 			"listen": "prerequest",
 			"script": {
-				"id": "9fad1976-4ba2-474d-9947-1220122852ad",
+				"id": "c7f5ad3e-ae7b-4243-af3e-340223813ae8",
 				"type": "text/javascript",
 				"exec": [
 					""
@@ -4518,7 +4330,7 @@
 		{
 			"listen": "test",
 			"script": {
-				"id": "ae24c515-a771-49fd-8db1-b7897ce7e5d8",
+				"id": "ab7409f6-b905-4081-9811-29803b0c1780",
 				"type": "text/javascript",
 				"exec": [
 					""
@@ -4529,7 +4341,7 @@
 	"variable": [
 		{
 			"key": "Bearer",
-			"value": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJVc2VySW5mbyI6eyJlbWFpbCI6ImFkbWluZ2FiQGdtYWlsLmNvbSIsInJvbGVzIjpbIkFkbWluIl19LCJpYXQiOjE3MTIyMjMwNjksImV4cCI6MTcxMjgyNzg2OX0.oCNtqmTNO3vLsx-X2emEJBJxv2brzFeamWqO6K4Kwa0",
+			"value": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJVc2VySW5mbyI6eyJlbWFpbCI6ImFkbWluZ2FiQGdtYWlsLmNvbSIsInJvbGVzIjpbIkFkbWluIl19LCJpYXQiOjE3MTQ4OTYyMTksImV4cCI6MTcxNTUwMTAxOX0.KtIoTg5gcL8fcaL-LwxIE0YteffoEabn6s4Hv3t91_Q",
 			"type": "string"
 		}
 	]
