@@ -97,4 +97,5 @@ module.exports = {
   INVENTORIES: "/inventories",
   INVENTORY_ID: "/inventory/:id",
   INVENTORY_EDIT_ID: "/inventory/edit/:id",
+  ALL_REPORTS: "/charts/all/reports",  
 };
