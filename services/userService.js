@@ -38,7 +38,7 @@ const sendMonthlyUpdate = async (user) => {
     .exec();
 
   const customMessage = monthlyMessage
-    ? `${monthlyMessage.message} Which is ${latestService?.service_name}`
+    ? `${monthlyMessage.message} Which is ${latestService?.service_name} for just ${latestService?.price}`
     : "Thank you for being our valued customer!";
 
   const smsMessage = `Dear ${user.name}, ${customMessage}`;
