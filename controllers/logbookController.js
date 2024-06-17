@@ -37,7 +37,7 @@ exports.createLogBook = [
 
     return SuccessHandler(
       res,
-      `Equipment Logbook successfully created `,
+      `Equipment Logbook successfully created`,
       log
     );
   }),
@@ -49,7 +49,7 @@ exports.updateLogBook = [
 
     return SuccessHandler(
       res,
-      `Logbook of ${log?.user?.name}  successfully created`,
+      `Logbook successfully updated`,
       log
     );
   }),
