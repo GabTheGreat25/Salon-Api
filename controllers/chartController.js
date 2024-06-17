@@ -36,7 +36,8 @@ exports.equipmentReport = AsyncHandler(async (req, res, next) => {
 });
 
 exports.getAppointmentReport = AsyncHandler(async (req, res, next) => {
-  const appointment = await chartService.getAppointmentReportData();
+  const appointment = await chartService.getAppointmentReportStatusData();
+
 
   return !appointment
     ? next(new ErrorHandler("Appointment Report Not Found"))
@@ -137,4 +138,12 @@ exports.getTransactionCustomerType = AsyncHandler(async (req, res, next) => {
   return !customer
     ? next(new ErrorHandler("Transaction Report Customers not Found"))
     : SuccessHandler(res, "Transaction Customer type Found", customer);
+});
+
+exports.getAppointmentAllReports = AsyncHandler(async(req, res, next)=>{
+  const reports = await chartService.getAppointmentReportData();
+
+  return !reports
+    ? next(new ErrorHandler("Appointment Reports not Found"))
+    : SuccessHandler(res, "Appointment Reports Found", reports);  
 });
