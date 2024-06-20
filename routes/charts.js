@@ -109,6 +109,12 @@ const chartRoutes = [
     roles: [ROLE.ADMIN],
     handler: chartController.getTransactionCustomerType,
   },
+  {
+    method: METHOD.GET,
+    path: PATH.ALL_REPORTS,
+    roles: [ROLE.ADMIN],
+    handler: chartController.getAppointmentAllReports,  
+  }
 ];
 
 chartRoutes.forEach((route) => {
