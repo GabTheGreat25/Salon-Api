@@ -40,6 +40,10 @@ const deliverySchema = new mongoose.Schema({
       enum: ["Hands", "Hair", "Feet", "Facial", "Body", "Eyelash"],
     },
   ],
+  payment: {
+    type: String,
+    enum: ["Cash", "Gcash", "Maya"],
+  },
 });
 
 module.exports = mongoose.model(RESOURCE.DELIVERY, deliverySchema);

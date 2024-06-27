@@ -76,11 +76,6 @@ exports.getAppointmentCustomerData = async () => {
   const endDate = moment().endOf("week").toDate();
 
   const customerCounts = await Appointment.aggregate([
-    // {
-    //   $match: {
-    //     date: { $gte: startDate, $lte: endDate },
-    //   },
-    // },
     {
       $lookup: {
         from: "information",
@@ -104,17 +99,39 @@ exports.getAppointmentCustomerData = async () => {
       $unwind: "$userDetails",
     },
     {
+      $lookup: {
+        from: "services",
+        localField: "service",
+        foreignField: "_id",
+        as: "serviceDetails",
+      },
+    },
+    {
+      $unwind: "$serviceDetails",
+    },
+    {
       $project: {
         _id: 0,
         customer: "$customer",
         name: "$userDetails.name",
         description: "$customerDetails.description",
+        appointmentDate: "$date",
+        appointmentTime: "$time",
+        serviceName: "$serviceDetails.service_name",
       },
     },
     {
       $group: {
         _id: "$description",
-        customers: { $addToSet: "$name" },
+        customers: {
+          $push: {
+            name: "$name",
+            description: "$description",
+            appointmentDate: "$appointmentDate",
+            appointmentTime: "$appointmentTime",
+            serviceName: "$serviceName",
+          },
+        },
         count: { $sum: 1 },
       },
     },
@@ -127,8 +144,9 @@ exports.getAppointmentCustomerData = async () => {
       },
     },
   ]).exec();
-
+  
   return customerCounts;
+  
 };
 
 exports.logBookData = async () => {
@@ -261,7 +279,6 @@ exports.getAppointmentReportStatusData = async () => {
   const startDate = moment().startOf("week").toDate();
   const endDate = moment().endOf("week").toDate();
 
-  // Perform the aggregation
    const status = await Transaction.aggregate([
     {
       $lookup: {
@@ -296,7 +313,6 @@ exports.getAppointmentReportStatusData = async () => {
     {
       $unwind: "$serviceDetails",
     },
-    // Uncomment the match stage if you want to filter by date
     // {
     //   $match: {
     //     "appointmentDetails.date": { $gte: startDate, $lte: endDate },
@@ -309,6 +325,7 @@ exports.getAppointmentReportStatusData = async () => {
         appointments: {
           $push: {
             date: "$appointmentDetails.date",
+            time: "$appointmentDetails.time",
             customerName: "$customerDetails.name",
             status: "$appointmentDetails.status",
             serviceName: "$serviceDetails.service_name",
@@ -409,6 +426,7 @@ exports.getAppointmentSaleData = async () => {
     {
       $project: {
         date: 1,
+        time: 1,
         price: 1,
         "services.service_name": 1,
         "customerDetails.name": 1,
@@ -426,6 +444,7 @@ exports.getAppointmentSaleData = async () => {
             service: "$services.service_name",
             customer: "$customerDetails.name",
             paymentMethod: "$transactions.payment",
+            time: "$time",
           },
         },
       },
@@ -441,7 +460,7 @@ exports.getDeliveryTypeData = async () => {
   const startDate = moment().startOf("week").toDate();
   const endDate = moment().endOf("week").toDate();
 
-  const productTypeStatusCounts = await Delivery.aggregate([
+  const delivery = await Delivery.aggregate([
     // {
     //   $match: {
     //     date: { $gte: startDate, $lte: endDate },
@@ -451,18 +470,42 @@ exports.getDeliveryTypeData = async () => {
       $unwind: "$type",
     },
     {
+      $lookup: {
+        from: "products",            
+        localField: "product",   
+        foreignField: "_id",       
+        as: "productDetails",
+      },
+    },
+    {
+      $unwind: "$productDetails",
+    },
+    {
       $group: {
         _id: {
           type: "$type",
           status: "$status",
           date: "$date",
+          payment: "$payment",
+          product_name: "$productDetails.product_name", 
         },
         count: { $sum: 1 },
       },
     },
+    {
+      $project: {
+        _id: 0,
+        type: "$_id.type",
+        status: "$_id.status",
+        date: "$_id.date",
+        payment: "$_id.payment",
+        product: "$_id.product_name",
+        count: "$count",
+      },
+    },
   ]);
-
-  return productTypeStatusCounts;
+  
+  return delivery;
 };
 
 exports.getProductCountData = async () => {
@@ -546,6 +589,17 @@ exports.getPaymentMethodCountData = async () => {
       $unwind: "$customerDetails",
     },
     {
+      $lookup: {
+        from: "services",
+        localField: "appointmentDetails.service",
+        foreignField: "_id",
+        as: "serviceDetails",
+      },
+    },
+    {
+      $unwind: "$serviceDetails",
+    },
+    {
       $match: {
         // "appointmentDetails.date": { $gte: startDate, $lte: endDate },
         payment: { $in: ["Cash", "Maya"] },
@@ -558,7 +612,10 @@ exports.getPaymentMethodCountData = async () => {
         appointments: {
           $push: {
             date: "$appointmentDetails.date",
+            time: "$appointmentDetails.time",
             customerName: "$customerDetails.name",
+            serviceName: "$serviceDetails.service_name",
+            paymentMethod: "$payment",
           },
         },
       },
@@ -693,7 +750,7 @@ exports.getAppointmentReportData = async () => {
     },
     {
       $match: {
-        "transactionDetails.status": "completed",
+        "transactionDetails.status": { $in: ["completed", "pending", "cancelled"] },
       },
     },
     {
@@ -752,6 +809,7 @@ exports.getAppointmentReportData = async () => {
             status: "$transactionDetails.status",
             description: "$informationDetails.description",
             price: "$price",
+            time: "$time",
           },
         },
       },
