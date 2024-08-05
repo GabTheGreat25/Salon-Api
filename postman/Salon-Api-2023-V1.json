@@ -4311,6 +4311,18 @@
 						"header": []
 					},
 					"response": []
+				},
+				{
+					"name": "ALL REPORTS",
+					"id": "4bd53e92-4d1e-40e3-871f-a9aed85b3bde",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": []
+					},
+					"response": []
 				}
 			],
 			"id": "3a5686f5-733a-44ca-8704-989cdfd3d78b"
@@ -4320,7 +4332,7 @@
 		{
 			"listen": "prerequest",
 			"script": {
-				"id": "c7f5ad3e-ae7b-4243-af3e-340223813ae8",
+				"id": "e788f885-ec06-4400-b646-3ed15bc3563b",
 				"type": "text/javascript",
 				"exec": [
 					""
@@ -4330,7 +4342,7 @@
 		{
 			"listen": "test",
 			"script": {
-				"id": "ab7409f6-b905-4081-9811-29803b0c1780",
+				"id": "613e9807-4ac0-4666-a987-1aef8a65fafc",
 				"type": "text/javascript",
 				"exec": [
 					""
@@ -4341,7 +4353,7 @@
 	"variable": [
 		{
 			"key": "Bearer",
-			"value": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJVc2VySW5mbyI6eyJlbWFpbCI6ImFkbWluZ2FiQGdtYWlsLmNvbSIsInJvbGVzIjpbIkFkbWluIl19LCJpYXQiOjE3MTQ4OTYyMTksImV4cCI6MTcxNTUwMTAxOX0.KtIoTg5gcL8fcaL-LwxIE0YteffoEabn6s4Hv3t91_Q",
+			"value": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJVc2VySW5mbyI6eyJlbWFpbCI6ImFkbWluZ2FiQGdtYWlsLmNvbSIsInJvbGVzIjpbIkFkbWluIl19LCJpYXQiOjE3MjI4MzYwMTUsImV4cCI6MTcyMzQ0MDgxNX0.V_JNRO2Nc8PIVWSNFOC9tYvTLRuP0_IdpDITmGZWnmA",
 			"type": "string"
 		}
 	]
