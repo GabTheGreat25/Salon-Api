@@ -336,7 +336,7 @@
 								"header": [],
 								"body": {
 									"mode": "raw",
-									"raw": "{\r\n    \"email\": \"admingab@gmail.com\",\r\n    \"password\": \"12345678\"\r\n}",
+									"raw": "{\r\n    \"email\": \"adminjay@gmail.com\",\r\n    \"password\": \"12345678\"\r\n}",
 									"options": {
 										"raw": {
 											"language": "json"
@@ -4061,7 +4061,7 @@
 						"auth": {
 							"type": "bearer",
 							"bearer": {
-								"token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJVc2VySW5mbyI6eyJlbWFpbCI6ImFkbWluamF5QGdtYWlsLmNvbSIsInJvbGVzIjpbIkFkbWluIl19LCJpYXQiOjE3MTM2MTQ2NTMsImV4cCI6MTcxNDIxOTQ1M30.jFXNtm8uD_SCpa57OfYcDMn1DIgxzfbt1IjT_zYx95M"
+								"token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJVc2VySW5mbyI6eyJlbWFpbCI6ImFkbWluZ2FiQGdtYWlsLmNvbSIsInJvbGVzIjpbIkFkbWluIl19LCJpYXQiOjE3MjEyNjEyODIsImV4cCI6MTcyMTg2NjA4Mn0.6y5npMmIIXRD0xjbxQn6ngjVWxlXuDzrzJo6vlX1yhQ"
 							}
 						},
 						"method": "GET",
@@ -4080,7 +4080,7 @@
 						"auth": {
 							"type": "bearer",
 							"bearer": {
-								"token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJVc2VySW5mbyI6eyJlbWFpbCI6ImFkbWluamF5QGdtYWlsLmNvbSIsInJvbGVzIjpbIkFkbWluIl19LCJpYXQiOjE3MTM2MTE0NzcsImV4cCI6MTcxNDIxNjI3N30.MQwRlNmvQQWcGp9aOysrie9cHtf1cdiGny0aoaQPzao"
+								"token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJVc2VySW5mbyI6eyJlbWFpbCI6ImFkbWluZ2FiQGdtYWlsLmNvbSIsInJvbGVzIjpbIkFkbWluIl19LCJpYXQiOjE3MjEyNjEyODIsImV4cCI6MTcyMTg2NjA4Mn0.6y5npMmIIXRD0xjbxQn6ngjVWxlXuDzrzJo6vlX1yhQ"
 							}
 						},
 						"method": "GET",
@@ -4122,6 +4122,12 @@
 						"disableBodyPruning": true
 					},
 					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": {
+								"token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJVc2VySW5mbyI6eyJlbWFpbCI6ImFkbWluZ2FiQGdtYWlsLmNvbSIsInJvbGVzIjpbIkFkbWluIl19LCJpYXQiOjE3MjEyNjEyODIsImV4cCI6MTcyMTg2NjA4Mn0.6y5npMmIIXRD0xjbxQn6ngjVWxlXuDzrzJo6vlX1yhQ"
+							}
+						},
 						"method": "GET",
 						"header": [],
 						"url": "{{URI}}{{V1}}charts/service/type"
@@ -4138,7 +4144,7 @@
 						"auth": {
 							"type": "bearer",
 							"bearer": {
-								"token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJVc2VySW5mbyI6eyJlbWFpbCI6ImFkbWluamF5QGdtYWlsLmNvbSIsInJvbGVzIjpbIkFkbWluIl19LCJpYXQiOjE3MTM2MTQ2NTMsImV4cCI6MTcxNDIxOTQ1M30.jFXNtm8uD_SCpa57OfYcDMn1DIgxzfbt1IjT_zYx95M"
+								"token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJVc2VySW5mbyI6eyJlbWFpbCI6ImFkbWluZ2FiQGdtYWlsLmNvbSIsInJvbGVzIjpbIkFkbWluIl19LCJpYXQiOjE3MjEyNjEyODIsImV4cCI6MTcyMTg2NjA4Mn0.6y5npMmIIXRD0xjbxQn6ngjVWxlXuDzrzJo6vlX1yhQ"
 							}
 						},
 						"method": "GET",
@@ -4155,7 +4161,10 @@
 					},
 					"request": {
 						"auth": {
-							"type": "noauth"
+							"type": "bearer",
+							"bearer": {
+								"token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJVc2VySW5mbyI6eyJlbWFpbCI6ImFkbWluamF5QGdtYWlsLmNvbSIsInJvbGVzIjpbIkFkbWluIl19LCJpYXQiOjE3MjQxMTQ5NjAsImV4cCI6MTcyNDcxOTc2MH0.zPFAHXXGtIQYAc1K7qu5VfzExbVo8tySKxsVoJyMcCo"
+							}
 						},
 						"method": "GET",
 						"header": [
@@ -4221,6 +4230,12 @@
 						"disableBodyPruning": true
 					},
 					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": {
+								"token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJVc2VySW5mbyI6eyJlbWFpbCI6ImFkbWluZ2FiQGdtYWlsLmNvbSIsInJvbGVzIjpbIkFkbWluIl19LCJpYXQiOjE3MjEyNjEyODIsImV4cCI6MTcyMTg2NjA4Mn0.6y5npMmIIXRD0xjbxQn6ngjVWxlXuDzrzJo6vlX1yhQ"
+							}
+						},
 						"method": "GET",
 						"header": [],
 						"url": "{{URI}}{{V1}}charts/transaction/payment"
@@ -4324,6 +4339,25 @@
 					"request": {
 						"method": "GET",
 						"header": []
+					},
+					"response": []
+				},
+				{
+					"name": "GET DELIVERY COUNT",
+					"id": "53971ecf-2016-42cd-a45c-2a115952d1aa",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "{{Bearer}}",
+								"type": "text"
+							}
+						],
+						"url": "{{URI}}{{V1}}charts/type/count"
 					},
 					"response": []
 				}
