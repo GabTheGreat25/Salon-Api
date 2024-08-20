@@ -4155,13 +4155,16 @@
 					},
 					"request": {
 						"auth": {
-							"type": "bearer",
-							"bearer": {
-								"token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJVc2VySW5mbyI6eyJlbWFpbCI6ImFkbWluamF5QGdtYWlsLmNvbSIsInJvbGVzIjpbIkFkbWluIl19LCJpYXQiOjE3MTM2MTQ2NTMsImV4cCI6MTcxNDIxOTQ1M30.jFXNtm8uD_SCpa57OfYcDMn1DIgxzfbt1IjT_zYx95M"
-							}
+							"type": "noauth"
 						},
 						"method": "GET",
-						"header": [],
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "{{Bearer}}",
+								"type": "text"
+							}
+						],
 						"url": "{{URI}}{{V1}}charts/delivery/type"
 					},
 					"response": []
@@ -4332,7 +4335,7 @@
 		{
 			"listen": "prerequest",
 			"script": {
-				"id": "e788f885-ec06-4400-b646-3ed15bc3563b",
+				"id": "2844afe3-eef8-40c3-a674-64f20f7a0b4b",
 				"type": "text/javascript",
 				"exec": [
 					""
@@ -4342,7 +4345,7 @@
 		{
 			"listen": "test",
 			"script": {
-				"id": "613e9807-4ac0-4666-a987-1aef8a65fafc",
+				"id": "fcf0acdf-7bf5-4384-adf2-1b80f35d14c2",
 				"type": "text/javascript",
 				"exec": [
 					""
@@ -4353,7 +4356,7 @@
 	"variable": [
 		{
 			"key": "Bearer",
-			"value": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJVc2VySW5mbyI6eyJlbWFpbCI6ImFkbWluZ2FiQGdtYWlsLmNvbSIsInJvbGVzIjpbIkFkbWluIl19LCJpYXQiOjE3MjI4MzYwMTUsImV4cCI6MTcyMzQ0MDgxNX0.V_JNRO2Nc8PIVWSNFOC9tYvTLRuP0_IdpDITmGZWnmA",
+			"value": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJVc2VySW5mbyI6eyJlbWFpbCI6ImFkbWluamF5QGdtYWlsLmNvbSIsInJvbGVzIjpbIkFkbWluIl19LCJpYXQiOjE3MjQxMTQ5NjAsImV4cCI6MTcyNDcxOTc2MH0.zPFAHXXGtIQYAc1K7qu5VfzExbVo8tySKxsVoJyMcCo\"\n    }",
 			"type": "string"
 		}
 	]
