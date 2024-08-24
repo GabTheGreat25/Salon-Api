@@ -4058,14 +4058,14 @@
 						"disableBodyPruning": true
 					},
 					"request": {
-						"auth": {
-							"type": "bearer",
-							"bearer": {
-								"token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJVc2VySW5mbyI6eyJlbWFpbCI6ImFkbWluZ2FiQGdtYWlsLmNvbSIsInJvbGVzIjpbIkFkbWluIl19LCJpYXQiOjE3MjEyNjEyODIsImV4cCI6MTcyMTg2NjA4Mn0.6y5npMmIIXRD0xjbxQn6ngjVWxlXuDzrzJo6vlX1yhQ"
-							}
-						},
 						"method": "GET",
-						"header": [],
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "{{Bearer}}",
+								"type": "text"
+							}
+						],
 						"url": "{{URI}}{{V1}}charts/customer/appointment"
 					},
 					"response": []
