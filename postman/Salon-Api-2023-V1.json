@@ -4224,7 +4224,13 @@
 					},
 					"request": {
 						"method": "GET",
-						"header": [],
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "{{Bearer}}",
+								"type": "text"
+							}
+						],
 						"url": "{{URI}}{{V1}}charts/comment/rating"
 					},
 					"response": []
