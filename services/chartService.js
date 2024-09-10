@@ -15,11 +15,6 @@ exports.getAllServiceTypesData = async () => {
   const endDate = moment().endOf("week").toDate();
 
   const serviceCounts = await Appointment.aggregate([
-    // {
-    //   $match: {
-    //     date: { $gte: startDate, $lte: endDate },
-    //   },
-    // },
     {
       $lookup: {
         from: "services",
@@ -50,6 +45,17 @@ exports.getAllServiceTypesData = async () => {
       $unwind: "$customerDetails",
     },
     {
+      $lookup: {
+        from: "users",
+        localField: "beautician",
+        foreignField: "_id",
+        as: "beauticianDetails",
+      },
+    },
+    {
+      $unwind: "$beauticianDetails",
+    },
+    {
       $group: {
         _id: "$serviceDetails.type",
         appointmentCount: { $sum: 1 },
@@ -57,6 +63,7 @@ exports.getAllServiceTypesData = async () => {
           $addToSet: {
             id: "$customerDetails._id",
             name: "$customerDetails.name",
+            beautician: "$beauticianDetails.name",
             date: "$date",
             service_name: "$serviceDetails.service_name",
           },
@@ -110,10 +117,22 @@ exports.getAppointmentCustomerData = async () => {
       $unwind: "$serviceDetails",
     },
     {
+      $lookup: {
+        from: "users",
+        localField: "beautician",
+        foreignField: "_id",
+        as: "beauticianDetails",
+      },
+    },
+    {
+      $unwind: "$beauticianDetails",
+    },
+    {
       $project: {
         _id: 0,
         customer: "$customer",
         name: "$userDetails.name",
+        beautician: "$beauticianDetails.name",
         description: "$customerDetails.description",
         appointmentDate: "$date",
         appointmentTime: "$time",
@@ -126,6 +145,7 @@ exports.getAppointmentCustomerData = async () => {
         customers: {
           $push: {
             name: "$name",
+            beautician: "$beautician",
             description: "$description",
             appointmentDate: "$appointmentDate",
             appointmentTime: "$appointmentTime",
@@ -144,9 +164,8 @@ exports.getAppointmentCustomerData = async () => {
       },
     },
   ]).exec();
-  
+
   return customerCounts;
-  
 };
 
 exports.logBookData = async () => {
@@ -279,7 +298,7 @@ exports.getAppointmentReportStatusData = async () => {
   const startDate = moment().startOf("week").toDate();
   const endDate = moment().endOf("week").toDate();
 
-   const status = await Transaction.aggregate([
+  const status = await Transaction.aggregate([
     {
       $lookup: {
         from: "appointments",
@@ -301,6 +320,17 @@ exports.getAppointmentReportStatusData = async () => {
     },
     {
       $unwind: "$customerDetails",
+    },
+    {
+      $lookup: {
+        from: "users",
+        localField: "appointmentDetails.beautician",
+        foreignField: "_id",
+        as: "beauticianDetails",
+      },
+    },
+    {
+      $unwind: "$beauticianDetails",
     },
     {
       $lookup: {
@@ -327,6 +357,7 @@ exports.getAppointmentReportStatusData = async () => {
             date: "$appointmentDetails.date",
             time: "$appointmentDetails.time",
             customerName: "$customerDetails.name",
+            beautician: "$beauticianDetails.name",
             status: "$appointmentDetails.status",
             serviceName: "$serviceDetails.service_name",
           },
@@ -416,12 +447,29 @@ exports.getAppointmentSaleData = async () => {
       },
     },
     {
+      $unwind: "$services",
+    },
+    {
       $lookup: {
         from: "users",
         localField: "customer",
         foreignField: "_id",
         as: "customerDetails",
       },
+    },
+    {
+      $unwind: "$customerDetails",
+    },
+    {
+      $lookup: {
+        from: "users",
+        localField: "beautician",
+        foreignField: "_id",
+        as: "beauticianDetails",
+      },
+    },
+    {
+      $unwind: "$beauticianDetails",
     },
     {
       $project: {
@@ -431,6 +479,7 @@ exports.getAppointmentSaleData = async () => {
         "services.service_name": 1,
         "customerDetails.name": 1,
         "transactions.payment": 1,
+        "beauticianDetails.name": 1,
       },
     },
     {
@@ -440,11 +489,12 @@ exports.getAppointmentSaleData = async () => {
         appointments: {
           $push: {
             date: "$date",
+            time: "$time",
             price: "$price",
             service: "$services.service_name",
             customer: "$customerDetails.name",
             paymentMethod: "$transactions.payment",
-            time: "$time",
+            beautician: "$beauticianDetails.name",
           },
         },
       },
@@ -471,9 +521,9 @@ exports.getDeliveryTypeData = async () => {
     },
     {
       $lookup: {
-        from: "products",            
-        localField: "product",   
-        foreignField: "_id",       
+        from: "products",
+        localField: "product",
+        foreignField: "_id",
         as: "productDetails",
       },
     },
@@ -487,7 +537,7 @@ exports.getDeliveryTypeData = async () => {
           status: "$status",
           date: "$date",
           payment: "$payment",
-          product_name: "$productDetails.product_name", 
+          product_name: "$productDetails.product_name",
         },
         count: { $sum: 1 },
       },
@@ -504,7 +554,7 @@ exports.getDeliveryTypeData = async () => {
       },
     },
   ]);
-  
+
   return delivery;
 };
 
@@ -590,6 +640,17 @@ exports.getPaymentMethodCountData = async () => {
     },
     {
       $lookup: {
+        from: "users",
+        localField: "appointmentDetails.beautician",
+        foreignField: "_id",
+        as: "beauticianDetails",
+      },
+    },
+    {
+      $unwind: "$beauticianDetails",
+    },
+    {
+      $lookup: {
         from: "services",
         localField: "appointmentDetails.service",
         foreignField: "_id",
@@ -614,6 +675,7 @@ exports.getPaymentMethodCountData = async () => {
             date: "$appointmentDetails.date",
             time: "$appointmentDetails.time",
             customerName: "$customerDetails.name",
+            beautician: "$beauticianDetails.name",
             serviceName: "$serviceDetails.service_name",
             paymentMethod: "$payment",
           },
@@ -750,7 +812,9 @@ exports.getAppointmentReportData = async () => {
     },
     {
       $match: {
-        "transactionDetails.status": { $in: ["completed", "pending", "cancelled"] },
+        "transactionDetails.status": {
+          $in: ["completed", "pending", "cancelled"],
+        },
       },
     },
     {
@@ -784,6 +848,17 @@ exports.getAppointmentReportData = async () => {
     },
     {
       $lookup: {
+        from: "users",
+        localField: "beautician",
+        foreignField: "_id",
+        as: "beauticianDetails",
+      },
+    },
+    {
+      $unwind: "$beauticianDetails",
+    },
+    {
+      $lookup: {
         from: "information",
         localField: "customer",
         foreignField: "customer",
@@ -804,6 +879,7 @@ exports.getAppointmentReportData = async () => {
           $addToSet: {
             id: "$customerDetails._id",
             name: "$customerDetails.name",
+            beautician: "$beauticianDetails.name",
             paymentMethod: "$transactionDetails.payment",
             serviceName: "$serviceDetails.service_name",
             status: "$transactionDetails.status",
@@ -829,4 +905,47 @@ exports.getAppointmentReportData = async () => {
   ]);
 
   return serviceCounts;
+};
+
+exports.getTypeCountData = async () => {
+  const delivery = await Delivery.aggregate([
+    {
+      $unwind: "$type",
+    },
+    {
+      $lookup: {
+        from: "products",
+        localField: "product",
+        foreignField: "_id",
+        as: "productDetails",
+      },
+    },
+    {
+      $unwind: "$productDetails",
+    },
+    {
+      $group: {
+        _id: {
+          type: "$type",
+          status: "$status",
+        },
+        count: { $sum: 1 },
+      },
+    },
+    {
+      $group: {
+        _id: "$_id.type",
+        totalCount: { $sum: "$count" },
+      },
+    },
+    {
+      $project: {
+        _id: 0,
+        type: "$_id",
+        totalCount: 1,
+      },
+    },
+  ]);
+
+  return delivery;
 };

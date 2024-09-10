@@ -114,6 +114,12 @@ const chartRoutes = [
     path: PATH.ALL_REPORTS,
     roles: [ROLE.ADMIN],
     handler: chartController.getAppointmentAllReports,  
+  },
+  {
+    method: METHOD.GET,
+    path: PATH.COUNT_TYPE,
+    roles: [ROLE.ADMIN],
+    handler: chartController.getDeliveryTypeCount,  
   }
 ];
 
