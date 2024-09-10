@@ -147,3 +147,11 @@ exports.getAppointmentAllReports = AsyncHandler(async(req, res, next)=>{
     ? next(new ErrorHandler("Appointment Reports not Found"))
     : SuccessHandler(res, "Appointment Reports Found", reports);  
 });
+
+exports.getDeliveryTypeCount = AsyncHandler(async(req, res, next)=>{
+  const count = await chartService.getTypeCountData();
+
+  return !count 
+  ? next(new ErrorHandler("No Delivery Count Found"))
+  : SuccessHandler(res, "Delivery Count Found!", count);
+})
