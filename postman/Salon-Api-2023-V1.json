@@ -336,7 +336,7 @@
 								"header": [],
 								"body": {
 									"mode": "raw",
-									"raw": "{\r\n    \"email\": \"adminjay@gmail.com\",\r\n    \"password\": \"12345678\"\r\n}",
+									"raw": "{\r\n    \"email\": \"admingab@gmail.com\",\r\n    \"password\": \"12345678\"\r\n}",
 									"options": {
 										"raw": {
 											"language": "json"
@@ -3407,7 +3407,8 @@
 							{
 								"key": "Authorization",
 								"value": "{{Bearer}}",
-								"type": "text"
+								"type": "text",
+								"disabled": true
 							}
 						],
 						"body": {
@@ -4381,7 +4382,7 @@
 		{
 			"listen": "prerequest",
 			"script": {
-				"id": "67e5034b-39f1-4510-89e7-489730d2915a",
+				"id": "f89984db-74d9-4ecd-af8a-ad896593feb1",
 				"type": "text/javascript",
 				"exec": [
 					""
@@ -4391,7 +4392,7 @@
 		{
 			"listen": "test",
 			"script": {
-				"id": "1d7cbc87-263d-4bd8-b0f8-9cc9f37c21d6",
+				"id": "4823c3ea-d1cc-41dc-a9e6-5e3f0b387559",
 				"type": "text/javascript",
 				"exec": [
 					""
@@ -4402,7 +4403,7 @@
 	"variable": [
 		{
 			"key": "Bearer",
-			"value": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJVc2VySW5mbyI6eyJlbWFpbCI6ImFkbWluamF5QGdtYWlsLmNvbSIsInJvbGVzIjpbIkFkbWluIl19LCJpYXQiOjE3MjYwMDY3NTcsImV4cCI6MTcyNjYxMTU1N30.k7hbf11Bh3EcV1jm5lJn0sRmpdUf3dklozUuyh649u8",
+			"value": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJVc2VySW5mbyI6eyJlbWFpbCI6ImFkbWluZ2FiQGdtYWlsLmNvbSIsInJvbGVzIjpbIkFkbWluIl19LCJpYXQiOjE3MjYwMjE1MTcsImV4cCI6MTcyNjYyNjMxN30.mx3s54cgFwJcshtkVh3m3lC9RdKyjWbYzFEwHYgP5No",
 			"type": "string"
 		}
 	]
